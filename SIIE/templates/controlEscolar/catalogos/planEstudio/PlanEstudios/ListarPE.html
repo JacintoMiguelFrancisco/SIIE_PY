@@ -1,0 +1,73 @@
+{% extends '../../../../base.html' %}
+{% block title %}Lista Planes de Estudio{% endblock title %}
+{% block body %}
+<meta charset="UTF-8"/>
+    <h2>Lista Planes de Estudio</h2>
+    <h3>Cantidad de Planes: {{ count }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Id</th>
+                <th class="cabecera">Plan</th>
+                <th class="cabecera">Abreviación</th>
+                <th class="cabecera">Estatus</th>
+                <th class="cabecera">Fecha de alta</th>
+                <th class="cabecera">Modificado por:</th>
+                <th class="cabecera">Fecha de baja</th>
+                <th class="cabecera">Modificado por:</th>
+        </thead>
+        <tbody>
+            {% for p in planes %}
+            <tr >
+                <td>{{ p.id_plan_est }}</td>
+                <td>{{ p.decri_larga_plan_est }}</td>
+                <td>{{ p.descri_corta_plan_est }}</td>
+                <td>{{ p.estatus_plan_est }}</td>
+                <td>{{ p.fec_alta_estpla }}</td>
+                <td>{{ p.user_alta_estpla }}</td>
+                <td>{{ p.fec_baja_estpla }}</td>
+                <td>{{ p.user_baja_estpla }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border: 2px solid #000;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: #000;
+             color: #eee;
+         }
+    </style>
+
+{% endblock body %}

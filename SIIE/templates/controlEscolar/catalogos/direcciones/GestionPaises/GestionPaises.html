@@ -1,0 +1,91 @@
+{% extends '../../CRUD.html' %}
+
+{% block title %}Gestion Paises{% endblock title %}
+
+{% block buttons %}
+{% comment %} Espera los botones imprimir {% endcomment %}
+<h3>Gestión de Paises</h3>
+    <div class="container mb-4 mt-4">
+        <div class="row justify-content-md-center">
+            <div class="col col-12 col-sm-3 col-lg-3">
+                {% load bootstrap_icons %}
+                <a href="{% url 'export-csv-paises' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export-xlwt-paises' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export-pdf-paises' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export-print-paises' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+            </div>
+        </div>
+    </div>
+{% endblock buttons %}
+
+
+{% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
+{% block form %}
+<form action="" method="POST">{% csrf_token %}
+    <div class="form-group">
+        {{ FormPaises.as_p }}
+    </div>
+    <div class="form-group" >
+        <button type="submit" class="btn btn-success btn-block text-white" id="save">Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
+    </div>
+</form>
+{% endblock form %}
+
+{% block search %}
+{% comment %} Busqueda por nombre {% endcomment %}
+<h1>Catalogo de Paises</h1>
+<form method="GET" action="{% url 'vistaPaises' %}">
+    <div class="input-group mb-3 mt-4">
+        <input type="search" class="form-control" placeholder="Escribe aqui..." name="search_paises">
+        <div class="input-group-append">
+            <span class="input-group-text bg-success">
+                {% load bootstrap_icons %}
+                <button class="btn btn-success text-white">
+                    {% bs_icon 'search' size='1.5em'%}
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+{% endblock search %}
+
+{% comment %} Espera una tabla que se llena con un for {% endcomment %}
+{% block table %}
+<table class="table table-striped">
+    <p style="text-align: right; font-size: 25px;">Número de paises: {{ contador }} </p>
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Pais</th>
+            <th>Abreviación</th>
+            <th>Estatus</th>
+            <th id="operaciones">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in entity %}
+        <tr>
+            {% load bootstrap_icons %}
+            <td>{{ p.id_pais }}</td>
+            <td>{{ p.descri_largo_pais }}</td>
+            <td>{{ p.descri_corto_pais }}</td>
+            <td>{{ p.estatus_pais }}</td>
+            <td class="d-flex justify-content-evenly">
+                <a href="../vistaPaises/{{ p.id_pais }}/" class="btn btn-warning">
+                    {% bs_icon 'pencil-square' size='1.5em'%}
+                </a>
+                <a href="../eliminarPais/{{ p.id_pais }}/" class="btn btn-danger">
+                    {% bs_icon 'trash' size='1.5em'%}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock table %}

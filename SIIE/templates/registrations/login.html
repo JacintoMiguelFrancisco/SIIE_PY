@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+    crossorigin="anonymous"></script>
+    {% load static %}
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+</head>
+
+<body>
+
+  <div class="container-lg mt-4">
+    <div class="row ">
+      <img class="col bg mt-5 p-0" id="fondo" src="{% static 'img/BG.jpg' %}">
+      </img>
+      <div class="col">
+        <div class="text-end">
+          <img class="mt-5" src="{% static 'img/logo.gif' %}" width="100" alt="">
+        </div>
+        <h2 class="fw-bold text-center py-5">Bienvenido</h2>
+
+        <!--LOGIN-->
+
+        <form action="#" method="post"> {% csrf_token %}
+
+          <div class="mb-4">
+          <h4>  <label for="user" class="form-label">Usuario</label></h4>
+            <input type="text" class="form-control" name="username">
+          </div> 
+
+          <div class="mb-4">
+          <h4><label for="password" class="form-label">Contraseña</label></h4>
+            <input type="text" class="form-control" name="con">
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Iniciar Sesion</button>
+          </div>
+          <div class="my-3" style="text-align: center;">
+            <span>Recuperar contraseña <a href="#"> Recuperar</a></span>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+    integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"
+    integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,663 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+#titulo-nav{
+  text-decoration: none;
+  list-style: none;
+}
+
+#offcanvas{
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(15px);
+  width: 350px;
+  height: 100vh;
+  overflow-y: auto;
+}
+.side-bar .menu{
+  width: 100%;
+}
+
+.side-bar .menu .item{
+  position: relative;
+  cursor: pointer;
+}
+.side-bar .menu .item a{
+  color: black;
+  font-size: 20px;
+  text-decoration: none;
+  display: block;
+  line-height: 60px;
+  padding: 5px 30px;
+}
+.side-bar .menu .item a:hover{
+  background: #198754;
+  transition: 0.3s ease;
+}
+
+.side-bar .menu .item i{
+  margin-right: 1em;
+}
+
+.side-bar .menu .item .sub-menu{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+ 
+}
+
+.side-bar .menu .item .sub-menu a{
+  padding-left: 85px ;
+  
+}
+
+.side-bar .menu .item .sub-menu-catalogos{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-catalogos a{
+  padding-left: 100px;
+}
+
+.side-bar .menu .item .sub-menu-direcciones{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-direcciones a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-universidad{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-universidad a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-plan_estudio{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-plan_estudio a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-aspirantes{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-aspirantes a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-estudiantes{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-estudiantes a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-empleados{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-empleados a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+
+.side-bar .menu .item .sub-menu-operacion{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-operacion a{
+  padding-left: 100px;
+ 
+}
+
+.side-bar .menu .item .sub-menu-aspirante{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-aspirante a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-estudiante{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  border-bottom: 20px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-estudiante a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-procesos{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-procesos a{
+  padding-left: 100px;
+
+}
+
+.side-bar .menu .item .sub-menu-aspiranteP{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-aspiranteP a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-estudianteP{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-estudianteP a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-cuatrimestral{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-cuatrimestral a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-reportes{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-reportes a{
+  padding-left: 100px;
+  
+}
+
+.side-bar .menu .item .sub-menu-aspiranteR{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-aspiranteR a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-estudianteR{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-estudianteR a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-estadisticasR{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-estadisticasR a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-recursosH{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-recursosH a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+/*menu para servicio social*/
+.side-bar .menu .item .sub-menu-servicio{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-servicio a{
+  padding-left: 80px;
+}
+
+
+.side-bar .menu .item .sub-menu-catalogos-servicio{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-catalogos-servicio a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-operacion-servicio{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-operacion-servicio a{
+  padding-left: 100px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-procesos-servicio{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-procesos-servicio a{
+  padding-left: 100px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-reportes-servicio{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-reportes-servicio a{
+  padding-left: 100px;
+  border-bottom: 2px solid gray;
+}
+
+/*ESTILOS PARA MENU ESTADIAS*/
+.side-bar .menu .item .sub-menu-estadias{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-estadias a{
+  padding-left: 80px;
+}
+
+.side-bar .menu .item .sub-menu-catalogos-estadias{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-catalogos-estadias a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-operacion-estadias{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-operacion-estadias a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-reportes-estadias{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-reportes-estadias a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+/*MENU DE TITULACION*/
+
+.side-bar .menu .item .sub-menu-titulacion{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-titulacion a{
+  padding-left: 80px;
+}
+
+.side-bar .menu .item .sub-menu-catalogos-titulacion{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-catalogos-titulacion a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+
+/*MENU DE caja*/
+
+.side-bar .menu .item .sub-menu-caja{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-caja a{
+  padding-left: 80px;
+}
+
+.side-bar .menu .item .sub-menu-catalogos-caja{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-catalogos-caja a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-operacion-caja{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-operacion-caja a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-procesos-caja{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-procesos-caja a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-reportes-caja{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-reportes-caja a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+/*Menu de caja nueva*/
+.side-bar .menu .item .sub-menu-cajaN{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-cajaN a{
+  padding-left: 80px;
+}
+
+/*menu de biblioteca*/
+
+.side-bar .menu .item .sub-menu-biblioteca{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-biblioteca a{
+  padding-left: 80px;
+}
+
+.side-bar .menu .item .sub-menu-adquisiciones-biblio{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-adquisiciones-biblio a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-catalogacion-biblio{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-catalogacion-biblio a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-prestamos-biblio{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-prestamos-biblio a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-catalogos-biblio{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-catalogos-biblio a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+.side-bar .menu .item .sub-menu-consultas-biblio{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-consultas-biblio a{
+  padding-left: 110px;
+  border-bottom: 2px solid gray;
+}
+
+/*menu vinculacion*/
+
+.side-bar .menu .item .sub-menu-vinculacion{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-vinculacion a{
+  padding-left: 80px;
+}
+
+.side-bar .menu .item .sub-menu-egresados{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-egresados a{
+  padding-left: 100px;
+}
+
+.side-bar .menu .item .sub-menu-egresados-catalogos{
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-egresados-catalogos a{
+  padding-left: 120px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-egresados-operacion{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-egresados-operacion a{
+  padding-left: 100px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-egresados-procesos{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-egresados-procesos a{
+  padding-left: 100px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-egresados-reportes{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-egresados-reportes a{
+  padding-left: 100px;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-proyectos{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-proyectos a{
+  padding-left: 100px;
+}
+
+/*PLANEACION*/
+
+.side-bar .menu .item .sub-menu-planeacion{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-planeacion a{
+  padding-left: 80px;
+}
+
+
+/*UTILERIAS*/
+
+.side-bar .menu .item .sub-menu-utilerias{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-utilerias a{
+  padding-left: 80px;
+}
+
+.side-bar .menu .item .sub-menu-catalogos-utilerias{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-catalogos-utilerias a{
+  padding-left: 100px;
+}
+
+.side-bar .menu .item .sub-menu-operacion-utilerias{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-operacion-utilerias a{
+  padding-left: 100px;
+}
+
+.side-bar .menu .item .sub-menu-procesos-utilerias{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-procesos-utilerias a{
+  padding-left: 100px;
+}
+
+.side-bar .menu .item .sub-menu-reportes-utilerias{
+  background: rgba(255, 255, 255, 0.3);
+  display: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side-bar .menu .item .sub-menu-reportes-utilerias a{
+  padding-left: 100px;
+}

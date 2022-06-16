@@ -1,0 +1,616 @@
+{% block navbar %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/menuLateral/menuLateral.css' %}" />
+{% endblock head %}
+
+<nav class="navbar navbar-light bg-success shadow">
+  
+  <button 
+     class="btn btn-success" 
+     type="button" 
+     data-bs-toggle="offcanvas" 
+     data-bs-target="#offcanvas"
+     aria-controls="offcanvas">
+      {% load bootstrap_icons %}
+      {% bs_icon 'list' size='2.5em' %}
+  </button>
+
+  <span class="navbar-brand mb-0 text-light">
+    <i class="bi bi-person-fill text-light"></i>
+    Bienvenido: nombre del usuario
+  </span>
+  <span class="navbar-brand mb-0 text-light">
+    Salir
+    <i class="bi bi-box-arrow-right"></i>
+  </span>
+  </div>
+
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
+    <div class="offcanvas-header d-flex justify-content-around">
+      <a href="{% url 'index' %}" id="titulo-nav">
+        <h3 class="text-dark">Universidad Tecnologica de nezahualcoyotl</h3>
+      </a>
+      <h5 class="offcanvas-title text-dark">
+        {% load static %}
+        <img src="{% static 'img/logo.gif'%}" style="text-align:center; width: 100px; height: 100px;">
+      </h5>
+
+    </div>
+    <div class="offcanvas-body text-dark p-1">
+      <div class="side-bar">
+        <div class="menu">
+
+          <!--MENU CONTROL ESCOLAR-->
+          <div class="item">
+            <a class="sub-btn">
+              {% bs_icon 'gear' size='1.5em' %} Control escolar
+            </a>
+            <!--SUB MENU CONTROL ESCOLAR-->
+              <div class="sub-menu">
+                
+                <a class="sub-item-catalogos">Catalogos</a>
+                    <!--sub menu de catalogos-->
+                  <div class="sub-menu-catalogos">
+                    
+                    <a class="sub-item-direcciones">Direcciones</a>
+                      <div class="sub-menu-direcciones">
+                        <a href="{% url 'vistaPaises' %}">Pais</a>
+                        <a href="#">Estados</a>
+                        <a href="#">Municipios/alcaldias</a>
+                        <a href="#">Colonias</a>
+                      </div>
+
+                    <a class="sub-item-universidad">Universidad</a>
+                      <div class="sub-menu-universidad">
+                        <a href="{% url 'vistaUniversidades' %}">Universidades</a>
+                        <a href="#">Divisiones</a>
+                        <a href="#">Carreras</a>
+                        <a href="#">Periodos</a>
+                      </div>
+
+                    <a class="sub-item-plan_estudio">Planes de estudio</a>
+                      <div class="sub-menu-plan_estudio">
+                        <a href="{% url 'vistaPlaneEstudios' %}">Plan de estudios</a>
+                        <a href="#">Asignaturas</a>
+                        <a href="{% url 'VistaIndicadores' %}">Indicadores</a>
+                        <a href="#">Plan Estudio Asignatura</a>
+                        <a href="#">Plan Estudio Asignatura Indicador</a>
+                      </div>
+                      
+                    <a class="sub-item-aspirantes">Aspirantes</a>
+                      <div class="sub-menu-aspirantes">
+                        <a href="{% url 'vistaMedios' %}">Difusion</a>
+                        <a href="{% url 'vistaEscuelas' %}">Tipos de escuela</a>
+                        <a href="{% url 'vistaAreaBachi' %}">Área Bachillerato</a>
+                      </div>
+
+                    <a class="sub-item-estudiantes">Estudiantes</a>
+                      <div class="sub-menu-estudiantes">
+                        <a href="#">Estudiantes</a>
+                        <a href="#">Documentacion</a>
+                        <a href="{% url 'vistaGrados' %}">Grado</a>
+                        <a href="#">Grupo</a>
+                        <a href="#">Salones</a>
+                        <a href="{% url 'vistaBecas' %}">Becas</a>
+                        <a href="#">Estatus estudiante</a>
+                        <a href="{% url 'vistaTipoBajas' %}">Tipos de baja</a>
+                        <a href="{% url 'vistaCambios' %}">Tipos Cambio carrera</a>
+                      </div>
+
+                    <a class="sub-item-empleados">Empleados</a>
+                      <div class="sub-menu-empleados">
+                        <a href="#">Empleados</a>
+                        <a href="{% url 'vistaNivelAca' %}">Nivel academico</a>
+                        <a href="{% url 'vistaPlaza' %}">Plazas</a>
+                        <a href="#">Tipos de puesto</a>
+                        <a href="#">Sueldos</a>
+                        <a href="#">Adscripciones</a>
+                        <a href="#">Prof. compartidos</a>
+                        <a href="#">Actividades</a>
+                        <a href="#">Instrucciones de egreso</a>
+                        <a href="#">Carreras de egreso</a>
+                      </div>
+                  </div>
+                                
+                <a class="sub-item-operacion">Operacion</a>
+                <!--sub menu de operacion-->
+                <div class="sub-menu-operacion">
+                    
+                  <a class="sub-item-aspirante">Aspirantes</a>
+                    <div class="sub-menu-aspirante">
+                      <a href="#">Captura aspirantes</a>
+                      <a href="#">Captura documentos aspirante</a>
+                      <a href="#">Captura calificaciones aspirantes</a>
+                    </div>
+
+                  <a class="sub-item-estudiante">Estudiantes</a>
+                    <div class="sub-menu-estudiante">
+                      <a href="#">Inscripcion</a>
+                      <a href="#">Baja estudiante</a>
+                      <a href="#">Captura deserción</a>
+                      <a href="#">Revertir deserción</a>
+                      <a href="#">Captura documentos estudiantes</a>
+                      <a href="#">Horario profesor</a>
+                      <a href="#">Profesores nuevos</a>
+                      <a href="#">Fecha alta</a>
+                      <a href="#">Movimiento</a>
+                      <a href="#">Calificacion por consejo divisional</a>
+                      <a href="#">Reinscripcion del estudiante</a>
+                      <a href="#">Fecha de calificaciones</a>
+                      <a href="#">Consulta de asistencias</a>
+                      <a href="#">Consulta de horario grupo</a>
+                      <a href="#">Consulta de horario profesor</a>
+                      <a href="#">Captura de recuperación</a>
+                      <a href="#">Captura de correciones</a>
+                      <a href="#">Tutorias</a>
+                      <a href="#">Actualiza generación de estudiantes</a>
+                      <a href="#">Transpaso estudiante a egresado</a>
+                      <a href="#">Memorandum egresados</a>
+                      <a href="#">Becas pronabe a estudiantes</a>
+                    </div>    
+                </div>
+                  
+                <a href="#" class="sub-item-procesos">Procesos</a>
+                <!--sub menu de Procesos-->
+                <div class="sub-menu-procesos">
+
+                  <a class="sub-item-aspiranteP">Aspirantes</a>
+                    <div class="sub-menu-aspiranteP">
+                      <a href="#">Aspirantes a estudiantes </a>
+                      <a href="#">Grupos de nuevo ingreso</a>
+                      <a href="#">Recuperar datos del Ceneval</a>
+                    </div>
+
+                    <a class="sub-item-estudianteP">Estudiantes</a>
+                    <div class="sub-menu-estudianteP">
+                      <a href="#">Calificaciones</a>
+                      <a href="#">Acumulado de estudiantes</a>
+                    </div>
+
+                    <a class="sub-item-cuatrimestral">Cuatrimestral</a>
+                    <div class="sub-menu-cuatrimestral">
+                      <a href="#">Cierre cuatrimestral</a>
+                      <a href="#">Calcula grupos</a>
+                      <a href="#">Acumulado de estudiantes</a>
+                    </div>
+                </div>
+
+                <a href="#" class="sub-item-reportes">Reportes</a>
+                <!--sub menu de Reportes-->
+                <div class="sub-menu-reportes">
+
+                  <a class="sub-item-aspiranteR">Aspirantes</a>
+                  <div class="sub-menu-aspiranteR">
+                    <a href="#">Graficas aspirantes </a>
+                    <a href="#">Datos generales del aspirante</a>
+                    <a href="#">Sustentantes</a>
+                    <a href="#">Calificaciones Ceneval</a>
+                    <a href="#">Historico alumnos Conalep</a>
+                  </div>
+
+                  <a class="sub-item-estudianteR">Estudiantes</a>
+                  <div class="sub-menu-estudianteR">
+                    <a href="#">Estadisticas de bajas </a>
+                    <a href="#">Lista de estudiantes</a>
+                    <a href="#">Profesor lista de estudiantes</a>
+                    <a href="#">Reporte calificaciones parciales</a>
+                    <a href="#">Reporte calificaciones finales</a>
+                    <a href="#">Reporte de promedios finales de parciales</a>
+                    <a href="#">Reporte de calificaciones finales de consejo divisional</a>
+                    <a href="#">Reporte de aprobados del cuatrimestre anterior</a>
+                    <a href="#">Reporte de promedios mayores a 9.0</a>
+                    <a href="#">Lista de recuperación</a>
+                    <a href="#">Lista de recuperación/correcion</a>
+                    <a href="#">Correcion de calificación</a>
+                    <a href="#">Formato de seguimiento profesor examen</a>
+                    <a href="#">Formato de correcciones</a>
+                    <a href="#">Resultado de recuperación</a>
+                    <a href="#">Listado de profesor asignatura</a>
+                    <a href="#">Lista de E/S de empleados</a>
+                    <a href="#">Constancia de estudios</a>
+                    <a href="#">Reporte de documentos de estudiantes activos</a>
+                    <a href="#">Asistencia por grupos</a>
+                    <a href="#">Estudiantes de nuevo ingreso</a>
+                    <a href="#">Reporte de estudiantes por edad y sexo</a>
+                    <a href="#">Estadisticas de promedio por sexo</a>
+                    <a href="#">Estadisticas de reprobación por grupo</a>
+                    <a href="#">Estadisticas de reprobacion por materia</a>
+                    <a href="#">Estadisticas de becas cuatrimestres anteriores</a>
+                    <a href="#">Estudiantes con promedio mayor a 8.5</a>
+                    <a href="#">Aprovechamiento escolar</a>
+                    <a href="#">Historial academico</a>
+                    <a href="#">Reporte certificado</a>
+                    <a href="#">Constancia de estudio con logo</a>
+                    <a href="#">Historial academico con logo</a>
+                  </div>
+
+                  <a class="sub-item-estadisticasR">Estadisticas</a>
+                  <div class="sub-menu-estadisticasR">
+                    <a href="#">Matricula definitiva</a>
+                    <a href="#">Estimulos academico</a>
+                    <a href="#">Estadisticas aspirantes y estudiantes</a>
+                    <a href="#">Aprovechamiento escolar</a>
+                    <a href="#">Reporte de becas</a>
+                    <a href="#">Seguimiento matricula</a>
+                  </div>
+
+                  <a class="sub-item-recursosH">Recursos humanos</a>
+                  <div class="sub-menu-recursosH">
+                    <a href="#">Contratos</a>
+                    <a href="#">Lista de profesores</a>
+                    <a href="#">Horas grupo</a>
+                    <a href="#">Actividades profesor</a>
+                    <a href="#">Detalle horas grupo</a>
+                  </div>
+              </div>
+          </div>
+
+          <!--MENU SERVICIO SOCIAL-->
+          <div class="item">
+            <a class="sub-btn-servicio">
+              {% bs_icon 'people' size='1.5em' %}Servicio social</a>
+            <!--SUB MENU SERVICIO SOCIAL-->
+            <div class="sub-menu-servicio">
+
+              <a class="sub-item-catalogos-servicio">Catalogos</a>
+               <!--sub menu de servicio social/CATALOGOS -->  
+                    <div class="sub-menu-catalogos-servicio">
+                      <a href="#">Escuelas</a>
+                      <a href="#">Carrera o especialidad</a>
+                      <a href="#">Programas</a>
+                      <a href="#">Dependencias</a>
+                      <a href="#">Prestador externo</a>
+                      <a href="#">Rama-sector-empresa</a>
+                    </div>
+
+                   
+               <a class="sub-item-operacion-servicio">Operacion</a>
+                    <div class="sub-menu-operacion-servicio">
+                      <a href="#">Servicio interno</a>
+                      <a href="#">Servicio UTN de externos</a>
+                      <a href="#">Entrega reportes</a>
+                    </div>
+
+               <a class="sub-item-procesos-servicio">Procesos</a>
+                    <div class="sub-menu-procesos-servicio">
+                      <a href="#">Registro horas</a>
+                      <a href="#">Servicio UTN de externos</a>
+                      <a href="#">Entrega reportes</a>
+                    </div>
+
+               <a class="sub-item-reportes-servicio">Reportes</a>
+               <div class="sub-menu-reportes-servicio">
+                <a href="#">Conteo mensual</a>
+                <a href="#">Conteo global</a>
+                <a href="#">Modificacion conteo global</a>
+                <a href="#">Lista asistencia para platica</a>
+                <a href="#">Formatos de solicitud</a>
+                <a href="#">Reportes prestadores UT</a>
+                <a href="#">Registro prestadores por fecha</a>
+              </div>
+
+            </div>  
+          </div>
+
+          <!--MENU ESTADIAS-->
+          <div class="item">
+            <a class="sub-btn-estadias">
+              {% bs_icon 'building' size='1.5em' %} Estadias
+            </a>
+            <div class="sub-menu-estadias">
+
+              <a class="sub-item-catalogos-estadias">Catalogos</a>
+              <!--sub menu de estadias/CATALOGOS -->  
+                   <div class="sub-menu-catalogos-estadias">
+                     <a href="#">Personal</a>
+                   </div>
+
+              <a class="sub-item-operacion-estadias">Operacion</a>
+              <!--sub menu de estadias/operacion -->  
+                  <div class="sub-menu-operacion-estadias">
+                    <a href="#">Asignaciones</a>
+                  </div>
+
+              <a class="sub-item-procesos-estadias">Procesos</a>
+              
+              <a class="sub-item-reportes-estadias">Reportes</a>
+              <div class="sub-menu-reportes-estadias">
+                <a href="#">Areas de preferencia</a>
+              <a href="#">Horario de estadia</a>
+              <a href="#">Solicitud de proyecto</a>
+              <a href="#">Calendario de estadia</a>
+              <a href="#">Solicitud de alumno estadia</a>
+              <a href="#">Reportes finales</a>
+              </div>
+              
+              
+            </div>
+          
+          </div>
+
+          <!--MENU TITULACION-->
+          <div class="item">
+            <a class="sub-btn-titulacion">
+              {% bs_icon 'bookmark-star' size='1.5em' %} Titulacion</a>
+            <div class="sub-menu-titulacion">
+              
+              <a class="sub-item-catalogos-titulacion">Catalogos</a>
+              <div class="sub-menu-catalogos-titulacion">
+                <a href="#">Documentos</a>
+              </div>
+
+              <a class="sub-item-catalogos-titulacion">Operacion</a>
+              <div class="sub-menu-catalogos-titulacion">
+                <a href="#">Captura de egresados</a>
+              </div>
+
+              <a class="sub-item-catalogos-titulacion">Proceso</a>
+              <div class="sub-menu-catalogos-titulacion">
+             
+              </div>
+
+              <a class="sub-item-catalogos-titulacion">Reportes</a>
+              <div class="sub-menu-catalogos-titulacion">
+                <a href="#">Memorandum y listado a editorial</a>
+                <a href="#">Solicitud de cheque para toluca</a>
+                <a href="#">Cheque delegacion administrativa</a>
+              </div>
+            
+            </div>
+          </div>
+
+          <!--MENU CAJA-->
+          <div class="item">
+            <a class="sub-btn-caja">
+              {% bs_icon 'cash' size='1.5em' %}Caja</a>
+            <div class="sub-menu-caja">
+
+              <a class="sub-item-catalogos-caja">Catalogos</a>
+              <div class="sub-menu-catalogos-caja">
+                <a href="#">Tipo de pago</a>
+                <a href="#">Bancos</a>
+                <a href="#">Bancos_division</a>
+                <a href="#">Tipos de cuentas</a>
+              </div>
+
+              <a class="sub-item-operacion-caja">Operacion</a>
+              <div class="sub-menu-operacion-caja">
+                <a href="#">Cancelacion de recibos</a>
+                <a href="#">Revertir cancelacion de recibos</a>
+                <a href="#">Eliminar adeudos de alumnos</a>
+                <a href="#">Eliminar adeudos de alumnos (multiples)</a>
+                <a href="#">Cambios de No. de recibos</a>
+              </div>
+
+              <a class="sub-item-procesos-caja">Procesos</a>
+              <div class="sub-menu-procesos-caja">
+                <a href="#">Parametros de recibos</a>
+                <a href="#">Imprime recibos</a>
+              </div>
+
+              <a class="sub-item-reportes-caja">Reportes</a>
+              <div class="sub-menu-reportes-caja">
+                <a href="#">Reporte de deudos de alumno por concepto</a>
+                <a href="#">Reporte de pagos por fecha de deposito</a>
+                <a href="#">Estado de cuenta por alumnos</a>
+                <a href="#">Reporte de pagos</a>
+              </div>
+            </div>
+
+          </div>
+          <!--CAJA NUEVA--->
+          <div class="item">
+            <a class="sub-btn-cajaN">
+              {% bs_icon 'wallet2' size='1.5em' %}Caja nueva</a>
+            <div class="sub-menu-cajaN"> 
+              <a href="#">Caja express</a>
+              <a href="#">Eliminar concepto por recibo</a>
+            </div>
+          </div>
+           <!--BIBLIOTECA--->
+          <div class="item">
+            <a class="sub-btn-biblioteca">
+              {% bs_icon 'journal-check' size='1.5em' %}Biblioteca</a>
+            <div class="sub-menu-biblioteca">
+
+              <a class="sub-item-adquisiciones-biblio">Adquisiciones</a>
+              <div class="sub-menu-adquisiciones-biblio">
+                <a href="#">Busqueda material</a>
+                <a href="#">Solicitud</a>
+                <a href="#">Donaciones</a>
+                <a href="#">Aceptacion</a>
+                <a href="#">Recepcion</a>
+                <a href="#">Adquisicion</a>
+                <a href="#">Actualizaciones</a>
+              </div>
+            
+              <a class="sub-item-catalogacion-biblio">Catalogación</a>
+              <div class="sub-menu-catalogacion-biblio">
+                <a href="#">Busqueda material</a>
+                <a href="#">Libros</a>
+                <a href="#">Estados de libros</a>
+                <a href="#">Parametros etiquetas</a>
+                <a href="#">Reportes</a>
+                <a href="#">Baja de material</a>
+                <a href="#">Temporal adquisicion</a>
+                <a href="#">Temporal donación</a>
+                <a href="#">Material que no ingreso</a>
+              </div>
+
+              <a class="sub-item-prestamos-biblio">Prestamos</a>
+              <div class="sub-menu-prestamos-biblio">
+                <a href="#">Prestamos alumnos</a>
+                <a href="#">Parametros</a>
+                <a href="#">Cambia fecha de entrega</a>
+              </div>
+
+              <a class="sub-item-catalogos-biblio">Catalogos</a>
+              <div class="sub-menu-catalogos-biblio">
+                <a href="#">Usuarios externos</a>
+                <a href="#">Editorial</a>
+                <a href="#">Estatus libro</a>
+                <a href="#">Etiquetas</a>
+                <a href="#">Areas del conocimiento</a>
+              </div>
+
+              <a class="sub-item-consultas-biblio">Consultas</a>
+              <div class="sub-menu-consultas-biblio">
+                <a href="#">Deudores x division</a>
+                <a href="#">Deudores x division solo</a>
+                <a href="#">Deudores x division $</a>
+                <a href="#">Reporte material Gral.</a>
+                <a href="#">Reporte de cobro usuarios</a>
+                <a href="#">Consulta material</a>
+              </div>
+
+            </div>
+          </div>
+          <!--VINCULACION-->
+          <div class="item">
+            <a class="sub-btn-vinculacion">
+              {% bs_icon 'arrow-left-right' size='1.5em' %}Vinculacion</a>
+            <div class="sub-menu-vinculacion">
+              <a class="sub-item-egresados">Egresados</a>
+              <!--sub menu de Egresados-->
+              <div class="sub-menu-egresados">
+                
+                <a class="sub-item-egresados-catalogos">Catalogos</a>
+                <div class="sub-menu-egresados-catalogos">
+                  <a href="#">Edu mundel col</a>
+                  <a href="#">Escuela</a>
+                  <a href="#">Especialidad</a>
+                  <a href="#">Nivel academico</a>
+                  <a href="#">Empresas</a>
+                  <a href="#">Datos generales</a>
+                </div>
+
+                <a class="sub-item-egresados-operacion">Operacion</a>
+                <div class="sub-menu-egresados-operacion">
+                  <a href="#">Registro egresado</a>
+                  <a href="#">Actualiza generacion</a>
+                  <a href="#">Revisión egresado</a>
+                  <a href="#">Egresado-empresas</a>
+                  <a href="#">Actualiza edades</a>
+                </div>
+
+                <a class="sub-item-egresados-procesos">Procesos</a>
+                <div class="sub-menu-egresados-procesos">
+                  <a href="#">Traspaso</a>
+                </div>
+
+                <a class="sub-item-egresados-reportes">Reportes</a>
+                <div class="sub-menu-egresados-reportes">
+                  <a href="#">General</a>
+                  <a href="#">En tramite</a>
+                  <a href="#">Estadistica</a>
+                  <a href="#">Estadistica empresas</a>
+                  <a href="#">Ubicacion empresas</a>
+                </div>
+              </div>
+
+              <a class="sub-item-proyectos">Proyectos</a>
+              <!--sub menu de Proyectos-->
+              <div class="sub-menu-proyectos"> 
+                <a href="#">Catalogos</a>
+                <a href="#">Operacion</a>
+                <a href="#">Procesos</a>
+                <a href="#">Reportes</a>
+              </div>
+            </div>
+          </div>
+          
+          <!--PLANEACION--->
+          <div class="item">
+            <a class="sub-btn-planeacion">
+              {% bs_icon 'check2-square' size='1.5em' %}Planeacion</a>
+            <div class="sub-menu-planeacion"> 
+              <a href="#">Catalogos</a>
+              <a href="#">Operacion</a>
+              <a href="#">Procesos</a>
+              <a href="#">Reportes</a>
+            </div>
+          </div>
+          <!--UTILERIAS-->
+          <div class="item">
+            <a class="sub-btn-utilerias">
+              {% bs_icon 'inbox' size='1.5em' %}Utilerias</a>
+            <div class="sub-menu-utilerias">
+
+              <a class="sub-item-catalogos-utilerias">Catalogos</a>
+                  <div class="sub-menu-catalogos-utilerias">
+                    <a href="#">Parametros folios</a>
+                    <a href="#">Asigna permisos al sistema</a>
+                    <a href="#">Muestra contraseñas del sistema</a>
+                    <a href="#">Asigna indicadores a división</a>
+                    <a href="#">Regeneración de matriculas de Nvo ingreso</a>
+                    <a href="#">Grupos de trabajos</a>
+                    <a href="#">Cat. de clinicas</a>
+                    <a href="#">Tipos problemas</a>
+                    <a href="#">Cambia contraseñas</a>
+                  </div>
+
+              <a class="sub-item-operacion-utilerias">Operacion</a>
+                  <div class="sub-menu-operacion-utilerias">
+                    <a href="#">Envia mensaje a usuarios del sistema</a>
+                    <a href="#">Calculadora</a>
+                    <a href="#">Formatear disco</a>
+                    <a href="#">Parametros de impresora</a>
+                    <a href="#">Cambio de carrera</a>
+                    <a href="#">Respaldo de datos</a>
+                    <a href="#">Recuperación de datos</a>
+                    <a href="#">Interface con la biblioteca</a>
+                    <a href="#">Int. biblioteca (local)</a>
+                    <a href="#">Cambio de contraseña</a>
+                    <a href="#">Cambio de usuario y division</a>
+                    <a href="#">Cambio de asignaciones al profesor</a>
+                    <a href="#">Busqueda de clinicas</a>
+                    <a href="#">Cambio de folio aspirante</a>
+                    <a href="#">Reportar problemas del sistema</a>
+                    <a href="#">Seguimiento de problemas</a>
+                    <a href="#">Reporte estudiantes ASCII</a>
+                  </div>
+
+              <a class="sub-item-procesos-utilerias">Procesos</a>
+                  <div class="sub-menu-procesos-utilerias">
+                    <a href="#">Generar reporte movimientos IMSS</a>
+                    <a href="#">Generar días del año</a>
+                    <a href="#">Respldo de aspirantes</a>
+                    <a href="#">Respaldo de estudiantes</a>
+                    <a href="#">Actualiza edad estudiantes</a>
+                    <a href="#">Crear respaldo del SIIE</a>
+                    <a href="#">Cierre EBC</a>
+                  </div>
+
+              <a class="sub-item-reportes-utilerias">Reportes</a>
+                  <div class="sub-menu-reportes-utilerias">
+                    <a href="#">Seguimiento al SIIE</a>
+                    <a href="#">Profesor asignatura</a>
+                    <a href="#">Reporte de contraseñas nuevas</a>
+                    <a href="#">Reporte de pagos</a>
+                    <a href="#">Varios</a>
+                  </div>
+              </div>
+          </div>
+          <div class="item"><a href="">
+            {% bs_icon 'info-circle' size='1.5em' %}Acerca de</a>
+          </div>
+          <div class="item"><a href="">
+            {% bs_icon 'box-arrow-right' size='1.5em' %}Salir</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</nav>
+
+<script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+{% load static %}
+<script type="text/javascript" src="{% static 'js/menuLateral/menuLateral.js' %}"></script>
+
+{% endblock navbar %}

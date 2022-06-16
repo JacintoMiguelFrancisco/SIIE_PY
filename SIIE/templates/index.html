@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+{% endblock head %}
+
+{% block navbar %}
+    {% include 'NavBar.html' %}
+{% endblock navbar %}
+
+{% block body %}
+<div id="main-container" class="d-grid mt-5">
+    <h2 class="uni">Universidad Tecnológica de Nezahualcóyotl</h2>
+    <h3 class="bien">Bienvenido al Siie</h3>
+    <br>
+    <a href="{% url 'index' %}"><img class="logo" src="{% static 'img/logo_utn.png' %}"></a>
+</div>
+{% endblock body %}

@@ -1,0 +1,22 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block title %}Error 404{% endblock title %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/Errors/style.css' %}" />
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+{% endblock head %}
+
+{% block navbar %}
+    {% include 'NavBar.html' %}
+{% endblock navbar %}
+
+{% block body %}
+<div>
+    <p>
+        Pagina no encontrara
+        <a href="{% url 'index' %}">Regresa al index</a>
+    </p>
+</div>
+{% endblock body %}

@@ -1,0 +1,67 @@
+{% extends '../../../../base.html' %}
+
+{% block title %}Lista Medios de Difusión{% endblock title %}
+
+{% block body %}
+    <h2>Lista Medios de Difusión</h2>
+    <h3>Cantidad de Medios de Difusión: {{ count }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Id Medio de Difusión</th>
+                <th class="cabecera">Medio de Difusión</th>
+                <th class="cabecera">Abreviación</th>
+                <th class="cabecera">Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for md in medios %}
+            <tr >
+                <td>{{ md.id_medio_dif }}</td>
+                <td>{{ md.descri_largo_meddif }}</td>
+                <td>{{ md.descri_corto_meddif }}</td>
+                <td>{{ md.estatus_dif }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border: 2px solid #000;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: #000;
+             color: #eee;
+         }
+    </style>
+
+{% endblock body %}
