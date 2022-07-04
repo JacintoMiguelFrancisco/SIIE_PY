@@ -1,0 +1,89 @@
+{% extends '../../CRUD.html' %}
+
+{% block title %}Gestion Nivel Academico{% endblock title %}
+
+{% block buttons %}
+{% comment %} Espera los botones imprimir {% endcomment %}
+<h3>Gestión de Nivel Academico</h3>
+    <div class="container mb-4 mt-4">
+        <div class="row justify-content-md-center">
+            <div class="col col-12 col-sm-3 col-lg-3">
+                {% load bootstrap_icons %}
+                <a href="{% url 'export-csv-nivel-academico' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export-xlwt-nivel-academico' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export-pdf-nivel-academico' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export-print-nivel-academico' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+            </div>
+        </div>
+    </div>
+{% endblock buttons %}
+
+
+{% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
+{% block form %}
+<form action="" method="POST">{% csrf_token %}
+    {{ FormNivAca.as_p }}
+    <div class="form-group" >
+        <button type="submit" class="btn btn-success btn-block text-white" id="save">Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
+    </div>
+</form>
+{% endblock form %}
+
+{% block search %}
+{% comment %} Busqueda por nombre {% endcomment %}
+<h1>Catálogo de Nivel Academico</h1>
+<form method="GET" action="{% url 'vistaNivelAca' %}">
+    <div class="input-group mb-3 mt-4">
+        <input type="search" class="form-control" placeholder="Escribe el Nivel Academico..." name="search_nivelaca">
+        <div class="input-group-append">
+            <span class="input-group-text bg-success">
+                {% load bootstrap_icons %}
+                <button class="btn btn-success text-white">
+                    {% bs_icon 'search' size='1.5em'%}
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+{% endblock search %}
+
+{% comment %} Espera una tabla que se llena con un for {% endcomment %}
+{% block table %}
+<table class="table table-striped">
+    <p style="text-align: right; font-size: 25px;">Numero de Niveles Academicos: {{ contador }} </p>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nivel Academico</th>
+            <th>Abreviacion</th>
+            <th>Estatus</th>
+            <th id="operaciones">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for aca in entity %}
+        <tr>
+            {% load bootstrap_icons %}
+            <td>{{ aca.id_academico }}</td>
+            <td>{{ aca.descri_largo_acade }}</td>
+            <td>{{ aca.descri_corto_acade }}</td>
+            <td>{{ aca.estatus_acade }}</td>
+            <td class="d-flex justify-content-evenly">
+                <a href="../vistaNivelAca/{{ aca.id_academico }}/" class="btn btn-warning">
+                    {% bs_icon 'pencil-square' size='1.5em'%}
+                </a>
+                <a href="../eliminarNivelAca/{{ aca.id_academico }}/" class="btn btn-danger">
+                    {% bs_icon 'trash' size='1.5em'%}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock table %}

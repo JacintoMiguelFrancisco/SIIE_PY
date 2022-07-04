@@ -1,0 +1,63 @@
+{% extends '../../../../base.html' %}
+{% block title %}Lista Grados{% endblock title %}
+{% block body %}
+<meta charset="UTF-8"/>
+    <h2>Lista de Grados</h2>
+    <h3>Cantidad de Grados: {{ count }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Id</th>
+                <th class="cabecera">Descripción</th>
+                <th class="cabecera">Estatus</th>
+        </thead>
+        <tbody>
+            {% for g in grados %}
+            <tr >
+                <td>{{ g.id_grado }}</td>
+                <td>{{ g.descri_corto_gra }}</td>
+                <td>{{ g.estatus_gra }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border: 2px solid #000;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: #000;
+             color: #eee;
+         }
+    </style>
+
+{% endblock body %}

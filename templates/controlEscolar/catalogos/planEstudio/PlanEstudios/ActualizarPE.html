@@ -1,0 +1,30 @@
+{% extends '../../../../base.html' %}
+{% block title %}Actualizar Plan de Estudio{% endblock title %}
+
+{% block navbar %}
+  {% include 'NavBar.html' %}
+{% endblock navbar %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2 class="fs-1" style="text-align: center;">Editar Plan de Estudio</h2>
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group">
+                <form action="" method="POST">{% csrf_token %}
+                    <div class="form-group">
+                        <div class="form-group">
+                            <input type="text" id="txtId_plan_est" name="txtId_plan_est" class="form-control mb-3" placeholder="IdPlanEstudios" maxlength="50" required value=" {{ plan.id_plan_est }}" readonly>
+                        </div>
+                        {{ FormsPlaE.as_p }}
+                    <div class="form-group d-flex justify-content-evenly">  
+                        <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>  
+                        <a class="btn btn-danger btn-block" href="{% url 'vistaPlaneEstudios' %}">Cancelar</a>   
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

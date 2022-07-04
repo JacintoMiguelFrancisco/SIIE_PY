@@ -1,0 +1,15 @@
+#button{
+    width: 100%;
+    margin-bottom: 0.5em;
+}
+#save{
+    width: 100%;
+}
+#operaciones{
+    text-align: center;
+}
+th,
+td {
+  text-align: center;
+  vertical-align: middle;
+}

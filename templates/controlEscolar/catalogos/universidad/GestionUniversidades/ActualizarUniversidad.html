@@ -1,0 +1,28 @@
+{% extends '../../../../base.html' %}
+{% block title %}Catalogo de Universidades{% endblock title %}
+
+{% block navbar %}
+  {% include 'NavBar.html' %}
+{% endblock navbar %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2 class="fs-1" style="text-align: center;">Editar Universidad</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="" method="POST">{% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" id="txtId_uni" name="txtDescri_largo_pais" class="form-control mb-3" placeholder="Uni" maxlength="50" required value=" {{ uni.id_uni }}" readonly>
+                    </div>
+                    {{ FormUniversidad.as_p }}
+                    <div class="form-group d-flex justify-content-evenly">  
+                        <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>  
+                        <a class="btn btn-danger btn-block" href="{% url 'vistaUniversidades' %}">Cancelar</a>   
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

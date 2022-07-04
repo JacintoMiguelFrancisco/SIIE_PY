@@ -1,0 +1,69 @@
+ {% extends "../base.html" %} 
+{% load static %}
+
+{% block title %}Registrarse{% endblock %} 
+
+{% block head %}
+{% comment %} Bloque para agregar links {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+{% endblock head %}
+
+{% block navbar %}
+  {% comment %} {% include 'NavBar.html' %} {% endcomment %}
+{% endblock navbar %}
+
+{% block body %}
+    {% comment %} Contenido de cada paguina {% endcomment %}
+<div class="container-lg mt-4">
+  <div class="row ">
+    <img class="col bg mt-5 p-0" id="fondo" src="{% static 'img/BG.jpg' %}">
+    </img>
+    <div class="col">
+      <div class="text-end">
+        <img class="mt-4" src="{% static 'img/logo.gif' %}" width="100" alt="">
+      </div>
+      <!--Registro-->
+      <div class="Signup">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-6 align-self-center">
+              <h1 class="text-dark">Crear cuenta</h1>
+            </div>
+          </div>
+        </div>
+        <div class="container mt-4">
+          <div class="row justify-content-center">
+            <div class="col-6">
+              {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %} 
+                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>{{ error|escape }}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    {% endfor %}
+                {% endfor %}
+              {% endif %}
+              <form action="{% url 'signup' %}" method="post"> {% csrf_token %}
+              {% if error %}
+                <h2>{{ error }}</h2>
+              {% else %}
+                  {{ form.as_p }}
+              {% endif %}
+                <br>
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-success">Registrarse</button>
+                </div>
+                <div class="my-3" style="text-align: center;">
+                  <span>¿Tienes Cuenta?<a href="{% url 'login' %}" style="color:#21B64A;"> Inicia sesion</a></span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock  %}
+

@@ -1,0 +1,44 @@
+{% extends '../../../../base.html' %}
+{% block title %}Catálogo - Estados{% endblock title %}
+
+{% block navbar %}
+  {% include 'NavBar.html' %}
+{% endblock navbar %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2 class="fs-1" style="text-align: center;">Editar Estado</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="" method="POST">{% csrf_token %}
+                    <label>Id Estado *:</label>
+                    <p>
+                        <input type="text" id="txtId_edo" name="txtId_edo" class="form-control mb-3" placeholder="ID Estado" maxlength="50" required value="{{estado.id_edo}}" style="border-color:#21B64A;" readonly>
+                    </p>
+                    <label>Estado *:</label>
+                    <p>
+                        {{ FormEstados.descri_largo_edo}}
+                    </p>
+                    <label>Abreviatura *:</label>
+                    <p>
+                        {{ FormEstados.descri_corto_edo}}
+                    </p>
+                    <label>Clave Entidad Federativa: *:</label>
+                    <p>
+                        {{ FormEstados.id_entidad_federativa}}
+                    </p>
+                    <label>Entidad Federativa *:</label>
+                    <p>
+                        {{ FormEstados.c_nom_ent}}
+                    </p>
+                    <div class="form-group d-flex justify-content-evenly">  
+                        <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>  
+                        <a class="btn btn-danger btn-block" href="{% url 'vistaEstados' %}">Cancelar</a>   
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

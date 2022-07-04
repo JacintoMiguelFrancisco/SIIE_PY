@@ -1,0 +1,67 @@
+{% extends '../../../../base.html' %}
+
+{% block title %}Lista Tipo Bajas{% endblock title %}
+
+{% block body %}
+    <h2>Lista Tipo de Bajas</h2>
+    <h3>Cantidad de Tipo de Bajas: {{ count }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">id</th>
+                <th class="cabecera">Nombre Tipo Baja</th>
+                <th class="cabecera">Abreviación</th>
+                <th class="cabecera">Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in tipobajas %}
+            <tr >
+                <td>{{ p.id_tipo_baj }}</td>
+                <td>{{ p.descri_largo_tipo_baj }}</td>
+                <td>{{ p.descri_corto_tipo_baj }}</td>
+                <td>{{ p.estatus_tipo_baj }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border: 2px solid #000;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: #000;
+             color: #eee;
+         }
+    </style>
+
+{% endblock body %}

@@ -1,0 +1,67 @@
+{% extends '../../../../base.html' %}
+{% block title %}Lista Indicadores{% endblock title %}
+{% block body %}
+<meta charset="UTF-8"/>
+    <h2>Lista de indicadores</h2>
+    <h3>Cantidad de indicadores: {{ count }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Id</th>
+                <th class="cabecera">Indicador</th>
+                <th class="cabecera">Abreviación</th>
+                <th class="cabecera">Estatus</th>
+                <th class="cabecera">Clave</th>
+        </thead>
+        <tbody>
+            {% for p in indicadores %}
+            <tr >
+                <td>{{ p.id_indicador }}</td>
+                <td>{{ p.descri_largo_ind }}</td>
+                <td>{{ p.descri_corto_ind }}</td>
+                <td>{{ p.estatus_ind }}</td>
+                <td>{{ p.cve_control_ind }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border: 2px solid #000;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: #000;
+             color: #eee;
+         }
+    </style>
+
+{% endblock body %}

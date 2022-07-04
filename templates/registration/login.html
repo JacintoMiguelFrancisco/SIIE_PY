@@ -1,0 +1,94 @@
+{% extends "../base.html" %} 
+{% load static %}
+
+{% block title %}Iniciar Sesión{% endblock %} 
+
+{% block head %}
+{% comment %} Bloque para agregar links {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+{% endblock head %}
+
+{% block navbar %}
+  {% comment %} {% include 'NavBar.html' %} {% endcomment %}
+{% endblock navbar %}
+
+{% block body %}
+    {% comment %} Contenido de cada paguina {% endcomment %}
+{% if messages %}
+  {% for message in messages %}
+    <div class="container">
+      <div class="row">
+        <div class="col"> </div>
+            <div class="alert alert-danger alert-dismissible fade show w-50 text-center col-6" role="alert">
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  <strong class="text-dark" style="font-size:1.2em">{{ message }}</strong>
+              </div>
+          <div class="col"> </div>
+        <div>
+    </div>
+  {% endfor %}
+{% endif %}
+<div class="container-lg mt-4">
+  <div class="row ">
+    <img class="col bg mt-5 p-0" id="fondo" src="{% static 'img/BG.jpg' %}">
+    </img>
+    <div class="col">
+      <div class="text-end">
+        <img class="mt-4" src="{% static 'img/logo.gif' %}" width="100" alt="">
+      </div>
+      <!--Registro-->
+      <div class="Signup">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-6 align-self-center">
+              <h1 class="text-dark">Iniciar Sesión</h1>
+            </div>
+          </div>
+        </div>
+        <div class="container mt-4">
+          <div class="row justify-content-center">
+            <div class="col-6">
+              {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %} 
+                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>{{ error|escape }}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>   
+                    {% endfor %}
+                {% endfor %}
+              {% endif %}
+            <!--LOGIN-->
+              {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>{{ error|escape }}</strong>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div> 
+              {% endif%}
+              <form action="" method="post"> {% csrf_token %}
+                <label class="form-label" for="id_username">Usuario:</label>
+                <input class="form-control" type="text" placeholder="Username" name="username" maxlength="150" autofocus="" style="border-color:#21B64A;" required>
+                <br>
+                <label class="form-label" for="id_password1">Contraseña:</label>
+                <input class="form-control" type="password" placeholder="Password" name="password"autocomplete="new-password" style="border-color:#21B64A;" required>
+                <br>
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-success">Iniciar Sesion</button>
+                </div>
+                <br>
+                <div class="my-3" style="text-align: center;">
+                  {% comment %} {% url 'password_change' %} {% endcomment %}
+                  <span>¿Olvidaste tu contraseña?<a href="#" style="color:#21B64A;"> Recuperar</a></span> 
+                </div>
+                <div class="my-3" style="text-align: center;">
+                  <span>¿No tienes cuenta?<a href="{% url 'signup' %}" style="color:#21B64A;"> Registrate</a> </span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock  %}

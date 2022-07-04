@@ -1,0 +1,74 @@
+{% extends '../../../../base.html' %}
+
+{% block title %}Lista Universidades{% endblock title %}
+
+{% block body %}
+    <h2>Lista Universidades</h2>
+    <h3>Cantidad de Universidades: {{ count }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Id</th>
+                <th class="cabecera">Universidad</th>
+                <th class="cabecera">Tel 1</th>
+                <th class="cabecera">Pag. Internet</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in uni %}
+            <tr >
+                <td>{{ u.id_uni }}</td>
+                <td>{{ u.nombre_uni }}</td>
+                <td>{{ u.telefono1_uni }}</td>
+                <td>{{ u.pagina_internet_uni }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border: 2px solid #000;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: #000;
+             color: #eee;
+         }
+
+        {% comment %}    Esta linea se usa para cambiar la orientacion de la hoja de vertical a horizontal      
+         @page {
+            size: letter landscape;
+            margin: 0.5cm;
+            type: A4;
+        } {% endcomment %}
+    </style>
+
+{% endblock body %}

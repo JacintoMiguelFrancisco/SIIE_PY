@@ -1,0 +1,67 @@
+{% extends '../../../../base.html' %}
+
+{% block title %}Lista Area Bachillerato{% endblock title %}
+
+{% block body %}
+    <h2>Lista Area Bachillerato</h2>
+    <h3>Cantidad de Areas Bachillerato: {{ count }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">id</th>
+                <th class="cabecera">Area Bachillerato</th>
+                <th class="cabecera">Abreviación</th>
+                <th class="cabecera">Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in areabachi %}
+            <tr >
+                <td>{{ p.id_area_bac }}</td>
+                <td>{{ p.descri_larga_bac }}</td>
+                <td>{{ p.descri_corta_bac }}</td>
+                <td>{{ p.estatus_bac }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border: 2px solid #000;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: #000;
+             color: #eee;
+         }
+    </style>
+
+{% endblock body %}

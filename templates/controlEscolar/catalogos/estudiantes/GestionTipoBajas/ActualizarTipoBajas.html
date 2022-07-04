@@ -1,0 +1,29 @@
+{% extends '../../../../base.html' %}
+{% block title %}Catálogo de Tipos de Baja{% endblock title %}
+
+{% block navbar %}
+  {% include 'NavBar.html' %}
+{% endblock navbar %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2 class="fs-1" style="text-align: center;">Editar Tipo de Bajas</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="" method="POST">{% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" id="txtId_Tipo_Baj" name="txtDescri_largo_Tipo_Baj" class="form-control mb-3" placeholder="Tipo Baja" maxlength="50" required value=" {{ TipoBaja.id_tipo_baj }}" readonly>
+                    </div>
+                        {{ FormTipoBajas.as_p }}
+                    <hr>
+                    <div class="form-group d-flex justify-content-evenly">  
+                        <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>  
+                        <a class="btn btn-danger btn-block" href="{% url 'vistaTipoBajas' %}">Cancelar</a>   
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
