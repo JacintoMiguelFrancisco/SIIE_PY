@@ -282,7 +282,7 @@ def export_csv_universidades (request):
     listaUniversidades=SeCatUniversidad.objects.filter(estatus_uni="A") 
     for uni in listaUniversidades:
         writer.writerow([uni.id_uni, uni.nombre_uni, uni.tipo_org_uni, uni.direccion_uni, uni.rfc_uni,
-                        uni.estado_uni, uni.delmun_uni, uni.colonia_uni, uni.pais_uni,uni.codpos_uni, uni.telefono1_uni,
+                        uni.id_edo_id, uni.id_mundel_id, uni.id_col_id, uni.id_pais_id,uni.codpos_uni, uni.telefono1_uni,
                         uni.telefono2_uni, uni.telefono3_uni, uni.fax1_uni, uni.fax2_uni, uni.fax3_uni,
                         uni.ext1_uni, uni.ext2_uni, uni.ext3_uni, uni.mail_uni, uni.pagina_internet_uni, uni.contacto_uni, uni.estatus_uni])
     return response
@@ -303,7 +303,7 @@ def export_xlwt_universidades (request):
         ws.write(row_num,col,columns[col], font_style)
     font_style = xlwt.XFStyle()
     rows=SeCatUniversidad.objects.filter(estatus_uni="A").values_list('id_uni','nombre_uni','tipo_org_uni','direccion_uni', 'rfc_uni',
-                                                                    'estado_uni', 'delmun_uni', 'colonia_uni', 'pais_uni','codpos_uni', 'telefono1_uni',
+                                                                    'id_edo_id', 'id_mundel_id', 'id_col_id', 'id_pais_id','codpos_uni', 'telefono1_uni',
                                                                     'telefono2_uni', 'telefono3_uni', 'fax1_uni', 'fax2_uni', 'fax3_uni',
                                                                     'ext1_uni', 'ext2_uni', 'ext3_uni', 'mail_uni', 'pagina_internet_uni', 'contacto_uni', 'estatus_uni')
     for row in rows:
