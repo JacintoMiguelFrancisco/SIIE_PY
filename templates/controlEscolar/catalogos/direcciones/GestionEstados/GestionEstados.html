@@ -28,7 +28,7 @@
 {% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
 {% block form %}
 <form action="" method="POST">{% csrf_token %}
-        <div class="form-group">
+        {% comment %} <div class="form-group">
             <label>Id Pais *:</label>
             <select id="id_pais_id" name="id_pais" class="form-control mb-3" placeholder="ID del Pais" style="border-color:#21B64A;" required>
                 <option value=""> Selecciona una universidad</option>
@@ -36,7 +36,7 @@
                         <option value='{{ p.id_pais}}'>{{ p.id_pais}}/{{ p.descri_largo_pais}}</option>
                     {% endfor %}
             </select>
-        </div>
+        </div> {% endcomment %}
         <p>
             {{ FormEstados.as_p }}
         </p>
@@ -70,12 +70,10 @@
     <p style="text-align: right; font-size: 25px;">Número de Estados: {{ contador }} </p>
     <thead>
         <tr>
-            {% comment %} <th>Pais</th> {% endcomment %}
-            <th>Id</th>
+            <th>Pais</th>
+            <th>Clave</th>
             <th>Estado</th>
             <th>Abreviación</th>
-            <th>Id Entidad Federativa</th>
-            <th>Entidad Federativa</th>
             <th>Estatus</th>
             <th id="operaciones">Operaciones</th>
         </tr>
@@ -84,18 +82,16 @@
         {% for e in entity %}
         <tr>
             {% load bootstrap_icons %}
-            {% comment %} <td>{{ e.id_pais }}</td> {% endcomment %}
+            <td>{{ e.rowid_pais.descri_largo_pais }}</td>
             <td>{{ e.id_edo }}</td>
             <td>{{ e.descri_largo_edo }}</td>
             <td>{{ e.descri_corto_edo }}</td>
-            <td>{{ e.id_entidad_federativa }}</td>
-            <td>{{ e.c_nom_ent }}</td>
             <td>{{ e.estatus_edo }}</td>
             <td class="d-flex justify-content-evenly">
-                <a href="../vistaEstados/{{ e.id_edo }}/" class="btn btn-warning">
+                <a href="../vistaEstados/{{ e.rowid_edo }}/" class="btn btn-warning">
                     {% bs_icon 'pencil-square' size='1.5em'%}
                 </a>
-                <a href="../eliminarEstado/{{ e.id_edo }}/" class="btn btn-danger">
+                <a href="../eliminarEstado/{{ e.rowid_edo }}/" class="btn btn-danger">
                     {% bs_icon 'trash' size='1.5em'%}
                 </a>
             </td>

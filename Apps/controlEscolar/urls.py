@@ -7,9 +7,9 @@ urlpatterns = [
     #Vista maestra los registros con Status=A / Guarda los datos si es POST / Si es una peticion GET Busca los registros con el search / Manda los datos de la paguinacion
     path('vistaPaises/', views.vistaPaises, name="vistaPaises"), 
     # Actualiza el status de A a B / Elimina segun xD
-    path('eliminarPais/<int:id_pais>/', views.eliminarPais, name="eliminar-pais"),
+    path('eliminarPais/<int:rowid_pais>/', views.eliminarPais, name="eliminar-pais"),
     # Actualiza los campos Nombre y abreviacion
-    path('vistaPaises/<int:pais_id>/', views.vista_paises_detail, name="pais-detail"),
+    path('vistaPaises/<int:rowid_pais>/', views.vista_paises_detail, name="pais-detail"),
     # Exporta la lista de los paises en PDF
     path('export_pdf_paises/', views.Export_pdf_paises.as_view(), name="export-pdf-paises"),
     # Exporta la lista de los paises en CSV
@@ -22,13 +22,34 @@ urlpatterns = [
     path('listaPaises/', views.listaPaises),
 # CRUD Estados
     path('vistaEstados/', views.vistaEstados, name="vistaEstados"), 
-    path('eliminarEstado/<int:id_edo>/', views.eliminarEstado, name="eliminar-estado"),
-    path('vistaEstados/<int:estado_id>/', views.vista_estados_detail, name="estado-detail"),
+    path('eliminarEstado/<int:rowid_edo>/', views.eliminarEstado, name="eliminar-estado"),
+    path('vistaEstados/<int:rowid_edo>/', views.vista_estados_detail, name="estado-detail"),
     path('export_pdf_estados/', views.Export_pdf_estados.as_view(), name="export-pdf-estados"),
     path('export_csv_estados/', views.export_csv_estados, name="export-csv-estados" ),
     path('export_xlwt_estados/', views.export_xlwt_estados, name="export-xlwt-estados"),
     path('export_print_estados', views.Export_print_estados.as_view(), name="export-print-estados"),
     path('listaEstados/', views.listaEstados),
+# CRUD MUNICIPIOS/DELEGACIONES
+    path('vistaMunicipios/', views.vistaMunicipios, name="vistaMunicipios"), 
+    path('eliminarMunicipio/<int:rowid_mundel>/', views.eliminarMunicipio, name="eliminar-municipio"),
+    path('vistaMunicipios/<int:rowid_mundel>/', views.vista_municipios_detail, name="municipio-detail"), 
+    path('export_pdf_municipios/', views.Export_pdf_municipios.as_view(), name="export-pdf-municipios"),
+    path('export_csv_municipios/', views.export_csv_municipios, name="export-csv-municipios" ),
+    path('export_xlwt_municipios/', views.export_xlwt_municipios, name="export-xlwt-municipios"),
+    path('export_print_municipios', views.Export_print_municipios.as_view(), name="export-print-municipios"),
+    path('listaMunicipios/', views.listaMunicipios),
+# CRUD COLONIAS
+    path('vistaColonias/', views.vistaColonias, name="vistaColonias"), 
+    path('eliminarColonia/<int:rowid_col>/', views.eliminarColonia, name="eliminar-colonia"),
+    path('vistaColonias/<int:rowid_col>/', views.vista_colonias_detail, name="colonia-detail"),
+    path('export_pdf_colonias/', views.Export_pdf_colonias.as_view(), name="export-pdf-colonias"),
+    path('export_csv_colonias/', views.export_csv_colonias, name="export-csv-colonias" ),
+    path('export_xlwt_colonias/', views.export_xlwt_colonias, name="export-xlwt-colonias"),
+    path('export_print_colonias', views.Export_print_colonias.as_view(), name="export-print-colonias"),
+    path('listaColonias/', views.listaColonias),
+
+# ---------------------------------------------------------------------------------------------------------------------------------------------
+
 #CRUD UNIVERSIDADES
     #Vista maestra los registros con Status=A / Guarda los datos si es POST / Si es una peticion GET Busca los registros con el search / Manda los datos de la paguinacion
     path('vistaUniversidades/', views.vistaUniversidades, name="vistaUniversidades"),

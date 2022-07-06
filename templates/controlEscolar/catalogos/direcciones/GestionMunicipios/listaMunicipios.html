@@ -1,28 +1,28 @@
 {% extends '../../../../base.html' %}
 
-{% block title %}Lista Estados{% endblock title %}
+{% block title %}Lista Municipios/Delegaciones{% endblock title %}
 
 {% block body %}
-    <h2>Lista Estados</h2>
-    <h3>Cantidad de Estados: {{ count }}</h3>
+    <h2>Lista Municipios/Delegaciones</h2>
+    <h3>Cantidad de Municipios/Delegaciones: {{ count }}</h3>
     <table>
         <thead>
             <tr>
-                <th class="cabecera">Pais</th>
-                <th class="cabecera">Clave</th>
                 <th class="cabecera">Estado</th>
+                <th class="cabecera">Id Municipio/Delegación</th>
+                <th class="cabecera">Municipio/Delegación</th>
                 <th class="cabecera">Abreviación</th>
                 <th class="cabecera">Estatus</th>
             </tr>
         </thead>
         <tbody>
-            {% for e in estados %}
+            {% for m in municipios %}
             <tr >
-                <td>{{ e.rowid_pais.descri_largo_pais }}</td>
-                <td>{{ e.id_edo }}</td>
-                <td>{{ e.descri_largo_edo }}</td>
-                <td>{{ e.descri_corto_edo }}</td>
-                <td>{{ e.estatus_edo }}</td>
+                <td>{{ m.rowid_edo.descri_largo_edo }}</td>
+                <td>{{ m.id_mundel }}</td>
+                <td>{{ m.descri_largo_mundel }}</td>
+                <td>{{ m.descri_corto_mundel }}</td>
+                <td>{{ m.estatus_mundel }}</td>
             </tr>
             {% endfor %}
         </tbody>

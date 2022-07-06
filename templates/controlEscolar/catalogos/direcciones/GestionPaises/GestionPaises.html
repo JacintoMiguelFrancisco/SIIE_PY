@@ -61,7 +61,7 @@
     <p style="text-align: right; font-size: 25px;">Número de paises: {{ contador }} </p>
     <thead>
         <tr>
-            <th>id</th>
+            <th>Clave</th>
             <th>Pais</th>
             <th>Abreviación</th>
             <th>Estatus</th>
@@ -75,12 +75,12 @@
             <td>{{ p.id_pais }}</td>
             <td>{{ p.descri_largo_pais }}</td>
             <td>{{ p.descri_corto_pais }}</td>
-            <td>{{ p.estatus_pais }}</td>
+            <td> {{ p.estatus_pais }} </td>
             <td class="d-flex justify-content-evenly">
-                <a href="../vistaPaises/{{ p.id_pais }}/" class="btn btn-warning">
+                <a href="../vistaPaises/{{ p.rowid_pais }}/" class="btn btn-warning">
                     {% bs_icon 'pencil-square' size='1.5em'%}
                 </a>
-                <a href="../eliminarPais/{{ p.id_pais }}/" class="btn btn-danger">
+                <a href="../eliminarPais/{{ p.rowid_pais }}/" class="btn btn-danger">
                     {% bs_icon 'trash' size='1.5em'%}
                 </a>
             </td>

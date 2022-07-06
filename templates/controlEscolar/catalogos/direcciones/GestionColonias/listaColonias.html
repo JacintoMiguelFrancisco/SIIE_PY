@@ -1,28 +1,30 @@
 {% extends '../../../../base.html' %}
 
-{% block title %}Lista Estados{% endblock title %}
+{% block title %}Lista Colonias{% endblock title %}
 
 {% block body %}
-    <h2>Lista Estados</h2>
-    <h3>Cantidad de Estados: {{ count }}</h3>
+    <h2>Lista Colonias</h2>
+    <h3>Cantidad de Colonias: {{ count }}</h3>
     <table>
         <thead>
             <tr>
-                <th class="cabecera">Pais</th>
+                <th class="cabecera">Municipio</th>
                 <th class="cabecera">Clave</th>
-                <th class="cabecera">Estado</th>
+                <th class="cabecera">Colonia</th>
                 <th class="cabecera">Abreviación</th>
-                <th class="cabecera">Estatus</th>
+                <th class="cabecera">Codigo Postal</th>
+                <th class="cabecera">Estatus</th>    
             </tr>
         </thead>
         <tbody>
-            {% for e in estados %}
+            {% for c in colonias %}
             <tr >
-                <td>{{ e.rowid_pais.descri_largo_pais }}</td>
-                <td>{{ e.id_edo }}</td>
-                <td>{{ e.descri_largo_edo }}</td>
-                <td>{{ e.descri_corto_edo }}</td>
-                <td>{{ e.estatus_edo }}</td>
+                <td>{{ c.rowid_mundel.descri_largo_mundel }}</td>
+                <td>{{ c.id_col }}</td>
+                <td>{{ c.descri_largo_col }}</td>
+                <td>{{ c.descrip_corto_col }}</td>
+                <td>{{ c.codposcol }}</td>
+                <td>{{ c.estatus_col }}</td>
             </tr>
             {% endfor %}
         </tbody>

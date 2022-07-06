@@ -3,7 +3,8 @@ from django.db import models
 # Create your models here.
 ############################################## Tabla paises ############################################
 class SeCatPais(models.Model):
-    id_pais = models.IntegerField(primary_key=True)
+    rowid_pais = models.AutoField(primary_key=True)
+    id_pais = models.IntegerField(blank=True, null=True)
     descri_largo_pais = models.CharField(max_length=50, blank=True, null=True)
     descri_corto_pais = models.CharField(max_length=10, blank=True, null=True)
     estatus_pais = models.CharField(max_length=1, blank=True, null=True, default="A")
@@ -13,27 +14,40 @@ class SeCatPais(models.Model):
         db_table = 'se_cat_pais'
 
     def __str__(self):
-        texto="{0} / {1} / {2} / {3}"
-        return texto.format(self.id_pais, self.descri_largo_pais, self.descri_corto_pais, self.estatus_pais)
+        texto="{0} / {1} / {2} "
+        return texto.format(self.id_pais, self.descri_largo_pais, self.descri_corto_pais)
 ############################################## Tabla Estados ############################################
 class SeCatEstado(models.Model):
-    id_pais = models.OneToOneField('SeCatPais', models.DO_NOTHING, db_column='id_pais', primary_key=True)
-    id_edo = models.IntegerField(unique=True)
+    rowid_edo = models.AutoField(primary_key=True)
+    rowid_pais = models.ForeignKey('SeCatPais', models.DO_NOTHING, db_column='rowid_pais', blank=True, null=True)
+    id_edo = models.IntegerField(blank=True, null=True)
     descri_largo_edo = models.CharField(max_length=50)
     descri_corto_edo = models.CharField(max_length=10)
     estatus_edo = models.CharField(max_length=1, blank=True, null=True, default="A")
-    id_entidad_federativa = models.IntegerField(blank=True, null=True)
-    c_nom_ent = models.CharField(max_length=50, blank=True, null=True)
-
     class Meta:
         managed = False
         db_table = 'se_cat_estado'
-        unique_together = (('id_pais', 'id_edo'), ('id_pais', 'id_edo'),)
 
     def __str__(self):
-        texto="{0} / {1} "
-        return texto.format(self.descri_largo_edo, self.descri_corto_edo)
-# se requerian para aspirantes y universidad
+        texto="{0} / {1} / {2}"
+        return texto.format(self.id_edo, self.descri_largo_edo, self.descri_corto_edo)
+############################################## Tabla Municipio Delegacion ############################################
+class SeCatMunicipioDelegacion(models.Model):
+    rowid_mundel = models.AutoField(primary_key=True)
+    rowid_edo = models.ForeignKey(SeCatEstado, models.DO_NOTHING, db_column='rowid_edo', blank=True, null=True)
+    id_mundel = models.IntegerField()
+    descri_largo_mundel = models.CharField(max_length=50)
+    descri_corto_mundel = models.CharField(max_length=10)
+    estatus_mundel = models.CharField(max_length=1, blank=True, null=True, default="A")
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_municipio_delegacion'
+    
+    def __str__(self):
+        texto="{0} - {1} "
+        return texto.format(self.id_mundel, self.descri_largo_mundel)
+# Se requerian Clinicas para aspirantes y universidad
 class SeCatClinica(models.Model):
     id_clinica = models.CharField(primary_key=True, max_length=5)
     descri_larga_cli = models.CharField(max_length=50, blank=True, null=True)
@@ -50,23 +64,23 @@ class SeCatClinica(models.Model):
     class Meta:
         managed = False
         db_table = 'se_cat_clinica'
-# se requerian para aspirantes y universidad
+############################################## Tabla Colonias ############################################
 class SeCatColonia(models.Model):
-    id_pais = models.OneToOneField('SeCatMunicipioDelegacion', models.DO_NOTHING, db_column='id_pais', primary_key=True)
-    id_edo = models.IntegerField()
-    id_mundel = models.IntegerField()
+    rowid_col = models.AutoField(primary_key=True)
+    rowid_mundel = models.ForeignKey('SeCatMunicipioDelegacion', models.DO_NOTHING, db_column='rowid_mundel', blank=True, null=True)
     id_col = models.IntegerField()
-    id_clinica = models.ForeignKey(SeCatClinica, models.DO_NOTHING, db_column='id_clinica', blank=True, null=True)
     descri_largo_col = models.CharField(max_length=50)
     descrip_corto_col = models.CharField(max_length=10)
-    estatus_col = models.CharField(max_length=1, blank=True, null=True)
     codposcol = models.CharField(max_length=5, blank=True, null=True)
-    num_clinica_2 = models.CharField(max_length=5, blank=True, null=True)
+    estatus_col = models.CharField(max_length=1, blank=True, null=True, default="A")
 
     class Meta:
         managed = False
         db_table = 'se_cat_colonia'
-        unique_together = (('id_pais', 'id_edo', 'id_mundel', 'id_col'), ('id_pais', 'id_edo', 'id_mundel', 'id_col'),)
+
+    def __str__(self):
+        texto="{0}"
+        return texto.format(self.id_col)
 ############################################## Tabla Universidades ###################################
 class SeCatUniversidad(models.Model):
     id_uni = models.IntegerField(primary_key=True)
@@ -1608,20 +1622,6 @@ class SeCatMaterialLaboratorio(models.Model):
     class Meta:
         managed = False
         db_table = 'se_cat_material_laboratorio'
-
-class SeCatMunicipioDelegacion(models.Model):
-    id_pais = models.OneToOneField(SeCatEstado, models.DO_NOTHING, db_column='id_pais', primary_key=True)
-    id_edo = models.IntegerField()
-    id_mundel = models.IntegerField()
-    descri_largo_mundel = models.CharField(max_length=50)
-    descri_corto_mundel = models.CharField(max_length=10)
-    estatus_mundel = models.CharField(max_length=1, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_municipio_delegacion'
-        unique_together = (('id_pais', 'id_edo', 'id_mundel'), ('id_pais', 'id_edo', 'id_mundel'),)
-
 
 class SeCatNumeroRecibos(models.Model):
     id_recibo = models.FloatField(primary_key=True)

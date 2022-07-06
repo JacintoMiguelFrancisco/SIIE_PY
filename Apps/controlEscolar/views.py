@@ -18,14 +18,14 @@ from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 #Models
-from .models import (SeCatColonia, SeCatMunicipioDelegacion, SeCatPais, SeCatEstado, SeCatUniversidad,SeCatNivelAcademico,SeCatPlaza,SeCatAreaBachillerato,
+from .models import (SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia, SeCatUniversidad,SeCatNivelAcademico,SeCatPlaza,SeCatAreaBachillerato,
                     SeCatTipoBajas,SeCatMedioDifusion,SeCatBecas, SeCatTipoEscuela, SeCatTipoCambio,
                     SeCatIndicador, SeCatPlaEstudio, SeCatGrado)
 #Views
 from django.views.generic import View
 #formularios
-from .forms import (FormPaises, FormEstados, FormUniversidad, FormNivAca, FormPlaza, FormAreaBachi,FormTipoBajas,
-                    FormMediosDifusion, FormTiposEscuelas,FormBecas,FormTipoCambio,FormPaises1,
+from .forms import (FormPaises, FormEstados, FormMunicipiosDelegaciones, FormColonias, FormUniversidad, FormNivAca, FormPlaza, FormAreaBachi,FormTipoBajas,
+                    FormMediosDifusion, FormTiposEscuelas,FormBecas,FormTipoCambio,
                     FormsIndicador, FormsPlaE, FormsGrados)
 
 # Create your views here.
@@ -47,7 +47,10 @@ def vistaPaises(request):
     if request.method == 'POST': #Valida que sea una peticion de tipo post para poder Guarda datos
         form = FormPaises(request.POST) # Se inicializa el formulario
         if form.is_valid(): # Si el formulario es valido entra en el if
-            form.save() # en este caso guarda todos los datos del formulario por que ingresamos el id pero en los fomularios que el id sea automatico cambia
+            pais = form.save(commit=False)
+            ultimo_id = SeCatPais.objects.all().order_by('rowid_pais').last() # hace una consulta al ultimo registro insertado para poder crear el nuevo id 
+            pais.rowid_pais = ultimo_id.rowid_pais + 1 # agrega uno al ultimo id insertado
+            pais.save() # en este caso guarda todos los datos del formulario por que ingresamos el id pero en los fomularios que el id sea automatico cambia
             messages.success(request, "¡Pais agregado con exito!") # Manda un mensaje al usuario desdes de que todos los datos son correctos, solo funciona con success(Verde), warning(Amarilla), info(Azul)      
             return redirect('vistaPaises') #redirecciona a la vista de nuevo
         else: # En caso de que alguno de los campos no sean correctos entra en el else y redirecciona al mismo formulario con los datos no correctos y por que no son correctos
@@ -71,9 +74,9 @@ def vistaPaises(request):
     return render(request, "controlEscolar/catalogos/direcciones/GestionPaises/GestionPaises.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
-def eliminarPais(request, id_pais):
+def eliminarPais(request, rowid_pais):
     try:
-        pais = SeCatPais.objects.get(id_pais=id_pais)
+        pais = SeCatPais.objects.get(rowid_pais=rowid_pais)
         pais.estatus_pais = "B"
     except SeCatPais.DoesNotExist:
         raise Http404("El pais no existe")
@@ -84,11 +87,11 @@ def eliminarPais(request, id_pais):
     return render(request, "controlEscolar/catalogos/direcciones/GestionPaises/BorrarPais.html", {"Pais": pais})
 # Modifica un registro
 @login_required
-def vista_paises_detail(request, pais_id):
-    pais = SeCatPais.objects.get(id_pais=pais_id)
-    form = FormPaises1(instance=pais)
+def vista_paises_detail(request, rowid_pais):
+    pais = SeCatPais.objects.get(rowid_pais=rowid_pais)
+    form = FormPaises(instance=pais)
     if request.method == 'POST': #Sobre escrive los valores
-        form = FormPaises1(request.POST, instance = pais)
+        form = FormPaises(request.POST, instance = pais)
         if form.is_valid():
             form.save()  #Guarda los cambios
             messages.info(request, "¡Pais actualizado con exito!")
@@ -161,6 +164,412 @@ def listaPaises(request):
     # Filtrando por estatus
     # listaPaises=SeCatPais.objects.filter(estatus_pais="A") 
     return render(request, "controlEscolar/catalogos/direcciones/GestionPaises/listaPaises.html", {"paises":listaPaises})
+
+##############################################   Estados   ########################################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaEstados(request):
+    listaEstados=SeCatEstado.objects.filter(estatus_edo="A").order_by('rowid_edo')#Lista de todos los paises que tengan el status = A
+    contador_id = listaEstados.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaEstados, 9)
+        listaEstados = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST': #Valida que sea una peticion de tipo post / Guarda datos
+        form = FormEstados(request.POST)
+        if form.is_valid():
+            estado = form.save(commit=False)
+            ultimo_id = SeCatEstado.objects.all().order_by('rowid_edo').last() # hace una consulta al ultimo registro insertado para poder crear el nuevo id 
+            estado.rowid_edo = ultimo_id.rowid_edo + 1 # agrega uno al ultimo id insertado
+            estado.save() # en este caso guarda todos los datos del formulario por que ingresamos el id pero en los fomularios que el id sea automatico cambia
+            messages.success(request, "¡Estado agregado con exito!")
+            return redirect('vistaEstados') #redirecciona a la vista 
+        else:
+            messages.success(request, "¡Grado agregado con exito!")
+            return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/GestionEstados.html",{'entity' : listaEstados, 'paginator' : paginator, 'FormEstados' : form, 'contador' : contador_id})
+    #Busqueda del search
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_estados", None)
+        print(busqueda)
+        if busqueda:
+            listaEstados = SeCatEstado.objects.filter(
+                #Revisión de los campos de la tabla en la BD
+                Q(descri_largo_edo__icontains = busqueda),
+	            Q(estatus_edo__icontains = "A")
+            ).distinct()
+    form = FormEstados()
+    data = {
+        'entity' : listaEstados,
+        'paginator' : paginator,
+        'FormEstados' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/GestionEstados.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarEstado(request, rowid_edo):
+    try:
+        estado = SeCatEstado.objects.get(rowid_edo=rowid_edo)
+        estado.estatus_edo = "B"
+    except SeCatEstado.DoesNotExist:
+        raise Http404("El Estado no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        estado.save()
+        messages.warning(request, "¡Estado eliminado con exito!")
+        return redirect('vistaEstados')
+    return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/BorrarEstado.html", {"Estado": estado})
+# Modifica un registro
+@login_required
+def vista_estados_detail(request, rowid_edo):
+    estado = SeCatEstado.objects.get(rowid_edo=rowid_edo)
+    form = FormEstados(instance=estado)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormEstados(request.POST, instance = estado)
+        if form.is_valid():
+            est = form.save(commit=False)   
+            est.save()
+            messages.info(request, "¡Estado actualizado con exito!")
+            return redirect('vistaEstados') #retorna despues de actualizar
+        else:
+            return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/ActualizarEstado.html", {"estado": estado, "FormEstados" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/ActualizarEstado.html", {"estado": estado, "FormEstados" : form})#envia al detalle para actualizar
+# primera de pdf posible imprimir / Funciona con la misma funcion en utils
+class Export_print_estados(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaEstados=SeCatEstado.objects.filter(estatus_edo="A") 
+        data = {
+            'count': listaEstados.count(),
+            'estados': listaEstados
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/direcciones/GestionEstados/listaEstados.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Clase para crear Pdf / Funciona con la misma funcion en utils
+class Export_pdf_estados(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaEstados=SeCatEstado.objects.filter(estatus_edo="A") 
+        data = {
+            'count': listaEstados.count(),
+            'estados': listaEstados
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/direcciones/GestionEstados/listaEstados.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaEstados.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises a CSV sin libreria 
+@login_required
+def export_csv_estados (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaEstados.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Pais','Clave','Estado','Abreviacion','Estatus'])
+    listaEstados=SeCatEstado.objects.filter(estatus_edo="A") 
+    # listaPaises=SeCatPais.objects.filter(owner=request.user)
+    for estado in listaEstados:
+        writer.writerow([estado.rowid_pais.descri_largo_pais, estado.id_edo, estado.descri_largo_edo, estado.descri_corto_edo, estado.estatus_edo])
+    return response
+# Exportar paises a xlwt sin con la libreria XLWT 
+@login_required
+def export_xlwt_estados (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaEstados.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Estados')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Pais','Clave','Estado','Abreviacion','Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatEstado.objects.filter(estatus_edo="A").values_list('rowid_pais', 'id_edo', 'descri_largo_edo', 'descri_corto_edo', 'estatus_edo')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+# Vista de pre-visualizacion PFD solo es para pruebas
+@login_required
+def listaEstados(request):
+    #Lista de todos los paises
+    listaEstados=SeCatEstado.objects.all()
+    # Filtrando por estatus
+    # listaPaises=SeCatPais.objects.filter(estatus_pais="A") 
+    return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/listaEstados.html", {"estados":listaEstados})
+
+##############################################   Municipios/Delegaciones   ###########################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaMunicipios(request):
+    #Lista de todos los paises que tengan el status = A
+    listaMunicipios=SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A").order_by('id_mundel')
+    contador_id = listaMunicipios.count()
+    listaPais = SeCatPais.objects.filter(estatus_pais="A").order_by('id_pais')
+    listaEstado = SeCatEstado.objects.filter(estatus_edo="A").order_by('id_edo')
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaMunicipios, 9)
+        listaMunicipios = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST': #Valida que sea una peticion de tipo post / Guarda datos
+        form = FormMunicipiosDelegaciones(request.POST)
+        if form.is_valid():
+            mun = form.save(commit=False)
+            ultimo_id = SeCatMunicipioDelegacion.objects.all().order_by('rowid_mundel').last()
+            mun.rowid_mundel = ultimo_id.rowid_mundel + 1
+            mun.save()
+            messages.success(request, "¡Municipio/Delegación agregado con exito!")
+            return redirect('vistaMunicipios')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/direcciones/GestionMunicipios/GestionMunicipios.html",{'entity' : listaMunicipios, 'paginator' : paginator, 'FormMunicipiosDelegaciones' : form, 'contador' : contador_id, 'listaPais':listaPais, 'listaEstado':listaEstado})
+    #Busqueda del search
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_municipios", None)
+        print(busqueda)
+        if busqueda:
+            listaMunicipios = SeCatMunicipioDelegacion.objects.filter( #Revisión de los campos de la tabla en la BD
+                Q(descri_largo_mundel__icontains = busqueda),
+	            Q(estatus_mundel__icontains = "A")
+            ).distinct()
+    form = FormMunicipiosDelegaciones()
+    data = {
+        'entity' : listaMunicipios,
+        'paginator' : paginator,
+        'FormMunicipiosDelegaciones' : form,
+        'contador' : contador_id,
+        'listaPais' : listaPais,
+        'listaEstado' : listaEstado,
+    }
+    return render(request, "controlEscolar/catalogos/direcciones/GestionMunicipios/GestionMunicipios.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarMunicipio(request, rowid_mundel):
+    try:
+        mundel = SeCatMunicipioDelegacion.objects.get(rowid_mundel = rowid_mundel)
+        mundel.estatus_mundel = "B"
+    except SeCatMunicipioDelegacion.DoesNotExist:
+        raise Http404("El Municipio no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        mundel.save()
+        messages.warning(request, "¡Municipio/Delegación eliminado con exito!")
+        return redirect('vistaMunicipios')
+    return render(request, "controlEscolar/catalogos/direcciones/GestionMunicipios/BorrarMunicipio.html", {"Municipio": mundel})
+# Modifica un registro
+@login_required
+def vista_municipios_detail(request, rowid_mundel):
+    mundel = SeCatMunicipioDelegacion.objects.get(rowid_mundel = rowid_mundel)
+    form = FormMunicipiosDelegaciones(instance=mundel)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormMunicipiosDelegaciones(request.POST, instance = mundel)
+        if form.is_valid():
+            mun = form.save(commit=False)   
+            mun.save()
+            messages.info(request, "¡Municipio/Delegación actualizado con exito!")
+            return redirect('vistaMunicipios')  #retorna despues de actualizar              
+        else: 
+            return render(request, "controlEscolar/catalogos/direcciones/GestionMunicipios/ActualizarMunicipio.html", {"FormMunicipiosDelegaciones" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/direcciones/GestionMunicipios/ActualizarMunicipio.html", {"FormMunicipiosDelegaciones" : form})#envia al detalle para actualizar
+# primera de pdf posible imprimir / Funciona con la misma funcion en utils
+class Export_print_municipios(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaMunicipios=SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A") 
+        data = {
+            'count': listaMunicipios.count(),
+            'municipios': listaMunicipios
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/direcciones/GestionMunicipios/listaMunicipios.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Clase para crear Pdf / Funciona con la misma funcion en utils
+class Export_pdf_municipios(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaMunicipios=SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A") 
+        data = {
+            'count': listaMunicipios.count(),
+            'municipios': listaMunicipios
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/direcciones/GestionMunicipios/listaMunicipios.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaMunicipios.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar municipio/delegaciones a CSV sin libreria 
+@login_required
+def export_csv_municipios (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaMunicipios.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Estado','Clae','Municipio/Delegación','Abreviatura','Estatus'])
+    listaMunicipios=SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A") 
+    # listaPaises=SeCatPais.objects.filter(owner=request.user)
+    for municipio in listaMunicipios:
+        writer.writerow([municipio.rowid_edo.descri_largo_edo, municipio.id_mundel, municipio.descri_largo_mundel, municipio.descri_corto_mundel, municipio.estatus_mundel])
+    return response
+# Exportar paises a xlwt sin con la libreria XLWT 
+@login_required
+def export_xlwt_municipios (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaMunicipios.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Municipios')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Id Pais','Id Estado','Id Municipio/Delegacion','Municipio/Delegación','Abreviatura','Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A").values_list('rowid_edo', 'id_mundel','descri_largo_mundel','descri_corto_mundel','estatus_mundel')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+# Vista de pre-visualizacion PFD solo es para pruebas
+@login_required
+def listaMunicipios(request):
+    #Lista de todos los paises
+    listaMunicipios=SeCatMunicipioDelegacion.objects.all()
+    # Filtrando por estatus
+    # listaPaises=SeCatPais.objects.filter(estatus_pais="A") 
+    return render(request, "controlEscolar/catalogos/direcciones/GestionMunicipios/listaMunicipios.html", {"municipios":listaMunicipios})
+
+###################################################   Colonias   #####################################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+def vistaColonias(request):
+    #Lista de todos los paises que tengan el status = A
+    listaColonias=SeCatColonia.objects.filter(estatus_col="A").order_by('id_col')
+    contador_id = listaColonias.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaColonias, 9)
+        listaColonias = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST': #Valida que sea una peticion de tipo post / Guarda datos
+        form = FormColonias(request.POST)
+        if form.is_valid():
+            colo = form.save(commit=False)
+            ultimo_id = SeCatColonia.objects.all().order_by('rowid_col').last()
+            colo.rowid_col = ultimo_id.rowid_col + 1
+            colo.save()
+            messages.success(request, "¡Colonia agregada con exito!")
+            return redirect('vistaColonias') #redirecciona a la vista 
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/direcciones/GestionColonias/GestionColonias.html",{'entity' : listaColonias, 'paginator' : paginator, 'FormColonias' : form, 'contador' : contador_id,})
+    #Busqueda del search
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_colonias", None)
+        print(busqueda)
+        if busqueda:
+            listaColonias = SeCatColonia.objects.filter(
+                #Revisión de los campos de la tabla en la BD
+                Q(descri_largo_col__icontains = busqueda),
+                Q(estatus_col__icontains = "A")
+            ).distinct()
+    form = FormColonias()
+    data = {
+        'entity' : listaColonias,
+        'paginator' : paginator,
+        'FormColonias' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/direcciones/GestionColonias/GestionColonias.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+def eliminarColonia(request, rowid_col):
+    try:
+        colonia = SeCatColonia.objects.get(rowid_col = rowid_col)
+        colonia.estatus_col = "B"
+    except SeCatColonia.DoesNotExist:
+        raise Http404("La Colonia no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        colonia.save()
+        messages.warning(request, "¡Colonia eliminada con exito!")
+        return redirect('vistaColonias')
+    return render(request, "controlEscolar/catalogos/direcciones/GestionColonias/BorrarColonia.html", {"Colonia": colonia})
+# Modifica un registro
+def vista_colonias_detail(request, rowid_col):
+    colonia = SeCatColonia.objects.get(rowid_col = rowid_col)
+    form = FormColonias(instance=colonia)
+    if request.method == 'POST':
+        form = FormColonias(request.POST, instance = colonia)
+        if form.is_valid():
+            form.save()
+            messages.info(request, "¡Colonia actualizada con exito!")
+            return redirect('vistaColonias') #retorna despues de actualizar
+        else:
+            return render(request, "controlEscolar/catalogos/direcciones/GestionColonias/ActualizarColonia.html", {"FormColonias" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/direcciones/GestionColonias/ActualizarColonia.html", {"FormColonias" : form})#envia al detalle para actualizar
+# primera de pdf posible imprimir / Funciona con la misma funcion en utils
+class Export_print_colonias(View):
+    def get(self, request, *args, **kwargs):
+        listaColonias=SeCatColonia.objects.filter(estatus_col="A") 
+        data = {
+            'count': listaColonias.count(),
+            'colonias': listaColonias
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/direcciones/GestionColonias/listaColonias.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Clase para crear Pdf / Funciona con la misma funcion en utils
+class Export_pdf_colonias(View):
+    def get(self, request,*args, **kwargs):
+        listaColonias=SeCatColonia.objects.filter(estatus_col="A") 
+        data = {
+            'count': listaColonias.count(),
+            'colonias': listaColonias
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/direcciones/GestionColonias/listaColonias.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaColonias.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises a CSV sin libreria 
+def export_csv_colonias (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaColonias.csv'
+    writer = csv.writer(response)
+    writer.writerow(['Municipio/Delegación','Clave', 'Colonia', 'Abreviatura', 'Codigo Postal', 'Estatus'])
+    listaColonias=SeCatColonia.objects.filter(estatus_col="A") 
+    # listaPaises=SeCatPais.objects.filter(owner=request.user)
+    for col in listaColonias:
+        writer.writerow([col.rowid_mundel.descri_largo_mundel, col.id_col, col.descri_largo_col, col.descrip_corto_col, col.codposcol, col.estatus_col])
+    return response
+# Exportar paises a xlwt sin con la libreria XLWT 
+def export_xlwt_colonias (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaColonias.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Colonias')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Municipio/Delegación','Clave', 'Colonia', 'Abreviatura', 'Codigo Postal', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatColonia.objects.filter(estatus_col="A").values_list('rowid_mundel', 'id_col', 'descri_largo_col', 'descrip_corto_col', 'codposcol', 'estatus_col')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+# Vista de pre-visualizacion PFD solo es para pruebas
+def listaColonias(request):
+    #Lista de todos los paises
+    listaColonias=SeCatColonia.objects.all()
+    # Filtrando por estatus
+    # listaPaises=SeCatPais.objects.filter(estatus_pais="A") 
+    return render(request, "controlEscolar/catalogos/direcciones/GestionColonias/listaColonias.html", {"colonias":listaColonias})
 
 ##############################################   Universidades   ##################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
@@ -1754,160 +2163,6 @@ def export_xlwt_grados (request):
             ws.write(row_num,col,str(row[col]), font_style)
     wb.save(response)
     return response
-##############################################   Estados   ########################################################
-#Agregar si es post y lista de todos / Aqui va la paguinacion
-@login_required
-def vistaEstados(request):
-    #Lista de todos los paises que tengan el status = A
-    listaEstados=SeCatEstado.objects.filter(estatus_edo="A").order_by('id_edo')
-    contador_id = listaEstados.count()
-    listaPais = SeCatPais.objects.filter(estatus_pais="A").order_by('id_pais')
-    page = request.GET.get('page', 1)
-    try:
-        paginator = Paginator(listaEstados, 9)
-        listaEstados = paginator.page(page)
-    except:
-        raise Http404
-    if request.method == 'POST': #Valida que sea una peticion de tipo post / Guarda datos
-        form = FormEstados(request.POST)
-        if form.is_valid():
-            est = form.save(commit=False)
-            ultimo_id = SeCatEstado.objects.all().order_by('id_edo').last() # hace una consulta al ultimo registro insertado para poder crear el nuevo id 
-            id_pais  = request.POST['id_pais']
-            id_edo = ultimo_id.id_edo + 1
-            descri_largo_edo = request.POST['descri_largo_edo']
-            descri_corto_edo = request.POST['descri_corto_edo']
-            estatus_edo = "A"
-            id_entidad_federativa = request.POST['id_entidad_federativa']
-            c_nom_ent = request.POST['c_nom_ent']
-            cursor = connections['default'].cursor()
-            cursor.execute("INSERT INTO se_cat_estado (id_pais, id_edo, descri_largo_edo, descri_corto_edo, estatus_edo, id_entidad_federativa, c_nom_ent) VALUES (%s, %s, %s, %s, %s, %s, %s)", [id_pais, id_edo, descri_largo_edo, descri_corto_edo, estatus_edo, id_entidad_federativa, c_nom_ent])
-            messages.success(request, "¡Estado agregado con exito!")
-            return redirect('vistaEstados') #redirecciona a la vista 
-        else:
-            messages.success(request, "¡Grado agregado con exito!")
-            return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/GestionEstados.html",{'entity' : listaEstados, 'paginator' : paginator, 'FormEstados' : form, 'contador' : contador_id,'listaPais':listaPais})
-    #Busqueda del search
-    elif request.method == 'GET':
-        busqueda = request.GET.get("search_estados", None)
-        print(busqueda)
-        if busqueda:
-            listaEstados = SeCatEstado.objects.filter(
-                #Revisión de los campos de la tabla en la BD
-                Q(descri_largo_edo__icontains = busqueda),
-	            Q(estatus_edo__icontains = "A")
-            ).distinct()
-    form = FormEstados()
-    data = {
-        'entity' : listaEstados,
-        'paginator' : paginator,
-        'FormEstados' : form,
-        'contador' : contador_id,
-        'listaPais':listaPais
-    }
-    return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/GestionEstados.html",data)
-# Elimina un registro que no elimina solo actualiza Status de A a B
-@login_required
-def eliminarEstado(request, id_edo):
-    try:
-        estado = SeCatEstado.objects.get(id_edo=id_edo)
-        status = "B"
-    except SeCatEstado.DoesNotExist:
-        raise Http404("El Estado no existe")
-    if request.method == 'POST': #Sobre escrive los valores
-        cursor = connections['default'].cursor()
-        cursor.execute("UPDATE se_cat_estado SET estatus_edo = (%s)  WHERE id_edo = (%s)", [ status, id_edo ])
-        messages.warning(request, "¡Estado eliminado con exito!")
-        # estado.save()
-        return redirect('vistaEstados')
-    return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/BorrarEstado.html", {"Estado": estado})
-# Modifica un registro
-@login_required
-def vista_estados_detail(request, estado_id):
-    estado = SeCatEstado.objects.get(id_edo=estado_id)
-    form = FormEstados(instance=estado)
-    if request.method == 'POST': #Sobre escrive los valores
-        form = FormEstados(request.POST, instance = estado)
-        if form.is_valid():
-            est = form.save(commit=False)   
-            id_edo = estado_id
-            descri_largo_edo = request.POST['descri_largo_edo']
-            descri_corto_edo = request.POST['descri_corto_edo']
-            id_entidad_federativa = request.POST['id_entidad_federativa']
-            c_nom_ent = request.POST['c_nom_ent']
-            cursor = connections['default'].cursor()
-            cursor.execute("UPDATE se_cat_estado SET descri_largo_edo = (%s), descri_corto_edo = (%s), id_entidad_federativa = (%s), c_nom_ent = (%s)  WHERE id_edo = (%s)",[ descri_largo_edo, descri_corto_edo, id_entidad_federativa, c_nom_ent, id_edo ])
-            messages.info(request, "¡Estado actualizado con exito!")
-            return redirect('vistaEstados') #retorna despues de actualizar
-        else:
-            return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/ActualizarEstado.html", {"estado": estado, "FormEstados" : form})#envia al detalle para actualizar
-    return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/ActualizarEstado.html", {"estado": estado, "FormEstados" : form})#envia al detalle para actualizar
-# primera de pdf posible imprimir / Funciona con la misma funcion en utils
-class Export_print_estados(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        listaEstados=SeCatEstado.objects.filter(estatus_edo="A") 
-        data = {
-            'count': listaEstados.count(),
-            'estados': listaEstados
-        }
-        pdf = render_to_pdf('controlEscolar/catalogos/direcciones/GestionEstados/listaEstados.html', data)
-        return HttpResponse(pdf, content_type='application/pdf')
-#Clase para crear Pdf / Funciona con la misma funcion en utils
-class Export_pdf_estados(LoginRequiredMixin, View):
-    def get(self, request,*args, **kwargs):
-        listaEstados=SeCatEstado.objects.filter(estatus_edo="A") 
-        data = {
-            'count': listaEstados.count(),
-            'estados': listaEstados
-        }
-        pdf = render_to_pdf('controlEscolar/catalogos/direcciones/GestionEstados/listaEstados.html', data)
-        response = HttpResponse(pdf, content_type='application/pdf')
-        filename = 'ListaEstados.pdf'
-        content = "attachment; filename= %s" %(filename)
-        response['Content-Disposition'] = content
-        return response
-# Exportar paises a CSV sin libreria 
-@login_required
-def export_csv_estados (request):
-    response = HttpResponse(content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename=ListaEstados.csv;'
-    writer = csv.writer(response)
-    writer.writerow(['Id Estado','Estado','Abreviacion','Id Entidad F.','Entidad Federativa','Estatus'])
-    listaEstados=SeCatEstado.objects.filter(estatus_edo="A") 
-    # listaPaises=SeCatPais.objects.filter(owner=request.user)
-    for estado in listaEstados:
-        writer.writerow([estado.id_edo, estado.descri_largo_edo, estado.descri_corto_edo, estado.id_entidad_federativa, estado.c_nom_ent, estado.estatus_edo])
-    return response
-# Exportar paises a xlwt sin con la libreria XLWT 
-@login_required
-def export_xlwt_estados (request):
-    response = HttpResponse(content_type="application/ms-excel")
-    response['Content-Disposition'] = 'attachment; filename=ListaEstados.xls'
-    wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('Estados')
-    row_num = 0
-    font_style = xlwt.XFStyle()
-    font_style.font.blod = True
-    columns = ['Id Estado','Estado','Abreviacion','Id Entidad F.','Entidad Federativa','Estatus']
-    for col in range(len(columns)):
-        ws.write(row_num,col,columns[col], font_style)
-    font_style = xlwt.XFStyle()
-    rows=SeCatEstado.objects.filter(estatus_edo="A").values_list('id_edo','descri_largo_edo','descri_corto_edo','id_entidad_federativa','c_nom_ent','estatus_edo')
-    for row in rows:
-        row_num+=1
-        for col in range(len(row)):
-            ws.write(row_num,col,str(row[col]), font_style)
-    wb.save(response)
-    return response
-# Vista de pre-visualizacion PFD solo es para pruebas
-@login_required
-def listaEstados(request):
-    #Lista de todos los paises
-    listaEstados=SeCatEstado.objects.all()
-    # Filtrando por estatus
-    # listaPaises=SeCatPais.objects.filter(estatus_pais="A") 
-    return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/listaEstados.html", {"estados":listaEstados})
-
 
 # Prueba
 def listaEjemplo(request):

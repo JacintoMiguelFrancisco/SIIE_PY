@@ -4,29 +4,42 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
-from .models import (SeCatPais, SeCatEstado, SeCatUniversidad, SeCatNivelAcademico, SeCatPlaza, SeCatAreaBachillerato, 
+from .models import (SeCatPais, SeCatEstado, SeCatMunicipioDelegacion, SeCatColonia, SeCatUniversidad, SeCatNivelAcademico, SeCatPlaza, SeCatAreaBachillerato, 
                     SeCatTipoBajas,  SeCatBecas, SeCatMedioDifusion,SeCatTipoEscuela,SeCatTipoCambio,
                     SeCatIndicador, SeCatPlaEstudio, SeCatGrado)
 
 ##################### Admin de Paises  ################# 
 class PaisResources(resources.ModelResource):
-    fields = ('id_pais', 'descri_largo_pais', 'descri_corto_pais', 'estatus_pais')
+    fields = ('rowid_pais','id_pais', 'descri_largo_pais', 'descri_corto_pais', 'estatus_pais')
     class Meta:
         model = SeCatPais
 
 @admin.register(SeCatPais)
 class PaisAdmin(ImportExportModelAdmin):
     resources_class = PaisResources
-    list_display = ('id_pais', 'descri_largo_pais', 'descri_corto_pais', 'estatus_pais')
-    search_fields = ['id_pais', 'descri_largo_pais', 'descri_corto_pais']
+    list_display = ('rowid_pais','id_pais', 'descri_largo_pais', 'descri_corto_pais', 'estatus_pais')
+    search_fields = ['rowid_pais','id_pais', 'descri_largo_pais', 'descri_corto_pais']
     list_filter = ['estatus_pais']  
 
-##################### Admin de Paises  ################# 
+##################### Admin de estados  ################# 
 @admin.register(SeCatEstado)
-class BookAdmin(admin.ModelAdmin):
-    list_display = ('id_pais','id_edo','descri_largo_edo','descri_corto_edo','id_entidad_federativa','c_nom_ent','estatus_edo')
-    search_fields = ['id_edo', 'descri_largo_edo']
+class EstadoAdmin(admin.ModelAdmin):
+    list_display = ('rowid_edo','rowid_pais','id_edo','descri_largo_edo','descri_corto_edo','estatus_edo')
+    search_fields = ['rowid_edo', 'descri_largo_edo']
     list_filter = ['estatus_edo']
+
+##################### Admin de Municipios/Delegaciones  ############### 
+@admin.register(SeCatMunicipioDelegacion)
+class MunicipioDelegacionAdmin(admin.ModelAdmin):
+    list_display = ('rowid_mundel','rowid_edo','id_mundel','descri_largo_mundel','descri_corto_mundel','estatus_mundel')
+    search_fields = ['id_mundel', 'descri_largo_mundel']
+    list_filter = ['estatus_mundel']
+# ##################### Admin de Colonias  ###################### 
+@admin.register(SeCatColonia)
+class ColoniaAdmin(admin.ModelAdmin):
+    list_display = ('rowid_col','rowid_mundel','id_col','descri_largo_col','descrip_corto_col','estatus_col','codposcol')
+    search_fields = ['id_col', 'descri_largo_col']
+    list_filter = ['estatus_col']
 
 ##################### Admin Universidad ################# 
 @admin.register(SeCatUniversidad)

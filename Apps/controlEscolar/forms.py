@@ -1,9 +1,9 @@
 import string
 from django import forms
 
-from .models import (SeCatPais, SeCatEstado, SeCatUniversidad,SeCatNivelAcademico, SeCatPlaza,SeCatAreaBachillerato, 
+from .models import (SeCatPais, SeCatEstado,SeCatMunicipioDelegacion, SeCatColonia, SeCatUniversidad,SeCatNivelAcademico, SeCatPlaza,SeCatAreaBachillerato, 
                     SeCatTipoBajas,SeCatMedioDifusion,SeCatBecas, SeCatTipoEscuela, SeCatTipoCambio, 
-                    SeCatCarrera,SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatColonia)
+                    SeCatCarrera,SeCatIndicador, SeCatPlaEstudio, SeCatGrado)
 
 ##########################  Catalogo #################################
 # Form Paises En este formulario se agrega y tiene habilitado el campo de id
@@ -11,11 +11,11 @@ class FormPaises(forms.ModelForm):
     class Meta:
         model = SeCatPais
         fields = '__all__'
-        exclude = ('estatus_pais',)
+        exclude = ('estatus_pais','rowid_pais')
         widgets = {
             'id_pais': forms.NumberInput(attrs={'class': 'form-control', 
                                                         'required' : 'True',
-                                                        'placeholder': 'Por favor, Ingrese el Id del pais',
+                                                        'placeholder': 'Por favor, Ingrese la clave del pais',
                                                         'style' : 'border-color:#21B64A;',
                                                         }),
             'descri_largo_pais': forms.TextInput(attrs={'class': 'form-control', 
@@ -30,37 +30,7 @@ class FormPaises(forms.ModelForm):
                                                         }),
         }
         labels = {
-                'id_pais': 'Id del Pais *',
-                'descri_largo_pais': 'Nombre Pais *',
-                'descri_corto_pais': 'Abreviatura *',
-        }
-    def clean_id_pais(self):
-        """Verifica que el id sea unico."""
-        id_pais = self.cleaned_data.get('id_pais')
-        id_pais_taken = SeCatPais.objects.filter(id_pais=id_pais).exists()
-        if id_pais_taken:
-            raise forms.ValidationError('El Id ya existe, intenta con otro')
-        return id_pais
-#En este formulario se utiliza para actualizar el formulario paises en este se desavilita el id
-class FormPaises1(forms.ModelForm):
-    class Meta:
-        model = SeCatPais
-        fields = '__all__'
-        exclude = ('id_pais', 'estatus_pais')
-        # exclude = ('estatus_pais',)
-        widgets = {
-            'descri_largo_pais': forms.TextInput(attrs={'class': 'form-control', 
-                                                        'required' : 'True',
-                                                        'placeholder': 'Por favor, Ingrese el nombre del pais',
-                                                        'style' : 'border-color:#21B64A;',
-                                                        }),
-            'descri_corto_pais': forms.TextInput(attrs={'class': 'form-control',
-                                                        'required' : 'True', 
-                                                        'placeholder': 'Por favor, Ingrese la abreviatura del pais',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-        }
-        labels = {
+                'id_pais': 'Clave del Pais *',
                 'descri_largo_pais': 'Nombre Pais *',
                 'descri_corto_pais': 'Abreviatura *',
         }
@@ -69,8 +39,17 @@ class FormEstados(forms.ModelForm):
     class Meta:
         model = SeCatEstado
         fields = '__all__'
-        exclude = ('id_edo','id_pais', 'estatus_edo',)
+        exclude = ('rowid_edo', 'estatus_edo',)
         widgets = {
+            'rowid_pais': forms.Select(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'id_edo': forms.NumberInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese la clave del estado.',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
             'descri_largo_edo': forms.TextInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
                                                         'placeholder': 'Ingrese nombre del Estado.',
@@ -81,20 +60,89 @@ class FormEstados(forms.ModelForm):
                                                         'placeholder': 'Ingrese abreviatura del Estado.',
                                                         'style' : 'border-color:#21B64A;'
                                                         }),
-            'id_entidad_federativa': forms.TextInput(attrs={'class': 'form-control',
-                                                            'placeholder': 'Ingrese clave Entidad Federativa.',
-                                                            'style' : 'border-color:#21B64A;'
-                                                            }),
-            'c_nom_ent': forms.TextInput(attrs={'class': 'form-control',
-                                                'placeholder': 'Ingrese nombre Entidad federativa.',
-                                                'style' : 'border-color:#21B64A;'}),
         }
         labels = {
-                'descri_largo_edo': 'Estado *',
-                'descri_corto_edo': 'Abreviatura *',
-                'id_entidad_federativa': 'Clave Entidad Federativa',
-                'c_nom_ent': 'Entidad Federativa',
+                'rowid_pais': 'Pais: *',
+                'id_edo': 'Clave Estado: *',
+                'descri_largo_edo': 'Estado: *',
+                'descri_corto_edo': 'Abreviatura: *',
+                'id_entidad_federativa': 'Clave Entidad Federativa:',
+                'c_nom_ent': 'Entidad Federativa: ',
             }
+# Form Municipios/Delegaciones 
+class FormMunicipiosDelegaciones(forms.ModelForm):
+    class Meta:
+        model = SeCatMunicipioDelegacion
+        fields = '__all__'
+        exclude = ('rowid_mundel','estatus_mundel')
+
+        widgets = {
+            'rowid_edo': forms.Select(attrs={'class': 'form-control',
+                                            'required' : 'True',
+                                            'style' : 'border-color:#21B64A;'
+                                            }),
+            'id_mundel': forms.NumberInput(attrs={'class': 'form-control',
+                                                    'required' : 'True',
+                                                    'placeholder': 'Ingrese id del Municipio',
+                                                    'style' : 'border-color:#21B64A;'
+                                                    }),
+            'descri_largo_mundel': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese nombre del Municipio/Delegación.',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'descri_corto_mundel': forms.TextInput(attrs={'class': 'form-control',
+                                                            'required' : 'True',
+                                                            'placeholder': 'Ingrese abreviatura del Municipio/Delegación.',
+                                                            'style' : 'border-color:#21B64A;'
+                                                            }), 
+        }
+        labels = {
+            'rowid_edo' : 'Estado *',
+            'id_mundel' : 'Id Municipio/Delegación *',
+            'descri_largo_mundel' : 'Municipio/Delegación *',
+            'descri_corto_mundel' : 'Abreviatura *',
+        }
+# FORM Colonias
+class FormColonias(forms.ModelForm):
+    class Meta:
+        model = SeCatColonia
+        fields = '__all__'
+        exclude = ('rowid_col', 'estatus_col') 
+        widgets = {
+            'rowid_mundel': forms.Select(attrs={'class': 'form-control',
+                                            'required' : 'True',
+                                            'style' : 'border-color:#21B64A;'
+                                            }),
+            'id_col': forms.NumberInput(attrs={'class': 'form-control',
+                                                'required' : 'True',
+                                                'placeholder': 'Ingrese la clave del Municipio',
+                                                'style' : 'border-color:#21B64A;'
+                                                }),
+            'descri_largo_col': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese nombre de la Colonia.',
+                                                        'style' : 'border-color:#21B64A;'                                                        
+                                                        }),
+            'descrip_corto_col': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese abreviatura de la Colonia.',
+                                                        'style' : 'border-color:#21B64A;'                                                        
+                                                        }),
+            'codposcol': forms.TextInput(attrs={'class': 'form-control',
+                                                'placeholder': 'Ingrese codigo postal de la Colonia.',
+                                                'style' : 'border-color:#21B64A;'                                                
+                                                }),
+        }
+        labels = {
+            'rowid_mundel': 'Municipio *',
+            'id_col': 'Clave *',
+            'descri_largo_col': 'Colonia *',
+            'descrip_corto_col': 'Abreviatura *',
+            'codposcol': 'Codigo Postal.',
+        }
+
+
 # Form Universidad
 class FormUniversidad(forms.ModelForm):
     class Meta:

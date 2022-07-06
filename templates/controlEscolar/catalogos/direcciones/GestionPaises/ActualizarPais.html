@@ -20,16 +20,11 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                    <div class="form-group">
-                        <input type="text" id="txtId_Pais" name="txtDescri_largo_pais" class="form-control mb-3" placeholder="Pais" maxlength="50" required value=" {{ pais.id_pais }}" readonly>
-                    </div>
-                        <p>
-                            {{ FormPaises.descri_largo_pais }}
-                        </p>
-                        <p>
-                            {{ FormPaises.descri_corto_pais }}
-                        </p>
+                    
+                    {{ FormPaises.as_p }}
+                    
                     <hr>
+                    
                     <div class="form-group d-flex justify-content-evenly">  
                         <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>  
                         <a class="btn btn-danger btn-block" href="{% url 'vistaPaises' %}">Cancelar</a>   
