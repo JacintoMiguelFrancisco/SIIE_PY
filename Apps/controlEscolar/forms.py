@@ -2,7 +2,7 @@ import string
 from django import forms
 
 from .models import (SeCatPais, SeCatEstado,SeCatMunicipioDelegacion, SeCatColonia, SeCatUniversidad,SeCatNivelAcademico, SeCatPlaza,SeCatAreaBachillerato, 
-                    SeCatTipoBajas,SeCatMedioDifusion,SeCatBecas, SeCatTipoEscuela, SeCatTipoCambio, 
+                    SeCatTipoBajas,SeCatMedioDifusion,SeCatBecas, SeCatTipoEscuela, SeCatTipoCambio, SeTabEmpCar,
                     SeCatCarrera,SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades,SeCatInstitucion)
 
 ##########################  Catalogo #################################
@@ -243,9 +243,44 @@ class FormInstitucion(forms.ModelForm):
             'descri_largo_ins': 'Institución *',
             'descri_corto_ins': 'Abreviatura *',
         }
-
-
-
+# FORM Carrera Empleado
+class FormEmpCar(forms.ModelForm):  
+    class Meta:
+        model = SeTabEmpCar
+        fields = '__all__'
+        exclude = ('rowid_emp_car', 'estatus_inst')          
+        widgets = {
+            'rowid_car': forms.Select(attrs={'class': 'form-control',
+                                            'required' : 'True',
+                                            'style' : 'border-color:#21B64A;'
+                                            }),
+            'rowid_institucion': forms.Select(attrs={'class': 'form-control',
+                                            'required' : 'True',
+                                            'style' : 'border-color:#21B64A;'
+                                            }),
+            'rowid_empleado': forms.Select(attrs={'class': 'form-control',
+                                            'required' : 'True',
+                                            'placeholder': 'Ingrese el ID del Empleado.',
+                                            'style' : 'border-color:#21B64A;'
+                                            }),
+            'descri_largo_car_emp': forms.TextInput(attrs={'class': 'form-control',
+                                                    'required' : 'True',
+                                                    'placeholder': 'Ingrese el nombre de la Institucion.',
+                                                    'style' : 'border-color:#21B64A;'                                                        
+                                                    }),
+            'descri_corto_car_emp': forms.TextInput(attrs={'class': 'form-control',
+                                                    'required' : 'True',
+                                                    'placeholder': 'Ingrese la abreviatura.',
+                                                    'style' : 'border-color:#21B64A;'                                                        
+                                                    }),
+        }
+        labels = {
+            'rowid_car': 'Carrera *',
+            'rowid_institucion': 'Institución *',
+            'rowid_empleado': 'ID Empleado *',
+            'descri_largo_car_emp': 'Nombre *',
+            'descri_corto_car_emp': 'Abreviatura *',
+        }
 
 
 

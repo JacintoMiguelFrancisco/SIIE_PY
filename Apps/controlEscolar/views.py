@@ -19,13 +19,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 #Models
 from .models import (SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia, SeCatUniversidad,SeCatNivelAcademico,SeCatPlaza,SeCatAreaBachillerato,
-                    SeCatTipoBajas,SeCatMedioDifusion,SeCatBecas, SeCatTipoEscuela, SeCatTipoCambio,
+                    SeCatTipoBajas,SeCatMedioDifusion,SeCatBecas, SeCatTipoEscuela, SeCatTipoCambio, SeTabEmpCar,
                     SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades,SeCatInstitucion)
 #Views
 from django.views.generic import View
 #formularios
 from .forms import (FormPaises, FormEstados, FormMunicipiosDelegaciones, FormColonias, FormUniversidad, FormNivAca, FormPlaza, FormAreaBachi,FormTipoBajas,
-                    FormMediosDifusion, FormTiposEscuelas,FormBecas,FormTipoCambio,
+                    FormMediosDifusion, FormTiposEscuelas,FormBecas,FormTipoCambio, FormEmpCar,
                     FormsIndicador, FormsPlaE, FormsGrados, FormAdscripcion, FormActividades, FormInstitucion)
 
 # Create your views here.
@@ -52,7 +52,7 @@ def vistaPaises(request):
             pais.rowid_pais = ultimo_id.rowid_pais + 1 # agrega uno al ultimo id insertado
             pais.save() # en este caso guarda todos los datos del formulario por que ingresamos el id pero en los fomularios que el id sea automatico cambia
             messages.success(request, "¡Pais agregado con exito!") # Manda un mensaje al usuario desdes de que todos los datos son correctos, solo funciona con success(Verde), warning(Amarilla), info(Azul)      
-            return redirect('vistaPaises') #redirecciona a la vista de nuevo
+            return redirect('vista_paises') #redirecciona a la vista de nuevo
         else: # En caso de que alguno de los campos no sean correctos entra en el else y redirecciona al mismo formulario con los datos no correctos y por que no son correctos
             messages.warning(request, "¡Alguno de los campos no es valido!") # Emvia un mensaje para notificar que algun campo no es valido
             return render(request, "controlEscolar/catalogos/direcciones/GestionPaises/GestionPaises.html",{'entity' : listaPaises,'paginator' : paginator,'FormPaises' : form,'contador': contador_id})       
@@ -83,7 +83,7 @@ def eliminarPais(request, rowid_pais):
     if request.method == 'POST': #Sobre escrive los valores
         messages.warning(request, "¡Pais eliminado con exito!")
         pais.save()
-        return redirect('vistaPaises')
+        return redirect('vista_paises')
     return render(request, "controlEscolar/catalogos/direcciones/GestionPaises/BorrarPais.html", {"Pais": pais})
 # Modifica un registro
 @login_required
@@ -95,7 +95,7 @@ def vista_paises_detail(request, rowid_pais):
         if form.is_valid():
             form.save()  #Guarda los cambios
             messages.info(request, "¡Pais actualizado con exito!")
-            return redirect('vistaPaises') #retorna despues de actualizar
+            return redirect('vista_paises') #retorna despues de actualizar
         else:
             return render(request, "controlEscolar/catalogos/direcciones/GestionPaises/ActualizarPais.html", {"pais": pais, "FormPaises" : form})#envia al detalle con los campos no validos
     return render(request, "controlEscolar/catalogos/direcciones/GestionPaises/ActualizarPais.html", {"pais": pais, "FormPaises" : form})#envia al detalle para actualizar
@@ -2551,3 +2551,127 @@ def export_xlwt_instituciones (request):
     wb.save(response)
     return response
 
+
+
+##############################################   EmpCar   #########################################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaEmpCar(request):
+    listaEmpCar = SeTabEmpCar.objects.filter(estatus_inst="A").order_by('rowid_emp_car')
+    contador_id = listaEmpCar.count() 
+    page = request.GET.get('page', 1)  
+    try:  
+        paginator = Paginator(listaEmpCar, 7)
+        listaEmpCar = paginator.page(page)
+    except: 
+        raise Http404
+    if request.method == 'POST': 
+        form = FormEmpCar(request.POST) 
+        if form.is_valid(): 
+            empcar = form.save(commit=False)
+            ultimo_id = SeTabEmpCar.objects.all().order_by('rowid_emp_car').last() 
+            empcar.rowid_emp_car = ultimo_id.rowid_emp_car + 1 
+            empcar.save() 
+            messages.success(request, "¡Empleado agregada con exito!")       
+            return redirect('vista_instituciones') 
+        else: 
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
+            return render(request, "controlEscolar/catalogos/empleados/GestionEmpCar/GestionEmpCar.html",{'entity' : listaEmpCar,'paginator' : paginator,'form' : form,'contador': contador_id})       
+    elif request.method == 'GET': 
+        busqueda = request.GET.get("search_institucion", None) 
+        if busqueda: 
+            listaEmpCar = SeTabEmpCar.objects.filter( 
+                Q(descri_largo_car_emp__icontains = busqueda), 
+                Q(estatus_inst__icontains = "A") 
+            ).distinct()
+    form = FormEmpCar()  
+    data = { 
+        'entity' : listaEmpCar,
+        'paginator' : paginator,
+        'form' : form,
+        'contador': contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/empleados/GestionEmpCar/GestionEmpCar.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarEmpCar(request, rowid_institucion):
+    try:
+        inst = SeCatInstitucion.objects.get(rowid_institucion = rowid_institucion)
+        inst.estatus_ins = "B"
+    except SeCatInstitucion.DoesNotExist:
+        raise Http404("La Institución no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        messages.warning(request, "¡Institución eliminada con exito!")
+        inst.save()
+        return redirect('vista_instituciones')
+    return render(request, "controlEscolar/catalogos/empleados/GestionInstituciones/BorrarInstituciones.html", {"Institucion": inst})
+# Modifica un registro
+@login_required
+def vista_EmpCar_detail(request, rowid_institucion):
+    inst = SeCatInstitucion.objects.get(rowid_institucion = rowid_institucion)
+    form = FormInstitucion(instance=inst)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormInstitucion(request.POST, instance = inst)
+        if form.is_valid():
+            form.save()  #Guarda los cambios
+            messages.info(request, "¡Instituciónactualizada con exito!")
+            return redirect('vista_instituciones') #retorna despues de actualizar
+        else:
+            return render(request, "controlEscolar/catalogos/empleados/GestionInstituciones/ActualizarInstituciones.html", {"form" : form})#envia al detalle con los campos no validos
+    return render(request, "controlEscolar/catalogos/empleados/GestionInstituciones/ActualizarInstituciones.html", {"form" : form})#envia al detalle para actualizar
+# primera de pdf posible imprimir / Funciona con la misma funcion en utils
+class Export_print_EmpCar(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaInstituciones = SeCatInstitucion.objects.filter(estatus_ins="A")
+        data = {
+            'count': listaInstituciones.count(),
+            'instucion': listaInstituciones
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionInstituciones/ListaInstituciones.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Clase para crear Pdf / Funciona con la misma funcion en utils
+class Export_pdf_EmpCar(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaInstituciones = SeCatInstitucion.objects.filter(estatus_ins="A")
+        data = {
+            'count': listaInstituciones.count(),
+            'instucion': listaInstituciones
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionInstituciones/ListaInstituciones.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaInstituciones.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises a CSV sin libreria 
+@login_required
+def export_csv_EmpCar (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaInstituciones.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Clave', 'Institucion', 'Abreviacion', 'Estatus'])
+    listaInstituciones = SeCatInstitucion.objects.filter(estatus_ins="A")
+    for inst in listaInstituciones:
+        writer.writerow([inst.id_institucion, inst.descri_largo_ins, inst.descri_corto_ins, inst.estatus_ins])
+    return response
+# Exportar paises a xlwt sin con la libreria XLWT 
+@login_required
+def export_xlwt_EmpCar (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaInstituciones.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Instituciones')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Clave', 'Institucion', 'Abreviacion', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatInstitucion.objects.filter(estatus_ins="A").values_list('id_institucion','descri_largo_ins','descri_corto_ins','estatus_ins')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response

@@ -1370,9 +1370,6 @@ class SeCatUniversidad(models.Model):
     telefono1_uni = models.CharField(max_length=15)
     telefono2_uni = models.CharField(max_length=15, blank=True, null=True)
     telefono3_uni = models.CharField(max_length=15, blank=True, null=True)
-    fax1_uni = models.CharField(max_length=15, blank=True, null=True)
-    fax2_uni = models.CharField(max_length=15, blank=True, null=True)
-    fax3_uni = models.CharField(max_length=15, blank=True, null=True)
     ext1_uni = models.CharField(max_length=7, blank=True, null=True)
     ext2_uni = models.CharField(max_length=7, blank=True, null=True)
     ext3_uni = models.CharField(max_length=7, blank=True, null=True)
@@ -2245,7 +2242,7 @@ class SeTabEgresado(models.Model):
 class SeTabEmpCar(models.Model):
     rowid_emp_car = models.IntegerField(primary_key=True)
     rowid_car = models.ForeignKey(SeCatEmpleado, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
-    rowid_empleado = models.IntegerField(blank=True, null=True)
+    rowid_empleado = models.IntegerField(SeCatEmpleado, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
     rowid_institucion = models.ForeignKey(SeCatInstitucion, models.DO_NOTHING, db_column='rowid_institucion', blank=True, null=True)
     descri_corto_car_emp = models.CharField(max_length=10, blank=True, null=True)
     descri_largo_car_emp = models.CharField(max_length=50, blank=True, null=True)

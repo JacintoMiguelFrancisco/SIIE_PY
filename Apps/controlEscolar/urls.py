@@ -5,19 +5,19 @@ from . import views
 urlpatterns = [
 # CRUD PAISES
     #Vista maestra los registros con Status=A / Guarda los datos si es POST / Si es una peticion GET Busca los registros con el search / Manda los datos de la paguinacion
-    path('vistaPaises/', views.vistaPaises, name="vistaPaises"), 
+    path('vista-paises/', views.vistaPaises, name="vista_paises"), 
     # Actualiza el status de A a B / Elimina segun xD
-    path('eliminarPais/<int:rowid_pais>/', views.eliminarPais, name="eliminar-pais"),
+    path('eliminar-pais/<int:rowid_pais>/', views.eliminarPais, name="eliminar_pais"),
     # Actualiza los campos Nombre y abreviacion
-    path('vistaPaises/<int:rowid_pais>/', views.vista_paises_detail, name="pais-detail"),
+    path('vista-paises/<int:rowid_pais>/', views.vista_paises_detail, name="vista_pais"),
     # Exporta la lista de los paises en PDF
-    path('export_pdf_paises/', views.Export_pdf_paises.as_view(), name="export-pdf-paises"),
+    path('export-pdf-paises/', views.Export_pdf_paises.as_view(), name="export_pdf_paises"),
     # Exporta la lista de los paises en CSV
-    path('export_csv_paises/', views.export_csv_paises, name="export-csv-paises" ),
+    path('export-csv-paises/', views.export_csv_paises, name="export_csv_paises" ),
      # Exporta la lista de los paises en XLWT
-    path('export_xlwt_paises/', views.export_xlwt_paises, name="export-xlwt-paises"),
+    path('export-xlwt-paises/', views.export_xlwt_paises, name="export_xlwt_paises"),
     # Manda la pre-visualizacion para imprimir
-    path('export_print_paises/', views.Export_print_paises.as_view(), name="export-print-paises"),
+    path('export-print-paises/', views.Export_print_paises.as_view(), name="export_print_paises"),
     # Vista de pre-visualizacion PFD solo para pruebas
     path('listaPaises/', views.listaPaises),
 # CRUD Estados
@@ -180,4 +180,12 @@ urlpatterns = [
     path('export-csv-instituciones/', views.export_csv_instituciones, name="export_csv_instituciones"),
     path('export-xlwt-instituciones/', views.export_xlwt_instituciones, name="export_xlwt_instituciones"),
     path('export-print-instituciones/', views.Export_print_instituciones.as_view(), name="export_print_instituciones"),
+# CRUD EmpCar
+    path('vista-EmpCar/', views.vistaEmpCar, name="vista_EmpCar"), 
+    path('eliminar-EmpCar/<int:rowid_institucion>/', views.eliminarEmpCar, name="eliminar_EmpCar"),
+    path('vista-EmpCar/<int:rowid_institucion>/', views.vista_EmpCar_detail, name="vista_EmpCar"),
+    path('export-pdf-EmpCar/', views.Export_pdf_EmpCar.as_view(), name="export_pdf_EmpCar"),
+    path('export-csv-EmpCar/', views.export_csv_EmpCar, name="export_csv_EmpCar"),
+    path('export-xlwt-EmpCar/', views.export_xlwt_EmpCar, name="export_xlwt_EmpCar"),
+    path('export-print-EmpCar/', views.Export_print_EmpCar.as_view(), name="export_print_EmpCar"),
 ]
