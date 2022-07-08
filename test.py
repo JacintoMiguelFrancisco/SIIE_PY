@@ -728,7 +728,6 @@ class SeCatColonia(models.Model):
     descrip_corto_col = models.CharField(max_length=10)
     estatus_col = models.CharField(max_length=1, blank=True, null=True)
     codposcol = models.CharField(max_length=5, blank=True, null=True)
-    num_clinica_2 = models.CharField(max_length=5, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -757,6 +756,7 @@ class SeCatDeptoEmp(models.Model):
     descri_largo_dep_emp = models.CharField(max_length=50, blank=True, null=True)
     titular_depto = models.CharField(max_length=60, blank=True, null=True)
     clave_ser = models.IntegerField(blank=True, null=True)
+    estatus_depto = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -772,8 +772,6 @@ class SeCatDivision(models.Model):
     representante_div = models.CharField(max_length=50)
     telefono_1_div = models.CharField(max_length=15, blank=True, null=True)
     telefono_2_div = models.CharField(max_length=15, blank=True, null=True)
-    fax1_div = models.CharField(max_length=15, blank=True, null=True)
-    fax2_div = models.CharField(max_length=15, blank=True, null=True)
     extension1_div = models.CharField(max_length=7, blank=True, null=True)
     extension2_div = models.CharField(max_length=7, blank=True, null=True)
     mail_div = models.CharField(max_length=25, blank=True, null=True)

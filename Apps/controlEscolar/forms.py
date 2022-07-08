@@ -3,7 +3,7 @@ from django import forms
 
 from .models import (SeCatPais, SeCatEstado,SeCatMunicipioDelegacion, SeCatColonia, SeCatUniversidad,SeCatNivelAcademico, SeCatPlaza,SeCatAreaBachillerato, 
                     SeCatTipoBajas,SeCatMedioDifusion,SeCatBecas, SeCatTipoEscuela, SeCatTipoCambio, 
-                    SeCatCarrera,SeCatIndicador, SeCatPlaEstudio, SeCatGrado)
+                    SeCatCarrera,SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades,SeCatInstitucion)
 
 ##########################  Catalogo #################################
 # Form Paises En este formulario se agrega y tiene habilitado el campo de id
@@ -141,6 +141,112 @@ class FormColonias(forms.ModelForm):
             'descrip_corto_col': 'Abreviatura *',
             'codposcol': 'Codigo Postal.',
         }
+
+
+# FORM Adscripciones
+class FormAdscripcion(forms.ModelForm):
+    class Meta:
+        model = SeCatDeptoEmp
+        fields = '__all__'
+        exclude = ('rowid_depto', 'estatus_depto')          
+        widgets = {
+            'id_depto': forms.TextInput(attrs={'class': 'form-control',
+                                            'required' : 'True',
+                                             'placeholder': 'Ingrese la clave',
+                                            'style' : 'border-color:#21B64A;'
+                                            }),
+            'conse_depto': forms.NumberInput(attrs={'class': 'form-control',
+                                                'required' : 'True',
+                                                'placeholder': 'Ingrese el num. consecutivo',
+                                                'style' : 'border-color:#21B64A;'
+                                                }),
+            'descri_largo_dep_emp': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese el nombre departamento.',
+                                                        'style' : 'border-color:#21B64A;'                                                        
+                                                        }),
+            'descri_corto_dep_emp': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese la abreviatura.',
+                                                        'style' : 'border-color:#21B64A;'                                                        
+                                                        }),
+            'titular_depto': forms.TextInput(attrs={'class': 'form-control',
+                                                'placeholder': 'Ingrese el Titular.',
+                                                'style' : 'border-color:#21B64A;'                                                
+                                                }),
+            'clave_ser': forms.TextInput(attrs={'class': 'form-control',
+                                                'placeholder': 'Ingrese la Clave servicio.',
+                                                'style' : 'border-color:#21B64A;'                                                
+                                                }),
+        }
+        labels = {
+            'id_depto': 'Clave.depto *',
+            'conse_depto': 'Consecutivo.depto *',
+            'descri_largo_dep_emp': 'Nombre departamento *',
+            'descri_corto_dep_emp': 'Abreviatura *',
+            'titular_depto': 'Titular.',
+            'clave_ser': 'Clave servicio.',
+        }
+# FORM Actividades
+class FormActividades(forms.ModelForm):
+    class Meta:
+        model = SeCatActividades
+        fields = '__all__'
+        exclude = ('rowid_actividad', 'estatus_act')          
+        widgets = {
+            'id_actividad': forms.NumberInput(attrs={'class': 'form-control',
+                                            'required' : 'True',
+                                             'placeholder': 'Ingrese la clave',
+                                            'style' : 'border-color:#21B64A;'
+                                            }),
+            'descri_largo_act': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese el nombre de la Actividad.',
+                                                        'style' : 'border-color:#21B64A;'                                                        
+                                                        }),
+            'descri_corto_act': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese la abreviatura.',
+                                                        'style' : 'border-color:#21B64A;'                                                        
+                                                        }),
+        }
+        labels = {
+            'id_actividad': 'Clave *',
+            'descri_largo_act': 'Actividad *',
+            'descri_corto_act': 'Abreviatura *',
+        }
+# FORM Institucion
+class FormInstitucion(forms.ModelForm):  
+    class Meta:
+        model = SeCatInstitucion
+        fields = '__all__'
+        exclude = ('rowid_institucion', 'estatus_ins')          
+        widgets = {
+            'id_institucion': forms.NumberInput(attrs={'class': 'form-control',
+                                            'required' : 'True',
+                                             'placeholder': 'Ingrese la clave',
+                                            'style' : 'border-color:#21B64A;'
+                                            }),
+            'descri_largo_ins': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese el nombre de la Institucion.',
+                                                        'style' : 'border-color:#21B64A;'                                                        
+                                                        }),
+            'descri_corto_ins': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese la abreviatura.',
+                                                        'style' : 'border-color:#21B64A;'                                                        
+                                                        }),
+        }
+        labels = {
+            'id_institucion': 'Clave *',
+            'descri_largo_ins': 'Institución *',
+            'descri_corto_ins': 'Abreviatura *',
+        }
+
+
+
+
 
 
 # Form Universidad

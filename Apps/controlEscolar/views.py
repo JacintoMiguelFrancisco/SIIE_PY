@@ -20,13 +20,13 @@ from django.contrib.auth.decorators import login_required
 #Models
 from .models import (SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia, SeCatUniversidad,SeCatNivelAcademico,SeCatPlaza,SeCatAreaBachillerato,
                     SeCatTipoBajas,SeCatMedioDifusion,SeCatBecas, SeCatTipoEscuela, SeCatTipoCambio,
-                    SeCatIndicador, SeCatPlaEstudio, SeCatGrado)
+                    SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades,SeCatInstitucion)
 #Views
 from django.views.generic import View
 #formularios
 from .forms import (FormPaises, FormEstados, FormMunicipiosDelegaciones, FormColonias, FormUniversidad, FormNivAca, FormPlaza, FormAreaBachi,FormTipoBajas,
                     FormMediosDifusion, FormTiposEscuelas,FormBecas,FormTipoCambio,
-                    FormsIndicador, FormsPlaE, FormsGrados)
+                    FormsIndicador, FormsPlaE, FormsGrados, FormAdscripcion, FormActividades, FormInstitucion)
 
 # Create your views here.
 
@@ -571,6 +571,12 @@ def listaColonias(request):
     # listaPaises=SeCatPais.objects.filter(estatus_pais="A") 
     return render(request, "controlEscolar/catalogos/direcciones/GestionColonias/listaColonias.html", {"colonias":listaColonias})
 
+
+
+
+
+
+####  Viejo modelo #######
 ##############################################   Universidades   ##################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
@@ -2167,3 +2173,381 @@ def export_xlwt_grados (request):
 # Prueba
 def listaEjemplo(request):
     return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/capturaAspirantes.html")
+
+
+
+
+
+
+
+
+##############################################   Adscripcion   #########################################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaAdscripciones(request):
+    listaAdscripcion = SeCatDeptoEmp.objects.filter(estatus_depto="A").order_by('rowid_depto')
+    contador_id = listaAdscripcion.count() 
+    page = request.GET.get('page', 1)  
+    try:  
+        paginator = Paginator(listaAdscripcion, 7)
+        listaAdscripcion = paginator.page(page)
+    except: 
+        raise Http404
+    if request.method == 'POST': 
+        form = FormAdscripcion(request.POST) 
+        if form.is_valid(): 
+            ads = form.save(commit=False)
+            ultimo_id = SeCatDeptoEmp.objects.all().order_by('rowid_depto').last() 
+            ads.rowid_depto = ultimo_id.rowid_depto + 1 
+            ads.save() 
+            messages.success(request, "¡Adscripcion agregado con exito!")       
+            return redirect('vista_adscripciones') 
+        else: 
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
+            return render(request, "controlEscolar/catalogos/empleados/GestionAdscripciones/GestionAdscripciones.html",{'entity' : listaAdscripcion,'paginator' : paginator,'FormAdscripcion' : form,'contador': contador_id})       
+    elif request.method == 'GET': 
+        busqueda = request.GET.get("search_adscripcion", None) 
+        if busqueda: 
+            listaAdscripcion = SeCatDeptoEmp.objects.filter( 
+                Q(descri_largo_dep_emp__icontains = busqueda), 
+                Q(estatus_depto__icontains = "A") 
+            ).distinct()
+    form = FormAdscripcion()  
+    data = { 
+        'entity' : listaAdscripcion,
+        'paginator' : paginator,
+        'FormAdscripcion' : form,
+        'contador': contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/empleados/GestionAdscripciones/GestionAdscripciones.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarAdscripciones(request, rowid_depto):
+    try:
+        ads = SeCatDeptoEmp.objects.get(rowid_depto=rowid_depto)
+        ads.estatus_depto = "B"
+    except SeCatDeptoEmp.DoesNotExist:
+        raise Http404("La adscripcion no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        messages.warning(request, "¡Adscripcion eliminada con exito!")
+        ads.save()
+        return redirect('vista_adscripciones')
+    return render(request, "controlEscolar/catalogos/empleados/GestionAdscripciones/BorrarAdscripciones.html", {"Adscripcion": ads})
+# Modifica un registro
+@login_required
+def vista_adscripciones_detail(request, rowid_depto):
+    ads = SeCatDeptoEmp.objects.get(rowid_depto=rowid_depto)
+    form = FormAdscripcion(instance=ads)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormAdscripcion(request.POST, instance = ads)
+        if form.is_valid():
+            form.save()  #Guarda los cambios
+            messages.info(request, "¡Adscripcion actualizado con exito!")
+            return redirect('vista_adscripciones') #retorna despues de actualizar
+        else:
+            return render(request, "controlEscolar/catalogos/empleados/GestionAdscripciones/ActualizarAdscripciones.html", {"Adscripcion" : form})#envia al detalle con los campos no validos
+    return render(request, "controlEscolar/catalogos/empleados/GestionAdscripciones/ActualizarAdscripciones.html", {"Adscripcion" : form})#envia al detalle para actualizar
+# primera de pdf posible imprimir / Funciona con la misma funcion en utils
+class Export_print_adscripcion(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaAdscripcion=SeCatDeptoEmp.objects.filter(estatus_depto ="A") 
+        data = {
+            'count': listaAdscripcion.count(),
+            'asc': listaAdscripcion
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionAdscripciones/ListaAdscripciones.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Clase para crear Pdf / Funciona con la misma funcion en utils
+class Export_pdf_adscripcion(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaAdscripcion=SeCatDeptoEmp.objects.filter(estatus_depto ="A")  
+        data = {
+            'count': listaAdscripcion.count(),
+            'asc': listaAdscripcion
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionAdscripciones/ListaAdscripciones.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaAdscripciones.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises a CSV sin libreria 
+@login_required
+def export_csv_adscripcion (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaAdscripcion.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Clave', 'Consecutivo', 'Departamento', 'Abreviacion', 'Titular', 'Clave servicio', 'Estatus'])
+    listaAdscripcion=SeCatDeptoEmp.objects.filter(estatus_depto ="A")  
+    for asc in listaAdscripcion:
+        writer.writerow([asc.id_depto, asc.conse_depto, asc.descri_largo_dep_emp, asc.descri_corto_dep_emp, asc.titular_depto, asc.clave_ser, asc.estatus_depto])
+    return response
+# Exportar paises a xlwt sin con la libreria XLWT 
+@login_required
+def export_xlwt_adscripcion (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaAdscripcion.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Adscripcion')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Clave', 'Consecutivo', 'Departamento', 'Abreviacion', 'Titular', 'Clave servicio', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatDeptoEmp.objects.filter(estatus_depto="A").values_list('id_depto','conse_depto','descri_largo_dep_emp','descri_corto_dep_emp', 'titular_depto', 'clave_ser', 'estatus_depto')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+##############################################   Actididades   #########################################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaActididades(request):
+    listaActividades = SeCatActividades.objects.filter(estatus_act="A").order_by('rowid_actividad')
+    contador_id = listaActividades.count() 
+    page = request.GET.get('page', 1)  
+    try:  
+        paginator = Paginator(listaActividades, 7)
+        listaActividades = paginator.page(page)
+    except: 
+        raise Http404
+    if request.method == 'POST': 
+        form = FormActividades(request.POST) 
+        if form.is_valid(): 
+            act = form.save(commit=False)
+            ultimo_id = SeCatActividades.objects.all().order_by('rowid_actividad').last() 
+            act.rowid_actividad = ultimo_id.rowid_actividad + 1 
+            act.save() 
+            messages.success(request, "¡Actividad agregada con exito!")       
+            return redirect('vista_actividades') 
+        else: 
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
+            return render(request, "controlEscolar/catalogos/empleados/GestionActividades/GestionActividades.html",{'entity' : listaActividades,'paginator' : paginator,'FormActividades' : form,'contador': contador_id})       
+    elif request.method == 'GET': 
+        busqueda = request.GET.get("search_actividad", None) 
+        if busqueda: 
+            listaActividades = SeCatActividades.objects.filter( 
+                Q(descri_largo_act__icontains = busqueda), 
+                Q(estatus_act__icontains = "A") 
+            ).distinct()
+    form = FormActividades()  
+    data = { 
+        'entity' : listaActividades,
+        'paginator' : paginator,
+        'FormActividades' : form,
+        'contador': contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/empleados/GestionActividades/GestionActividades.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarActididades(request, rowid_actividad):
+    try:
+        act = SeCatActividades.objects.get(rowid_actividad = rowid_actividad)
+        act.estatus_act = "B"
+    except SeCatActividades.DoesNotExist:
+        raise Http404("La Actividad no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        messages.warning(request, "¡Actividad eliminada con exito!")
+        act.save()
+        return redirect('vista_actividades')
+    return render(request, "controlEscolar/catalogos/empleados/GestionActividades/BorrarActividades.html", {"Actividad": act})
+# Modifica un registro
+@login_required
+def vista_actididades_detail(request, rowid_actividad):
+    act = SeCatActividades.objects.get(rowid_actividad=rowid_actividad)
+    form = FormActividades(instance=act)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormActividades(request.POST, instance = act)
+        if form.is_valid():
+            form.save()  #Guarda los cambios
+            messages.info(request, "¡Actividad actualizada con exito!")
+            return redirect('vista_actividades') #retorna despues de actualizar
+        else:
+            return render(request, "controlEscolar/catalogos/empleados/GestionActividades/ActualizarActividades.html", {"Actividad" : form})#envia al detalle con los campos no validos
+    return render(request, "controlEscolar/catalogos/empleados/GestionActividades/ActualizarActividades.html", {"Actividad" : form})#envia al detalle para actualizar
+# primera de pdf posible imprimir / Funciona con la misma funcion en utils
+class Export_print_actididades(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaActividades=SeCatActividades.objects.filter(estatus_act ="A") 
+        data = {
+            'count': listaActividades.count(),
+            'asc': listaActividades
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionActividades/ListaActividades.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Clase para crear Pdf / Funciona con la misma funcion en utils
+class Export_pdf_actididades(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaActividades=SeCatActividades.objects.filter(estatus_act ="A")  
+        data = {
+            'count': listaActividades.count(),
+            'asc': listaActividades
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionActividades/ListaActividades.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaActividades.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises a CSV sin libreria 
+@login_required
+def export_csv_actididades (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaActividades.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Clave', 'Actividad', 'Abreviacion', 'Estatus'])
+    listaActividades=SeCatActividades.objects.filter(estatus_act ="A")  
+    for act in listaActividades:
+        writer.writerow([act.id_actividad, act.descri_largo_act, act.descri_corto_act, act.estatus_act])
+    return response
+# Exportar paises a xlwt sin con la libreria XLWT 
+@login_required
+def export_xlwt_actididades (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaActividades.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Actividades')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Clave', 'Actividad', 'Abreviacion', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatActividades.objects.filter(estatus_act="A").values_list('id_actividad','descri_largo_act','descri_corto_act','estatus_act')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+
+##############################################   Instituciones   #########################################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaInstituciones(request):
+    listaInstituciones = SeCatInstitucion.objects.filter(estatus_ins="A").order_by('rowid_institucion')
+    contador_id = listaInstituciones.count() 
+    page = request.GET.get('page', 1)  
+    try:  
+        paginator = Paginator(listaInstituciones, 7)
+        listaInstituciones = paginator.page(page)
+    except: 
+        raise Http404
+    if request.method == 'POST': 
+        form = FormInstitucion(request.POST) 
+        if form.is_valid(): 
+            inst = form.save(commit=False)
+            ultimo_id = SeCatInstitucion.objects.all().order_by('rowid_institucion').last() 
+            inst.rowid_institucion = ultimo_id.rowid_institucion + 1 
+            inst.save() 
+            messages.success(request, "¡Institucion agregada con exito!")       
+            return redirect('vista_instituciones') 
+        else: 
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
+            return render(request, "controlEscolar/catalogos/empleados/GestionInstituciones/GestionInstituciones.html",{'entity' : listaInstituciones,'paginator' : paginator,'form' : form,'contador': contador_id})       
+    elif request.method == 'GET': 
+        busqueda = request.GET.get("search_institucion", None) 
+        if busqueda: 
+            listaInstituciones = SeCatInstitucion.objects.filter( 
+                Q(descri_largo_ins__icontains = busqueda), 
+                Q(estatus_ins__icontains = "A") 
+            ).distinct()
+    form = FormInstitucion()  
+    data = { 
+        'entity' : listaInstituciones,
+        'paginator' : paginator,
+        'form' : form,
+        'contador': contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/empleados/GestionInstituciones/GestionInstituciones.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarInstituciones(request, rowid_institucion):
+    try:
+        inst = SeCatInstitucion.objects.get(rowid_institucion = rowid_institucion)
+        inst.estatus_ins = "B"
+    except SeCatInstitucion.DoesNotExist:
+        raise Http404("La Institución no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        messages.warning(request, "¡Institución eliminada con exito!")
+        inst.save()
+        return redirect('vista_instituciones')
+    return render(request, "controlEscolar/catalogos/empleados/GestionInstituciones/BorrarInstituciones.html", {"Institucion": inst})
+# Modifica un registro
+@login_required
+def vista_instituciones_detail(request, rowid_institucion):
+    inst = SeCatInstitucion.objects.get(rowid_institucion = rowid_institucion)
+    form = FormInstitucion(instance=inst)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormInstitucion(request.POST, instance = inst)
+        if form.is_valid():
+            form.save()  #Guarda los cambios
+            messages.info(request, "¡Instituciónactualizada con exito!")
+            return redirect('vista_instituciones') #retorna despues de actualizar
+        else:
+            return render(request, "controlEscolar/catalogos/empleados/GestionInstituciones/ActualizarInstituciones.html", {"form" : form})#envia al detalle con los campos no validos
+    return render(request, "controlEscolar/catalogos/empleados/GestionInstituciones/ActualizarInstituciones.html", {"form" : form})#envia al detalle para actualizar
+# primera de pdf posible imprimir / Funciona con la misma funcion en utils
+class Export_print_instituciones(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaInstituciones = SeCatInstitucion.objects.filter(estatus_ins="A")
+        data = {
+            'count': listaInstituciones.count(),
+            'instucion': listaInstituciones
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionInstituciones/ListaInstituciones.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Clase para crear Pdf / Funciona con la misma funcion en utils
+class Export_pdf_instituciones(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaInstituciones = SeCatInstitucion.objects.filter(estatus_ins="A")
+        data = {
+            'count': listaInstituciones.count(),
+            'instucion': listaInstituciones
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionInstituciones/ListaInstituciones.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaInstituciones.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises a CSV sin libreria 
+@login_required
+def export_csv_instituciones (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaInstituciones.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Clave', 'Institucion', 'Abreviacion', 'Estatus'])
+    listaInstituciones = SeCatInstitucion.objects.filter(estatus_ins="A")
+    for inst in listaInstituciones:
+        writer.writerow([inst.id_institucion, inst.descri_largo_ins, inst.descri_corto_ins, inst.estatus_ins])
+    return response
+# Exportar paises a xlwt sin con la libreria XLWT 
+@login_required
+def export_xlwt_instituciones (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaInstituciones.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Instituciones')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Clave', 'Institucion', 'Abreviacion', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatInstitucion.objects.filter(estatus_ins="A").values_list('id_institucion','descri_largo_ins','descri_corto_ins','estatus_ins')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+

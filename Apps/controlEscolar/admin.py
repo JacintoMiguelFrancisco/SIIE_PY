@@ -6,7 +6,7 @@ from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 from .models import (SeCatPais, SeCatEstado, SeCatMunicipioDelegacion, SeCatColonia, SeCatUniversidad, SeCatNivelAcademico, SeCatPlaza, SeCatAreaBachillerato, 
                     SeCatTipoBajas,  SeCatBecas, SeCatMedioDifusion,SeCatTipoEscuela,SeCatTipoCambio,
-                    SeCatIndicador, SeCatPlaEstudio, SeCatGrado)
+                    SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion)
 
 ##################### Admin de Paises  ################# 
 class PaisResources(resources.ModelResource):
@@ -40,6 +40,9 @@ class ColoniaAdmin(admin.ModelAdmin):
     list_display = ('rowid_col','rowid_mundel','id_col','descri_largo_col','descrip_corto_col','estatus_col','codposcol')
     search_fields = ['id_col', 'descri_largo_col']
     list_filter = ['estatus_col']
+
+
+
 
 ##################### Admin Universidad ################# 
 @admin.register(SeCatUniversidad)
@@ -126,3 +129,26 @@ class GradoAdmin(admin.ModelAdmin):
     list_display = ('id_grado','descri_corto_gra','estatus_gra')
     search_fields = ['id_grado']
     list_filter = ['estatus_gra'] 
+
+
+
+##################### Adscripciones  ################# 
+@admin.register(SeCatDeptoEmp)
+class AdscripcionesAdmin(admin.ModelAdmin):
+    list_display = ('rowid_depto','id_depto','conse_depto','descri_largo_dep_emp','descri_corto_dep_emp','titular_depto','clave_ser','estatus_depto')
+    search_fields = ['descri_largo_dep_emp']
+    list_filter = ['estatus_depto'] 
+
+##################### Actividades  ################# 
+@admin.register(SeCatActividades)
+class ActividadesAdmin(admin.ModelAdmin):
+    list_display = ('rowid_actividad','id_actividad','descri_largo_act','descri_corto_act','estatus_act')
+    search_fields = ['descri_largo_act']
+    list_filter = ['estatus_act'] 
+
+##################### Actividades  ################# 
+@admin.register(SeCatInstitucion)
+class InstitucionAdmin(admin.ModelAdmin):
+    list_display = ('rowid_institucion','id_institucion','descri_largo_ins','descri_corto_ins','estatus_ins')
+    search_fields = ['descri_largo_ins']
+    list_filter = ['estatus_ins'] 

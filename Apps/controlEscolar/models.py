@@ -47,23 +47,6 @@ class SeCatMunicipioDelegacion(models.Model):
     def __str__(self):
         texto="{0} - {1} "
         return texto.format(self.id_mundel, self.descri_largo_mundel)
-# Se requerian Clinicas para aspirantes y universidad
-class SeCatClinica(models.Model):
-    id_clinica = models.CharField(primary_key=True, max_length=5)
-    descri_larga_cli = models.CharField(max_length=50, blank=True, null=True)
-    descri_corta_cli = models.CharField(max_length=10, blank=True, null=True)
-    direcc_cli = models.CharField(max_length=60, blank=True, null=True)
-    rfc_cli = models.CharField(max_length=15, blank=True, null=True)
-    tel1_cli = models.CharField(max_length=15, blank=True, null=True)
-    tel2_cli = models.CharField(max_length=15, blank=True, null=True)
-    fax1_cli = models.CharField(max_length=15, blank=True, null=True)
-    email_cli = models.CharField(max_length=40, blank=True, null=True)
-    codpclini = models.IntegerField(blank=True, null=True)
-    estatus_clini = models.CharField(max_length=1, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_clinica'
 ############################################## Tabla Colonias ############################################
 class SeCatColonia(models.Model):
     rowid_col = models.AutoField(primary_key=True)
@@ -79,8 +62,54 @@ class SeCatColonia(models.Model):
         db_table = 'se_cat_colonia'
 
     def __str__(self):
-        texto="{0}"
-        return texto.format(self.id_col)
+        texto="{0}-{1}"
+        return texto.format(self.id_col, self.descri_largo_col)
+
+
+
+############################################## Tabla Adscripciones ############################################
+class SeCatDeptoEmp(models.Model):
+    rowid_depto = models.AutoField(primary_key=True)
+    id_depto = models.CharField(max_length=3)
+    conse_depto = models.IntegerField()
+    descri_largo_dep_emp = models.CharField(max_length=50, blank=True, null=True)
+    descri_corto_dep_emp = models.CharField(max_length=10, blank=True, null=True)
+    titular_depto = models.CharField(max_length=60, blank=True, null=True)
+    clave_ser = models.IntegerField(blank=True, null=True)
+    estatus_depto = models.CharField(max_length=1, blank=True, null=True, default="A")
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_depto_emp'
+############################################## Tabla Actividades ############################################
+class SeCatActividades(models.Model):
+    rowid_actividad = models.AutoField(primary_key=True)
+    id_actividad = models.IntegerField()
+    descri_largo_act = models.CharField(max_length=50, blank=True, null=True)
+    descri_corto_act = models.CharField(max_length=10, blank=True, null=True)
+    estatus_act = models.CharField(max_length=1, blank=True, null=True, default="A")
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_actividades'
+############################################## Tabla Instituciones de Egreso ############################################
+class SeCatInstitucion(models.Model):
+    rowid_institucion = models.AutoField(primary_key=True)
+    id_institucion = models.IntegerField()
+    descri_largo_ins = models.CharField(max_length=50, blank=True, null=True)
+    descri_corto_ins = models.CharField(max_length=10, blank=True, null=True)
+    estatus_ins = models.CharField(max_length=1, blank=True, null=True, default="A")
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_institucion'
+
+
+
+
+
+
+
 ############################################## Tabla Universidades ###################################
 class SeCatUniversidad(models.Model):
     id_uni = models.IntegerField(primary_key=True)
@@ -114,8 +143,6 @@ class SeCatUniversidad(models.Model):
     class Meta:
         managed = False
         db_table = 'se_cat_universidad'
-
-        
 ############################################## Tabla Nivel Academico ###################################
 class SeCatNivelAcademico(models.Model):
     id_academico = models.IntegerField(primary_key=True)
@@ -408,6 +435,25 @@ class SeTabAspirante(models.Model):
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+
+
+# Se requerian Clinicas para aspirantes y universidad
+class SeCatClinica(models.Model):
+    id_clinica = models.CharField(primary_key=True, max_length=5)
+    descri_larga_cli = models.CharField(max_length=50, blank=True, null=True)
+    descri_corta_cli = models.CharField(max_length=10, blank=True, null=True)
+    direcc_cli = models.CharField(max_length=60, blank=True, null=True)
+    rfc_cli = models.CharField(max_length=15, blank=True, null=True)
+    tel1_cli = models.CharField(max_length=15, blank=True, null=True)
+    tel2_cli = models.CharField(max_length=15, blank=True, null=True)
+    fax1_cli = models.CharField(max_length=15, blank=True, null=True)
+    email_cli = models.CharField(max_length=40, blank=True, null=True)
+    codpclini = models.IntegerField(blank=True, null=True)
+    estatus_clini = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_clinica'
 
 
 class AuthGroup(models.Model):
@@ -1222,17 +1268,6 @@ class SeAcuPeriodos(models.Model):
         db_table = 'se_acu_periodos'
         unique_together = (('id_uni', 'id_div', 'id_car', 'anio_acu', 'periodo_acu', 'evento_acu', 'clave_acu', 'generacion_acu', 'rondas_acu'), ('id_uni', 'id_div', 'id_car', 'anio_acu', 'periodo_acu', 'evento_acu', 'clave_acu', 'generacion_acu', 'rondas_acu'),)
 
-
-class SeCatActividades(models.Model):
-    id_actividad = models.IntegerField(primary_key=True)
-    descri_corto_act = models.CharField(max_length=10, blank=True, null=True)
-    descri_largo_act = models.CharField(max_length=50, blank=True, null=True)
-    estatus_act = models.CharField(max_length=1, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_actividades'
-
 class SeCatAreas(models.Model):
     id_empresa = models.OneToOneField('SeCatEmpresas', models.DO_NOTHING, db_column='id_empresa', primary_key=True)
     id_area = models.IntegerField()
@@ -1351,21 +1386,6 @@ class SeCatDepartamentos(models.Model):
         managed = False
         db_table = 'se_cat_departamentos'
         unique_together = (('id_empresa', 'id_area', 'id_departamento'), ('id_empresa', 'id_area', 'id_departamento'),)
-
-
-class SeCatDeptoEmp(models.Model):
-    id_depto = models.CharField(primary_key=True, max_length=3)
-    conse_depto = models.IntegerField()
-    descri_corto_dep_emp = models.CharField(max_length=10, blank=True, null=True)
-    descri_largo_dep_emp = models.CharField(max_length=50, blank=True, null=True)
-    titular_depto = models.CharField(max_length=60, blank=True, null=True)
-    clave_ser = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_depto_emp'
-        unique_together = (('id_depto', 'conse_depto'), ('id_depto', 'conse_depto'),)
-
 
 class SeCatDivision(models.Model):
     id_uni = models.OneToOneField('SeCatUniversidad', models.DO_NOTHING, db_column='id_uni', primary_key=True)
@@ -1601,15 +1621,7 @@ class SeCatGrupo(models.Model):
         db_table = 'se_cat_grupo'
         unique_together = (('id_grado', 'id_grupo'), ('id_grado', 'id_grupo'),)
 
-class SeCatInstitucion(models.Model):
-    id_institucion = models.IntegerField(primary_key=True)
-    descri_corto_ins = models.CharField(max_length=10, blank=True, null=True)
-    descri_largo_ins = models.CharField(max_length=50, blank=True, null=True)
-    estatus_ins = models.CharField(max_length=1, blank=True, null=True)
 
-    class Meta:
-        managed = False
-        db_table = 'se_cat_institucion'
 
 
 class SeCatMaterialLaboratorio(models.Model):

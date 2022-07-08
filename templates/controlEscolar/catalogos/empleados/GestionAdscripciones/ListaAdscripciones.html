@@ -1,0 +1,80 @@
+{% extends '../../../../base.html' %}
+
+{% block title %}Lista Adscripcion{% endblock title %}
+
+{% block body %}
+    <h2>Lista Adscripcion</h2>
+    <h3>Cantidad de Adscripcion: {{ count }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Clave</th>
+                <th class="cabecera">Consecutivo</th>
+                <th class="cabecera">Departamento</th>
+                <th class="cabecera">Abreviacion</th>
+                <th class="cabecera">Titular</th>
+                <th class="cabecera">Clave servicio</th>
+                <th class="cabecera">Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in asc %}
+            <tr >
+                <td>{{ a.id_depto }}</td>
+                <td>{{ a.conse_depto }}</td>
+                <td>{{ a.descri_largo_dep_emp }}</td>
+                <td>{{ a.descri_corto_dep_emp }}</td>
+                <td>{{ a.titular_depto }}</td>
+                <td>{{ a.clave_ser }}</td>
+                <td>{{ a.estatus_depto }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border: 2px solid #000;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: #000;
+             color: #eee;
+         }
+
+        {% comment %}    Esta linea se usa para cambiar la orientacion de la hoja de vertical a horizontal      
+         @page {
+            size: letter landscape;
+            margin: 0.5cm;
+            type: A4;
+        } {% endcomment %}
+    </style>
+
+{% endblock body %}
