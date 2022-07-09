@@ -128,9 +128,9 @@ class SeCatCarrera(models.Model):
         return texto.format(self.id_car, self.descri_largo_car, self.descri_corto_car, self.estatus_car)
 ############################################## Tabla Empleado se ocupa en carrera ############################################
 class SeCatEmpleado(models.Model):
-    rowid_car = models.OneToOneField(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', primary_key=True)
-    rowid_empleado = models.IntegerField()
+    rowid_empleado = models.IntegerField(primary_key=True)
     rowid_academico = models.ForeignKey('SeCatNivelAcademico', models.DO_NOTHING, db_column='rowid_academico', blank=True, null=True)
+    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
     rowid_depto = models.ForeignKey(SeCatDeptoEmp, models.DO_NOTHING, db_column='rowid_depto', blank=True, null=True)
     rowid_col = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='rowid_col', blank=True, null=True)
     rowid_puesto = models.ForeignKey('SeCatSueldos', models.DO_NOTHING, db_column='rowid_puesto', blank=True, null=True)
@@ -170,17 +170,15 @@ class SeCatEmpleado(models.Model):
     class Meta:
         managed = False
         db_table = 'se_cat_empleado'
-        unique_together = (('rowid_car', 'rowid_empleado'), ('rowid_car', 'rowid_empleado'),)
 
 ############################################## Tabla Carrera empleado ############################################
 class SeTabEmpCar(models.Model):
     rowid_emp_car = models.IntegerField(primary_key=True)
-    rowid_car = models.ForeignKey(SeCatEmpleado, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
+    rowid_empleado = models.ForeignKey(SeCatEmpleado, models.DO_NOTHING, db_column='rowid_empleado', blank=True, null=True)
     rowid_institucion = models.ForeignKey(SeCatInstitucion, models.DO_NOTHING, db_column='rowid_institucion', blank=True, null=True)
-    rowid_empleado = models.IntegerField(blank=True, null=True)
-    descri_largo_car_emp = models.CharField(max_length=50, blank=True, null=True)
     descri_corto_car_emp = models.CharField(max_length=10, blank=True, null=True)
-    estatus_inst = models.CharField(max_length=1, blank=True, null=True, default="A")
+    descri_largo_car_emp = models.CharField(max_length=50, blank=True, null=True)
+    estatus_inst = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -189,6 +187,9 @@ class SeTabEmpCar(models.Model):
     def __str__(self):
         texto="{0}-{1}"
         return texto.format(self.rowid_empleado, self.descri_largo_car_emp)
+
+
+
 
 
 

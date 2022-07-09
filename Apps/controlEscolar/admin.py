@@ -5,7 +5,7 @@ from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
 from .models import (SeCatPais, SeCatEstado, SeCatMunicipioDelegacion, SeCatColonia, SeCatUniversidad, SeCatNivelAcademico, SeCatPlaza, SeCatAreaBachillerato, 
-                    SeCatTipoBajas,  SeCatBecas, SeCatMedioDifusion,SeCatTipoEscuela,SeCatTipoCambio,
+                    SeCatTipoBajas,  SeCatBecas, SeCatMedioDifusion,SeCatTipoEscuela,SeCatTipoCambio,SeTabEmpCar,
                     SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion)
 
 ##################### Admin de Paises  ################# 
@@ -146,9 +146,16 @@ class ActividadesAdmin(admin.ModelAdmin):
     search_fields = ['descri_largo_act']
     list_filter = ['estatus_act'] 
 
-##################### Actividades  ################# 
+##################### Instituciones  ################# 
 @admin.register(SeCatInstitucion)
 class InstitucionAdmin(admin.ModelAdmin):
     list_display = ('rowid_institucion','id_institucion','descri_largo_ins','descri_corto_ins','estatus_ins')
     search_fields = ['descri_largo_ins']
     list_filter = ['estatus_ins'] 
+
+##################### SeTabEmpCar  ################# 
+@admin.register(SeTabEmpCar)
+class EmpCarnAdmin(admin.ModelAdmin):
+    list_display = ('rowid_emp_car','rowid_empleado','rowid_institucion','descri_corto_car_emp','descri_largo_car_emp',  'estatus_inst')
+    search_fields = ['descri_corto_car_emp']
+    list_filter = ['estatus_inst'] 

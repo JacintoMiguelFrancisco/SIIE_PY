@@ -250,17 +250,12 @@ class FormEmpCar(forms.ModelForm):
         fields = '__all__'
         exclude = ('rowid_emp_car', 'estatus_inst')          
         widgets = {
-            'rowid_car': forms.Select(attrs={'class': 'form-control',
+            'rowid_empleado': forms.Select(attrs={'class': 'form-control',
                                             'required' : 'True',
                                             'style' : 'border-color:#21B64A;'
                                             }),
             'rowid_institucion': forms.Select(attrs={'class': 'form-control',
                                             'required' : 'True',
-                                            'style' : 'border-color:#21B64A;'
-                                            }),
-            'rowid_empleado': forms.Select(attrs={'class': 'form-control',
-                                            'required' : 'True',
-                                            'placeholder': 'Ingrese el ID del Empleado.',
                                             'style' : 'border-color:#21B64A;'
                                             }),
             'descri_largo_car_emp': forms.TextInput(attrs={'class': 'form-control',
@@ -275,9 +270,8 @@ class FormEmpCar(forms.ModelForm):
                                                     }),
         }
         labels = {
-            'rowid_car': 'Carrera *',
+            'rowid_empleado': 'Empleado *',
             'rowid_institucion': 'Institución *',
-            'rowid_empleado': 'ID Empleado *',
             'descri_largo_car_emp': 'Nombre *',
             'descri_corto_car_emp': 'Abreviatura *',
         }
