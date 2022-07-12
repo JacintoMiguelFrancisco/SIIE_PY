@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'Apps.vinculacion',
     #estilos
     'django_bootstrap_icons',
+    'bootstrap5',
     #Importar y exportar
     'import_export',
 ]
@@ -196,7 +197,7 @@ LOGOUT_REDIRECT_URL = 'login'
 
 # Se configuro para desconectar el usuario en caso de no tener actividad
 AUTO_LOGOUT = {
-    'IDLE_TIME': timedelta(minutes=10), # Tiempo en que se desconecta la sesion por inactividad
+    'IDLE_TIME': timedelta(minutes=1), # Tiempo en que se desconecta la sesion por inactividad
     'REDIRECT_TO_LOGIN_IMMEDIATELY': True,
     'MESSAGE': 'La sesión ha expirado. Vuelve a iniciar sesión para continuar.',
 }

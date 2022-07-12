@@ -1,28 +1,26 @@
 {% extends '../../../../base.html' %}
 
-{% block title %}EmpCar{% endblock title %}
+{% block title %}Lista Área Bachillerato{% endblock title %}
 
 {% block body %}
-    <h2>Lista de EmpCar</h2>
-    <h3>Numero de EmpCar: {{ count }}</h3>
+    <h2>Lista Área Bachillerato</h2>
+    <h3>Cantidad de Áreas Bachillerato: {{ count }}</h3>
     <table>
         <thead>
             <tr>
-                <th class="cabecera">Institución</th>
-                <th class="cabecera">Nombre</th>
-                <th class="cabecera">Carrera</th>
-                <th class="cabecera">Abreviacion</th>
+                <th class="cabecera">Clave Área Bachillerato</th>
+                <th class="cabecera">Área Bachillerato</th>
+                <th class="cabecera">Abreviación</th>
                 <th class="cabecera">Estatus</th>
             </tr>
         </thead>
         <tbody>
-            {% for e in empcar %}
-            <tr>
-                <td>{{ e.rowid_institucion.descri_largo_ins }}</td>
-                <td>{{ e.rowid_empleado }}</td>
-                <td>{{ e.descri_largo_car_emp }}</td>
-                <td>{{ e.descri_corto_car_emp }}</td>
-                <td>{{ e.estatus_inst }}</td>
+            {% for p in areabachi %}
+            <tr >
+                <td>{{ p.id_area_bac }}</td>
+                <td>{{ p.descri_larga_bac }}</td>
+                <td>{{ p.descri_corta_bac }}</td>
+                <td>{{ p.estatus_bac }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -64,13 +62,6 @@
              background: #000;
              color: #eee;
          }
-
-        {% comment %}    Esta linea se usa para cambiar la orientacion de la hoja de vertical a horizontal      
-         @page {
-            size: letter landscape;
-            margin: 0.5cm;
-            type: A4;
-        } {% endcomment %}
     </style>
 
 {% endblock body %}

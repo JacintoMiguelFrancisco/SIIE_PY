@@ -8,11 +8,10 @@
     <table>
         <thead>
             <tr>
-                <th class="cabecera">Id</th>
-                <th class="cabecera">Tipo Escuela</th>
+                <th class="cabecera">Colonia</th>
+                <th class="cabecera">Clave Tipo Escuela</th>
+                <th class="cabecera">Nombre Tipo Escuela</th>
                 <th class="cabecera">Abreviación</th>
-                <th class="cabecera">Clave Estado</th>
-                <th class="cabecera">Calve Municipio</th>
                 <th class="cabecera">Nombre Institución</th>
                 <th class="cabecera">Nombre Plantel</th>
                 <th class="cabecera">Estatus</th>
@@ -21,11 +20,10 @@
         <tbody>
             {% for es in escuelas %}
             <tr >
+                <td>{{ es.rowid_col.descri_largo_col }}</td>
                 <td>{{ es.id_tipo_esc }}</td>
                 <td>{{ es.descri_largo_esc }}</td>
                 <td>{{ es.descri_corta_esc }}</td>
-                <td>{{ es.id_edo }}</td>
-                <td>{{ es.id_mundel }}</td>
                 <td>{{ es.institucion }}</td>
                 <td>{{ es.nombre_plantel }}</td>
                 <td>{{ es.estatus_esc }}</td>

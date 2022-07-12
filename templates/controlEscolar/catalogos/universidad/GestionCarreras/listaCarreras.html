@@ -1,28 +1,32 @@
 {% extends '../../../../base.html' %}
 
-{% block title %}EmpCar{% endblock title %}
+{% block title %}Lista Carreras{% endblock title %}
 
 {% block body %}
-    <h2>Lista de EmpCar</h2>
-    <h3>Numero de EmpCar: {{ count }}</h3>
+    <h2>Lista Carreras</h2>
+    <h3>Cantidad de Carreras: {{ count }}</h3>
     <table>
         <thead>
             <tr>
-                <th class="cabecera">Institución</th>
-                <th class="cabecera">Nombre</th>
+                <th class="cabecera">Division</th>
+                <th class="cabecera">ID Carrera</th>
                 <th class="cabecera">Carrera</th>
                 <th class="cabecera">Abreviacion</th>
+                <th class="cabecera">Descripcion</th>
+                <th class="cabecera">Ceneval</th>
                 <th class="cabecera">Estatus</th>
             </tr>
         </thead>
         <tbody>
-            {% for e in empcar %}
-            <tr>
-                <td>{{ e.rowid_institucion.descri_largo_ins }}</td>
-                <td>{{ e.rowid_empleado }}</td>
-                <td>{{ e.descri_largo_car_emp }}</td>
-                <td>{{ e.descri_corto_car_emp }}</td>
-                <td>{{ e.estatus_inst }}</td>
+            {% for c in car %}
+            <tr >
+                <td>{{ c.rowid_div.descri_larga_div }}</td>
+                <td>{{ c.id_car }}</td>
+                <td>{{ c.descri_largo_car }}</td>
+                <td>{{ c.descri_corto_car }}</td>
+                <td>{{ c.descri_largo_tit }}</td>
+                <td>{{ c.ceneval_car }}</td>
+                <td>{{ c.estatus_car }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -65,12 +69,12 @@
              color: #eee;
          }
 
-        {% comment %}    Esta linea se usa para cambiar la orientacion de la hoja de vertical a horizontal      
+        {% comment %}    Esta linea se usa para cambiar la orientacion de la hoja de vertical a horizontal    
          @page {
             size: letter landscape;
             margin: 0.5cm;
             type: A4;
-        } {% endcomment %}
+        }  {% endcomment %} 
     </style>
 
 {% endblock body %}

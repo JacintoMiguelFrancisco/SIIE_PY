@@ -9,16 +9,16 @@
         <div class="row justify-content-md-center">
             <div class="col col-12 col-sm-3 col-lg-3">
                 {% load bootstrap_icons %}
-                <a href="{% url 'export-csv-municipios' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+                <a href="{% url 'export_csv_municipios' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-xlwt-municipios' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+                <a href="{% url 'export_xlwt_municipios' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-pdf-municipios' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+                <a href="{% url 'export_pdf_municipios' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-print-municipios' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+                <a href="{% url 'export_print_municipios' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
 {% block search %}
 {% comment %} Busqueda por nombre {% endcomment %}
 <h1>Catálogo - Municipios/Delegaciones</h1>
-<form method="GET" action="{% url 'vistaMunicipios' %}">
+<form method="GET" action="{% url 'vista_municipios' %}">
     <div class="input-group mb-3 mt-4">
         <input type="search" class="form-control" placeholder="Escribe el nombre del Municipio/Delegación..." name="search_municipios">
         <div class="input-group-append">
@@ -79,10 +79,10 @@
             <td>{{ m.descri_corto_mundel }}</td>
             <td>{{ m.estatus_mundel }}</td>
             <td class="d-flex justify-content-evenly">
-                <a href="../vistaMunicipios/{{m.rowid_mundel}}/" class="btn btn-warning">
+                <a href="../vista-municipio/{{m.rowid_mundel}}/" class="btn btn-warning">
                     {% bs_icon 'pencil-square' size='1.5em'%}
                 </a>
-                <a href="../eliminarMunicipio/{{m.rowid_mundel}}/" class="btn btn-danger">
+                <a href="../eliminar-municipio/{{m.rowid_mundel}}/" class="btn btn-danger">
                     {% bs_icon 'trash' size='1.5em'%}
                 </a>
             </td>

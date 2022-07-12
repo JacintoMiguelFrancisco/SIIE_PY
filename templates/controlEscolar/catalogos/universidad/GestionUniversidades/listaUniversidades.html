@@ -8,19 +8,51 @@
     <table>
         <thead>
             <tr>
-                <th class="cabecera">Id</th>
-                <th class="cabecera">Universidad</th>
-                <th class="cabecera">Tel 1</th>
-                <th class="cabecera">Pag. Internet</th>
+                <th class="cabecera">Colonia</th>
+                <th class="cabecera">Id universidad</th>
+                <th class="cabecera">Nombre de la universidad</th>
+                <th class="cabecera">Tipo de organización</th>
+                <th class="cabecera">Dirección</th>
+                <th class="cabecera">RFC</th>
+                <th class="cabecera">Cod. Pos.</th>
+                <th class="cabecera">Teléfono 1</th>
+                <th class="cabecera">Teléfono 2</th>
+                <th class="cabecera">Teléfono 3 </th>
+                <th class="cabecera">Fax 1</th>
+                <th class="cabecera">Fax 2</th>
+                <th class="cabecera">Fax 3</th>
+                <th class="cabecera">Extensión 1</th>
+                <th class="cabecera">Extensión 2</th>
+                <th class="cabecera">Extensión 3</th>
+                <th class="cabecera">Email</th>
+                <th class="cabecera">Pagina Internet</th>
+                <th class="cabecera">Contacto</th>
+                <th class="cabecera">Estatus</th>
             </tr>
         </thead>
         <tbody>
             {% for u in uni %}
             <tr >
+                <td>{{ u.rowid_col }}</td>
                 <td>{{ u.id_uni }}</td>
                 <td>{{ u.nombre_uni }}</td>
+                <td>{{ u.tipo_org_uni }}</td>
+                <td>{{ u.direccion_uni }}</td>
+                <td>{{ u.rfc_uni }}</td>
+                <td>{{ u.codpos_uni }}</td>
                 <td>{{ u.telefono1_uni }}</td>
+                <td>{{ u.telefono2_uni }}</td>
+                <td>{{ u.telefono3_uni }}</td>
+                <td>{{ u.fax1_uni }}</td>
+                <td>{{ u.fax2_uni }}</td>
+                <td>{{ u.fax3_uni }}</td>
+                <td>{{ u.ext1_uni }}</td>
+                <td>{{ u.ext2_uni }}</td>
+                <td>{{ u.ext3_uni }}</td>
+                <td>{{ u.mail_uni }}</td>
                 <td>{{ u.pagina_internet_uni }}</td>
+                <td>{{ u.contacto_uni }}</td>
+                <td>{{ u.estatus_uni }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -63,12 +95,12 @@
              color: #eee;
          }
 
-        {% comment %}    Esta linea se usa para cambiar la orientacion de la hoja de vertical a horizontal      
+          {% comment %} Esta linea se usa para cambiar la orientacion de la hoja de vertical a horizontal       {% endcomment %}
          @page {
             size: letter landscape;
             margin: 0.5cm;
             type: A4;
-        } {% endcomment %}
+        } 
     </style>
 
 {% endblock body %}

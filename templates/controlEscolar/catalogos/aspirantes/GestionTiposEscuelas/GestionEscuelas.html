@@ -9,16 +9,16 @@
         <div class="row justify-content-md-center">
             <div class="col col-12 col-sm-3 col-lg-3">
                 {% load bootstrap_icons %}
-                <a href="{% url 'export-csv-escuelas' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+                <a href="{% url 'export_csv_escuelas' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-xlwt-escuelas' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+                <a href="{% url 'export_xlwt_escuelas' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-pdf-escuelas' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+                <a href="{% url 'export_pdf_escuelas' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-print-escuelas' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+                <a href="{% url 'export_print_escuelas' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
 {% block search %}
 {% comment %} Busqueda por nombre {% endcomment %}
 <h1>Catálogo - Tipos de Escuelas</h1>
-<form method="GET" action="{% url 'vistaEscuelas' %}">
+<form method="GET" action="{% url 'vista_Escuelas' %}">
     <div class="input-group mb-3 mt-4">
         <input type="search" class="form-control" placeholder="Escribe el tipo de escuela.." name="search_escuelas">
         <div class="input-group-append">
@@ -61,11 +61,10 @@
     <p style="text-align: right; font-size: 25px;">Número de Escuelas: {{ contador }} </p>
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Tipo Escuela</th>
+            <th>Colonia</th>
+            <th>Clave Tipo de Escuela</th>
+            <th>Nombre Tipo de Escuela</th>
             <th>Abreviación</th>
-            <th>Clave Estado</th>
-            <th>Clave Municipio</th>
             <th>Nombre Institución</th>
             <th>Nombre Plantel</th>
             <th>Estatus</th>
@@ -76,19 +75,18 @@
         {% for es in entity %}
         <tr>
             {% load bootstrap_icons %}
+            <td>{{ es.rowid_col.descri_largo_col }}</td>
             <td>{{ es.id_tipo_esc }}</td>
             <td>{{ es.descri_largo_esc }}</td>
             <td>{{ es.descri_corta_esc }}</td>
-            <td>{{ es.id_edo }}</td>
-            <td>{{ es.id_mundel }}</td>
             <td>{{ es.institucion }}</td>
             <td>{{ es.nombre_plantel }}</td>
             <td>{{ es.estatus_esc }}</td>
             <td class="d-flex justify-content-evenly">
-                <a href="../vistaEscuelas/{{ es.id_tipo_esc }}/" class="btn btn-warning">
+                <a href="../vista-Escuelas/{{ es.rowid_tipo_esc }}/" class="btn btn-warning">
                     {% bs_icon 'pencil-square' size='1.5em'%}
                 </a>
-                <a href="../eliminarEscuela/{{ es.id_tipo_esc }}/" class="btn btn-danger">
+                <a href="../eliminar-Escuela/{{ es.rowid_tipo_esc }}/" class="btn btn-danger">
                     {% bs_icon 'trash' size='1.5em'%}
                 </a>
             </td>

@@ -1,0 +1,88 @@
+{% extends '../../../../base.html' %}
+
+{% block title %}Lista Divisiones{% endblock title %}
+
+{% block body %}
+    <h2>Lista Divisiones</h2>
+    <h3>Cantidad de Divisiones: {{ count }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Universidad</th>
+                <th class="cabecera">Clave División</th>
+                <th class="cabecera">División</th>
+                <th class="cabecera">Abreviación</th>
+                <th class="cabecera">Representante</th>
+                <th class="cabecera">Tel 1</th>
+                <th class="cabecera">Tel 2</th>
+                <th class="cabecera">Ext 1</th>
+                <th class="cabecera">Ext 2</th>
+                <th class="cabecera">Email</th>
+                <th class="cabecera">Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in div %}
+            <tr >
+                <td>{{ d.rowid_uni.nombre_uni }}
+                <td>{{ d.id_div }}</td>
+                <td>{{ d.descri_larga_div }}</td>
+                <td>{{ d.descri_corta_div }}</td>
+                <td>{{ d.representante_div }}</td>
+                <td>{{ d.telefono_1_div }}</td>
+                <td>{{ d.telefono_2_div }}</td>
+                <td>{{ d.extension1_div }}</td>
+                <td>{{ d.extension2_div }}</td>
+                <td>{{ d.mail_div }}</td>
+                <td>{{ d.estatus_div }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border: 2px solid #000;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: #000;
+             color: #eee;
+         }
+
+        {% comment %}    Esta linea se usa para cambiar la orientacion de la hoja de vertical a horizontal   {% endcomment %}   
+         @page {
+            size: letter landscape;
+            margin: 0.5cm;
+            type: A4;
+        } 
+    </style>
+
+{% endblock body %}

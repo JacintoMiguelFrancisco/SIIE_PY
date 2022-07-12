@@ -1,24 +1,24 @@
 {% extends '../../CRUD.html' %}
 
-{% block title %}Gestión Medios de Difusión{% endblock title %}
+{% block title %}Gestion Carreras{% endblock title %}
 
 {% block buttons %}
 {% comment %} Espera los botones imprimir {% endcomment %}
-<h3>Gestión Medios de Difusión</h3>
+<h3>Gestión de Carreras</h3>
     <div class="container mb-4 mt-4">
         <div class="row justify-content-md-center">
             <div class="col col-12 col-sm-3 col-lg-3">
                 {% load bootstrap_icons %}
-                <a href="{% url 'export_csv_medios' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+                <a href="{% url 'export_csv_carreras' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export_xlwt_medios' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+                <a href="{% url 'export_xlwt_carreras' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export_pdf_medios' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+                <a href="{% url 'export_pdf_carreras' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export_print_medios' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+                <a href="{% url 'export_print_carreras' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
             </div>
         </div>
     </div>
@@ -27,22 +27,26 @@
 
 {% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
 {% block form %}
-<form action="" method="POST">{% csrf_token %}
-
-    {{ FormMediosDifusion.as_p }}
+<form action="" method="POST">
+    {% csrf_token %}
+    
+    {{ FormCarreras.as_p }}   
 
     <div class="form-group" >
         <button type="submit" class="btn btn-success btn-block text-white" id="save">Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
     </div>
+    
 </form>
+
+
 {% endblock form %}
 
 {% block search %}
 {% comment %} Busqueda por nombre {% endcomment %}
-<h1>Catálogo - Medios de Difusión</h1>
-<form method="GET" action="{% url 'vista_Medios' %}">
+<h1>Catálogo de Carreras</h1>
+<form method="GET" action="{% url 'vista_carreras' %}">
     <div class="input-group mb-3 mt-4">
-        <input type="search" class="form-control" placeholder="Escribe el medio de difusión.." name="search_medios">
+        <input type="search" class="form-control" placeholder="Escribe aqui..." name="search_carreras" required>
         <div class="input-group-append">
             <span class="input-group-text bg-success">
                 {% load bootstrap_icons %}
@@ -58,29 +62,33 @@
 {% comment %} Espera una tabla que se llena con un for {% endcomment %}
 {% block table %}
 <table class="table table-striped">
-    <p style="text-align: right; font-size: 25px;">Número de Medios de Difusión: {{ contador }} </p>
     <thead>
         <tr>
-            <th>Clave Medio de Difusión</th>
-            <th>Medio de Difusión</th>
-            <th>Abreviación</th>
+            <th>ID Carrera</th>
+            <th>Carrera</th>
+            <th>Abreviacion</th>
+            <th>Descripcion</th>
+            <th>Ceneval</th>
             <th>Estatus</th>
             <th id="operaciones">Operaciones</th>
         </tr>
     </thead>
     <tbody>
-        {% for md in entity %}
+        {% for c in entity %}
         <tr>
             {% load bootstrap_icons %}
-            <td>{{ md.id_medio_dif }}</td>
-            <td>{{ md.descri_largo_meddif }}</td>
-            <td>{{ md.descri_corto_meddif }}</td>
-            <td>{{ md.estatus_dif }}</td>
+            <td>{{ c.id_car }}</td>
+            <td>{{ c.descri_largo_car }}</td>
+            <td>{{ c.descri_corto_car }}</td>
+            <td>{{ c.descri_largo_tit }}</td>
+            <td>{{ c.ceneval_car }}</td>
+            <td>{{ c.estatus_car }}</td>
+        
             <td class="d-flex justify-content-evenly">
-                <a href="../vista-Medios/{{ md.rowid_medio_dif }}/" class="btn btn-warning">
+                <a href="../vista-carreras/{{ c.rowid_car }}" class="btn btn-warning">
                     {% bs_icon 'pencil-square' size='1.5em'%}
                 </a>
-                <a href="../eliminar-Medio/{{ md.rowid_medio_dif }}/" class="btn btn-danger">
+                <a href="../eliminar-carreras/{{ c.rowid_car }}" class="btn btn-danger">
                     {% bs_icon 'trash' size='1.5em'%}
                 </a>
             </td>
@@ -88,4 +96,7 @@
         {% endfor %}
     </tbody>
 </table>
+
+
 {% endblock table %}
+

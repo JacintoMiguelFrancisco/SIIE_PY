@@ -1,28 +1,32 @@
 {% extends '../../../../base.html' %}
 
-{% block title %}EmpCar{% endblock title %}
+{% block title %}Lista Periodos{% endblock title %}
 
 {% block body %}
-    <h2>Lista de EmpCar</h2>
-    <h3>Numero de EmpCar: {{ count }}</h3>
+    <h2>Lista Periodos</h2>
+    <h3>Cantidad de Periodos: {{ count }}</h3>
     <table>
         <thead>
             <tr>
-                <th class="cabecera">Institución</th>
-                <th class="cabecera">Nombre</th>
-                <th class="cabecera">Carrera</th>
-                <th class="cabecera">Abreviacion</th>
-                <th class="cabecera">Estatus</th>
+                <th class="cabecera">Evento</th>
+                <th class="cabecera">Consecutivo</th>
+                <th class="cabecera">Fecha Inicial</th>
+                <th class="cabecera">Fecha Final</th>
+                <th class="cabecera">Año</th>
+                <th class="cabecera">Periodo</th>
+                <th class="cabecera">Descripcion</th>
             </tr>
         </thead>
         <tbody>
-            {% for e in empcar %}
-            <tr>
-                <td>{{ e.rowid_institucion.descri_largo_ins }}</td>
-                <td>{{ e.rowid_empleado }}</td>
-                <td>{{ e.descri_largo_car_emp }}</td>
-                <td>{{ e.descri_corto_car_emp }}</td>
-                <td>{{ e.estatus_inst }}</td>
+            {% for p in per %}
+            <tr >
+                <td>{{ p.evento_per }}</td>
+                <td>{{ p.consecutivo_per }}</td>
+                <td>{{ p.fecha_inicial_per }}</td>
+                <td>{{ p.fecha_final_per }}</td>
+                <td>{{ p.anio_per }}</td>
+                <td>{{ p.periodo_per }}</td>
+                <td>{{ p.descripcion_per }}</td>
             </tr>
             {% endfor %}
         </tbody>

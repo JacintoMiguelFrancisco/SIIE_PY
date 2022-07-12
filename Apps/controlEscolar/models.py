@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+# -------------------------------------------- Direcciones --------------------------------------------- #
 ############################################## Tabla paises ############################################
 class SeCatPais(models.Model):
     rowid_pais = models.AutoField(primary_key=True)
@@ -64,6 +65,175 @@ class SeCatColonia(models.Model):
     def __str__(self):
         texto="{0}-{1}"
         return texto.format(self.id_col, self.descri_largo_col)
+# -------------------------------------------- Universidad --------------------------------------------- #
+############################################## Tabla Universidades ############################################
+class SeCatUniversidad(models.Model):
+    rowid_uni = models.IntegerField(primary_key=True)
+    rowid_col = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='rowid_col', blank=True, null=True)
+    id_uni = models.IntegerField()
+    nombre_uni = models.CharField(max_length=60)
+    tipo_org_uni = models.CharField(max_length=100, blank=True, null=True)
+    direccion_uni = models.CharField(max_length=60)
+    rfc_uni = models.CharField(max_length=15)
+    codpos_uni = models.CharField(max_length=5)
+    telefono1_uni = models.CharField(max_length=15)
+    telefono2_uni = models.CharField(max_length=15, blank=True, null=True)
+    telefono3_uni = models.CharField(max_length=15, blank=True, null=True)
+    ext1_uni = models.CharField(max_length=7, blank=True, null=True)
+    ext2_uni = models.CharField(max_length=7, blank=True, null=True)
+    ext3_uni = models.CharField(max_length=7, blank=True, null=True)
+    mail_uni = models.CharField(max_length=30, blank=True, null=True)
+    pagina_internet_uni = models.CharField(max_length=35, blank=True, null=True)
+    contacto_uni = models.CharField(max_length=50)
+    estatus_uni = models.CharField(max_length=1, blank=True, null=True, default="A")
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_universidad'
+
+    def __str__(self):
+        texto = "{0}-{1} "
+        return texto.format(self.rowid_uni, self.nombre_uni)
+############################################## Tabla Divisiones ############################################
+class SeCatDivision(models.Model):
+    rowid_div = models.IntegerField(primary_key=True)
+    rowid_uni = models.ForeignKey(SeCatUniversidad, models.DO_NOTHING, db_column='rowid_uni', blank=True, null=True)
+    id_div = models.IntegerField()
+    descri_larga_div = models.CharField(max_length=50)
+    descri_corta_div = models.CharField(max_length=10)
+    representante_div = models.CharField(max_length=50)
+    telefono_1_div = models.CharField(max_length=15, blank=True, null=True)
+    telefono_2_div = models.CharField(max_length=15, blank=True, null=True)
+    extension1_div = models.CharField(max_length=7, blank=True, null=True)
+    extension2_div = models.CharField(max_length=7, blank=True, null=True)
+    mail_div = models.CharField(max_length=25, blank=True, null=True)
+    estatus_div = models.CharField(max_length=1, blank=True, null=True, default="A")
+    class Meta:
+        managed = False
+        db_table = 'se_cat_division'
+    def __str__(self):
+        texto="{0} / {1} "
+        return texto.format(self.descri_larga_div, self.descri_corta_div)
+############################ Carreras ##########################################
+class SeCatCarrera(models.Model):
+    rowid_car = models.AutoField(primary_key=True)
+    rowid_div = models.ForeignKey('SeCatDivision', models.DO_NOTHING, db_column='rowid_div', blank=True, null=True)
+    id_car = models.IntegerField()
+    descri_largo_car = models.CharField(max_length=50)
+    descri_corto_car = models.CharField(max_length=10)
+    estatus_car = models.CharField(max_length=1, blank=True, null=True, default="A")
+    ceneval_car = models.CharField(max_length=1, blank=True, null=True)
+    descri_largo_tit = models.CharField(max_length=125, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_carrera'
+    
+    def __str__(self):
+        texto="{0}-{1} "
+        return texto.format(self.rowid_car, self.descri_largo_car)
+################################ Periodos ######################################
+class SeCatPeriodos(models.Model):
+    rowid_per = models.AutoField(primary_key=True)
+    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
+    evento_per = models.CharField(max_length=3)
+    consecutivo_per = models.IntegerField()
+    fecha_inicial_per = models.DateField(blank=True, null=True)
+    fecha_final_per = models.DateField(blank=True, null=True)
+    anio_per = models.IntegerField(blank=True, null=True)
+    periodo_per = models.IntegerField(blank=True, null=True)
+    descripcion_per = models.CharField(max_length=255, blank=True, null=True)
+    estatus_per = models.CharField(max_length=1, blank=True, null=True, default="A")
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_periodos'
+    
+    def __str__(self):
+        texto="{0}-{1} "
+        return texto.format(self.rowid_per, self.evento_per)
+
+
+
+# -------------------------------------------- Aspirantes --------------------------------------------- #
+############################################## Tabla Medios de Difusión ################################
+class SeCatMedioDifusion(models.Model):
+    rowid_medio_dif = models.IntegerField(primary_key=True)
+    id_medio_dif = models.IntegerField()
+    descri_largo_meddif = models.CharField(max_length=50)
+    descri_corto_meddif = models.CharField(max_length=10)
+    estatus_dif = models.CharField(max_length=1, blank=True, null=True, default="A")
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_medio_difusion'
+
+    def __str__(self):
+        texto="{0} / {1} "
+        return texto.format(self.descri_largo_meddif, self.descri_corto_meddif)
+############################################## Tabla Tipos de escuelas   ###############################
+class SeCatTipoEscuela(models.Model):
+    rowid_tipo_esc = models.IntegerField(primary_key=True)
+    rowid_col = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='rowid_col', blank=True, null=True)
+    id_tipo_esc = models.IntegerField()
+    descri_largo_esc = models.CharField(max_length=50)
+    descri_corta_esc = models.CharField(max_length=10)
+    estatus_esc = models.CharField(max_length=1, blank=True, null=True, default="A")
+    institucion = models.CharField(max_length=50, blank=True, null=True)
+    nombre_plantel = models.CharField(max_length=150, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_tipo_escuela'
+
+    def __str__(self):
+        texto="{0} / {1} "
+        return texto.format(self.descri_largo_esc, self.descri_corta_esc)
+############################################## Tabla Areas de Bachillerato #############################
+class SeCatAreaBachillerato(models.Model):
+    rowid_area_bac = models.IntegerField(primary_key=True)
+    id_area_bac = models.IntegerField()
+    descri_larga_bac = models.CharField(max_length=50)
+    descri_corta_bac = models.CharField(max_length=10)
+    estatus_bac = models.CharField(max_length=1, blank=True, null=True , default="A")
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_area_bachillerato'
+
+    def __str__(self):
+        texto="{0} / {1}"
+        return texto.format(self.descri_larga_bac, self.descri_corta_bac)
+############################################## APARTADO indicador se ocupa##########################################################
+class SeCatIndicador(models.Model):
+    id_indicador = models.IntegerField(primary_key=True)
+    descri_largo_ind = models.CharField(max_length=50)
+    descri_corto_ind = models.CharField(max_length=10)
+    estatus_ind = models.CharField(max_length=1, blank=True, null=True, default="A")
+    cve_control_ind = models.CharField(max_length=1)
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_indicador'
+
+    def __str__(self):
+        texto="{0} / {1}"
+        return texto.format(self.descri_largo_ind, self.descri_corto_ind)
+############################################## Tabla Indicadores Aspirantes ############################
+class SeProIndAsp(models.Model):
+    rowid_pro_ind_asp = models.IntegerField(primary_key=True)
+    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
+    rowid_indicador = models.ForeignKey(SeCatIndicador, models.DO_NOTHING, db_column='rowid_indicador', blank=True, null=True)
+    valor_porcentual = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    estatus_indicadores = models.CharField(max_length=1, blank=True, null=True, default="A")
+    class Meta:
+        managed = False
+        db_table = 'se_pro_ind_asp'
+    def __str__(self):
+        texto = "{0} / {1}"
+        return texto.format(self.rowid_pro_ind_asp, self.valor_porcentual)
+
+
 
 
 
@@ -81,6 +251,9 @@ class SeCatDeptoEmp(models.Model):
     class Meta:
         managed = False
         db_table = 'se_cat_depto_emp'
+    def __str__(self):
+        texto="{0}-{1}"
+        return texto.format(self.id_depto, self.descri_largo_dep_emp)
 ############################################## Tabla Actividades ############################################
 class SeCatActividades(models.Model):
     rowid_actividad = models.AutoField(primary_key=True)
@@ -92,6 +265,9 @@ class SeCatActividades(models.Model):
     class Meta:
         managed = False
         db_table = 'se_cat_actividades'
+    def __str__(self):
+        texto="{0}-{1}"
+        return texto.format(self.rowid_actividad, self.descri_largo_act)
 ############################################## Tabla Instituciones de Egreso ############################################
 class SeCatInstitucion(models.Model):
     rowid_institucion = models.AutoField(primary_key=True)
@@ -106,26 +282,6 @@ class SeCatInstitucion(models.Model):
     def __str__(self):
         texto="{0}-{1}"
         return texto.format(self.id_institucion, self.descri_largo_ins)
-
-
-############################################## Tabla Carrera se ocupa en empleado ############################################
-class SeCatCarrera(models.Model):
-    rowid_car = models.IntegerField(primary_key=True)
-    rowid_div = models.ForeignKey('SeCatDivision', models.DO_NOTHING, db_column='rowid_div', blank=True, null=True)
-    id_car = models.IntegerField()
-    descri_largo_car = models.CharField(max_length=50)
-    descri_corto_car = models.CharField(max_length=10)
-    estatus_car = models.CharField(max_length=1, blank=True, null=True)
-    ceneval_car = models.CharField(max_length=1, blank=True, null=True)
-    descri_largo_tit = models.CharField(max_length=125, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_carrera'
-    
-    def __str__(self):
-        texto = "{0} / {1} / {2} / {3}"
-        return texto.format(self.id_car, self.descri_largo_car, self.descri_corto_car, self.estatus_car)
 ############################################## Tabla Empleado se ocupa en carrera ############################################
 class SeCatEmpleado(models.Model):
     rowid_empleado = models.IntegerField(primary_key=True)
@@ -133,8 +289,7 @@ class SeCatEmpleado(models.Model):
     rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
     rowid_depto = models.ForeignKey(SeCatDeptoEmp, models.DO_NOTHING, db_column='rowid_depto', blank=True, null=True)
     rowid_col = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='rowid_col', blank=True, null=True)
-    rowid_puesto = models.ForeignKey('SeCatSueldos', models.DO_NOTHING, db_column='rowid_puesto', blank=True, null=True)
-    rowid_sueldo = models.IntegerField(blank=True, null=True)
+    rowid_sueldo = models.ForeignKey('SeCatSueldos', models.DO_NOTHING, db_column='rowid_sueldo', blank=True, null=True)
     id_empleado = models.IntegerField()
     nombre_emp = models.CharField(max_length=40)
     paterno_emp = models.CharField(max_length=30)
@@ -171,61 +326,28 @@ class SeCatEmpleado(models.Model):
         managed = False
         db_table = 'se_cat_empleado'
 
-############################################## Tabla Carrera empleado ############################################
+    def __str__(self):
+        texto="{0}-{1} {2} {3}"
+        return texto.format(self.rowid_empleado, self.nombre_emp, self.paterno_emp, self.materno_emp)
+############################################## Tabla Carrera empleado  EmpCar ############################################
 class SeTabEmpCar(models.Model):
-    rowid_emp_car = models.IntegerField(primary_key=True)
-    rowid_empleado = models.ForeignKey(SeCatEmpleado, models.DO_NOTHING, db_column='rowid_empleado', blank=True, null=True)
+    rowid_emp_car = models.AutoField(primary_key=True)
     rowid_institucion = models.ForeignKey(SeCatInstitucion, models.DO_NOTHING, db_column='rowid_institucion', blank=True, null=True)
-    descri_corto_car_emp = models.CharField(max_length=10, blank=True, null=True)
+    rowid_empleado = models.ForeignKey(SeCatEmpleado, models.DO_NOTHING, db_column='rowid_empleado', blank=True, null=True)
     descri_largo_car_emp = models.CharField(max_length=50, blank=True, null=True)
-    estatus_inst = models.CharField(max_length=1, blank=True, null=True)
+    descri_corto_car_emp = models.CharField(max_length=10, blank=True, null=True)
+    estatus_inst = models.CharField(max_length=1, blank=True, null=True, default="A")
 
     class Meta:
         managed = False
         db_table = 'se_tab_emp_car'
-
+        
     def __str__(self):
         texto="{0}-{1}"
         return texto.format(self.rowid_empleado, self.descri_largo_car_emp)
 
 
 
-
-
-
-############################################## Tabla Universidades ###################################
-class SeCatUniversidad(models.Model):
-    id_uni = models.IntegerField(primary_key=True)
-    id_pais = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='id_pais', blank=True, null=True, related_name="pais")
-    id_edo = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='id_edo', blank=True, null=True, related_name="estado")
-    id_mundel = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='id_mundel', blank=True, null=True, related_name="mundel")
-    id_col = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='id_col', blank=True, null=True)
-    nombre_uni = models.CharField(max_length=60)
-    tipo_org_uni = models.CharField(max_length=100, blank=True, null=True)
-    direccion_uni = models.CharField(max_length=60)
-    rfc_uni = models.CharField(max_length=15)
-    codpos_uni = models.CharField(max_length=5)
-    telefono1_uni = models.CharField(max_length=15)
-    telefono2_uni = models.CharField(max_length=15, blank=True, null=True)
-    telefono3_uni = models.CharField(max_length=15, blank=True, null=True)
-    fax1_uni = models.CharField(max_length=15, blank=True, null=True)
-    fax2_uni = models.CharField(max_length=15, blank=True, null=True)
-    fax3_uni = models.CharField(max_length=15, blank=True, null=True)
-    ext1_uni = models.CharField(max_length=7, blank=True, null=True)
-    ext2_uni = models.CharField(max_length=7, blank=True, null=True)
-    ext3_uni = models.CharField(max_length=7, blank=True, null=True)
-    mail_uni = models.CharField(max_length=30, blank=True, null=True)
-    pagina_internet_uni = models.CharField(max_length=35, blank=True, null=True)
-    contacto_uni = models.CharField(max_length=50)
-    estatus_uni = models.CharField(max_length=1, blank=True, null=True, default="A")
-
-    def __str__(self):
-        texto = "{0} / {1} / {2} / {3} / {4} / {5} / {6} / {7} / {8}"
-        return texto.format(self.id_uni, self.nombre_uni, self.direccion_uni, self.delmun_uni, self.colonia_uni, self.telefono1_uni, self.ext1_uni, self.mail_uni, self.estatus_uni)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_universidad'
 ############################################## Tabla Nivel Academico ###################################
 class SeCatNivelAcademico(models.Model):
     id_academico = models.IntegerField(primary_key=True)
@@ -253,20 +375,6 @@ class SeCatPlaza(models.Model):
     def __str__(self):
         texto = "{0} / {1} / {2} / {3}"
         return texto.format(self.id_plaza, self.descri_largo_plaza, self.descri_corto_plaza, self.estatus_plaza)
-############################################## Tabla Areas de Bachillerato ############################################
-class SeCatAreaBachillerato(models.Model):
-    id_area_bac = models.IntegerField(primary_key=True)
-    descri_larga_bac = models.CharField(max_length=50)
-    descri_corta_bac = models.CharField(max_length=10)
-    estatus_bac = models.CharField(max_length=1, blank=True, null=True, default='A')
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_area_bachillerato'
-
-    def __str__(self):
-        texto="{0} / {1} / {2} / {3}"
-        return texto.format(self.id_area_bac, self.descri_larga_bac, self.descri_corta_bac, self.estatus_bac)
 ############################################## Tabla Tipos de Baja #########################################################
 class SeCatTipoBajas(models.Model):
     id_tipo_baj = models.IntegerField(primary_key=True)
@@ -279,55 +387,6 @@ class SeCatTipoBajas(models.Model):
     def __str__(self):
         texto="{0} / {1} / {2} / {3}"
         return texto.format(self.id_tipo_baj, self.descri_largo_tipo_baj, self.descri_corto_tipo_baj, self.estatus_tipo_baj)
-############################################## Tabla Medios de Difusión ########################################################
-class SeCatMedioDifusion(models.Model):
-    id_medio_dif = models.IntegerField(primary_key=True)
-    descri_largo_meddif = models.CharField(max_length=50)
-    descri_corto_meddif = models.CharField(max_length=10)
-    estatus_dif = models.CharField(max_length=1, blank=True, null=True, default="A")
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_medio_difusion'
-
-    def __str__(self):
-        texto="{0} / {1} "
-        return texto.format(self.descri_largo_meddif, self.descri_corto_meddif)
-############################################## Tabla Tipos de escuelas   ########################################################
-class SeCatTipoEscuela(models.Model):
-    id_tipo_esc = models.IntegerField(primary_key=True)
-    descri_largo_esc = models.CharField(max_length=50)
-    descri_corta_esc = models.CharField(max_length=10)
-    estatus_esc = models.CharField(max_length=1, blank=True, null=True, default="A")
-    id_edo = models.IntegerField(blank=True, null=True)
-    id_mundel = models.IntegerField(blank=True, null=True)
-    institucion = models.CharField(max_length=50, blank=True, null=True)
-    nombre_plantel = models.CharField(max_length=150, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_tipo_escuela'
-
-    def __str__(self):
-        texto="{0} / {1} "
-        return texto.format(self.descri_largo_esc, self.descri_corta_esc)
-#Correccion
-# class SeCatTipoEscuela(models.Model):
-#     id_tipo_esc = models.IntegerField(primary_key=True)
-#     id_pais = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='id_pais', blank=True, null=True)
-#     id_edo = models.IntegerField(blank=True, null=True)
-#     id_mundel = models.IntegerField(blank=True, null=True)
-#     id_col = models.IntegerField(blank=True, null=True)
-#     descri_largo_esc = models.CharField(max_length=50)
-#     descri_corta_esc = models.CharField(max_length=10)
-#     estatus_esc = models.CharField(max_length=1, blank=True, null=True)
-#     institucion = models.CharField(max_length=50, blank=True, null=True)
-#     nombre_plantel = models.CharField(max_length=150, blank=True, null=True)
-
-#     class Meta:
-#         managed = False
-#         db_table = 'se_cat_tipo_escuela'
-
 
 ##############################################  Tabla Becas   ########################################################
 class SeCatBecas(models.Model):
@@ -358,21 +417,6 @@ class SeCatTipoCambio(models.Model):
         texto="{0} / {1} / {2} "
         return texto.format(self.id_tipo_cambio, self.descri_tipocambio, self.status)
 
-############################################## APARTADO indicador ##########################################################
-class SeCatIndicador(models.Model):
-    id_indicador = models.IntegerField(primary_key=True)
-    descri_largo_ind = models.CharField(max_length=50)
-    descri_corto_ind = models.CharField(max_length=10)
-    estatus_ind = models.CharField(max_length=1, blank=True, null=True, default="A")
-    cve_control_ind = models.CharField(max_length=1)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_indicador'
-
-    def __str__(self):
-        texto="{0} / {1}"
-        return texto.format(self.descri_largo_ind, self.descri_corto_ind)
 ############################################## APARTADO PLANES DE ESTUDIO ###############################################
 class SeCatPlaEstudio(models.Model):
     id_plan_est = models.IntegerField(primary_key=True)
@@ -1170,25 +1214,6 @@ class SeCatDepartamentos(models.Model):
         unique_together = (('rowid_area', 'rowid_departamento'), ('rowid_area', 'rowid_departamento'),)
 
 
-class SeCatDivision(models.Model):
-    rowid_div = models.IntegerField(primary_key=True)
-    rowid_uni = models.ForeignKey('SeCatUniversidad', models.DO_NOTHING, db_column='rowid_uni', blank=True, null=True)
-    id_div = models.IntegerField()
-    descri_larga_div = models.CharField(max_length=50)
-    descri_corta_div = models.CharField(max_length=10)
-    representante_div = models.CharField(max_length=50)
-    telefono_1_div = models.CharField(max_length=15, blank=True, null=True)
-    telefono_2_div = models.CharField(max_length=15, blank=True, null=True)
-    extension1_div = models.CharField(max_length=7, blank=True, null=True)
-    extension2_div = models.CharField(max_length=7, blank=True, null=True)
-    mail_div = models.CharField(max_length=25, blank=True, null=True)
-    estatus_div = models.CharField(max_length=1, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_division'
-
-
 class SeCatDocumentacion(models.Model):
     rowid_doc = models.IntegerField(primary_key=True)
     id_doc = models.IntegerField()
@@ -1380,22 +1405,6 @@ class SeCatNumeroRecibos(models.Model):
         managed = False
         db_table = 'se_cat_numero_recibos'
 
-
-class SeCatPeriodos(models.Model):
-    rowid_per = models.IntegerField(primary_key=True)
-    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
-    evento_per = models.CharField(max_length=3)
-    consecutivo_per = models.IntegerField()
-    fecha_inicial_per = models.DateField(blank=True, null=True)
-    fecha_final_per = models.DateField(blank=True, null=True)
-    anio_per = models.IntegerField(blank=True, null=True)
-    periodo_per = models.IntegerField(blank=True, null=True)
-    descripcion_per = models.CharField(max_length=255, blank=True, null=True)
-    estatus_per = models.CharField(max_length=1, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_periodos'
 
 
 class SeCatPersonal(models.Model):
@@ -1770,18 +1779,6 @@ class SeProHorasServicioHis(models.Model):
         managed = False
         db_table = 'se_pro_horas_servicio_his'
         unique_together = (('servicio_id', 'fecha_hor_ser', 'hora_ent_ser'), ('servicio_id', 'fecha_hor_ser', 'hora_ent_ser'),)
-
-
-class SeProIndAsp(models.Model):
-    rowid_pro_ind_asp = models.IntegerField(primary_key=True)
-    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
-    rowid_indicador = models.ForeignKey(SeCatIndicador, models.DO_NOTHING, db_column='rowid_indicador', blank=True, null=True)
-    valor_porcentual = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
-    estatus_indicadores = models.CharField(max_length=1, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_pro_ind_asp'
 
 
 class SeProPlanEstudio(models.Model):

@@ -57,17 +57,17 @@
                     <a class="sub-item-direcciones">Direcciones</a>
                       <div class="sub-menu-direcciones">
                         <a href="{% url 'vista_paises' %}">Pais</a>
-                        <a href="{% url 'vistaEstados' %}">Estados</a>
-                        <a href="{% url 'vistaMunicipios' %}">Municipios/alcaldias</a>
+                        <a href="{% url 'vista_estados' %}">Estados</a>
+                        <a href="{% url 'vista_municipios' %}">Municipios/alcaldias</a>
                         <a href="{% url 'vistaColonias' %}">Colonias</a>
                       </div>
 
                     <a class="sub-item-universidad">Universidad</a>
                       <div class="sub-menu-universidad">
-                        <a href="{% url 'vistaUniversidades' %}">Universidades</a>
-                        <a href="#">Divisiones</a>
-                        <a href="#">Carreras</a>
-                        <a href="#">Periodos</a>
+                        <a href="{% url 'vista_universidades' %}">Universidades</a>
+                        <a href="{% url 'vista_Divisiones' %}">Divisiones</a>
+                        <a href="{% url 'vista_carreras' %}">Carreras</a>
+                        <a href="{% url 'vista_periodos' %}">Periodos</a>
                       </div>
 
                     <a class="sub-item-plan_estudio">Planes de estudio</a>
@@ -81,9 +81,10 @@
                       
                     <a class="sub-item-aspirantes">Aspirantes</a>
                       <div class="sub-menu-aspirantes">
-                        <a href="{% url 'vistaMedios' %}">Difusion</a>
-                        <a href="{% url 'vistaEscuelas' %}">Tipos de escuela</a>
-                        <a href="{% url 'vistaAreaBachi' %}">Área Bachillerato</a>
+                        <a href="{% url 'vista_Medios' %}">Medios de Difusion</a>
+                        <a href="{% url 'vista_Escuelas' %}">Tipos de escuela</a>
+                        <a href="{% url 'vista_AreaBachi' %}">Área Bachillerato</a>
+                        <a href="{% url 'vista_IndAsp' %}">Indicadores Arpirantes</a>
                       </div>
 
                     <a class="sub-item-estudiantes">Estudiantes</a>
@@ -110,7 +111,7 @@
                         <a href="#">Prof. compartidos</a>
                         <a href="{% url 'vista_actividades' %}">Actividades</a>
                         <a href="{% url 'vista_instituciones' %}">Instituciones de Egreso</a>
-                        <a href="{% url 'vista_EmpCar' %}">Carreras de Egreso</a>
+                        <a href="{% url 'vista_EmpCars' %}">Carreras de Egreso</a>
                       </div>
                   </div>
                                 

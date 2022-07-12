@@ -1,28 +1,28 @@
 {% extends '../../../../base.html' %}
 
-{% block title %}EmpCar{% endblock title %}
+{% block title %}Lista Indicadores Aspirantes{% endblock title %}
 
 {% block body %}
-    <h2>Lista de EmpCar</h2>
-    <h3>Numero de EmpCar: {{ count }}</h3>
+    <h2>Lista Indicadores Aspirantes</h2>
+    <h3>Cantidad de Indicadores Aspirantes: {{ count }}</h3>
     <table>
         <thead>
             <tr>
-                <th class="cabecera">Institución</th>
-                <th class="cabecera">Nombre</th>
                 <th class="cabecera">Carrera</th>
-                <th class="cabecera">Abreviacion</th>
+                <th class="cabecera">Indicador</th>
+                <th class="cabecera">Clave Indicador-Aspirante</th>
+                <th class="cabecera">Valor Porcentual</th>
                 <th class="cabecera">Estatus</th>
             </tr>
         </thead>
         <tbody>
-            {% for e in empcar %}
-            <tr>
-                <td>{{ e.rowid_institucion.descri_largo_ins }}</td>
-                <td>{{ e.rowid_empleado }}</td>
-                <td>{{ e.descri_largo_car_emp }}</td>
-                <td>{{ e.descri_corto_car_emp }}</td>
-                <td>{{ e.estatus_inst }}</td>
+            {% for i in IndAsp %}
+            <tr >
+                <td>{{ i.rowid_car.descri_largo_car }}</td>
+                <td>{{ i.rowid_indicador.descri_largo_ind }}</td>
+                <td>{{ i.rowid_pro_ind_asp }}</td>
+                <td>{{ i.valor_porcentual }}</td>
+                <td>{{ i.estatus_indicadores }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -64,13 +64,6 @@
              background: #000;
              color: #eee;
          }
-
-        {% comment %}    Esta linea se usa para cambiar la orientacion de la hoja de vertical a horizontal      
-         @page {
-            size: letter landscape;
-            margin: 0.5cm;
-            type: A4;
-        } {% endcomment %}
     </style>
 
 {% endblock body %}

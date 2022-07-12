@@ -11,11 +11,11 @@
       <div class="row mt-5 pl-4 justify-content-center h-75">
         <div class="col-lg-6 col-sm-12">
           <div class="alert alert-dark mt-5 d-flex flex-column justify-content-center align-items-center p-2" role="alert">
-            <p class="mb-2">¿Estas seguro de que quieres borrar {{ Universidad.id_uni  }} ?</p>
+            <p class="mb-2">¿Estas seguro de que quieres borrar: '{{ Universidad.nombre_uni  }}' ?</p>
           
             <div class="d-flex w-75 justify-content-evenly align-items-stretch">
               <div class="col-8 col-sm-6">
-                <a href="{% url 'vistaUniversidades' %}" class="btn btn-secondary btn-lg active mt-3">Cancelar</a>
+                <a href="{% url 'vista_universidades' %}" class="btn btn-secondary btn-lg active mt-3">Cancelar</a>
               </div>
               <div class="">
                 <form method="POST" action="">{% csrf_token %}

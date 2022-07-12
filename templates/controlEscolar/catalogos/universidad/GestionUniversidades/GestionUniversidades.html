@@ -9,16 +9,16 @@
         <div class="row justify-content-md-center">
             <div class="col col-12 col-sm-3 col-lg-3">
                 {% load bootstrap_icons %}
-                <a href="{% url 'export-csv-universidades' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+                <a href="{% url 'export_csv_universidades' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-xlwt-universidades' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+                <a href="{% url 'export_xlwt_universidades' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-pdf-universidades' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+                <a href="{% url 'export_pdf_universidades' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-print-universidades' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+                <a href="{% url 'export_print-universidades' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
             </div>
         </div>
     </div>
@@ -28,35 +28,6 @@
 {% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
 {% block form %}
 <form action="" method="POST">{% csrf_token %}
-
-    <label>Pais</label>
-    <select class="form-control" style="border-color:#21B64A;" name="id_pais">
-        {% for p in listaPais %}
-            <option value="{{p.id_pais}}">{{p.descri_largo_pais}}</option>
-        {% endfor %}
-    </select>
-
-    <label>Estado</label>
-    <select class="form-control" style="border-color:#21B64A;" name="id_edo">
-        {% for e in listaEdo %}
-            <option value="{{e.id_edo}}">{{e.descri_largo_edo}}</option>
-        {% endfor %}
-    </select>
-
-    <label>Municipio / Delegacion</label>
-    <select class="form-control" style="border-color:#21B64A;" name="id_mundel">
-        {% for m in listaMundel %}
-            <option value="{{m.id_mundel}}">{{m.descri_largo_mundel}}</option>
-        {% endfor %}
-    </select>
-
-    <label>Colonia</label>
-    <select class="form-control" style="border-color:#21B64A;" name="id_col">
-        {% for c in listaCol %}
-            <option value="{{c.id_col}}">{{c.descri_largo_col}}</option>
-        {% endfor %}
-    </select>
-
     {{ FormUniversidad.as_p }}
     <div class="form-group" >
         <button type="submit" class="btn btn-success btn-block text-white" id="save">Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
@@ -67,7 +38,7 @@
 {% block search %}
 {% comment %} Busqueda por nombre {% endcomment %}
 <h1>Catálogo de Universidades</h1>
-<form method="GET" action="{% url 'vistaUniversidades' %}">
+<form method="GET" action="{% url 'vista_universidades' %}">
     <div class="input-group mb-3 mt-4">
         <input type="search" class="form-control" placeholder="Escribe el nombre de la Universidad..." name="search_universidades">
         <div class="input-group-append">
@@ -88,27 +59,23 @@
     <p style="text-align: right; font-size: 25px;">Numero de Universidades: {{ contador }} </p>
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Id Estado</th>
-            <th>Id Delegación / Municipio</th>
-            <th>Id Colonia</th>
-            <th>Universidad</th>
-            <th>Organización</th>
+            <th>Colonia</th>
+            <th>Id universidad</th>
+            <th>Nombre de la universidad</th>
+            <th>Tipo de organización</th>
             <th>Dirección</th>
             <th>RFC</th>
-            <th>Código Postal</th>
-            <th>Telefono 1</th>
-            <th>Telefono 2</th>
-            <th>Telefono 3</th>
-            <th>Fax 1</th>
-            <th>Fax 2</th>
-            <th>Fax 3</th>
+            <th>Cod. Pos.</th>
+            <th>Teléfono 1</th>
+            <th>Teléfono 2</th>
+            <th>Teléfono 3 </th>
             <th>Extensión 1</th>
             <th>Extensión 2</th>
             <th>Extensión 3</th>
             <th>Email</th>
             <th>Pagina Internet</th>
             <th>Contacto</th>
+            <th>Estatus</th>
             <th id="operaciones">Operaciones</th>
         </tr>
     </thead>
@@ -116,10 +83,8 @@
         {% for u in entity %}
         <tr>
             {% load bootstrap_icons %}
+            <td>{{ u.rowid_col.descri_largo_col }}</td>
             <td>{{ u.id_uni }}</td>
-            <td>{{ u.id_edo_id }}</td>
-            <td>{{ u.id_mundel_id }}</td>
-            <td>{{ u.id_col_id }}</td>
             <td>{{ u.nombre_uni }}</td>
             <td>{{ u.tipo_org_uni }}</td>
             <td>{{ u.direccion_uni }}</td>
@@ -128,20 +93,21 @@
             <td>{{ u.telefono1_uni }}</td>
             <td>{{ u.telefono2_uni }}</td>
             <td>{{ u.telefono3_uni }}</td>
-            <td>{{ u.fax1_uni }}</td>
+            {% comment %} <td>{{ u.fax1_uni }}</td>
             <td>{{ u.fax2_uni }}</td>
-            <td>{{ u.fax3_uni }}</td>
+            <td>{{ u.fax3_uni }}</td> {% endcomment %}
             <td>{{ u.ext1_uni }}</td>
             <td>{{ u.ext2_uni }}</td>
             <td>{{ u.ext3_uni }}</td>
             <td>{{ u.mail_uni }}</td>
             <td>{{ u.pagina_internet_uni }}</td>
             <td>{{ u.contacto_uni }}</td>
+            <td>{{ u.estatus_uni }}</td> 
             <td class="d-flex justify-content-evenly">
-                <a href="../vistaUniversidades/{{ u.id_uni }}/" class="btn btn-warning">
+                <a href="../vista-universidades/{{ u.rowid_uni }}/" class="btn btn-warning">
                     {% bs_icon 'pencil-square' size='1.5em'%}
                 </a>
-                <a href="../eliminarUniversidad/{{ u.id_uni }}/" class="btn btn-danger">
+                <a href="../eliminar-universidad/{{ u.rowid_uni }}/" class="btn btn-danger">
                     {% bs_icon 'trash' size='1.5em'%}
                 </a>
             </td>

@@ -2,10 +2,11 @@ import string
 from django import forms
 
 from .models import (SeCatPais, SeCatEstado,SeCatMunicipioDelegacion, SeCatColonia, SeCatUniversidad,SeCatNivelAcademico, SeCatPlaza,SeCatAreaBachillerato, 
-                    SeCatTipoBajas,SeCatMedioDifusion,SeCatBecas, SeCatTipoEscuela, SeCatTipoCambio, SeTabEmpCar,
-                    SeCatCarrera,SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades,SeCatInstitucion)
+                    SeCatTipoBajas,SeCatMedioDifusion,SeCatBecas, SeCatTipoEscuela, SeCatTipoCambio, SeTabEmpCar, SeCatDivision, SeProIndAsp,
+                    SeCatCarrera,SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades,SeCatInstitucion, SeCatPeriodos)
 
 ##########################  Catalogo #################################
+# -------------------------------------------- Direcciones --------------------------------------------- #
 # Form Paises En este formulario se agrega y tiene habilitado el campo de id
 class FormPaises(forms.ModelForm):
     class Meta:
@@ -142,7 +143,362 @@ class FormColonias(forms.ModelForm):
             'codposcol': 'Codigo Postal.',
         }
 
+# -------------------------------------------- Universidad --------------------------------------------- #
 
+# Form Universidad
+class FormUniversidad(forms.ModelForm):
+    class Meta:
+        model = SeCatUniversidad
+        fields = '__all__'
+        exclude = ('rowid_uni', 'estatus_uni')
+        widgets = {
+            'rowid_col': forms.Select(attrs={'class': 'form-control',
+                                                    'required' : 'True',
+                                                    'style' : 'border-color:#21B64A;'
+                                                }),
+            'id_uni': forms.TextInput(attrs={'class': 'form-control',
+                                                    'placeholder': 'Por favor, Ingrese el tipo de organizacion',
+                                                    'style' : 'border-color:#21B64A;'
+                                                    }),
+            'nombre_uni': forms.TextInput(attrs={'class': 'form-control',
+                                                    'required' : 'True',
+                                                    'placeholder': 'Por favor, Ingrese la direccion',
+                                                    'style' : 'border-color:#21B64A;'
+                                                    }),
+            'tipo_org_uni': forms.TextInput(attrs={'class': 'form-control',
+                                                'required' : 'True',
+                                                'placeholder': 'Por favor, Ingrese el RFC',
+                                                'style' : 'border-color:#21B64A;'
+                                                }),
+            'direccion_uni': forms.TextInput(attrs={'class': 'form-control',
+                                                    'required' : 'True' ,
+                                                    'placeholder': 'Por favor, Ingrese el codigo postal',
+                                                    'style' : 'border-color:#21B64A;'
+                                                    }),
+            'rfc_uni': forms.NumberInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Por favor, Ingrese el primer telefono',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'codpos_uni': forms.NumberInput(attrs={'class': 'form-control',
+                                                        'placeholder': 'Por favor, Ingrese el segundo telefono',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'telefono1_uni': forms.NumberInput(attrs={'class': 'form-control',
+                                                        'placeholder': 'Por favor, Ingrese el tercer telefono',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'telefono2_uni': forms.NumberInput(attrs={'class': 'form-control',
+                                                'placeholder': 'Por favor, Ingrese el primer fax',
+                                                'style' : 'border-color:#21B64A;'
+                                                }),
+            'telefono3_uni': forms.NumberInput(attrs={'class': 'form-control',
+                                                    'placeholder': 'Por favor, Ingrese el segundo fax',
+                                                    'style' : 'border-color:#21B64A;'
+                                                    }),
+            'ext1_uni': forms.TextInput(attrs={'class': 'form-control',
+                                                'placeholder': 'Por favor, Ingrese la tercer extension',
+                                                'style' : 'border-color:#21B64A;'
+                                                }),
+            'ext2_uni': forms.TextInput(attrs={'class': 'form-control',
+                                                'placeholder': 'Por favor, Ingrese la tercer extension',
+                                                'style' : 'border-color:#21B64A;'
+                                                }),
+            'ext3_uni': forms.TextInput(attrs={'class': 'form-control',
+                                                'placeholder': 'Por favor, Ingrese la tercer extension',
+                                                'style' : 'border-color:#21B64A;'
+                                                }),
+            'mail_uni': forms.EmailInput(attrs={'class': 'form-control',
+                                                 'placeholder': 'Por favor, Ingrese el email',
+                                                 'style' : 'border-color:#21B64A;'
+                                                 }),
+            'pagina_internet_uni': forms.URLInput(attrs={'class': 'form-control',
+                                                        'placeholder': 'Por favor, Ingrese pagina de internet',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'contacto_uni': forms.TextInput(attrs={'class': 'form-control',
+                                                    'required' : 'True',
+                                                    'placeholder': 'Por favor, Ingrese el contacto',
+                                                    'style' : 'border-color:#21B64A;'
+                                                    }),
+        }
+        labels = {
+                'rowid_col': 'Colonia *',
+                'id_uni': 'Id universidad*',
+                'nombre_uni': 'Nombre *',
+                'tipo_org_uni': 'Tipo de organizacion *',
+                'direccion_uni': 'Dirección *',
+                'rfc_uni': 'RFC *',
+                'codpos_uni': 'Código postal',
+                'telefono1_uni': 'Telefono 1 *',
+                'telefono2_uni': 'Telefono 2 *',
+                'telefono3_uni': 'Telefono 3 *',
+                'ext1_uni': 'Extension 1',
+                'ext2_uni': 'Extencion 2',
+                'ext3_uni': 'Extencion 3',
+                'mail_uni': 'Correo electronico *',
+                'pagina_internet_uni': 'Página web*',
+                'contacto_uni': 'Contacto *',
+            }
+# fFORMS DIVISIONES 
+class FormDivisiones(forms.ModelForm):
+    class Meta:
+        model = SeCatDivision
+        fields = '__all__'
+        exclude = ('rowid_div', 'estatus_div')
+        widgets = {
+            'rowid_uni': forms.Select(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'id_div': forms.NumberInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese clave de la división.',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'descri_larga_div': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'style' : 'border-color:#21B64A;',
+                                                        'placeholder': 'Ingrese nombre de la división'}),
+            'descri_corta_div': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'style' : 'border-color:#21B64A;',
+                                                        'placeholder': 'Ingrese abreviatura de la división'}),
+            'representante_div': forms.TextInput(attrs={'class': 'form-control',
+                                                           'required' : 'True',
+                                                            'style' : 'border-color:#21B64A;',
+                                                            'placeholder': 'Ingrese nombre del representante'}),
+            'telefono_1_div': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'style' : 'border-color:#21B64A;',
+                                                        'placeholder': 'Ingrese 1er teléfono'}),
+            'telefono_2_div': forms.TextInput(attrs={'class': 'form-control',
+                                                        'style' : 'border-color:#21B64A;',
+                                                        'placeholder': 'Ingrese 2do teléfono'}),
+            'fax1_div': forms.TextInput(attrs={'class': 'form-control',
+                                                'style' : 'border-color:#21B64A;',
+                                                'placeholder': 'Ingrese 1er fax'}),
+            'fax2_div': forms.TextInput(attrs={'class': 'form-control',
+                                                'style' : 'border-color:#21B64A;',
+                                                'placeholder': 'Ingrese 2do fax'}),
+            'extension1_div': forms.TextInput(attrs={'class': 'form-control',
+                                                        'style' : 'border-color:#21B64A;',
+                                                        'placeholder': 'Ingrese 1er extensión'}),
+            'extension2_div': forms.TextInput(attrs={'class': 'form-control',
+                                                        'style' : 'border-color:#21B64A;',
+                                                        'placeholder': 'Ingrese 2do extensión'}),
+            'mail_div': forms.TextInput(attrs={'class': 'form-control',
+                                                'style' : 'border-color:#21B64A;',
+                                                'placeholder': 'Ingrese Email de la división'}),
+        }
+        labels = {
+                'rowid_uni': 'Universidad *',
+                'id_div':'Clave División *',
+                'descri_larga_div': 'Nombre Division *',
+                'descri_corta_div': 'Abreviatura División *',
+                'representante_div': 'Representante División *',
+                'telefono_1_div': 'Teléfono 1 *',
+                'telefono_2_div': 'Teléfono 2 ',
+                'fax1_div': 'Fax 1 ',
+                'fax2_div': 'Fax 2 ',
+                'extension1_div': 'Extensión 1 ',
+                'extension2_div': 'Extensión 2 ',
+                'mail_div': 'Email ',
+            }
+# Form Carreras
+class FormCarreras(forms.ModelForm):
+    class Meta:
+        model = SeCatCarrera
+        fields = '__all__'
+        exclude = ('estatus_car','rowid_car' )
+        widgets = {
+            'rowid_div':forms.Select(attrs={'class': 'form-control',
+                                                       'required' : 'True','placeholder': 'Seleccione la Division',
+                                                       'style': 'border-color:#21B64A;'}),
+            'id_car': forms.NumberInput(attrs={'class': 'form-control',
+                                                       'required' : 'True','placeholder': 'Por favor, Ingrese el ID de la carrera',
+                                                       'style': 'border-color:#21B64A;'}),
+            'descri_largo_car': forms.TextInput(attrs={'class': 'form-control', 
+                                                       'placeholder': 'Por favor, Ingrese el nombre de la Carrera',
+                                                       'style': 'border-color:#21B64A;'}),
+            'descri_corto_car': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese la Abreviatura',
+                                                       'style': 'border-color:#21B64A;'}),
+            'ceneval_car': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el Ceneval',
+                                                       'style': 'border-color:#21B64A;'}),
+            'descri_largo_tit': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese una Descripcion', 
+                                                       'style': 'border-color:#21B64A;'}),
+        }
+        labels = {
+                'rowid_div': 'Division',
+                'id_car': 'Id Carrera',
+                'descri_largo_car': 'Carrera',
+                'descri_corto_car': 'Abreviatura',
+                'ceneval_car': 'Ceneval',
+                'descri_largo_tit': 'Descripcion',
+            }
+# Form Periodos
+class FormPeriodos(forms.ModelForm):
+    PERIODOS = (
+        (0,'Seleccione el Periodo'),
+        (1,'Enero-Abril'),
+        (2,'Mayo-Agosto'),
+        (3,'Septiembre-Diciembre')
+    )
+    periodo_per = forms.ChoiceField(label='Periodo:',choices=PERIODOS,widget=forms.Select(attrs={'class': 'form-control','style': 'border-color:#21B64A;'}))
+    class Meta:
+        model = SeCatPeriodos
+        field = '__all__'
+        exclude = ('rowid_per','estatus_per')
+        widgets = {
+            'rowid_car':forms.Select(attrs={'class': 'form-control', 'placeholder':'Seleccione una Carrera','style': 'border-color:#21B64A;'}),
+            'evento_per': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Ingrese evento','style': 'border-color:#21B64A;'}),
+            'consecutivo_per': forms.NumberInput(attrs={'class': 'form-control', 'placeholder':'Ingrese consecutivo','style': 'border-color:#21B64A;'}),
+            'fecha_inicial_per': forms.DateInput(attrs={'class':'form-control', 'placeholder':'DD/MM/AAAA','style': 'border-color:#21B64A;'}),
+            'fecha_final_per': forms.DateInput(attrs={'class':'form-control', 'placeholder':'DD/MM/AAAA','style': 'border-color:#21B64A;'}),
+            'anio_per': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'Ingresa el año','style': 'border-color:#21B64A;'}),
+            'descripcion_per': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese descripcion de la plaza','style': 'border-color:#21B64A;'}),
+        }
+        labels = {
+                'rowid_car':'Carrera',
+                'evento_per': 'Evento',
+                'consecutivo_per': 'Consecutivo',
+                'fecha_inicial_per': 'Fecha inicial',
+                'fecha_final_per': 'Fecha final',
+                'anio_per': 'Año',
+                'descripcion_per': 'Descripcion del Periodo',
+            }
+
+# -------------------------------------------- Aspirantes --------------------------------------------- #
+# FORMS MEDIOS DE DIFUSION 
+class FormMediosDifusion(forms.ModelForm):
+    class Meta:
+        model = SeCatMedioDifusion
+        fields = '__all__'
+        exclude = ('rowid_medio_dif', 'estatus_dif')
+        widgets = {
+            'id_medio_dif': forms.NumberInput(attrs={'class': 'form-control',
+                                                'required' : 'True',
+                                                'placeholder': 'Ingrese clave de la división.',
+                                                'style' : 'border-color:#21B64A;'
+                                                }),
+            'descri_largo_meddif': forms.TextInput(attrs={'class': 'form-control','required': 'True',
+                                                          'placeholder': 'Ingrese nombre del Medio de Difusión.',
+                                                          'required' : 'True',
+                                                          'style' : 'border-color:#21B64A;'
+                                                          }),
+            'descri_corto_meddif': forms.TextInput(attrs={'class': 'form-control','required': 'True',
+                                                          'placeholder': 'Ingrese abreviatura del Medio de Difusión.',
+                                                          'required' : 'True',
+                                                          'style' : 'border-color:#21B64A;'
+                                                          }),
+        }
+        labels = {
+                'id_medio_dif': 'Clave Medio de Difusión *',
+                'descri_largo_meddif': 'Medio de Difusión *',
+                'descri_corto_meddif': 'Abreviatura *',
+            }
+# Forms TIPOS DE ESCUELAS
+class FormTiposEscuelas(forms.ModelForm):
+    class Meta:
+        model = SeCatTipoEscuela
+        fields = '__all__'
+        exclude = ('rowid_tipo_esc', 'estatus_esc')
+        widgets = {
+            'rowid_col': forms.Select(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'id_tipo_esc':  forms.NumberInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese clave del Tipo de Escuela.',
+                                                        'style' : 'border-color:#21B64A;'
+                                              }),
+            'descri_largo_esc': forms.TextInput(attrs={'class': 'form-control','required': 'True',
+                                                       'placeholder': 'Ingrese nombre del Tipo de Escuela.',
+                                                       'required' : 'True',
+                                                       'style' : 'border-color:#21B64A;'
+                                                       }),
+            'descri_corta_esc': forms.TextInput(attrs={'class': 'form-control','required': 'True',
+                                                       'placeholder': 'Ingrese abreviatura del Tipo de Escuela.',
+                                                       'required' : 'True',
+                                                       'style' : 'border-color:#21B64A;'
+                                                       }),
+            'institucion': forms.TextInput(attrs={'class': 'form-control',
+                                                  'placeholder': 'Ingrese nombre de la Institución.',
+                                                  'style' : 'border-color:#21B64A;'
+                                                  }),
+            'nombre_plantel': forms.TextInput(attrs={'class': 'form-control',
+                                                     'placeholder': 'Ingrese nombre del Plantel.',
+                                                     'style' : 'border-color:#21B64A;'
+                                                     }),
+        }
+        labels = {
+                'rowid_col' : 'Colonia *',
+                'id_tipo_esc' : 'Clave Tipo de Escuela *',
+                'descri_largo_esc' : 'Nombre Tipo de Escuela *',
+                'descri_corta_esc': 'Abreviatura Tipo de Escuela *',
+                'institucion': 'Nombre Institución',
+                'nombre_plantel': 'Nombre Plantel',
+        }
+# Forms ÁREA BACHILLERATO
+class FormAreaBachi(forms.ModelForm):
+    class Meta:
+        model = SeCatAreaBachillerato
+        fields = '__all__'
+        exclude = ('rowid_area_bac', 'estatus_bac')
+        widgets = {
+            'id_area_bac':  forms.NumberInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese clave del Área Bachillerato.',
+                                                        'style' : 'border-color:#21B64A;'
+                                              }),
+            'descri_larga_bac': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese nombre del Área Bachillerato',
+                                                        'style' : 'border-color:#21B64A;',
+                                                        'required' : 'True'
+                                                        }),
+            'descri_corta_bac': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese abreviatura del Área Bachillerato',
+                                                        'style' : 'border-color:#21B64A;',
+                                                        'required' : 'True'
+                                                      }),
+        }
+        labels = {
+                'id_area_bac' : 'Clave Área Bachillerato *',
+                'descri_larga_bac' : 'Nombre Área Bachillerato *',
+                'descri_corta_bac' : 'Abreviatura Área Bachillerato *',
+            }
+# Forms INDICADORES ASPIRANTES
+class FormIndAsp(forms.ModelForm):
+    class Meta:
+        model= SeProIndAsp
+        fields= '__all__'
+        exclude = ('rowid_pro_ind_asp', 'estatus_indicadores')
+        widgets = {
+            'rowid_car': forms.Select(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'rowid_indicador': forms.Select(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'valor_porcentual': forms.NumberInput(attrs={'class': 'form-control',
+                                                        'required': 'True',
+                                                        'placeholder': 'Ingrese valor porcentual del Indicador Aspirante.',
+                                                        'required' : 'True',
+                                                        'style' : 'border-color:#21B64A;'
+                                                    }),
+        }
+        labels = {
+                'rowid_car' : 'Carrera *',
+                'rowid_indicador' : 'Indicador *',
+                'valor_porcentual' : 'Valor porcentual del Indicador Aspirante *',
+        }
+
+
+
+# -------------------------------------------- Empleado --------------------------------------------- #
 # FORM Adscripciones
 class FormAdscripcion(forms.ModelForm):
     class Meta:
@@ -250,17 +606,18 @@ class FormEmpCar(forms.ModelForm):
         fields = '__all__'
         exclude = ('rowid_emp_car', 'estatus_inst')          
         widgets = {
-            'rowid_empleado': forms.Select(attrs={'class': 'form-control',
+            'rowid_institucion': forms.Select(attrs={'class': 'form-control',
                                             'required' : 'True',
+                                            'initial':'FIXED',
                                             'style' : 'border-color:#21B64A;'
                                             }),
-            'rowid_institucion': forms.Select(attrs={'class': 'form-control',
+            'rowid_empleado': forms.Select(attrs={'class': 'form-control',
                                             'required' : 'True',
                                             'style' : 'border-color:#21B64A;'
                                             }),
             'descri_largo_car_emp': forms.TextInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
-                                                    'placeholder': 'Ingrese el nombre de la Institucion.',
+                                                    'placeholder': 'Ingrese el nombre de la carrera .',
                                                     'style' : 'border-color:#21B64A;'                                                        
                                                     }),
             'descri_corto_car_emp': forms.TextInput(attrs={'class': 'form-control',
@@ -272,113 +629,11 @@ class FormEmpCar(forms.ModelForm):
         labels = {
             'rowid_empleado': 'Empleado *',
             'rowid_institucion': 'Institución *',
-            'descri_largo_car_emp': 'Nombre *',
+            'descri_largo_car_emp': 'Carrera*',
             'descri_corto_car_emp': 'Abreviatura *',
         }
 
 
-
-# Form Universidad
-class FormUniversidad(forms.ModelForm):
-    class Meta:
-        model = SeCatUniversidad
-        fields = '__all__'
-        exclude = ('id_uni', 'estatus_uni','id_pais','id_edo','id_mundel','id_col')
-        widgets = {
-            'nombre_uni': forms.TextInput(attrs={'class': 'form-control',
-                                                    'required' : 'True',
-                                                    'placeholder': 'Por favor,Ingrese el nombre de la Universidad',
-                                                    'style' : 'border-color:#21B64A;'
-                                                }),
-            'tipo_org_uni': forms.TextInput(attrs={'class': 'form-control',
-                                                    'placeholder': 'Por favor, Ingrese el tipo de organizacion',
-                                                    'style' : 'border-color:#21B64A;'
-                                                    }),
-            'direccion_uni': forms.TextInput(attrs={'class': 'form-control',
-                                                    'required' : 'True', 
-                                                    'placeholder': 'Por favor, Ingrese la direccion',
-                                                    'style' : 'border-color:#21B64A;'
-                                                    }),
-            'rfc_uni': forms.TextInput(attrs={'class': 'form-control',
-                                                'required' : 'True',
-                                                'placeholder': 'Por favor, Ingrese el RFC',
-                                                'style' : 'border-color:#21B64A;'
-                                                }),
-            'codpos_uni': forms.TextInput(attrs={'class': 'form-control', 
-                                                    'required' : 'True' , 
-                                                    'placeholder': 'Por favor, Ingrese el codigo postal',
-                                                    'style' : 'border-color:#21B64A;'
-                                                    }),
-            'telefono1_uni': forms.NumberInput(attrs={'class': 'form-control', 
-                                                        'required' : 'True', 
-                                                        'placeholder': 'Por favor, Ingrese el primer telefono',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-            'telefono2_uni': forms.NumberInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Por favor, Ingrese el segundo telefono',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-            'telefono3_uni': forms.NumberInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Por favor, Ingrese el tercer telefono',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-            'fax1_uni': forms.NumberInput(attrs={'class': 'form-control', 
-                                                'placeholder': 'Por favor, Ingrese el primer fax',
-                                                'style' : 'border-color:#21B64A;'
-                                                }),
-            'fax2_uni': forms.NumberInput(attrs={'class': 'form-control', 
-                                                    'placeholder': 'Por favor, Ingrese el segundo fax',
-                                                    'style' : 'border-color:#21B64A;'
-                                                    }),
-            'fax3_uni': forms.NumberInput(attrs={'class': 'form-control', 
-                                                'placeholder': 'Por favor, Ingrese el tercer fax',
-                                                'style' : 'border-color:#21B64A;'
-                                                }),
-            'ext1_uni': forms.TextInput(attrs={'class': 'form-control', 
-                                                'placeholder': 'Por favor, Ingrese la primer extension',
-                                                'style' : 'border-color:#21B64A;'
-                                                }),
-            'ext2_uni': forms.TextInput(attrs={'class': 'form-control', 
-                                                'placeholder': 'Por favor, Ingrese la segundo extension',
-                                                'style' : 'border-color:#21B64A;'
-                                                }),
-            'ext3_uni': forms.TextInput(attrs={'class': 'form-control', 
-                                                'placeholder': 'Por favor, Ingrese la tercer extension',
-                                                'style' : 'border-color:#21B64A;'
-                                                }),
-            'mail_uni': forms.EmailInput(attrs={'class': 'form-control',
-                                                 'placeholder': 'Por favor, Ingrese el email',
-                                                 'style' : 'border-color:#21B64A;'
-                                                 }),
-            'pagina_internet_uni': forms.URLInput(attrs={'class': 'form-control',
-                                                        'placeholder': 'Por favor, Ingrese pagina de internet',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-            'contacto_uni': forms.TextInput(attrs={'class': 'form-control', 
-                                                    'required' : 'True',
-                                                    'placeholder': 'Por favor, Ingrese el contacto',
-                                                    'style' : 'border-color:#21B64A;'
-                                                    }),
-        }
-        labels = {
-                'nombre_uni': 'Nombre de Universidad *',
-                'tipo_org_uni': 'Tipo de Organizacion',
-                'direccion_uni': 'Direccion *',
-                'rfc_uni': 'RFC *',
-                'codpos_uni': 'Codigo Postal *',
-                'telefono1_uni': 'Telefono 1 *',
-                'telefono2_uni': 'Telefono 2',
-                'telefono3_uni': 'Telefono 3',
-                'fax1_uni': 'Fax 1',
-                'fax2_uni': 'Fax 2',
-                'fax3_uni': 'Fax 3',
-                'ext1_uni': 'Extension 1',
-                'ext2_uni': 'Extension 2',
-                'ext3_uni': 'Extension 3',
-                'mail_uni': 'Email',
-                'pagina_internet_uni': 'Pagina de Internet',
-                'contacto_uni': 'Contacto *',
-            }
 # Form Nivel Academico
 class FormNivAca(forms.ModelForm):
     class Meta:
@@ -423,28 +678,6 @@ class FormPlaza(forms.ModelForm):
                 'descri_largo_plaza': 'Nombre de Plaza *',
                 'descri_corto_plaza': 'Abreviatura *',
             }
-#Forms Bachillerato
-class FormAreaBachi(forms.ModelForm):
-    class Meta:
-        model = SeCatAreaBachillerato
-        fields = '__all__'
-        exclude = ('id_area_bac', 'estatus_bac')
-        widgets = {
-            'descri_larga_bac': forms.TextInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Por favor, Ingrese el nombre del área bachillerato',   
-                                                        'style' : 'border-color:#21B64A;',
-                                                         'required' : 'True'
-                                                        }),
-            'descri_corta_bac': forms.TextInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Por favor, Ingrese la abreviatura del area bachillerato', 
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }),
-        }
-        labels = {
-                'descri_larga_bac': 'Nombre área bachillerato *',
-                'descri_corta_bac': 'Abreviatura bachillerato *',
-            }
 #Forms Tipos baja
 class FormTipoBajas(forms.ModelForm):
     class Meta:
@@ -467,76 +700,6 @@ class FormTipoBajas(forms.ModelForm):
                 'descri_largo_tipo_baj': 'Nombre Tipo de Bajas *',
                 'descri_corto_tipo_baj': 'Abreviatura Tipo de bajas *',
             }
-#Forms Medios de Difucion
-class FormMediosDifusion(forms.ModelForm):
-    class Meta:
-        model = SeCatMedioDifusion
-        fields = '__all__'
-        exclude = ('id_medio_dif', 'estatus_dif')
-        widgets = {
-            'descri_largo_meddif': forms.TextInput(attrs={'class': 'form-control','required': 'True',
-                                                          'placeholder': 'Ingrese nombre del Medio de Difusión.',
-                                                          'required' : 'True',
-                                                          'style' : 'border-color:#21B64A;'
-                                                          }),
-
-            'descri_corto_meddif': forms.TextInput(attrs={'class': 'form-control','required': 'True',
-                                                          'placeholder': 'Ingrese abreviatura del Medio de Difusión.',
-                                                          'required' : 'True',
-                                                          'style' : 'border-color:#21B64A;'
-                                                          }),
-        }
-        labels = {
-                'descri_largo_meddif': 'Medio de Difusión. *',
-                'descri_corto_meddif': 'Abreviatura. *',
-            }
-#Forms Tipos de Escuela
-class FormTiposEscuelas(forms.ModelForm):
-    class Meta:
-        model = SeCatTipoEscuela
-        fields = '__all__'
-        exclude = ('id_tipo_esc', 'estatus_esc')
-        widgets = {
-            'descri_largo_esc': forms.TextInput(attrs={'class': 'form-control','required': 'True',
-                                                       'placeholder': 'Ingrese tipo de Escuela.',
-                                                       'required' : 'True',
-                                                       'style' : 'border-color:#21B64A;' 
-                                                       }),
-
-            'descri_corta_esc': forms.TextInput(attrs={'class': 'form-control','required': 'True', 
-                                                       'placeholder': 'Ingrese abreviatura de la Escuela.',
-                                                       'required' : 'True',
-                                                       'style' : 'border-color:#21B64A;'
-                                                       }),
-
-            'id_edo':  forms.NumberInput(attrs={'class': 'form-control',
-                                              'placeholder': 'Ingrese clave Estado.',
-                                              'style' : 'border-color:#21B64A;'
-                                              }),
-
-            'id_mundel':  forms.NumberInput(attrs={'class': 'form-control',
-                                                 'placeholder': 'Ingrese Clave Municipio/Delegación.',
-                                                 'style' : 'border-color:#21B64A;'
-                                                 }),
-
-            'institucion': forms.TextInput(attrs={'class': 'form-control',
-                                                  'placeholder': 'Ingrese nombre de la Institución.',
-                                                  'style' : 'border-color:#21B64A;'
-                                                  }),
-
-            'nombre_plantel': forms.TextInput(attrs={'class': 'form-control',
-                                                     'placeholder': 'Ingrese nombre del Plantel.',
-                                                     'style' : 'border-color:#21B64A;'
-                                                     }),
-        }
-        labels = {
-                'descri_largo_esc': 'Tipo Escuela. *',
-                'descri_corta_esc': 'Abreviatura Escuela. *',
-                'id_edo': 'Clave Estado.',
-                'id_mundel': 'Clave Municipio/Delegación.',
-                'institucion': 'Nombre Institución.',
-                'nombre_plantel': 'Nombre Plantel.',
-        }
 #Forms Becas
 class FormBecas(forms.ModelForm):
     class Meta:

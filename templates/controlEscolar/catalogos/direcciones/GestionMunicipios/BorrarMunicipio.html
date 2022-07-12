@@ -14,7 +14,7 @@
           <p class="mb-2">¿Estas seguro de que quieres borrar {{ Municipio.descri_largo_mundel  }} ?</p>
           <div class="d-flex w-75 justify-content-evenly align-items-stretch">
             <div class="col-8 col-sm-6">
-              <a href="{% url 'vistaMunicipios' %}" class="btn btn-secondary btn-lg active mt-3">Cancelar</a>
+              <a href="{% url 'vista_municipios' %}" class="btn btn-secondary btn-lg active mt-3">Cancelar</a>
             </div>
             <div class="">
               <form method="POST" action="">{% csrf_token %}

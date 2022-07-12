@@ -1,24 +1,24 @@
 {% extends '../../CRUD.html' %}
 
-{% block title %}Gestión de Estados{% endblock title %}
+{% block title %}Gestion Área Bachillerato{% endblock title %}
 
 {% block buttons %}
 {% comment %} Espera los botones imprimir {% endcomment %}
-<h3>Gestión de Estados</h3>
+<h3>Gestión de Área Bachillerato</h3>
     <div class="container mb-4 mt-4">
         <div class="row justify-content-md-center">
             <div class="col col-12 col-sm-3 col-lg-3">
                 {% load bootstrap_icons %}
-                <a href="{% url 'export_csv_estados' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+                <a href="{% url 'export_csv_areabachi' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export_xlwt_estados' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+                <a href="{% url 'export_xlwt_areabachi' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export_pdf_estados' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+                <a href="{% url 'export_pdf_areabachi' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export_print_estados' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+                <a href="{% url 'export_print_areabachi' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
             </div>
         </div>
     </div>
@@ -28,21 +28,23 @@
 {% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
 {% block form %}
 <form action="" method="POST">{% csrf_token %}
-        <p>
-            {{ FormEstados.as_p }}
-        </p>
-        <div class="form-group" >
-            <button type="submit" class="btn btn-success btn-block text-white" id="save">Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
-        </div>
-  </form>
+    <div class="form-group">
+
+        {{ FormAreaBachi.as_p }}
+
+    </div>
+    <div class="form-group" >
+        <button type="submit" class="btn btn-success btn-block text-white" id="save">Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
+    </div>
+</form>
 {% endblock form %}
 
 {% block search %}
 {% comment %} Busqueda por nombre {% endcomment %}
-<h1>Catálogo - Estados</h1>
-<form method="GET" action="{% url 'vista_estados' %}">
+<h1>Catálogo - Área Bachillerato</h1>
+<form method="GET" action="{% url 'vista_AreaBachi' %}">
     <div class="input-group mb-3 mt-4">
-        <input type="search" class="form-control" placeholder="Escribe aqui el estado..." name="search_estados">
+        <input type="search" class="form-control" placeholder="Escribe nombre Área Bachillerato..." name="search_areabachillerato">
         <div class="input-group-append">
             <span class="input-group-text bg-success">
                 {% load bootstrap_icons %}
@@ -58,31 +60,29 @@
 {% comment %} Espera una tabla que se llena con un for {% endcomment %}
 {% block table %}
 <table class="table table-striped">
-    <p style="text-align: right; font-size: 25px;">Número de Estados: {{ contador }} </p>
+    <p style="text-align: right; font-size: 25px;">Número de Áreas de Bachillerato: {{ contador }} </p>
     <thead>
         <tr>
-            <th>Pais</th>
-            <th>Clave</th>
-            <th>Estado</th>
+            <th>Clave Área Bachillerato</th>
+            <th>Área Bachillerato</th>
             <th>Abreviación</th>
             <th>Estatus</th>
             <th id="operaciones">Operaciones</th>
         </tr>
     </thead>
     <tbody>
-        {% for e in entity %}
+        {% for p in entity %}
         <tr>
             {% load bootstrap_icons %}
-            <td>{{ e.rowid_pais.descri_largo_pais }}</td>
-            <td>{{ e.id_edo }}</td>
-            <td>{{ e.descri_largo_edo }}</td>
-            <td>{{ e.descri_corto_edo }}</td>
-            <td>{{ e.estatus_edo }}</td>
+            <td>{{ p.id_area_bac }}</td>
+            <td>{{ p.descri_larga_bac }}</td>
+            <td>{{ p.descri_corta_bac }}</td>
+            <td>{{ p.estatus_bac }}</td>
             <td class="d-flex justify-content-evenly">
-                <a href="../vista-estados/{{ e.rowid_edo }}/" class="btn btn-warning">
+                <a href="../vista-AreaBachi/{{ p.rowid_area_bac }}/" class="btn btn-warning">
                     {% bs_icon 'pencil-square' size='1.5em'%}
                 </a>
-                <a href="../eliminar-estado/{{ e.rowid_edo }}/" class="btn btn-danger">
+                <a href="../eliminar-AreaBachi/{{ p.rowid_area_bac }}/" class="btn btn-danger">
                     {% bs_icon 'trash' size='1.5em'%}
                 </a>
             </td>

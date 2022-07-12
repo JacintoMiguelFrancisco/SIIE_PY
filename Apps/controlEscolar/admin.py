@@ -5,8 +5,10 @@ from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
 from .models import (SeCatPais, SeCatEstado, SeCatMunicipioDelegacion, SeCatColonia, SeCatUniversidad, SeCatNivelAcademico, SeCatPlaza, SeCatAreaBachillerato, 
-                    SeCatTipoBajas,  SeCatBecas, SeCatMedioDifusion,SeCatTipoEscuela,SeCatTipoCambio,SeTabEmpCar,
-                    SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion)
+                    SeCatTipoBajas,  SeCatBecas, SeCatMedioDifusion,SeCatTipoEscuela,SeCatTipoCambio,SeTabEmpCar,SeCatEmpleado, SeCatDivision, SeProIndAsp,
+                    SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeCatCarrera, SeCatPeriodos)
+
+# -------------------------------------------- Direcciones --------------------------------------------- #
 
 ##################### Admin de Paises  ################# 
 class PaisResources(resources.ModelResource):
@@ -41,17 +43,69 @@ class ColoniaAdmin(admin.ModelAdmin):
     search_fields = ['id_col', 'descri_largo_col']
     list_filter = ['estatus_col']
 
+# -------------------------------------------- Universidad --------------------------------------------- #
 
-
-
-##################### Admin Universidad ################# 
+##################### Admin Universidad #################
 @admin.register(SeCatUniversidad)
 class UniversidadAdmin(admin.ModelAdmin):
-    list_display = ('id_pais','id_edo','id_mundel','id_col', 'id_uni', 'nombre_uni', 'tipo_org_uni','direccion_uni', 'rfc_uni',
-                    'codpos_uni','telefono1_uni','telefono2_uni','telefono3_uni','fax1_uni','fax2_uni','fax3_uni','ext1_uni',
-                    'ext2_uni','ext3_uni','mail_uni','pagina_internet_uni','contacto_uni','estatus_uni')
-    search_fields = ['id_uni', 'nombre_uni']
+    list_display = ('rowid_uni', 'rowid_col', 'id_uni', 'nombre_uni', 'tipo_org_uni', 'direccion_uni', 'rfc_uni',
+                        'codpos_uni', 'telefono1_uni', 'telefono2_uni', 'telefono3_uni', 'ext1_uni',
+                        'ext2_uni', 'ext3_uni', 'mail_uni', 'pagina_internet_uni', 'contacto_uni', 'estatus_uni')
+    search_fields = ['rowid_uni', 'id_uni']
     list_filter = ['estatus_uni']
+##################### Admin Universidad #################
+@admin.register(SeCatDivision)
+class DivisionAdmin(admin.ModelAdmin):
+    list_display = ('rowid_uni','rowid_div','id_div','descri_larga_div','descri_corta_div',
+                    'representante_div','telefono_1_div','telefono_2_div','extension1_div','extension2_div','mail_div','estatus_div')
+    search_fields = ['rowid_div', 'descri_larga_div']
+    list_filter = ['estatus_div']
+#################### Admin Carreras ##########################
+@admin.register(SeCatCarrera)
+class CarreraAdmin(admin.ModelAdmin):
+    list_display = ('rowid_car', 'rowid_div', 'id_car', 'descri_largo_car','descri_corto_car',
+                    'estatus_car','ceneval_car','descri_largo_tit')
+    search_fields = ['id_car', 'descri_largo_car']
+    list_filter = ['estatus_car']
+#################### Admin Periodos ##########################
+@admin.register(SeCatPeriodos)
+class PeriodosAdmin(admin.ModelAdmin):
+    list_display = ('rowid_per', 'rowid_car', 'evento_per', 'consecutivo_per','fecha_inicial_per',
+                    'fecha_final_per','anio_per','periodo_per','descripcion_per','estatus_per')
+    search_fields = ['evento_per', 'consecutivo_per']
+    list_filter = ['estatus_per']
+
+# -------------------------------------------- Aspirantes --------------------------------------------- #
+
+##################### Admin de Medio de difusion ################# 
+@admin.register(SeCatMedioDifusion)
+class MedioDifusionAdmin(admin.ModelAdmin):
+    list_display = ('rowid_medio_dif','id_medio_dif','descri_largo_meddif','descri_corto_meddif','estatus_dif')
+    search_fields = ['id_medio_dif', 'descri_largo_meddif']
+    list_filter = ['estatus_dif']
+##################### Admin de Tipos de escuelas ################# 
+@admin.register(SeCatTipoEscuela)
+class TipoEscuelaAdmin(admin.ModelAdmin):
+    list_display = ('rowid_tipo_esc','rowid_col','id_tipo_esc','descri_largo_esc','descri_corta_esc','institucion','nombre_plantel','estatus_esc')
+    search_fields = ['rowid_tipo_esc', 'descri_largo_esc']
+    list_filter = ['estatus_esc']
+##################### Admin de área bachillerato ################# 
+@admin.register(SeCatAreaBachillerato)
+class AreaBachiAdmin(admin.ModelAdmin):
+    list_display = ('rowid_area_bac','id_area_bac','descri_larga_bac','descri_corta_bac','estatus_bac')
+    search_fields = ['rowid_area_bac', 'descri_larga_bac']
+    list_filter = ['estatus_bac']
+##################### Admin de Indicador-Aspirante ############
+@admin.register(SeProIndAsp)
+class IndAspAdmin(admin.ModelAdmin):
+    list_display = ('rowid_pro_ind_asp','rowid_car','rowid_indicador','valor_porcentual','estatus_indicadores')
+    search_fields = ['rowid_pro_ind_asp', 'valor_porcentual']
+    list_filter = ['estatus_indicadores']
+
+
+
+
+
 
 ##################### Admin de Nivel Academco  ################# 
 @admin.register(SeCatNivelAcademico)
@@ -67,33 +121,12 @@ class PlazaAdmin(admin.ModelAdmin):
     search_fields = ['id_plaza','descri_largo_plaza']
     list_filter = ['estatus_plaza']
 
-##################### Admin de Area Bachillerato  ################# 
-@admin.register(SeCatAreaBachillerato)
-class BachiAdmin(admin.ModelAdmin):
-    list_display = ('id_area_bac', 'descri_larga_bac', 'descri_corta_bac', 'estatus_bac')
-    search_fields = ['descri_larga_bac', 'descri_corta_bac']
-    list_filter = ['estatus_bac']
-
 ##################### Admin de Tipo Bajas ################# 
 @admin.register(SeCatTipoBajas)
 class TipBajaAdmin(admin.ModelAdmin):
     list_display = ('id_tipo_baj', 'descri_largo_tipo_baj', 'descri_corto_tipo_baj', 'estatus_tipo_baj')
     search_fields = ['descri_largo_tipo_baj', 'descri_corto_tipo_baj']
     list_filter = ['estatus_tipo_baj']
-
-##################### Admin de Medio de difusion ################# 
-@admin.register(SeCatMedioDifusion)
-class MedioDifusionAdmin(admin.ModelAdmin):
-    list_display = ('id_medio_dif','descri_largo_meddif','descri_corto_meddif','estatus_dif')
-    search_fields = ['id_medio_dif', 'descri_largo_meddif']
-    list_filter = ['estatus_dif']
-
-##################### Admin de Tipo Escuela  ################# 
-@admin.register(SeCatTipoEscuela)
-class TipoEscuelaAdmin(admin.ModelAdmin):
-    list_display = ('id_tipo_esc','descri_largo_esc','descri_corta_esc','estatus_esc','id_edo','id_mundel','institucion','nombre_plantel')
-    search_fields = ['id_tipo_esc', 'descri_largo_esc']
-    list_filter = ['estatus_esc']
 
 ##################### Admin de Becas  ################# 
 @admin.register(SeCatBecas)
@@ -159,3 +192,6 @@ class EmpCarnAdmin(admin.ModelAdmin):
     list_display = ('rowid_emp_car','rowid_empleado','rowid_institucion','descri_corto_car_emp','descri_largo_car_emp',  'estatus_inst')
     search_fields = ['descri_corto_car_emp']
     list_filter = ['estatus_inst'] 
+
+##################### Empleado  ################# 
+admin.site.register(SeCatEmpleado)
