@@ -1,26 +1,32 @@
 {% extends '../../../../base.html' %}
 
-{% block title %}Lista Area Bachillerato{% endblock title %}
+{% block title %}Lista Salones{% endblock title %}
 
 {% block body %}
-    <h2>Lista Area Bachillerato</h2>
-    <h3>Cantidad de Areas Bachillerato: {{ count }}</h3>
+    <h2>Lista Salones</h2>
+    <h3>Cantidad de Salones: {{ count }}</h3>
     <table>
         <thead>
             <tr>
-                <th class="cabecera">id</th>
-                <th class="cabecera">Area Bachillerato</th>
+                <th class="cabecera">Carrera</th>
+                <th class="cabecera">Clave Salón</th>
+                <th class="cabecera">Salón</th>
                 <th class="cabecera">Abreviación</th>
+                <th class="cabecera">Tipo Salón</th>
+                <th class="cabecera">Compartido</th>
                 <th class="cabecera">Estatus</th>
             </tr>
         </thead>
         <tbody>
-            {% for p in areabachi %}
+            {% for s in salones %}
             <tr >
-                <td>{{ p.id_area_bac }}</td>
-                <td>{{ p.descri_larga_bac }}</td>
-                <td>{{ p.descri_corta_bac }}</td>
-                <td>{{ p.estatus_bac }}</td>
+                <td>{{ s.rowid_car.descri_largo_car }}
+                    <td>{{ s.id_salon }}</td>
+                    <td>{{ s.descri_largo_salon }}</td>
+                    <td>{{ s.descri_corto_salon }}</td>
+                    <td>{{ s.tipo_salon }}</td>
+                    <td>{{ s.compartido_salon }}</td>
+                    <td>{{ s.estatus_salon }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -62,6 +68,13 @@
              background: #000;
              color: #eee;
          }
+
+        {% comment %}    Esta linea se usa para cambiar la orientacion de la hoja de vertical a horizontal   {% endcomment %}   
+         @page {
+            size: letter landscape;
+            margin: 0.5cm;
+            type: A4;
+        } 
     </style>
 
 {% endblock body %}

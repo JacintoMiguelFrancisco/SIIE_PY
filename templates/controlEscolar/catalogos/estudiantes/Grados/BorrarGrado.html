@@ -1,5 +1,5 @@
 {% extends '../../../../base.html' %}
-{% block title %} Eliminar indicador {% endblock %}
+{% block title %} Eliminar {% endblock %}
 
 {% block navbar %}
   {% include 'NavBar.html' %}
@@ -15,7 +15,7 @@
           
             <div class="d-flex w-75 justify-content-evenly align-items-stretch">
               <div class="col-8 col-sm-6">
-                <a href="{% url 'vistaGrados' %}" class="btn btn-secondary btn-lg active mt-3">Cancelar</a>
+                <a href="{% url 'vista_Grados' %}" class="btn btn-secondary btn-lg active mt-3">Cancelar</a>
               </div>
               <div class="">
                 <form method="POST" action="">{% csrf_token %}

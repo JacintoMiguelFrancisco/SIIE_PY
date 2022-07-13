@@ -126,6 +126,11 @@ urlpatterns = [
 
 
 
+
+
+
+
+
 # CRUD Nivel Academico
     path('vistaNivelAca/', views.vistaNivelAca, name="vistaNivelAca"),
     path('eliminarNivelAca/<int:id_academico>/', views.eliminarNivelAca, name="eliminarNivelAca"),
@@ -143,32 +148,6 @@ urlpatterns = [
     path('export_csv_plaza/', views.export_csv_plaza, name="export-csv-plaza"),
     path('export_xlwt_plaza/', views.export_xlwt_plaza, name="export-xlwt-plaza"),
 
-# CRUD TIPO DE BAJAS
-    path('vistaTipoBajas/', views.vistaTipoBajas, name="vistaTipoBajas"), 
-    path('eliminarTipoBajas/<int:id_tipo_baj>/', views.eliminarTipoBajas, name="eliminar-tipo-bajas"),
-    path('vistaTipoBajas/<int:id_tipo_baj>/', views.vista_tipobajas_detail, name="tipo-bajas-detail"),
-    path('export_pdf_tipo_bajas/', views.Export_pdf_tipo_bajas.as_view(), name="export-pdf-tipo-bajas"),
-    path('export_csv_tipo_bajas/', views.export_csv_tipo_bajas, name="export-csv-tipo-bajas" ),
-    path('export_xlwt_tipo_bajas/', views.export_xlwt_tipo_bajas, name="export-xlwt-tipo-bajas"),
-    path('export_print_tipo_baj', views.Export_print_tipobajas.as_view(), name="export-print-tipo-bajas"),
-# CRUD BECAS
-    path('vistaBecas/', views.vistaBecas, name="vistaBecas"), 
-    path('eliminarBeca/<int:id_becas>/', views.eliminarBeca, name="eliminar-beca"),
-    path('vistaBecas/<int:beca_id>/', views.vista_becas_detail, name="beca-detail"),
-    path('Export_pdf_becas/', views.Export_pdf_becas.as_view(), name="export-pdf-becas"),
-    path('export_csv_becas/', views.export_csv_becas, name="export-csv-becas" ),
-    path('export_xlwt_becas/', views.export_xlwt_becas, name="export-xlwt-becas"),
-    path('Export_print_becas', views.Export_print_becas.as_view(), name="export-print-becas"),
-    path('listaBecas/', views.listaBecas),
-# CRUD TIPO DE CAMBIOS
-    path('vistaCambios/', views.vistaCambios, name="vistaCambios"), 
-    path('eliminarCambio/<int:id_tipo_cambio>/', views.eliminarCambio, name="eliminar-cambio"),
-    path('vistaCambios/<int:cambio_id>/', views.vista_cambios_detail, name="cambio-detail"),
-    path('Export_pdf_cambios/', views.Export_pdf_cambios.as_view(), name="export-pdf-cambios"),
-    path('export_csv_cambios/', views.export_csv_cambios, name="export-csv-cambios" ),
-    path('export_xlwt_cambios/', views.export_xlwt_cambios, name="export-xlwt-cambios"),
-    path('Export_print_cambios', views.Export_print_cambios.as_view(), name="export-print-cambios"),
-    path('listaCambios/', views.listaCambios),
 # CRUD Plan de Estudio 
     path('vistaPlanE/', views.vistaPlanE, name="vistaPlaneEstudios"),
     path('eliminarPlan/<int:id_plan_est>/', views.eliminarPlan, name="eliminar-plan"),
@@ -185,18 +164,62 @@ urlpatterns = [
     path('export_pdf_indicador/', views.Export_pdf_indi.as_view(), name="export-pdf-indicadores"),
     path('export_csv_indi/', views.export_csv_indi, name="export-csv-indicadores" ),
     path('export_xlwt_indicador/', views.export_xlwt_indicador, name="export-xlwt-indicadores"),
-# CRUD GRADOS
-    path('vistaGrados/', views.vistaGrados, name="vistaGrados"),
-    path('eliminarGrado/<int:id_grado>/', views.eliminarGrado, name="eliminar-grado"),
-    path('vistaGrados/<int:grado_id>/', views.vista_grados_detail, name="vista_grados_detail"),
-    path('export_pdf_grados/', views.Export_print_grados.as_view(), name="export-print-grados"),
-    path('export_pdf_grado/', views.Export_pdf_grado.as_view(), name="export-pdf-grado"),
-    path('export_csv_grados/', views.export_csv_grados, name="export-csv-grados" ),
-    path('export_xlwt_grados/', views.export_xlwt_grados, name="export-xlwt-grados"),
 
 
 # Registro Aspirantes
     path('listaEjemplo/', views.listaEjemplo),
+
+
+
+
+
+
+
+
+
+# -------------------------------------------- Estudiantes --------------------------------------------- #
+# CRUD GRADOS
+    path('vista-Grados/', views.vista_Grados, name="vista_Grados"),
+    path('eliminar-Grado/<int:rowid_grado>/', views.eliminar_Grado, name="eliminar_grado"),
+    path('vista-Grados/<int:rowid_grado>/', views.vista_grados_detail, name="grados_detail"),
+    path('export-pdf-grados/', views.Export_print_grados.as_view(), name="export_print_grados"),
+    path('export-pdf-grado/', views.Export_pdf_grado.as_view(), name="export_pdf_grado"),
+    path('export-csv-grados/', views.export_csv_grados, name="export_csv_grados" ),
+    path('export-xlwt-grados/', views.export_xlwt_grados, name="export_xlwt_grados"),
+# CRUD SALONES
+    path('vista-Salones/', views.vista_Salones, name="vista_Salones"), 
+    path('eliminar-Salones/<int:rowid_salon>/', views.eliminar_Salones, name="eliminar_salones"),
+    path('vista-Salones/<int:rowid_salon>/', views.vista_salones_detail, name="salones_detail"),
+    path('export-pdf-salones/', views.Export_pdf_salones.as_view(), name="export_pdf_salones"),
+    path('export-csv-salones/', views.export_csv_salones, name="export_csv_salones" ),
+    path('export-xlwt-salones/', views.export_xlwt_salones, name="export_xlwt_salones"),
+    path('export-print-salones', views.Export_print_salones.as_view(), name="export_print_salones"),
+# CRUD BECAS
+    path('vista-Becas/', views.vista_Becas, name="vista_Becas"), 
+    path('eliminar-Beca/<int:rowid_becas>/', views.eliminar_Beca, name="eliminar_beca"),
+    path('vista-Becas/<int:rowid_becas>/', views.vista_becas_detail, name="beca_detail"),
+    path('Export-pdf-becas/', views.Export_pdf_becas.as_view(), name="export_pdf_becas"),
+    path('export-csv-becas/', views.export_csv_becas, name="export_csv_becas" ),
+    path('export-xlwt-becas/', views.export_xlwt_becas, name="export_xlwt_becas"),
+    path('Export-print-becas', views.Export_print_becas.as_view(), name="export_print_becas"),
+# CRUD TIPO DE CAMBIOS
+    path('vista-Cambios/', views.vista_Cambios, name="vista_Cambios"), 
+    path('eliminar-Cambio/<int:rowid_tipo_cambio>/', views.eliminar_Cambio, name="eliminar_cambio"),
+    path('vista-Cambios/<int:rowid_tipo_cambio>/', views.vista_cambios_detail, name="cambio_detail"),
+    path('Export-pdf-cambios/', views.Export_pdf_cambios.as_view(), name="export_pdf_cambios"),
+    path('export-csv-cambios/', views.export_csv_cambios, name="export_csv_cambios" ),
+    path('export-xlwt-cambios/', views.export_xlwt_cambios, name="export_xlwt_cambios"),
+    path('Export-print-cambios', views.Export_print_cambios.as_view(), name="export_print_cambios"),
+# CRUD TIPO DE BAJAS
+    path('vista-TipoBajas/', views.vista_TipoBajas, name="vista_TipoBajas"), 
+    path('eliminar-TipoBajas/<int:rowid_tipo_baj>/', views.eliminar_TipoBajas, name="eliminar_tipobajas"),
+    path('vista-TipoBajas/<int:rowid_tipo_baj>/', views.vista_tipobajas_detail, name="tipobajas_detail"),
+    path('export-pdf-tipobajas/', views.Export_pdf_tipobajas.as_view(), name="export_pdf_tipobajas"),
+    path('export-csv-tipobajas/', views.export_csv_tipobajas, name="export_csv_tipobajas" ),
+    path('export-xlwt-tipobajas/', views.export_xlwt_tipobajas, name="export_xlwt_tipobajas"),
+    path('export-print-tipobajas', views.Export_print_tipobajas.as_view(), name="export_print_tipobajas"),
+
+# -------------------------------------------- Empleados --------------------------------------------- #
 
 
 # CRUD Adscripcion

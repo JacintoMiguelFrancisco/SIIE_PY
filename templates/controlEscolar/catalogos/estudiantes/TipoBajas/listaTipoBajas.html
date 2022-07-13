@@ -1,21 +1,21 @@
 {% extends '../../../../base.html' %}
 
-{% block title %}Lista Tipo Bajas{% endblock title %}
+{% block title %}Lista Tipos Bajas{% endblock title %}
 
 {% block body %}
-    <h2>Lista Tipo de Bajas</h2>
-    <h3>Cantidad de Tipo de Bajas: {{ count }}</h3>
+    <h2>Lista Tipos de Bajas</h2>
+    <h3>Cantidad de Tipos de Bajas: {{ count }}</h3>
     <table>
         <thead>
             <tr>
-                <th class="cabecera">id</th>
+                <th class="cabecera">Clave Tipo Baja</th>
                 <th class="cabecera">Nombre Tipo Baja</th>
                 <th class="cabecera">Abreviación</th>
                 <th class="cabecera">Estatus</th>
             </tr>
         </thead>
         <tbody>
-            {% for p in tipobajas %}
+            {% for p in bajas %}
             <tr >
                 <td>{{ p.id_tipo_baj }}</td>
                 <td>{{ p.descri_largo_tipo_baj }}</td>

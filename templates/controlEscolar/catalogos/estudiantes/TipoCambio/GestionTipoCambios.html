@@ -9,16 +9,16 @@
         <div class="row justify-content-md-center">
             <div class="col col-12 col-sm-3 col-lg-3">
                 {% load bootstrap_icons %}
-                <a href="{% url 'export-csv-cambios' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+                <a href="{% url 'export_csv_cambios' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-xlwt-cambios' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+                <a href="{% url 'export_xlwt_cambios' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-pdf-cambios' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+                <a href="{% url 'export_pdf_cambios' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-print-cambios' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+                <a href="{% url 'export_print_cambios' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
 {% block search %}
 {% comment %} Busqueda por nombre {% endcomment %}
 <h1>Catálogo - Tipo Cambio Carrera</h1>
-<form method="GET" action="{% url 'vistaCambios' %}">
+<form method="GET" action="{% url 'vista_Cambios' %}">
     <div class="input-group mb-3 mt-4">
         <input type="search" class="form-control" placeholder="Escribe la descripción del tipo cambio carrera.." name="search_cambios">
         <div class="input-group-append">
@@ -58,11 +58,11 @@
 {% comment %} Espera una tabla que se llena con un for {% endcomment %}
 {% block table %}
 <table class="table table-striped">
-    <p style="text-align: right; font-size: 25px;">Número de Tipo Cambio Carrera: {{ contador }} </p>
+    <p style="text-align: right; font-size: 25px;"> Número de Tipo Cambio Carrera: {{ contador }} </p>
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Descripción cambio</th>
+            <th>Clave Tipo Cambio</th>
+            <th>Descripción Tipo cambio</th>
             <th>Estatus</th>
             <th id="operaciones">Operaciones</th>
         </tr>
@@ -75,10 +75,10 @@
             <td>{{ c.descri_tipocambio }}</td>
             <td>{{ c.status }}</td>
             <td class="d-flex justify-content-evenly">
-                <a href="../vistaCambios/{{ c.id_tipo_cambio }}/" class="btn btn-warning">
+                <a href="../vista-Cambios/{{ c.rowid_tipo_cambio }}/" class="btn btn-warning">
                     {% bs_icon 'pencil-square' size='1.5em'%}
                 </a>
-                <a href="../eliminarCambio/{{ c.id_tipo_cambio }}/" class="btn btn-danger">
+                <a href="../eliminar-Cambio/{{ c.rowid_tipo_cambio }}/" class="btn btn-danger">
                     {% bs_icon 'trash' size='1.5em'%}
                 </a>
             </td>

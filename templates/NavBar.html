@@ -18,11 +18,14 @@
   </button>
 
   <span class="navbar-brand mb-0 text-light">
-    {% bs_icon 'person' size='2em' %}Bienvenido: {{ request.user.username }}    
+    <span id="iconUser">{% bs_icon 'person' size='2em' %}</span>
+    <span id="nameUser">Bienvenido: {{ request.user.username }}</span>
   </span>
-  {% if  request.user.is_authenticated %}
-  <span class="navbar-brand mb-0 text-light">
-    <a href="{% url 'logout' %}" class="btn btn-light">Salir {% bs_icon 'x' size='2em' %} </a>  
+  {% if request.user.is_authenticated %}
+
+  <span class="navbar-brand mb-0 text-light ">
+    <a href="{% url 'logout' %}" id="logOut">Cerrar Sesion</a>
+    <a href="{% url 'logout' %}" id="logOutRes">{% bs_icon 'box-arrow-right' size='1.5em' %} </a>
   </span>
   {% endif %}
   </div>
@@ -91,13 +94,13 @@
                       <div class="sub-menu-estudiantes">
                         <a href="#">Estudiantes</a>
                         <a href="#">Documentacion</a>
-                        <a href="{% url 'vistaGrados' %}">Grado</a>
+                        <a href="{% url 'vista_Grados' %}">Grado</a>
                         <a href="#">Grupo</a>
-                        <a href="#">Salones</a>
-                        <a href="{% url 'vistaBecas' %}">Becas</a>
+                        <a href="{% url 'vista_Salones' %}">Salones</a>
+                        <a href="{% url 'vista_Becas' %}">Becas</a>
                         <a href="#">Estatus estudiante</a>
-                        <a href="{% url 'vistaTipoBajas' %}">Tipos de baja</a>
-                        <a href="{% url 'vistaCambios' %}">Tipos Cambio carrera</a>
+                        <a href="{% url 'vista_TipoBajas' %}">Tipos de baja</a>
+                        <a href="{% url 'vista_Cambios' %}">Tipos Cambio carrera</a>
                       </div>
 
                     <a class="sub-item-empleados">Empleados</a>

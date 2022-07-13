@@ -1,78 +1,29 @@
 {% extends '../../../../base.html' %}
-{% load static %}
-
-{% block title %}Registro Aspirantes{% endblock title %}
-
-{% block head %}
-    <link rel="stylesheet" href="{% static 'css/controlEscolar/registroAspirantes.css' %}" />
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-{% endblock head %}
+{% block title %}Captura Aspirante{% endblock title %}
 
 {% block navbar %}
-    {% include 'NavBar.html' %}
+  {% include 'NavBar.html' %}
 {% endblock navbar %}
 
 {% block body %}
-<body>
-	<main>
-		<form action="" class="formulario" id="formulario">
-			<!-- Grupo: Usuario -->
-			<div class="formulario__grupo">
-				<label for="usuario" class="formulario__label">Usuario</label>
-				<div class="formulario__grupo-input">
-					
-				</div>
-			</div>
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <h2 class="fs-1" style="text-align: center;">Aspiranre: </h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="" method="POST">{% csrf_token %}
 
-			<!-- Grupo: Nombre -->
-			<div class="formulario__grupo">
-				<label for="nombre" class="formulario__label">Nombre</label>
-				<div class="formulario__grupo-input">
-					
-				</div>
-			</div>
+					<table class="table">
+						{{ form.as_table }}
+					</table>
 
-			<!-- Grupo: Contraseña -->
-			<div class="formulario__grupo">
-				<label for="password" class="formulario__label">Contraseña</label>
-				<div class="formulario__grupo-input">
-					
-				</div>
-			</div>
-
-			<!-- Grupo: Contraseña 2 -->
-			<div class="formulario__grupo">
-				<label for="password2" class="formulario__label">Repetir Contraseña</label>
-				<div class="formulario__grupo-input">
-					
-				</div>
-			</div>
-
-			<!-- Grupo: Correo Electronico -->
-			<div class="formulario__grupo">
-				<label for="correo" class="formulario__label">Correo Electrónico</label>
-				<div class="formulario__grupo-input">
-					
-				</div>
-			</div>
-
-			<!-- Grupo: Teléfono -->
-			<div class="formulario__grupo">
-				<label for="telefono" class="formulario__label">Teléfono</label>
-				<div class="formulario__grupo-input">
-					
-				</div>
-			</div>
-
-
-			<div class="formulario__grupo formulario__grupo-btn-enviar">
-				<button type="submit" class="formulario__btn">Enviar</button>
-				<p class="formulario__mensaje-exito" id="formulario__mensaje-exito">Formulario enviado exitosamente!</p>
-			</div>
-		</form>
-	</main>
-
-	<script src="js/formulario.js"></script>
-	<script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
-</body>
-{% endblock body %}
+                    <div class="form-group d-flex justify-content-evenly">  
+                        <button type="submit" class="btn btn-success btn-block text-white">Registrar</button>  
+                        <a class="btn btn-danger btn-block" href="{% url 'vista_AreaBachi' %}">Cancelar</a>   
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,5 +1,5 @@
 {% extends '../../../../base.html' %}
-{% block title %}Catalogo  Area Bachillerato{% endblock title %}
+{% block title %}Catálogo - Tipos de Bajas{% endblock title %}
 
 {% block navbar %}
   {% include 'NavBar.html' %}
@@ -8,18 +8,17 @@
 {% block body %}
 <div class="row">
     <div class="col-md-4 offset-md-4">
-        <h2 class="fs-1" style="text-align: center;">Editar Area Bachillerato</h2>
+        <h2 class="fs-1" style="text-align: center;">Editar Tipo de Baja: </h2>
         <div class="card">
             <div class="card-body">
                 <form action="" method="POST">{% csrf_token %}
-                    <div class="form-group">
-                        <input type="text" id="txtId_Area_Bac" name="txtDescri_larga_Bac" class="form-control mb-3" placeholder="Area Bachillerato" maxlength="50" required value=" {{ AreaBachi.id_area_bac }}" readonly>
-                    </div>
-                        {{ FormAreaBachi.as_p }}
+
+                        {{ FormTipoBajas.as_p }}
+
                     <hr>
                     <div class="form-group d-flex justify-content-evenly">  
                         <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>  
-                        <a class="btn btn-danger btn-block" href="{% url 'vistaAreaBachi' %}">Cancelar</a>   
+                        <a class="btn btn-danger btn-block" href="{% url 'vista_TipoBajas' %}">Cancelar</a>   
                     </div>
                 </form>
             </div>

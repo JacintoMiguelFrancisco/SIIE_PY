@@ -9,16 +9,16 @@
         <div class="row justify-content-md-center">
             <div class="col col-12 col-sm-3 col-lg-3">
                 {% load bootstrap_icons %}
-                <a href="{% url 'export-csv-grados' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+                <a href="{% url 'export_csv_grados' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-xlwt-grados' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+                <a href="{% url 'export_xlwt_grados' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-pdf-grado' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+                <a href="{% url 'export_pdf_grado' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-print-grados' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+                <a href="{% url 'export_print_grados' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
             </div>
         </div>
     </div>
@@ -26,7 +26,9 @@
 {% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
 {% block form %}
 <form action="" method="POST">{% csrf_token %}
-    {{ FormsGrados.as_p}}
+
+    {{ FormGrados.as_p}}
+
     <div class="form-group" >
         <button type="submit" class="btn btn-success btn-block text-white" id="save"> Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
     </div>
@@ -35,7 +37,7 @@
 {% block search %}
 {% comment %} Busqueda por nombre {% endcomment %}
 <h1>Catálogo - Grados</h1>
-<form method="GET" action="{% url 'vistaGrados' %}">
+<form method="GET" action="{% url 'vista_Grados' %}">
     <div class="input-group mb-3 mt-4">
         <input type="search" class="form-control" placeholder="Escribe el nombre del grado.." name="search_grados">
         <div class="input-group-append">
@@ -52,10 +54,10 @@
 {% comment %} Espera una tabla que se llena con un for {% endcomment %}
 {% block table %}
 <table class="table table-striped">
-    <p style="text-align: right; font-size: 25px;">Número de Grados: {{ contador }} </p>
+    <p style="text-align: right; font-size: 25px;"> Número de Grados: {{ contador }} </p>
     <thead>
         <tr>
-            <th>Id</th>
+            <th>Clave</th>
             <th>Descripción</th>
             <th>Estatus</th>
             <th id="operaciones">Operaciones</th>
@@ -69,10 +71,10 @@
             <td>{{ g.descri_corto_gra }}</td>
             <td>{{ g.estatus_gra }}</td>
             <td class="d-flex justify-content-evenly">
-                <a href="../vistaGrados/{{ g.id_grado }}/" class="btn btn-warning">
+                <a href="../vista-Grados/{{ g.rowid_grado }}/" class="btn btn-warning">
                     {% bs_icon 'pencil-square' size='1.5em'%}
                 </a>
-                <a href="../eliminarGrado/{{ g.id_grado }}/" class="btn btn-danger">
+                <a href="../eliminar-Grado/{{ g.rowid_grado }}/" class="btn btn-danger">
                     {% bs_icon 'trash' size='1.5em'%}
                 </a>
             </td>

@@ -3,7 +3,8 @@ from django import forms
 
 from .models import (SeCatPais, SeCatEstado,SeCatMunicipioDelegacion, SeCatColonia, SeCatUniversidad,SeCatNivelAcademico, SeCatPlaza,SeCatAreaBachillerato, 
                     SeCatTipoBajas,SeCatMedioDifusion,SeCatBecas, SeCatTipoEscuela, SeCatTipoCambio, SeTabEmpCar, SeCatDivision, SeProIndAsp,
-                    SeCatCarrera,SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades,SeCatInstitucion, SeCatPeriodos)
+                    SeCatCarrera,SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades,SeCatInstitucion, SeCatPeriodos,
+                    SeTabAspirante, SeCatSalones)
 
 ##########################  Catalogo #################################
 # -------------------------------------------- Direcciones --------------------------------------------- #
@@ -48,7 +49,7 @@ class FormEstados(forms.ModelForm):
                                                         }),
             'id_edo': forms.NumberInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
-                                                        'placeholder': 'Ingrese la clave del estado.',
+                                                        'placeholder': 'Ingrese la clave del Estado.',
                                                         'style' : 'border-color:#21B64A;'
                                                         }),
             'descri_largo_edo': forms.TextInput(attrs={'class': 'form-control',
@@ -84,7 +85,7 @@ class FormMunicipiosDelegaciones(forms.ModelForm):
                                             }),
             'id_mundel': forms.NumberInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
-                                                    'placeholder': 'Ingrese id del Municipio',
+                                                    'placeholder': 'Ingrese clave del Municipio/Delegación',
                                                     'style' : 'border-color:#21B64A;'
                                                     }),
             'descri_largo_mundel': forms.TextInput(attrs={'class': 'form-control',
@@ -117,7 +118,7 @@ class FormColonias(forms.ModelForm):
                                             }),
             'id_col': forms.NumberInput(attrs={'class': 'form-control',
                                                 'required' : 'True',
-                                                'placeholder': 'Ingrese la clave del Municipio',
+                                                'placeholder': 'Ingrese la clave la Colonia',
                                                 'style' : 'border-color:#21B64A;'
                                                 }),
             'descri_largo_col': forms.TextInput(attrs={'class': 'form-control',
@@ -175,7 +176,7 @@ class FormUniversidad(forms.ModelForm):
                                                     'placeholder': 'Por favor, Ingrese el codigo postal',
                                                     'style' : 'border-color:#21B64A;'
                                                     }),
-            'rfc_uni': forms.NumberInput(attrs={'class': 'form-control',
+            'rfc_uni': forms.TextInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
                                                         'placeholder': 'Por favor, Ingrese el primer telefono',
                                                         'style' : 'border-color:#21B64A;'
@@ -369,6 +370,7 @@ class FormPeriodos(forms.ModelForm):
             }
 
 # -------------------------------------------- Aspirantes --------------------------------------------- #
+
 # FORMS MEDIOS DE DIFUSION 
 class FormMediosDifusion(forms.ModelForm):
     class Meta:
@@ -496,9 +498,165 @@ class FormIndAsp(forms.ModelForm):
                 'valor_porcentual' : 'Valor porcentual del Indicador Aspirante *',
         }
 
+# -------------------------------------------- Estudiantes --------------------------------------------- #
+
+# Forms SALONES
+class FormSalones(forms.ModelForm):
+    TIPOSALON = (
+        (0,'Seleccione una opción'),
+        (1,'Clase frente a grupo'),
+        (2,'Conferencia'),
+        (3,'Laboratorio')
+    )
+    tipo_salon = forms.ChoiceField(label='Tipo Salón:', choices=TIPOSALON, widget=forms.Select(attrs={'class':'form-control', 'style':'border-color:#21B64A;'}))
+    COMPARTIDO = (
+        (0,'Seleccione una opción'),
+        (1,'Si'),
+        (2,'No'),
+    )
+    compartido_salon = forms.ChoiceField(label='Compartido:', choices=COMPARTIDO, widget=forms.Select(attrs={'class':'form-control', 'style':'border-color:#21B64A;'}))
+    class Meta:
+        model= SeCatSalones
+        fields= '__all__'
+        exclude = ('rowid_salon', 'estatus_salon')
+        widgets = {
+            'rowid_car': forms.Select(attrs={'class': 'form-control',
+                                                'style' : 'border-color:#21B64A;'
+                                                }),
+            'id_salon': forms.NumberInput(attrs={'class': 'form-control',
+                                                'required' : 'True',
+                                                'placeholder': 'Ingrese clave del Salón.',
+                                                'style' : 'border-color:#21B64A;'
+                                                }),
+            'descri_largo_salon': forms.TextInput(attrs={'class': 'form-control',
+                                                'placeholder': 'Ingrese nombre del Salón.',
+                                                'style' : 'border-color:#21B64A;'
+                                                }),
+            'descri_corto_salon': forms.TextInput(attrs={'class': 'form-control',
+                                                'placeholder': 'Ingrese abreviatura del Salón.',
+                                                'style' : 'border-color:#21B64A;'
+                                                }),
+        }
+        labels = {
+                'rowid_car' : 'Carrera',
+                'id_salon' : 'Clave del Salón *',
+                'descri_largo_salon' : 'Nombre del Salón',
+                'descri_corto_salon' : 'Abreviatura del Salón',
+        }
+# Forms GRADOS
+class FormGrados(forms.ModelForm):
+    class Meta:
+        model= SeCatGrado
+        fields= '__all__'
+        exclude = ('rowid_grado', 'estatus_gra')
+        widgets = {
+            'id_grado': forms.NumberInput(attrs={'class': 'form-control',
+                                                'required' : 'True',
+                                                'placeholder': 'Ingrese clave del grado.',
+                                                'style' : 'border-color:#21B64A;'
+                                                }),
+            'descri_corto_gra' : forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese el grado.',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+        }
+        labels = {
+                'id_grado' : 'Clave del Grado *',
+                'descri_corto_gra' : 'Nombre del Grado *',
+        }
+# Forms BECAS
+class FormBecas(forms.ModelForm):
+    class Meta:
+        model = SeCatBecas
+        fields = '__all__'
+        exclude = ('rowid_becas', 'estatus_bec')
+        widgets = {
+            'id_becas':  forms.NumberInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese clave de la Beca',
+                                                        'style' : 'border-color:#21B64A;'
+                                              }),
+            'valor_ini_bec': forms.NumberInput(attrs={'class': 'form-control','required': 'True',
+                                                    'placeholder': 'Ingrese valor inicial de la Beca.',
+                                                    'required' : 'True',
+                                                    'style' : 'border-color:#21B64A;'
+                                                    }),
+            'valor_fin_bec': forms.NumberInput(attrs={'class': 'form-control','required': 'True',
+                                                    'placeholder': 'Ingrese valor final de la Beca.',
+                                                    'required' : 'True',
+                                                    'style' : 'border-color:#21B64A;'
+                                                    }),
+            'porcentaje_beca': forms.NumberInput(attrs={'class': 'form-control','required': 'True',
+                                                      'placeholder': 'Ingrese porcentaje de la Beca.',
+                                                      'required' : 'True',
+                                                      'style' : 'border-color:#21B64A;'
+                                                      }),
+        }
+        labels = {
+                'id_becas':'Clave Beca *',
+                'valor_ini_bec': 'Valor Inicial. *',
+                'valor_fin_bec': 'Valor Final. *',
+                'porcentaje_beca': 'Porcentaje. *',
+        }
+#Forms Tipos Cambios
+class FormTipoCambio(forms.ModelForm):
+    class Meta:
+        model = SeCatTipoCambio
+        fields = '__all__'
+        exclude = ('rowid_tipo_cambio', 'status')
+        widgets = {
+            'id_tipo_cambio':  forms.NumberInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese clave del Tipo Cambio',
+                                                        'style' : 'border-color:#21B64A;'
+                                              }),
+            'descri_tipocambio': forms.Textarea(attrs={'class': 'form-control',
+                                                        'placeholder': 'Ingresa Descripción del Tipo Cambio',
+                                                        'required' : 'True',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+        }
+        labels = {
+                'id_tipo_cambio': 'Clave del Tipo Cambio *',
+                'descri_tipocambio': 'Descripción del Tipo Cambio *',
+        }
+#Forms Tipos baja
+class FormTipoBajas(forms.ModelForm):
+    class Meta:
+        model = SeCatTipoBajas
+        fields = '__all__'
+        exclude = ('rowid_tipo_baj', 'estatus_tipo_baj')
+        widgets = {
+            'id_tipo_baj':  forms.NumberInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese clave del Tipo Cambio',
+                                                        'style' : 'border-color:#21B64A;'
+                                              }),
+            'descri_largo_tipo_baj': forms.TextInput(attrs={'class': 'form-control', 
+                                                            'placeholder': 'Ingrese nombre del tipo de baja',
+                                                            'style' : 'border-color:#21B64A;',
+                                                            'required' : 'True'
+                                                            }),
+            'descri_corto_tipo_baj': forms.TextInput(attrs={'class': 'form-control', 
+                                                            'placeholder': 'Ingrese abreviatura del tipo de baja',
+                                                            'style' : 'border-color:#21B64A;',
+                                                            'required' : 'True'
+                                                            }),
+        }
+        labels = {
+                'id_tipo_baj': 'Clave Tipo de Bajas *',
+                'descri_largo_tipo_baj': 'Nombre Tipo de Bajas *',
+                'descri_corto_tipo_baj': 'Abreviatura Tipo de bajas *',
+            }
+
+
+
+
 
 
 # -------------------------------------------- Empleado --------------------------------------------- #
+
 # FORM Adscripciones
 class FormAdscripcion(forms.ModelForm):
     class Meta:
@@ -634,6 +792,14 @@ class FormEmpCar(forms.ModelForm):
         }
 
 
+
+
+
+
+
+
+
+
 # Form Nivel Academico
 class FormNivAca(forms.ModelForm):
     class Meta:
@@ -678,75 +844,6 @@ class FormPlaza(forms.ModelForm):
                 'descri_largo_plaza': 'Nombre de Plaza *',
                 'descri_corto_plaza': 'Abreviatura *',
             }
-#Forms Tipos baja
-class FormTipoBajas(forms.ModelForm):
-    class Meta:
-        model = SeCatTipoBajas
-        fields = '__all__'
-        exclude = ('id_tipo_baj', 'estatus_tipo_baj')
-        widgets = {
-            'descri_largo_tipo_baj': forms.TextInput(attrs={'class': 'form-control', 
-                                                            'placeholder': 'Por favor, Ingrese el nombre del tipo de baja', 
-                                                            'style' : 'border-color:#21B64A;', 
-                                                            'required' : 'True'
-                                                            }),
-            'descri_corto_tipo_baj': forms.TextInput(attrs={'class': 'form-control', 
-                                                            'placeholder': 'Por favor, Ingrese la abreviatura del tipo de baja', 
-                                                            'style' : 'border-color:#21B64A;', 
-                                                            'required' : 'True'
-                                                            }),
-        }
-        labels = {
-                'descri_largo_tipo_baj': 'Nombre Tipo de Bajas *',
-                'descri_corto_tipo_baj': 'Abreviatura Tipo de bajas *',
-            }
-#Forms Becas
-class FormBecas(forms.ModelForm):
-    class Meta:
-        model = SeCatBecas
-        fields = '__all__'
-        exclude = ('id_becas', 'estatus_bec')
-
-        widgets = {
-            'valor_ini_bec': forms.NumberInput(attrs={'class': 'form-control','required': 'True',
-                                                    'placeholder': 'Ingrese valor inicial de la Beca.',
-                                                    'required' : 'True',
-                                                    'style' : 'border-color:#21B64A;'
-                                                    }),
-
-            'valor_fin_bec': forms.NumberInput(attrs={'class': 'form-control','required': 'True',
-                                                    'placeholder': 'Ingrese valor final de la Beca.',
-                                                    'required' : 'True',
-                                                    'style' : 'border-color:#21B64A;'
-                                                    }),
-
-            'porcentaje_beca': forms.NumberInput(attrs={'class': 'form-control','required': 'True',
-                                                      'placeholder': 'Ingrese porcentaje de la Beca.',
-                                                      'required' : 'True',
-                                                      'style' : 'border-color:#21B64A;'
-                                                      }),
-        }
-        labels = {
-                'valor_ini_bec': 'Valor Inicial. *',
-                'valor_fin_bec': 'Valor Final. *',
-                'porcentaje_beca': 'Porcentaje. *',
-        }
-#Forms Tipos Cambios
-class FormTipoCambio(forms.ModelForm):
-    class Meta:
-        model = SeCatTipoCambio
-        fields = '__all__'
-        exclude = ('id_tipo_cambio', 'status')
-        widgets = {
-            'descri_tipocambio': forms.Textarea(attrs={'class': 'form-control',
-                                                        'placeholder': 'Ingresa Descripción del Tipo Cambio.',
-                                                        'required' : 'True',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-        }
-        labels = {
-                'descri_tipocambio': 'Descripción. *',
-        }
 #Forms Carrera
 class FormCarrera(forms.ModelForm):
     class Meta:
@@ -841,43 +938,29 @@ class FormsPlaE(forms.ModelForm):
                 'fec_baja_estpla' : 'Fecha de baja',
                 'user_baja_estpla' :'Usuario',
         }
-# Froms GRADOS
-class FormsGrados(forms.ModelForm):
-    class Meta:
-        model= SeCatGrado
-        fields= '__all__'
-        exclude = ('id_grado', 'estatus_gra')
-        widgets = {
-            'descri_corto_gra' : forms.TextInput(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'placeholder': 'Ingrese el grado.',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-        }
 
-        labels = {
 
-                'descri_corto_gra' : 'Grado *',
-        }
+
+# -------------------------------------------- Operaciones --------------------------------------------- #
 
 ##########################  Operaciones #################################
 # Froms Aspirantes
 class FormsAspirantes(forms.ModelForm):
     class Meta:
-        model= SeCatColonia
+        model= SeTabAspirante
         fields= '__all__'
-        exclude = ('id_uni','id_div','id_car')
+        # exclude = ('id_uni','id_div','id_car')
         widgets = {
-            'descri_corto_gra' : forms.TextInput(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'placeholder': 'Ingrese el grado.',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
+            # 'descri_corto_gra' : forms.TextInput(attrs={'class': 'form-control',
+            #                                             'required' : 'True',
+            #                                             'placeholder': 'Ingrese el grado.',
+            #                                             'style' : 'border-color:#21B64A;'
+            #                                             }),
         }
 
         labels = {
 
-                'descri_corto_gra' : 'Grado *',
+                # 'descri_corto_gra' : 'Grado *',
         }
 
     # id_uni / id_div / id_car /  descri_largo_car / descri_corto_car   /  estatus_car / ceneval_car / descri_largo_tit

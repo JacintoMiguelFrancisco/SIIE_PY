@@ -8,17 +8,16 @@
 {% block body %}
 <div class="row">
     <div class="col-md-4 offset-md-4">
-        <h2 class="fs-1" style="text-align: center;">Editar Grado</h2>
+        <h2 class="fs-1" style="text-align: center;">Editar Grado:</h2>
         <div class="card">
             <div class="card-body">
                 <form action="" method="POST">{% csrf_token %}
-                    <div class="form-group">
-                        <input type="text" class="form-control mb-3"  required value=" {{ grado.id_grado }}" readonly>
-                    </div>
-                    {{ FormsGrados.as_p }}
+
+                    {{ FormGrados.as_p }}
+
                     <div class="form-group d-flex justify-content-evenly">  
                         <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>  
-                        <a class="btn btn-danger btn-block" href="{% url 'vistaGrados' %}">Cancelar</a>   
+                        <a class="btn btn-danger btn-block" href="{% url 'vista_Grados' %}">Cancelar</a>   
                     </div>
                 </form>
             </div>

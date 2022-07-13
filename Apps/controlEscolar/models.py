@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 # -------------------------------------------- Direcciones --------------------------------------------- #
+
 ############################################## Tabla paises ############################################
 class SeCatPais(models.Model):
     rowid_pais = models.AutoField(primary_key=True)
@@ -66,6 +67,7 @@ class SeCatColonia(models.Model):
         texto="{0}-{1}"
         return texto.format(self.id_col, self.descri_largo_col)
 # -------------------------------------------- Universidad --------------------------------------------- #
+
 ############################################## Tabla Universidades ############################################
 class SeCatUniversidad(models.Model):
     rowid_uni = models.IntegerField(primary_key=True)
@@ -155,7 +157,10 @@ class SeCatPeriodos(models.Model):
 
 
 
+
+
 # -------------------------------------------- Aspirantes --------------------------------------------- #
+
 ############################################## Tabla Medios de Difusión ################################
 class SeCatMedioDifusion(models.Model):
     rowid_medio_dif = models.IntegerField(primary_key=True)
@@ -233,9 +238,83 @@ class SeProIndAsp(models.Model):
         texto = "{0} / {1}"
         return texto.format(self.rowid_pro_ind_asp, self.valor_porcentual)
 
+# -------------------------------------------- Estudiantes --------------------------------------------- #
+
+# ############################################## APARTADO SALONES ######################################
+class SeCatSalones(models.Model):
+    rowid_salon = models.IntegerField(primary_key=True)
+    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
+    id_salon = models.IntegerField()
+    descri_corto_salon = models.CharField(max_length=10, blank=True, null=True)
+    descri_largo_salon = models.CharField(max_length=50, blank=True, null=True)
+    estatus_salon = models.CharField(max_length=1, blank=True, null=True, default="A")
+    tipo_salon = models.CharField(max_length=3, blank=True, null=True)
+    compartido_salon = models.CharField(max_length=1, blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'se_cat_salones'
+    def __str__(self):
+        texto="{0} / {1}"
+        return texto.format(self.descri_largo_salon, self.descri_corto_salon)
+# ############################################## APARTADO GRADOS #######################################
+class SeCatGrado(models.Model):
+    rowid_grado = models.IntegerField(primary_key=True)
+    id_grado = models.IntegerField()
+    descri_corto_gra = models.CharField(max_length=10)
+    estatus_gra = models.CharField(max_length=1, blank=True, null=True, default="A")
+    class Meta:
+        managed = False
+        db_table = 'se_cat_grado'
+    def __str__(self):
+        texto="{0} / {1}"
+        return texto.format(self.id_grado, self.descri_corto_gra) 
+##############################################  Tabla Becas   ##########################################
+class SeCatBecas(models.Model):
+    rowid_becas = models.IntegerField(primary_key=True)
+    id_becas = models.IntegerField()
+    valor_ini_bec = models.DecimalField(max_digits=6, decimal_places=2)
+    valor_fin_bec = models.DecimalField(max_digits=6, decimal_places=2)
+    porcentaje_beca = models.DecimalField(max_digits=6, decimal_places=2)
+    estatus_bec = models.CharField(max_length=1, blank=True, null=True, default="A")
+    class Meta:
+        managed = False
+        db_table = 'se_cat_becas'
+    def __str__(self):
+        texto="{0} / {1} / {2} / {3} / {4}"
+        return texto.format(self.id_becas, self.valor_ini_bec, self.valor_fin_bec, self.porcentaje_beca, self.estatus_bec)
+############################################## Tabla Tipo Cambio #######################################
+class SeCatTipoCambio(models.Model):
+    rowid_tipo_cambio = models.IntegerField(primary_key=True)
+    id_tipo_cambio = models.IntegerField()
+    descri_tipocambio = models.CharField(max_length=255, blank=True, null=True)
+    status = models.CharField(max_length=2, blank=True, null=True, default="A")
+    class Meta:
+        managed = False
+        db_table = 'se_cat_tipo_cambio'
+    def __str__(self):
+        texto="{0} / {1} / {2} "
+        return texto.format(self.id_tipo_cambio, self.descri_tipocambio, self.status)
+############################################## Tabla Tipos de Baja #####################################
+class SeCatTipoBajas(models.Model):
+    rowid_tipo_baj = models.IntegerField(primary_key=True)
+    id_tipo_baj = models.IntegerField()
+    descri_largo_tipo_baj = models.CharField(max_length=50)
+    descri_corto_tipo_baj = models.CharField(max_length=10)
+    estatus_tipo_baj = models.CharField(max_length=1, blank=True, null=True, default="A")
+    class Meta:
+        managed = False
+        db_table = 'se_cat_tipo_bajas'
+    def __str__(self):
+        texto="{0} / {1}"
+        return texto.format(self.descri_largo_tipo_baj, self.descri_corto_tipo_baj)
 
 
 
+
+
+
+
+# -------------------------------------------- Empleados --------------------------------------------- #
 
 ############################################## Tabla Adscripciones ############################################
 class SeCatDeptoEmp(models.Model):
@@ -348,6 +427,7 @@ class SeTabEmpCar(models.Model):
 
 
 
+
 ############################################## Tabla Nivel Academico ###################################
 class SeCatNivelAcademico(models.Model):
     id_academico = models.IntegerField(primary_key=True)
@@ -375,47 +455,6 @@ class SeCatPlaza(models.Model):
     def __str__(self):
         texto = "{0} / {1} / {2} / {3}"
         return texto.format(self.id_plaza, self.descri_largo_plaza, self.descri_corto_plaza, self.estatus_plaza)
-############################################## Tabla Tipos de Baja #########################################################
-class SeCatTipoBajas(models.Model):
-    id_tipo_baj = models.IntegerField(primary_key=True)
-    descri_largo_tipo_baj = models.CharField(max_length=50)
-    descri_corto_tipo_baj = models.CharField(max_length=10)
-    estatus_tipo_baj = models.CharField(max_length=1, blank=True, null=True, default='A')
-    class Meta:
-        managed = False
-        db_table = 'se_cat_tipo_bajas'
-    def __str__(self):
-        texto="{0} / {1} / {2} / {3}"
-        return texto.format(self.id_tipo_baj, self.descri_largo_tipo_baj, self.descri_corto_tipo_baj, self.estatus_tipo_baj)
-
-##############################################  Tabla Becas   ########################################################
-class SeCatBecas(models.Model):
-    id_becas = models.IntegerField(primary_key=True)
-    valor_ini_bec = models.DecimalField(max_digits=6, decimal_places=2)
-    valor_fin_bec = models.DecimalField(max_digits=6, decimal_places=2)
-    porcentaje_beca = models.DecimalField(max_digits=6, decimal_places=2)
-    estatus_bec = models.CharField(max_length=1, blank=True, null=True, default="A")
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_becas'
-
-    def __str__(self):
-        texto="{0} / {1} / {2} / {3} / {4}"
-        return texto.format(self.id_becas, self.valor_ini_bec, self.valor_fin_bec, self.porcentaje_beca, self.estatus_bec)
-############################################## Tabla Tipo Cambio ###################################################
-class SeCatTipoCambio(models.Model):
-    id_tipo_cambio = models.IntegerField(primary_key=True)
-    descri_tipocambio = models.CharField(max_length=255, blank=True, null=True)
-    status = models.CharField(max_length=2, blank=True, null=True, default="A")
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_tipo_cambio'
-
-    def __str__(self):
-        texto="{0} / {1} / {2} "
-        return texto.format(self.id_tipo_cambio, self.descri_tipocambio, self.status)
 
 ############################################## APARTADO PLANES DE ESTUDIO ###############################################
 class SeCatPlaEstudio(models.Model):
@@ -435,20 +474,6 @@ class SeCatPlaEstudio(models.Model):
     def __str__(self):
         texto="{0} / {1}"
         return texto.format(self.decri_larga_plan_est, self.descri_corta_plan_est)
-############################################## APARTADO GRADOS ##########################################################
-class SeCatGrado(models.Model):
-    id_grado = models.IntegerField(primary_key=True)
-    descri_corto_gra = models.CharField(max_length=10)
-    estatus_gra = models.CharField(max_length=1, blank=True, null=True, default="A")
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_grado'
-
-    def __str__(self):
-        texto="{0} / {1}"
-        return texto.format(self.id_grado, self.descri_corto_gra)
-
 
 
 
@@ -456,17 +481,12 @@ class SeCatGrado(models.Model):
 
 ############################################## TABLA ASPIRANTES ##########################################################
 class SeTabAspirante(models.Model):
-    id_uni = models.OneToOneField(SeCatCarrera, models.DO_NOTHING, db_column='id_uni', primary_key=True)
-    id_div = models.IntegerField()
-    id_car = models.IntegerField()
-    folio_utn_asp = models.CharField(max_length=20)
-    id_area_bac = models.ForeignKey(SeCatAreaBachillerato, models.DO_NOTHING, db_column='id_area_bac', blank=True, null=True)
-    id_pais = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='id_pais', blank=True, null=True)
-    id_edo = models.IntegerField(blank=True, null=True)
-    id_mundel = models.IntegerField(blank=True, null=True)
-    id_col = models.IntegerField(blank=True, null=True)
-    id_medio_dif = models.ForeignKey(SeCatMedioDifusion, models.DO_NOTHING, db_column='id_medio_dif', blank=True, null=True)
-    id_tipo_esc = models.ForeignKey(SeCatTipoEscuela, models.DO_NOTHING, db_column='id_tipo_esc', blank=True, null=True)
+    folio_utn_asp = models.CharField(primary_key=True, max_length=20)
+    rowid_area_bac = models.ForeignKey(SeCatAreaBachillerato, models.DO_NOTHING, db_column='rowid_area_bac', blank=True, null=True)
+    rowid_medio_dif = models.ForeignKey(SeCatMedioDifusion, models.DO_NOTHING, db_column='rowid_medio_dif', blank=True, null=True)
+    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
+    rowid_tipo_esc = models.ForeignKey(SeCatTipoEscuela, models.DO_NOTHING, db_column='rowid_tipo_esc', blank=True, null=True)
+    rowid_col = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='rowid_col', blank=True, null=True)
     fecha_alt_asp = models.DateField()
     mpo_o_alcaldia_nac_asp = models.IntegerField()
     ent_fed_nac_asp = models.IntegerField()
@@ -530,7 +550,7 @@ class SeTabAspirante(models.Model):
     class Meta:
         managed = False
         db_table = 'se_tab_aspirante'
-        unique_together = (('id_uni', 'id_div', 'id_car', 'folio_utn_asp'), ('id_uni', 'id_div', 'id_car', 'folio_utn_asp'),)
+
 
 
 # This is an auto-generated Django model module.
@@ -1482,21 +1502,6 @@ class SeCatRama(models.Model):
         managed = False
         db_table = 'se_cat_rama'
 
-
-class SeCatSalones(models.Model):
-    rowid_car = models.OneToOneField(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', primary_key=True)
-    rowid_salon = models.IntegerField()
-    id_salon = models.IntegerField()
-    descri_corto_salon = models.CharField(max_length=10, blank=True, null=True)
-    descri_largo_salon = models.CharField(max_length=50, blank=True, null=True)
-    estatus_salon = models.CharField(max_length=1, blank=True, null=True)
-    tipo_salon = models.CharField(max_length=3, blank=True, null=True)
-    compartido_salon = models.CharField(max_length=1, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_salones'
-        unique_together = (('rowid_car', 'rowid_salon'), ('rowid_car', 'rowid_salon'),)
 
 
 class SeCatSector(models.Model):

@@ -1,24 +1,24 @@
 {% extends '../../CRUD.html' %}
 
-{% block title %}Gestion Área Bachillerato{% endblock title %}
+{% block title %}Gestión Salones{% endblock title %}
 
 {% block buttons %}
 {% comment %} Espera los botones imprimir {% endcomment %}
-<h3>Gestión de área bachillerato</h3>
+<h3>Gestión de Salones</h3>
     <div class="container mb-4 mt-4">
         <div class="row justify-content-md-center">
             <div class="col col-12 col-sm-3 col-lg-3">
                 {% load bootstrap_icons %}
-                <a href="{% url 'export-csv-area-bachi' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+                <a href="{% url 'export_csv_salones' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-xlwt-area-bachi' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+                <a href="{% url 'export_xlwt_salones' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-pdf-area-bachi' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+                <a href="{% url 'export_pdf_salones' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-print-area-bac' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+                <a href="{% url 'export_print_salones' %}" type="button" class="btn btn-secondary"id="button">Print{% bs_icon 'printer' size='1.5em'%}</a>
             </div>
         </div>
     </div>
@@ -28,21 +28,21 @@
 {% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
 {% block form %}
 <form action="" method="POST">{% csrf_token %}
-    <div class="form-group">
-        {{ FormAreaBachi.as_p }}
-    </div>
+    <p>
+    {{ FormSalones.as_p }}
+    </p>
     <div class="form-group" >
-        <button type="submit" class="btn btn-success btn-block text-white" id="save">Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
+        <button type="submit" class="btn btn-success btn-block text-white" id="save">Guardar{% bs_icon 'check2-square' size='1.5em'%}</button>
     </div>
 </form>
 {% endblock form %}
 
 {% block search %}
 {% comment %} Busqueda por nombre {% endcomment %}
-<h1>Catálogo de Área Bachillerato</h1>
-<form method="GET" action="{% url 'vistaAreaBachi' %}">
+<h1>Catálogo - Salones</h1>
+<form method="GET" action="{% url 'vista_Salones' %}">
     <div class="input-group mb-3 mt-4">
-        <input type="search" class="form-control" placeholder="Buscar área bachillerato..." name="search_areabachillerato">
+        <input type="search" class="form-control" placeholder="Escribe nombre del Salón ...." name="search_salones">
         <div class="input-group-append">
             <span class="input-group-text bg-success">
                 {% load bootstrap_icons %}
@@ -58,29 +58,35 @@
 {% comment %} Espera una tabla que se llena con un for {% endcomment %}
 {% block table %}
 <table class="table table-striped">
-    <p style="text-align: right; font-size: 25px;">Número de registro: {{ contador }} </p>
+    <p style="text-align: right; font-size: 25px;"> Número de Salones: {{ contador }} </p>
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Área Bachillerato</th>
+            <th>Carrera</th>
+            <th>Clave Salón</th>
+            <th>Salón</th>
             <th>Abreviación</th>
+            <th>Tipo Salón</th>
+            <th>Compartido</th>
             <th>Estatus</th>
             <th id="operaciones">Operaciones</th>
         </tr>
     </thead>
     <tbody>
-        {% for p in entity %}
+        {% for s in entity %}
         <tr>
             {% load bootstrap_icons %}
-            <td>{{ p.id_area_bac }}</td>
-            <td>{{ p.descri_larga_bac }}</td>
-            <td>{{ p.descri_corta_bac }}</td>
-            <td>{{ p.estatus_bac }}</td>
+            <td>{{ s.rowid_car.descri_largo_car }}
+            <td>{{ s.id_salon }}</td>
+            <td>{{ s.descri_largo_salon }}</td>
+            <td>{{ s.descri_corto_salon }}</td>
+            <td>{{ s.tipo_salon }}</td>
+            <td>{{ s.compartido_salon }}</td>
+            <td>{{ s.estatus_salon }}</td>
             <td class="d-flex justify-content-evenly">
-                <a href="../vistaAreaBachi/{{ p.id_area_bac }}/" class="btn btn-warning">
+                <a href="../vista-Salones/{{ s.rowid_salon }}/" class="btn btn-warning">
                     {% bs_icon 'pencil-square' size='1.5em'%}
                 </a>
-                <a href="../eliminarAreaBachi/{{ p.id_area_bac }}/" class="btn btn-danger">
+                <a href="../eliminar-Salones/{{ s.rowid_salon }}/" class="btn btn-danger">
                     {% bs_icon 'trash' size='1.5em'%}
                 </a>
             </td>

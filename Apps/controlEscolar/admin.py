@@ -6,7 +6,7 @@ from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 from .models import (SeCatPais, SeCatEstado, SeCatMunicipioDelegacion, SeCatColonia, SeCatUniversidad, SeCatNivelAcademico, SeCatPlaza, SeCatAreaBachillerato, 
                     SeCatTipoBajas,  SeCatBecas, SeCatMedioDifusion,SeCatTipoEscuela,SeCatTipoCambio,SeTabEmpCar,SeCatEmpleado, SeCatDivision, SeProIndAsp,
-                    SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeCatCarrera, SeCatPeriodos)
+                    SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeCatCarrera, SeCatPeriodos, SeCatSalones)
 
 # -------------------------------------------- Direcciones --------------------------------------------- #
 
@@ -102,6 +102,40 @@ class IndAspAdmin(admin.ModelAdmin):
     search_fields = ['rowid_pro_ind_asp', 'valor_porcentual']
     list_filter = ['estatus_indicadores']
 
+# -------------------------------------------------------- APARTADO ESTUDIANTES -------------------------------------------------- #
+# ##################### Admin de Grado  ####################### 
+@admin.register(SeCatSalones)
+class GradoAdmin(admin.ModelAdmin):
+    list_display = ('rowid_salon','rowid_car','id_salon','descri_corto_salon','descri_largo_salon','estatus_salon','tipo_salon','compartido_salon')
+    search_fields = ['rowid_salon','descri_largo_salon','descri_corto_salon']
+    list_filter = ['estatus_salon'] 
+# ##################### Admin de Grado  ####################### 
+@admin.register(SeCatGrado)
+class GradoAdmin(admin.ModelAdmin):
+    list_display = ('rowid_grado','id_grado','descri_corto_gra','estatus_gra')
+    search_fields = ['rowid_grado','descri_corto_gra']
+    list_filter = ['estatus_gra'] 
+##################### Admin de becas ########################## 
+@admin.register(SeCatBecas)
+class BecasAdmin(admin.ModelAdmin):
+    list_display = ('rowid_becas','id_becas','valor_ini_bec','valor_fin_bec','porcentaje_beca','estatus_bec')
+    search_fields = ['rowid_becas', 'valor_ini_bec','valor_fin_bec']
+    list_filter = ['estatus_bec']
+##################### Admin de Tipo Cambio #################### 
+@admin.register(SeCatTipoCambio)
+class CambioAdmin(admin.ModelAdmin):
+    list_display = ('rowid_tipo_cambio','id_tipo_cambio','descri_tipocambio','status')
+    search_fields = ['rowid_tipo_cambio', 'id_tipo_cambio','descri_tipocambio']
+    list_filter = ['status']
+##################### Admin de Tipo Bajas ##################### 
+@admin.register(SeCatTipoBajas)
+class BajasAdmin(admin.ModelAdmin):
+    list_display = ('rowid_tipo_baj','id_tipo_baj','descri_largo_tipo_baj','descri_corto_tipo_baj','estatus_tipo_baj')
+    search_fields = ['rowid_tipo_baj', 'descri_largo_tipo_baj']
+    list_filter = ['estatus_tipo_baj']
+
+
+
 
 
 
@@ -121,27 +155,6 @@ class PlazaAdmin(admin.ModelAdmin):
     search_fields = ['id_plaza','descri_largo_plaza']
     list_filter = ['estatus_plaza']
 
-##################### Admin de Tipo Bajas ################# 
-@admin.register(SeCatTipoBajas)
-class TipBajaAdmin(admin.ModelAdmin):
-    list_display = ('id_tipo_baj', 'descri_largo_tipo_baj', 'descri_corto_tipo_baj', 'estatus_tipo_baj')
-    search_fields = ['descri_largo_tipo_baj', 'descri_corto_tipo_baj']
-    list_filter = ['estatus_tipo_baj']
-
-##################### Admin de Becas  ################# 
-@admin.register(SeCatBecas)
-class BecasAdmin(admin.ModelAdmin):
-    list_display = ('id_becas','valor_ini_bec','valor_fin_bec','porcentaje_beca','estatus_bec')
-    search_fields = ['id_becas']
-    list_filter = ['estatus_bec']
-
-##################### Admin de Tipo Cambio  ################# 
-@admin.register(SeCatTipoCambio)
-class TipoCambioAdmin(admin.ModelAdmin):
-    list_display = ('id_tipo_cambio','descri_tipocambio','status')
-    search_fields = ['id_tipo_cambio']
-    list_filter = ['status']
-
 ##################### Admin de Indicadores  ################# 
 @admin.register(SeCatIndicador)
 class IndicadoresAdmin(admin.ModelAdmin):
@@ -156,14 +169,8 @@ class PlanEstudioAdmin(admin.ModelAdmin):
     search_fields = ['id_plan_est']
     list_filter = ['estatus_plan_est'] 
 
-##################### Admin de Grado  ################# 
-@admin.register(SeCatGrado)
-class GradoAdmin(admin.ModelAdmin):
-    list_display = ('id_grado','descri_corto_gra','estatus_gra')
-    search_fields = ['id_grado']
-    list_filter = ['estatus_gra'] 
 
-
+# -------------------------------------------- Empleados --------------------------------------------- #
 
 ##################### Adscripciones  ################# 
 @admin.register(SeCatDeptoEmp)
