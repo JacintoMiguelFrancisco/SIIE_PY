@@ -1,0 +1,139 @@
+{% extends '../../../../base.html' %}
+
+{% block title %}Lista de Empleados{% endblock title %}
+
+{% block body %}
+    <h2>Lista de Empleados</h2>
+    <h3>Cantidad de Empleados: {{ count }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Nivel Academico</th>
+                <th class="cabecera">Carrera</th>
+                <th class="cabecera">Departamento</th>
+                <th class="cabecera">Estado de Nacimiento</th>
+                <th class="cabecera">Colonia</th>
+                <th class="cabecera">Sueldo</th>
+                <th class="cabecera">ID Empleado</th>
+                <th class="cabecera">Nombre</th>
+                <th class="cabecera">Apellido Paterno</th>
+                <th class="cabecera">Apellido Materno</th>
+                <th class="cabecera">RFC</th>
+                <th class="cabecera">CURP</th>
+                <th class="cabecera">Direccion</th>
+                <th class="cabecera">Tel</th>
+                <th class="cabecera">Email</th>
+                <th class="cabecera">Sexo</th>
+                <th class="cabecera">Fecha Alta</th>
+                <th class="cabecera">User Alta</th>
+                <th class="cabecera">User Cambio</th>
+                <th class="cabecera">Fecha Cambio</th>
+                <th class="cabecera">Estatus Empleado</th>
+                <th class="cabecera">C.P</th>
+                <th class="cabecera">Horas Contra</th>
+                <th class="cabecera">Fecha Nacimiento</th>
+                <th class="cabecera">Estatus Val</th>
+                <th class="cabecera">Estatus Comp</th>
+                <th class="cabecera">Edad Empleado</th>
+                <th class="cabecera">Estado Civil</th>
+                <th class="cabecera">Num Vac Max</th>
+                <th class="cabecera">Num Vac Act</th>
+                <th class="cabecera">Tipo Contrato</th>
+                <th class="cabecera">Cedula</th>
+                <th class="cabecera">FecIcon</th>
+                <th class="cabecera">FecFcon</th>
+                <th class="cabecera">Comentario</th>
+                <th class="cabecera">Estado de Nacimiento</th>
+                <th class="cabecera">Estatus Biblio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in emp %}
+            <tr >
+                <td>{{ e.rowid_academico }}</td>
+                <td>{{ e.rowid_car }}</td>
+                <td>{{ e.rowid_depto }}</td>
+                <td>{{ e.rowid_edo }}</td>
+                <td>{{ e.rowid_col }}</td>
+                <td>{{ e.rowid_sueldo }}</td>
+                <td>{{ e.id_empleado }}</td>
+                <td>{{ e.nombre_emp }}</td>
+                <td>{{ e.paterno_emp }}</td>
+                <td>{{ e.materno_emp }}</td>
+                <td>{{ e.rfc_emp }}</td>
+                <td>{{ e.curp_emp }}</td>
+                <td>{{ e.direccion_emp }}</td>
+                <td>{{ e.telefono_emp }}</td>
+                <td>{{ e.email_emp }}</td>
+                <td>{{ e.sexo_emp }}</td>
+                <td>{{ e.fecha_alta_emp }}</td>
+                <td>{{ e.user_alta_emp }}</td>
+                <td>{{ e.user_cambio_emp }}</td>
+                <td>{{ e.fecha_cambio_emp }}</td>
+                <td>{{ e.estatus_emp }}</td>
+                <td>{{ e.codpos_emp }}</td>
+                <td>{{ e.horas_contra_emp }}</td>
+                <td>{{ e.fec_nac_emp }}</td>
+                <td>{{ e.estatus_val }}</td>
+                <td>{{ e.estatus_comp }}</td>
+                <td>{{ e.edad_emp }}</td>
+                <td>{{ e.estado_civil_emp }}</td>
+                <td>{{ e.num_vac_max }}</td>
+                <td>{{ e.num_vac_act }}</td>
+                <td>{{ e.tipo_contrato_com }}</td>
+                <td>{{ e.cedula_emp_com }}</td>
+                <td>{{ e.fecicon }}</td>
+                <td>{{ e.fecfcon }}</td>
+                <td>{{ e.comentario_emp }}</td>
+                <td>{{ e.estatus_biblio }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border: 2px solid #000;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: #000;
+             color: #eee;
+         }
+
+        {% comment %} Esta linea se usa para cambiar la orientacion de la hoja de vertical a horizontal       {% endcomment %}
+         @page {
+            size: letter landscape;
+            margin: 0.5cm;
+            type: A4;
+        }
+    </style>
+
+{% endblock body %}

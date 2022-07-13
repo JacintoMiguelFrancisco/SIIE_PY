@@ -1,0 +1,153 @@
+{% extends '../../CRUD.html' %}
+
+{% block title %}Gestion Empleados{% endblock title %}
+
+{% block buttons %}
+{% comment %} Espera los botones imprimir {% endcomment %}
+<h3>Gestión de Empleados</h3>
+    <div class="container mb-4 mt-4">
+        <div class="row justify-content-md-center">
+            <div class="col col-12 col-sm-3 col-lg-3">
+                {% load bootstrap_icons %}
+                <a href="{% url 'export_csv_emp' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export_xlwt_emp' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export_pdf_emp' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export_print_emp' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+            </div>
+        </div>
+    </div>
+{% endblock buttons %}
+
+
+{% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
+{% block form %}
+<form action="" method="POST">{% csrf_token %}
+    {{ FormEmpleado.as_p }}
+    <div class="form-group" >
+        <button type="submit" class="btn btn-success btn-block text-white" id="save">Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
+    </div>
+</form>
+{% endblock form %}
+
+{% block search %}
+{% comment %} Busqueda por nombre {% endcomment %}
+<h1>Catálogo de Empleados</h1>
+<form method="GET" action="{% url 'vista_emp' %}">
+    <div class="input-group mb-3 mt-4">
+        <input type="search" class="form-control" placeholder="Escribe el Empleado..." name="search_emp">
+        <div class="input-group-append">
+            <span class="input-group-text bg-success">
+                {% load bootstrap_icons %}
+                <button class="btn btn-success text-white">
+                    {% bs_icon 'search' size='1.5em'%}
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+{% endblock search %}
+
+{% comment %} Espera una tabla que se llena con un for {% endcomment %}
+{% block table %}
+<table class="table table-striped">
+    <p style="text-align: right; font-size: 25px;">Numero de empleados: {{ contador }} </p>
+    <thead>
+        <tr>
+            <th>Nivel Academico</th>
+            <th>Carrera</th>
+            <th>Departamento</th>
+            <th>Estado de Nacimiento</th>
+            <th>Colonia</th>
+            <th>Sueldo</th>
+            <th>ID Empleado</th>
+            <th>Nombre</th>
+            <th>Apellido Paterno</th>
+            <th>Apellido Materno</th>
+            <th>RFC</th>
+            <th>CURP</th>
+            <th>Direccion</th>
+            <th>Tel</th>
+            <th>Email</th>
+            <th>Sexo</th>
+            <th>Fecha Alta</th>
+            <th>User Alta</th>
+            <th>User Cambio</th>
+            <th>Fecha Cambio</th>
+            <th>Estatus Empleado</th>
+            <th>C.P</th>
+            <th>Horas Contra</th>
+            <th>Fecha Nacimiento</th>
+            <th>Estatus Val</th>
+            <th>Estatus Comp</th>
+            <th>Edad Empleado</th>
+            <th>Estado Civil</th>
+            <th>Num Vac Max</th>
+            <th>Num Vac Act</th>
+            <th>Tipo Contrato</th>
+            <th>Cedula</th>
+            <th>FecIcon</th>
+            <th>FecFcon</th>
+            <th>Comentario</th>
+            <th>Estatus Biblio</th>
+            <th id="operaciones">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in entity %}
+        <tr>
+            {% load bootstrap_icons %}
+            <td>{{ e.rowid_academico }}</td>
+            <td>{{ e.rowid_car }}</td>
+            <td>{{ e.rowid_depto }}</td>
+            <td>{{ e.rowid_edo }}</td>
+            <td>{{ e.rowid_col }}</td>
+            <td>{{ e.rowid_sueldo }}</td>
+            <td>{{ e.id_empleado }}</td>
+            <td>{{ e.nombre_emp }}</td>
+            <td>{{ e.paterno_emp }}</td>
+            <td>{{ e.materno_emp }}</td>
+            <td>{{ e.rfc_emp }}</td>
+            <td>{{ e.curp_emp }}</td>
+            <td>{{ e.direccion_emp }}</td>
+            <td>{{ e.telefono_emp }}</td>
+            <td>{{ e.email_emp }}</td>
+            <td>{{ e.sexo_emp }}</td>
+            <td>{{ e.fecha_alta_emp }}</td>
+            <td>{{ e.user_alta_emp }}</td>
+            <td>{{ e.user_cambio_emp }}</td>
+            <td>{{ e.fecha_cambio_emp }}</td>
+            <td>{{ e.estatus_emp }}</td>
+            <td>{{ e.codpos_emp }}</td>
+            <td>{{ e.horas_contra_emp }}</td>
+            <td>{{ e.fec_nac_emp }}</td>
+            <td>{{ e.estatus_val }}</td>
+            <td>{{ e.estatus_comp }}</td>
+            <td>{{ e.edad_emp }}</td>
+            <td>{{ e.estado_civil_emp }}</td>
+            <td>{{ e.num_vac_max }}</td>
+            <td>{{ e.num_vac_act }}</td>
+            <td>{{ e.tipo_contrato_com }}</td>
+            <td>{{ e.cedula_emp_com }}</td>
+            <td>{{ e.fecicon }}</td>
+            <td>{{ e.fecfcon }}</td>
+            <td>{{ e.comentario_emp }}</td>
+            <td>{{ e.estatus_biblio }}</td>
+            <td class="d-flex justify-content-evenly">
+                <a href="../vista-emp/{{ e.rowid_empleado }}/" class="btn btn-warning">
+                    {% bs_icon 'pencil-square' size='1.5em'%}
+                </a>
+                <a href="../eliminar-emp/{{ e.rowid_empleado }}/" class="btn btn-danger">
+                    {% bs_icon 'trash' size='1.5em'%}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock table %}

@@ -1,10 +1,13 @@
 import string
 from django import forms
 
-from .models import (SeCatPais, SeCatEstado,SeCatMunicipioDelegacion, SeCatColonia, SeCatUniversidad,SeCatNivelAcademico, SeCatPlaza,SeCatAreaBachillerato, 
-                    SeCatTipoBajas,SeCatMedioDifusion,SeCatBecas, SeCatTipoEscuela, SeCatTipoCambio, SeTabEmpCar, SeCatDivision, SeProIndAsp,
-                    SeCatCarrera,SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades,SeCatInstitucion, SeCatPeriodos,
-                    SeTabAspirante, SeCatSalones)
+from .models import (SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia,  # Direcciones
+                    SeCatUniversidad, SeCatDivision, SeCatCarrera, SeCatPeriodos, # Universidades
+                    SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
+                    SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
+                    SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
+                    SeCatIndicador, SeCatPlaEstudio, SeTabAspirante
+                    )
 
 ##########################  Catalogo #################################
 # -------------------------------------------- Direcciones --------------------------------------------- #
@@ -656,7 +659,360 @@ class FormTipoBajas(forms.ModelForm):
 
 
 # -------------------------------------------- Empleado --------------------------------------------- #
+######################## EMPLEADOS ############################
+#forms empleados
+class FormEmpleado(forms.ModelForm):
+    # SEXO =( ('M', 'Masculino'), ('F', 'Femenino') )
+    # sexo_emp = forms.ChoiceField(label='Sexo', choices=SEXO, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    class Meta:
+        model = SeCatEmpleado
+        fields = '__all__'
+        exclude = ('rowid_empleado', 'estatus_emp')
+        widgets = {
+            'rowid_academico': forms.Select(attrs={'class': 'form-control',  
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }),
+            'rowid_car': forms.Select(attrs={'class': 'form-control',  
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'rowid_depto': forms.Select(attrs={'class': 'form-control', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }),
+            'rowid_edo': forms.Select(attrs={'class': 'form-control',  
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }),
+            'rowid_col': forms.Select(attrs={'class': 'form-control', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'rowid_sueldo': forms.Select(attrs={'class': 'form-control', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'id_empleado': forms.NumberInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el ID del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }),
+            'nombre_emp': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el nombre del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'paterno_emp': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el apellido paterno del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'materno_emp': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el apellido materno del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'rfc_emp': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el RFC del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'curp_emp': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el CURP del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'direccion_emp': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese la direccion del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'telefono_emp': forms.NumberInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el telefono del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'email_emp': forms.EmailInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el email del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'sexo_emp': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el sexo del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }),
+            'fecha_alta_emp': forms.DateInput(attrs={'class': 'form-control', 
+                                                        'placeholder':'DD/MM/AAAA', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'user_alta_emp': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el usuario del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'user_cambio_emp': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el cambio de usuario del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'fecha_cambio_emp': forms.DateInput(attrs={'class': 'form-control', 
+                                                        'placeholder':'DD/MM/AAAA', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'estatus_emp': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el estatus del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'codpos_emp': forms.NumberInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese codigo postal del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'horas_contra_emp': forms.NumberInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese las horas de contrato del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }),
+            'fec_nac_emp': forms.DateInput(attrs={'class': 'form-control', 
+                                                        'placeholder':'DD/MM/AAAA', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'estatus_val': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el estatus', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'estatus_comp': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el estatus', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'edad_emp': forms.NumberInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese la edad del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'estado_civil_emp': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el estado civil del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'num_vac_max': forms.NumberInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese ', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'num_vac_act': forms.NumberInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese ', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'tipo_contrato_com': forms.NumberInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el tipo de contrato del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }),
+            'cedula_emp_com': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese la cedula del empleado', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'fecicon': forms.DateInput(attrs={'class': 'form-control', 
+                                                        'placeholder':'DD/MM/AAAA', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'fecfcon': forms.DateInput(attrs={'class': 'form-control', 
+                                                        'placeholder':'DD/MM/AAAA', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }), 
+            'comentario_emp': forms.Textarea(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese un comentario', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }),  
+            'estatus_biblio': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el estatus', 
+                                                        'style' : 'border-color:#21B64A;', 
+                                                        'required' : 'True'
+                                                      }),
+        }
+        labels = {
+                'rowid_academico':'Nivel Academico *',
+                'rowid_car':'Carrera *', 
+                'rowid_depto':'Departamento *',
+                'rowid_edo' :'Estado de Nacimiento *', 
+                'rowid_col':'Colonia *',  
+                'rowid_sueldo':'Sueldo *', 
+                'id_empleado':'ID Empleado *',
+                'nombre_emp':'Nombre *', 
+                'paterno_emp':'Apellido Paterno *', 
+                'materno_emp':'Apellido Materno *', 
+                'rfc_emp':'RFC *', 
+                'curp_emp':'CURP *', 
+                'direccion_emp':'Direccion *', 
+                'telefono_emp':'Telefono *', 
+                'email_emp':'Email', 
+                'sexo_emp':'Sexo',
+                'fecha_alta_emp':'Fecha de ALta',
+                'user_alta_emp':'Usuario de Alta',
+                'user_cambio_emp':'Usuario que modifico',
+                'fecha_cambio_emp':'Fecha de Cambio',
+        #         'fecha_alta_emp':'fecha cuando se dio de alta', 
+        #         'user_alta_emp':'quien lo dio de alta', 
+        #         'user_cambio_emp':'quien hizo los cambios', 
+        #         'fecha_cambio_emp':'fecha cuando hizo los cambios',  
+                'codpos_emp':'Codigo Postal',
+                'horas_contra_emp':'Horas de Contrato', 
+        #         'horas_contra_emp':'horas contratadas (lo asigna la division)',
+                'fec_nac_emp':'Fecha de Nacimiento', 
+                'estatus_val':'Estatus Val',
+                'estatus_comp':'Estatus Comp',
+        #         'estatus_val':'estos estatus son dependiendo los roles',(Rh y division) 
+        #         'estatus_comp':'S', 
+                'edad_emp':'Edad', 
+                'estado_civil_emp':'Estado Civil',
+                'num_vac_max':'Numero Maximo de Vacaciones',
+                'num_vac_act':'Numero de Vacaciones Actuales',
+                'tipo_contrato_com' : 'Tipo de Contrato',
+        #         'num_vac_max':'numero de vacaciones', 
+        #         'num_vac_act':'actuales', 
+        #         'tipo_contrato_com':'1, permante, 2 temporal',
+                'cedula_emp_com':'Cedula Profesional', 
+                'fecicon':'Fecha de Inicio de Contrato',
+                'fecfcon':'Fecha Final de Contrato',
+        #         'fecicon':'inicio', 
+        #         'fecfcon':'fin contrato', 
+                'comentario_emp':'Comentario',
+                'estatus_biblio':'Estatus Biblioteca', 
+        #         'estatus_biblio':'estatus val, ',
+            }
+# Form Nivel Academico
+class FormNivAca(forms.ModelForm):
+    class Meta:
+        model = SeCatNivelAcademico
+        field = '__all__'
+        exclude = ('estatus_acade',)
+        widgets = {
+            'id_academico': forms.NumberInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Ingrese el ID de Nivel Academico *',
+                                                        'required' : 'True', 
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'descri_largo_acade': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese el Nivel Academico *',
+                                                        'required' : 'True', 
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'descri_corto_acade': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Por favor, Ingrese la Abreviatura *',
+                                                        'required' : 'True', 
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+        }
+        labels = {
+                'id_academico' : 'ID de Nivel Academico *',
+                'descri_largo_acade': 'Nivel Academico *',
+                'descri_corto_acade': 'Abreviatura *',
+            }
+#Forms Plaza
+class FormPlaza(forms.ModelForm):
+    class Meta:
+        model = SeCatPlaza
+        field = '__all__'
+        exclude = ('estatus_plaza',)
+        widgets = {
+            'id_plaza': forms.NumberInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Ingrese ID de la plaza',
+                                                        'required' : 'True', 
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'descri_largo_plaza': forms.TextInput(attrs={'class': 'form-control', 
+                                                        'placeholder': 'Ingrese nombre de la plaza',
+                                                        'required' : 'True', 
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'descri_corto_plaza': forms.TextInput(attrs={'class':'form-control', 
+                                                        'placeholder': 'Ingrese la abreviatura',
+                                                        'required' : 'True', 
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+        }
+        labels = {
+                'id_plaza': 'ID Plaza *',
+                'descri_largo_plaza': 'Nombre de Plaza *',
+                'descri_corto_plaza': 'Abreviatura *',
+            }
+# Froms TIPO PUESTO
+class FormsTipoPue(forms.ModelForm):
+    class Meta:
+        model= SeCatTipoPuesto
+        fields= '__all__'
+        exclude = ('estatus_pue',)
+        widgets = {
+            'rowid_plaza': forms.Select(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Seleccione la Plaza.',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'id_puesto': forms.NumberInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese la clave del Puesto',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'descri_largo_pue': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese el Puesto',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'descri_corto_pue' : forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese la abreviacion del Puesto',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+        }
+        labels = {
+                'rowid_plaza':'Plaza *',
+                'id_puesto':'ID del Puesto *',
+                'descri_largo_pue':'Puesto *',
+                'descri_corto_pue' : 'Abreviacion *',
+        }
+# Froms Sueldos
+class FormSueldo(forms.ModelForm):
+    class Meta:
+        model= SeCatSueldos
+        fields= '__all__'
+        exclude = ('rowid_sueldo','estatus_sueldo')
+        widgets = {
+            'rowid_puesto' : forms.Select(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'id_sueldo': forms.NumberInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese el ID del sueldo.',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'sueldo': forms.NumberInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese el sueldo.',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+        }
 
+        labels = {
+
+                'rowid_puesto' : 'Puesto *',
+                'id_sueldo': 'ID del Sueldo *',
+                'sueldo': 'Sueldo *',
+        }
 # FORM Adscripciones
 class FormAdscripcion(forms.ModelForm):
     class Meta:
@@ -800,66 +1156,7 @@ class FormEmpCar(forms.ModelForm):
 
 
 
-# Form Nivel Academico
-class FormNivAca(forms.ModelForm):
-    class Meta:
-        model = SeCatNivelAcademico
-        field = '__all__'
-        exclude = ('id_academico', 'estatus_acade')
-        widgets = {
-            'descri_largo_acade': forms.TextInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Por favor, Ingrese el Nivel Academico *',
-                                                        'required' : 'True', 
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-            'descri_corto_acade': forms.TextInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Por favor, Ingrese la Abreviatura *',
-                                                        'required' : 'True', 
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-        }
-        labels = {
-                'descri_largo_acade': 'Nivel Academico *',
-                'descri_corto_acade': 'Abreviatura *',
-            }
-#Forms Plaza
-class FormPlaza(forms.ModelForm):
-    class Meta:
-        model = SeCatPlaza
-        field = '__all__'
-        exclude = ('id_plaza', 'estatus_plaza')
-        widgets = {
-            'descri_largo_plaza': forms.TextInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Ingrese nombre de la plaza',
-                                                        'required' : 'True', 
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-            'descri_corto_plaza': forms.TextInput(attrs={'class':'form-control', 
-                                                        'placeholder': 'Ingrese la abreviatura',
-                                                        'required' : 'True', 
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-        }
-        labels = {
-                'descri_largo_plaza': 'Nombre de Plaza *',
-                'descri_corto_plaza': 'Abreviatura *',
-            }
-#Forms Carrera
-class FormCarrera(forms.ModelForm):
-    class Meta:
-        model = SeCatCarrera
-        fields = '__all__'
-        exclude = ('id_tipo_cambio', 'status')
-        widgets = {
-            'descri_tipocambio': forms.Textarea(attrs={'class': 'form-control',
-                                                        'placeholder': 'Ingresa Descripción del Tipo Cambio.',
-                                                        'required' : 'True',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-        }
-        labels = {
-                'descri_tipocambio': 'Descripción. *',
-        }
+
 #Form INDICADORES 
 class FormsIndicador(forms.ModelForm):
     class Meta:

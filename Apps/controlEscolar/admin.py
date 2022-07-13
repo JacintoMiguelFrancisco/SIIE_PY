@@ -4,10 +4,15 @@ from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
-from .models import (SeCatPais, SeCatEstado, SeCatMunicipioDelegacion, SeCatColonia, SeCatUniversidad, SeCatNivelAcademico, SeCatPlaza, SeCatAreaBachillerato, 
-                    SeCatTipoBajas,  SeCatBecas, SeCatMedioDifusion,SeCatTipoEscuela,SeCatTipoCambio,SeTabEmpCar,SeCatEmpleado, SeCatDivision, SeProIndAsp,
-                    SeCatIndicador, SeCatPlaEstudio, SeCatGrado, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeCatCarrera, SeCatPeriodos, SeCatSalones)
-
+#Models
+from .models import (
+    SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia,  # Direcciones
+    SeCatUniversidad, SeCatDivision, SeCatCarrera, SeCatPeriodos, # Universidades
+    SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
+    SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
+    SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
+    SeCatIndicador, SeCatPlaEstudio,
+)
 # -------------------------------------------- Direcciones --------------------------------------------- #
 
 ##################### Admin de Paises  ################# 
@@ -15,21 +20,18 @@ class PaisResources(resources.ModelResource):
     fields = ('rowid_pais','id_pais', 'descri_largo_pais', 'descri_corto_pais', 'estatus_pais')
     class Meta:
         model = SeCatPais
-
 @admin.register(SeCatPais)
 class PaisAdmin(ImportExportModelAdmin):
     resources_class = PaisResources
     list_display = ('rowid_pais','id_pais', 'descri_largo_pais', 'descri_corto_pais', 'estatus_pais')
     search_fields = ['rowid_pais','id_pais', 'descri_largo_pais', 'descri_corto_pais']
     list_filter = ['estatus_pais']  
-
 ##################### Admin de estados  ################# 
 @admin.register(SeCatEstado)
 class EstadoAdmin(admin.ModelAdmin):
     list_display = ('rowid_edo','rowid_pais','id_edo','descri_largo_edo','descri_corto_edo','estatus_edo')
     search_fields = ['rowid_edo', 'descri_largo_edo']
     list_filter = ['estatus_edo']
-
 ##################### Admin de Municipios/Delegaciones  ############### 
 @admin.register(SeCatMunicipioDelegacion)
 class MunicipioDelegacionAdmin(admin.ModelAdmin):
@@ -103,6 +105,7 @@ class IndAspAdmin(admin.ModelAdmin):
     list_filter = ['estatus_indicadores']
 
 # -------------------------------------------------------- APARTADO ESTUDIANTES -------------------------------------------------- #
+
 # ##################### Admin de Grado  ####################### 
 @admin.register(SeCatSalones)
 class GradoAdmin(admin.ModelAdmin):
@@ -134,44 +137,42 @@ class BajasAdmin(admin.ModelAdmin):
     search_fields = ['rowid_tipo_baj', 'descri_largo_tipo_baj']
     list_filter = ['estatus_tipo_baj']
 
+# -------------------------------------------- Empleados --------------------------------------------- #
 
-
-
-
-
-
-
+##################### Empleado  ################# 
+@admin.register(SeCatEmpleado)
+class EmpleadoAdmin(admin.ModelAdmin):
+    list_display = ('rowid_empleado','rowid_academico', 'rowid_car', 'rowid_depto','rowid_edo' ,'rowid_col', 'rowid_sueldo', 'id_empleado',
+                    'nombre_emp', 'paterno_emp', 'materno_emp', 'rfc_emp', 'curp_emp', 'direccion_emp', 'telefono_emp', 'email_emp', 'sexo_emp',
+                    'fecha_alta_emp', 'user_alta_emp', 'user_cambio_emp', 'fecha_cambio_emp', 'estatus_emp', 'codpos_emp', 'horas_contra_emp',
+                    'fec_nac_emp', 'estatus_val', 'estatus_comp', 'edad_emp', 'estado_civil_emp', 'num_vac_max', 'num_vac_act', 'tipo_contrato_com',
+                    'cedula_emp_com', 'fecicon', 'fecfcon', 'comentario_emp', 'estatus_biblio')
+    search_fields = ['rowid_empleado', 'nombre_emp']
+    list_filter = ['estatus_emp']
 ##################### Admin de Nivel Academco  ################# 
 @admin.register(SeCatNivelAcademico)
 class NivelAcademicoAdmin(admin.ModelAdmin):
-    list_display = ('id_academico','descri_largo_acade','descri_corto_acade','estatus_acade')
+    list_display = ('rowid_academico','id_academico','descri_largo_acade','descri_corto_acade','estatus_acade')
     search_fields = ['id_academico','descri_largo_acade']
     list_filter = ['estatus_acade']
-
 ##################### Admin de Plaza  ################# 
 @admin.register(SeCatPlaza)
 class PlazaAdmin(admin.ModelAdmin):
-    list_display = ('id_plaza','descri_largo_plaza','descri_corto_plaza','estatus_plaza')
+    list_display = ('rowid_plaza','id_plaza','descri_largo_plaza','descri_corto_plaza','estatus_plaza')
     search_fields = ['id_plaza','descri_largo_plaza']
     list_filter = ['estatus_plaza']
-
-##################### Admin de Indicadores  ################# 
-@admin.register(SeCatIndicador)
-class IndicadoresAdmin(admin.ModelAdmin):
-    list_display = ('id_indicador','descri_largo_ind','descri_corto_ind','estatus_ind','cve_control_ind')
-    search_fields = ['id_indicador']
-    list_filter = ['estatus_ind'] 
-
-##################### Admin de Plan de estudio  ################# 
-@admin.register(SeCatPlaEstudio)
-class PlanEstudioAdmin(admin.ModelAdmin):
-    list_display = ('id_plan_est','decri_larga_plan_est','descri_corta_plan_est','estatus_plan_est','fec_alta_estpla','user_alta_estpla','fec_baja_estpla','user_baja_estpla')
-    search_fields = ['id_plan_est']
-    list_filter = ['estatus_plan_est'] 
-
-
-# -------------------------------------------- Empleados --------------------------------------------- #
-
+########################## Tipo Puesto ##########################
+@admin.register(SeCatTipoPuesto)
+class TipoPueAdmin(admin.ModelAdmin):
+    list_display = ('rowid_puesto','rowid_plaza','id_puesto','descri_largo_pue','descri_corto_pue','estatus_pue')
+    search_fields = ['id_puesto','descri_largo_pue']
+    list_filter = ['estatus_pue']
+########################## Sueldo ##########################
+@admin.register(SeCatSueldos)
+class SueldoAdmin(admin.ModelAdmin):
+    list_display = ('rowid_puesto','rowid_sueldo','id_sueldo','sueldo','estatus_sueldo')
+    search_fields = ['sueldo']
+    list_filter = ['estatus_sueldo']
 ##################### Adscripciones  ################# 
 @admin.register(SeCatDeptoEmp)
 class AdscripcionesAdmin(admin.ModelAdmin):
@@ -200,5 +201,20 @@ class EmpCarnAdmin(admin.ModelAdmin):
     search_fields = ['descri_corto_car_emp']
     list_filter = ['estatus_inst'] 
 
-##################### Empleado  ################# 
-admin.site.register(SeCatEmpleado)
+
+
+
+############# Viejito xD ##############
+##################### Admin de Indicadores  ################# 
+@admin.register(SeCatIndicador)
+class IndicadoresAdmin(admin.ModelAdmin):
+    list_display = ('id_indicador','descri_largo_ind','descri_corto_ind','estatus_ind','cve_control_ind')
+    search_fields = ['id_indicador']
+    list_filter = ['estatus_ind'] 
+
+##################### Admin de Plan de estudio  ################# 
+@admin.register(SeCatPlaEstudio)
+class PlanEstudioAdmin(admin.ModelAdmin):
+    list_display = ('id_plan_est','decri_larga_plan_est','descri_corta_plan_est','estatus_plan_est','fec_alta_estpla','user_alta_estpla','fec_baja_estpla','user_baja_estpla')
+    search_fields = ['id_plan_est']
+    list_filter = ['estatus_plan_est'] 

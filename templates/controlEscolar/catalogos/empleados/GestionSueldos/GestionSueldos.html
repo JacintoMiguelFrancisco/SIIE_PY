@@ -1,24 +1,24 @@
 {% extends '../../CRUD.html' %}
 
-{% block title %}Gestion Plazas{% endblock title %}
+{% block title %}Gestion Sueldos{% endblock title %}
 
 {% block buttons %}
 {% comment %} Espera los botones imprimir {% endcomment %}
-<h3>Gestión de Plazas</h3>
+<h3>Gestión de Sueldos</h3>
     <div class="container mb-4 mt-4">
         <div class="row justify-content-md-center">
             <div class="col col-12 col-sm-3 col-lg-3">
                 {% load bootstrap_icons %}
-                <a href="{% url 'export_csv_plaza' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+                <a href="{% url 'export_csv_su' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export_xlwt_plaza' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+                <a href="{% url 'export_xlwt_su' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export_pdf_plaza' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+                <a href="{% url 'export_pdf_su' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export_print_plaza' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+                <a href="{% url 'export_print_su' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
 {% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
 {% block form %}
 <form action="" method="POST">{% csrf_token %}
-    {{ FormPlaza.as_p }}
+    {{ FormSueldo.as_p }}
     <div class="form-group" >
         <button type="submit" class="btn btn-success btn-block text-white" id="save">Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
     </div>
@@ -37,10 +37,10 @@
 
 {% block search %}
 {% comment %} Busqueda por nombre {% endcomment %}
-<h1>Catálogo de Plazas</h1>
-<form method="GET" action="{% url 'vista_plaza' %}">
+<h1>Catálogo de Sueldos</h1>
+<form method="GET" action="{% url 'vista_su' %}">
     <div class="input-group mb-3 mt-4">
-        <input type="search" class="form-control" placeholder="Escribe la Plaza..." name="search_plaza">
+        <input type="search" class="form-control" placeholder="Escribe el Sueldo..." name="search_su">
         <div class="input-group-append">
             <span class="input-group-text bg-success">
                 {% load bootstrap_icons %}
@@ -56,29 +56,29 @@
 {% comment %} Espera una tabla que se llena con un for {% endcomment %}
 {% block table %}
 <table class="table table-striped">
-    <p style="text-align: right; font-size: 25px;">Numero de plazas: {{ contador }} </p>
+    <p style="text-align: right; font-size: 25px;">Numero de sueldos: {{ contador }} </p>
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Plaza</th>
-            <th>Abreviacion</th>
+            <th>Puesto</th>
+            <th>ID Sueldo</th>
+            <th>Sueldo</th>
             <th>Estatus</th>
             <th id="operaciones">Operaciones</th>
         </tr>
     </thead>
     <tbody>
-        {% for pla in entity %}
+        {% for s in entity %}
         <tr>
             {% load bootstrap_icons %}
-            <td>{{ pla.id_plaza }}</td>
-            <td>{{ pla.descri_largo_plaza }}</td>
-            <td>{{ pla.descri_corto_plaza }}</td>
-            <td>{{ pla.estatus_plaza }}</td>
+            <td>{{ s.rowid_puesto }}</td>
+            <td>{{ s.id_sueldo }}</td>
+            <td>{{ s.sueldo }}</td>
+            <td>{{ s.estatus_sueldo }}</td>
             <td class="d-flex justify-content-evenly">
-                <a href="../vista-plaza/{{ pla.rowid_plaza }}/" class="btn btn-warning">
+                <a href="../vista-su/{{ s.rowid_sueldo }}/" class="btn btn-warning">
                     {% bs_icon 'pencil-square' size='1.5em'%}
                 </a>
-                <a href="../eliminar-plaza/{{ pla.rowid_plaza }}/" class="btn btn-danger">
+                <a href="../eliminar-su/{{ s.rowid_sueldo }}/" class="btn btn-danger">
                     {% bs_icon 'trash' size='1.5em'%}
                 </a>
             </td>

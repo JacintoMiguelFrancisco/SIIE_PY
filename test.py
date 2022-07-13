@@ -796,6 +796,7 @@ class SeCatEmpleado(models.Model):
     rowid_academico = models.ForeignKey('SeCatNivelAcademico', models.DO_NOTHING, db_column='rowid_academico', blank=True, null=True)
     rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
     rowid_depto = models.ForeignKey(SeCatDeptoEmp, models.DO_NOTHING, db_column='rowid_depto', blank=True, null=True)
+    rowid_edo = models.ForeignKey('SeCatEstado', models.DO_NOTHING, db_column='rowid_edo', blank=True, null=True)
     rowid_col = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='rowid_col', blank=True, null=True)
     rowid_sueldo = models.ForeignKey('SeCatSueldos', models.DO_NOTHING, db_column='rowid_sueldo', blank=True, null=True)
     id_empleado = models.IntegerField()
@@ -827,7 +828,6 @@ class SeCatEmpleado(models.Model):
     fecicon = models.DateField(blank=True, null=True)
     fecfcon = models.DateField(blank=True, null=True)
     comentario_emp = models.CharField(max_length=30, blank=True, null=True)
-    id_edo_nac_emp = models.IntegerField(blank=True, null=True)
     estatus_biblio = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
@@ -1041,7 +1041,7 @@ class SeCatInstitucion(models.Model):
 
 
 class SeCatMaterialLaboratorio(models.Model):
-    rowid_matlab = models.CharField(primary_key=True, max_length=10)
+    rowid_matlab = models.IntegerField(primary_key=True)
     id_mat_lab = models.FloatField()
     descri_largo_mat = models.CharField(max_length=100)
     descri_corto_mat = models.CharField(max_length=50)
@@ -1282,6 +1282,7 @@ class SeCatSueldos(models.Model):
     rowid_puesto = models.ForeignKey('SeCatTipoPuesto', models.DO_NOTHING, db_column='rowid_puesto', blank=True, null=True)
     id_sueldo = models.IntegerField()
     sueldo = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True)
+    estatus_sueldo = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -1443,11 +1444,11 @@ class SeProAspDocu(models.Model):
 
 
 class SeProAspDocuHis(models.Model):
-    id_uni_asp_his = models.OneToOneField('SeTabAspiranteHis', models.DO_NOTHING, db_column='id_uni_asp_his', primary_key=True)
-    id_div_asp_his = models.IntegerField()
-    id_car_asp_his = models.IntegerField()
-    folio_utn_asp_his = models.CharField(max_length=20)
-    id_doc_his = models.IntegerField()
+    id_doc_his = models.IntegerField(primary_key=True)
+    id_uni_asp_his = models.ForeignKey('SeTabAspiranteHis', models.DO_NOTHING, db_column='id_uni_asp_his', blank=True, null=True)
+    id_div_asp_his = models.IntegerField(blank=True, null=True)
+    id_car_asp_his = models.IntegerField(blank=True, null=True)
+    folio_utn_asp_his = models.CharField(max_length=20, blank=True, null=True)
     import_doc_his = models.CharField(max_length=1, blank=True, null=True)
     entrego_doc_his = models.CharField(max_length=1, blank=True, null=True)
     comentario_doc_his = models.CharField(max_length=100, blank=True, null=True)
@@ -1464,7 +1465,6 @@ class SeProAspDocuHis(models.Model):
     class Meta:
         managed = False
         db_table = 'se_pro_asp_docu_his'
-        unique_together = (('id_uni_asp_his', 'id_div_asp_his', 'id_car_asp_his', 'folio_utn_asp_his', 'id_doc_his'), ('id_uni_asp_his', 'id_div_asp_his', 'id_car_asp_his', 'folio_utn_asp_his', 'id_doc_his'),)
 
 
 class SeProEgreDoc(models.Model):
@@ -1626,6 +1626,7 @@ class SeProPlanEstudio(models.Model):
 
 
 class SeProProyectoServicio(models.Model):
+    rowid_proy_ser = models.IntegerField(primary_key=True)
     id_programa = models.ForeignKey('SeTabProgramasServicio', models.DO_NOTHING, db_column='id_programa', blank=True, null=True)
     rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
     cantidad_alumnosps = models.IntegerField(blank=True, null=True)
@@ -1679,9 +1680,9 @@ class SeTabAceptados(models.Model):
 
 
 class SeTabAsesoresEquipo(models.Model):
-    rowid_matricula = models.OneToOneField('SeTabEstudiante', models.DO_NOTHING, db_column='rowid_matricula', primary_key=True)
     rowid_empleado = models.ForeignKey(SeCatEmpleado, models.DO_NOTHING, db_column='rowid_empleado')
     rowid_grupo = models.ForeignKey(SeCatGrupo, models.DO_NOTHING, db_column='rowid_grupo')
+    rowid_matricula = models.ForeignKey('SeTabEstudiante', models.DO_NOTHING, db_column='rowid_matricula', blank=True, null=True)
     nombre_equipo = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
@@ -1857,14 +1858,14 @@ class SeTabCalifFinalEgre(models.Model):
 
 
 class SeTabCalificacionFinal(models.Model):
-    rowid_asignatura = models.OneToOneField(SeCatAsignatura, models.DO_NOTHING, db_column='rowid_asignatura', primary_key=True)
-    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car')
-    rowid_grupo = models.ForeignKey(SeCatGrupo, models.DO_NOTHING, db_column='rowid_grupo')
-    rowid_matricula = models.ForeignKey('SeTabEstudiante', models.DO_NOTHING, db_column='rowid_matricula')
-    id_plan_calfin = models.IntegerField()
+    id_plan_calfin = models.IntegerField(primary_key=True)
     anio_calfin = models.IntegerField()
     parcial_calfin = models.IntegerField()
     periodo_calfin = models.IntegerField()
+    rowid_matricula = models.ForeignKey('SeTabEstudiante', models.DO_NOTHING, db_column='rowid_matricula', blank=True, null=True)
+    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car')
+    rowid_grupo = models.ForeignKey(SeCatGrupo, models.DO_NOTHING, db_column='rowid_grupo', blank=True, null=True)
+    rowid_asignatura = models.ForeignKey(SeCatAsignatura, models.DO_NOTHING, db_column='rowid_asignatura', blank=True, null=True)
     calficacion = models.DecimalField(max_digits=6, decimal_places=3)
     calificacion_ponderada = models.DecimalField(max_digits=6, decimal_places=3, blank=True, null=True)
     fecha_alta_calfin = models.DateField(blank=True, null=True)
@@ -1883,7 +1884,7 @@ class SeTabCalificacionFinal(models.Model):
     class Meta:
         managed = False
         db_table = 'se_tab_calificacion_final'
-        unique_together = (('rowid_asignatura', 'rowid_car', 'rowid_grupo', 'rowid_matricula', 'id_plan_calfin', 'anio_calfin', 'parcial_calfin', 'periodo_calfin'), ('rowid_asignatura', 'rowid_car', 'rowid_grupo', 'rowid_matricula', 'id_plan_calfin', 'anio_calfin', 'parcial_calfin', 'periodo_calfin'),)
+        unique_together = (('id_plan_calfin', 'anio_calfin', 'parcial_calfin', 'periodo_calfin'), ('id_plan_calfin', 'anio_calfin', 'parcial_calfin', 'periodo_calfin'),)
 
 
 class SeTabCalificacionPar(models.Model):
@@ -2083,6 +2084,7 @@ class SeTabCeneval(models.Model):
 
 
 class SeTabConsLab(models.Model):
+    rowid_cons_lab = models.IntegerField(primary_key=True)
     rowid_matricula = models.ForeignKey('SeTabEstudiante', models.DO_NOTHING, db_column='rowid_matricula', blank=True, null=True)
     foliocl = models.FloatField(blank=True, null=True)
     fechasolicitudcl = models.DateField(blank=True, null=True)
@@ -2094,7 +2096,8 @@ class SeTabConsLab(models.Model):
 
 
 class SeTabConsMto(models.Model):
-    rowid_matricula = models.OneToOneField('SeTabEstudiante', models.DO_NOTHING, db_column='rowid_matricula', primary_key=True)
+    rowid_cons_mto = models.IntegerField(primary_key=True)
+    rowid_matricula = models.ForeignKey('SeTabEstudiante', models.DO_NOTHING, db_column='rowid_matricula', blank=True, null=True)
     fechasolicitud = models.DateField(blank=True, null=True)
     estatus = models.IntegerField(blank=True, null=True)
     folioconstancia = models.FloatField(blank=True, null=True)
@@ -2105,32 +2108,8 @@ class SeTabConsMto(models.Model):
         db_table = 'se_tab_cons_mto'
 
 
-class SeTabConstanciaLaboratorios(models.Model):
-    rowid_matricula = models.ForeignKey('SeTabEstudiante', models.DO_NOTHING, db_column='rowid_matricula', blank=True, null=True)
-    foliocl = models.FloatField(blank=True, null=True)
-    fechasolicitudcl = models.DateField(blank=True, null=True)
-    estatuscl = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_tab_constancia_laboratorios'
-
-
-class SeTabConstanciaMantenimiento(models.Model):
-    rowid_matricula = models.ForeignKey('SeTabEstudiante', models.DO_NOTHING, db_column='rowid_matricula', blank=True, null=True)
-    fechasolicitud = models.DateField(blank=True, null=True)
-    estatus = models.IntegerField(blank=True, null=True)
-    folioconstancia = models.FloatField(blank=True, null=True)
-    notarjeton = models.CharField(max_length=20, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_tab_constancia_mantenimiento'
-
-
 class SeTabConstanciasEgresados(models.Model):
-    rowid_car = models.OneToOneField('SeTabEgresado', models.DO_NOTHING, db_column='rowid_car', primary_key=True)
-    id_matricula_egre = models.CharField(max_length=20)
+    id_matricula_egre = models.OneToOneField('SeTabEgresado', models.DO_NOTHING, db_column='id_matricula_egre', primary_key=True)
     fechasolicitud = models.DateField(blank=True, null=True)
     estatussolicitud = models.IntegerField(blank=True, null=True)
     folio = models.IntegerField(blank=True, null=True)
@@ -2139,7 +2118,6 @@ class SeTabConstanciasEgresados(models.Model):
     class Meta:
         managed = False
         db_table = 'se_tab_constancias_egresados'
-        unique_together = (('rowid_car', 'id_matricula_egre'), ('rowid_car', 'id_matricula_egre'),)
 
 
 class SeTabConstanciasHist(models.Model):
@@ -2166,8 +2144,8 @@ class SeTabConstanciasHist(models.Model):
 
 
 class SeTabEgresado(models.Model):
-    rowid_car = models.OneToOneField(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', primary_key=True)
-    id_matricula_egre = models.CharField(max_length=20)
+    id_matricula_egre = models.CharField(primary_key=True, max_length=20)
+    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
     nombre_egre = models.CharField(max_length=40)
     paterno_egre = models.CharField(max_length=30)
     materno_egre = models.CharField(max_length=30)
@@ -2224,7 +2202,6 @@ class SeTabEgresado(models.Model):
     class Meta:
         managed = False
         db_table = 'se_tab_egresado'
-        unique_together = (('rowid_car', 'id_matricula_egre'), ('rowid_car', 'id_matricula_egre'),)
 
 
 class SeTabEmpCar(models.Model):
@@ -2269,8 +2246,7 @@ class SeTabEstServicioHis(models.Model):
 
 class SeTabEstatusTitulado(models.Model):
     id_matricula_egre = models.CharField(primary_key=True, max_length=20)
-    rowid_car = models.ForeignKey(SeTabEgresado, models.DO_NOTHING, db_column='rowid_car')
-    se_id_matricula_egre = models.CharField(db_column='se__id_matricula_egre', max_length=20)  # Field renamed because it contained more than one '_' in a row.
+    se_id_matricula_egre = models.ForeignKey(SeTabEgresado, models.DO_NOTHING, db_column='se__id_matricula_egre', blank=True, null=True)  # Field renamed because it contained more than one '_' in a row.
     rowid_tit = models.ForeignKey(SeCatEstatusTitulado, models.DO_NOTHING, db_column='rowid_tit')
     foliodgp = models.FloatField(blank=True, null=True)
     nocedula = models.FloatField(blank=True, null=True)
@@ -2668,7 +2644,8 @@ class SeTabImssHis(models.Model):
 
 
 class SeTabInformesServico(models.Model):
-    id_matricula = models.OneToOneField('SeTabServicioIng', models.DO_NOTHING, db_column='id_matricula', primary_key=True)
+    rowid_inf_ser = models.IntegerField(primary_key=True)
+    id_matricula = models.ForeignKey('SeTabServicioIng', models.DO_NOTHING, db_column='id_matricula', blank=True, null=True)
     no_informess = models.IntegerField()
     fecha_altass = models.DateField(blank=True, null=True)
     actividades = models.CharField(max_length=1000, blank=True, null=True)
@@ -2676,7 +2653,6 @@ class SeTabInformesServico(models.Model):
     class Meta:
         managed = False
         db_table = 'se_tab_informes_servico'
-        unique_together = (('id_matricula', 'no_informess'), ('id_matricula', 'no_informess'),)
 
 
 class SeTabMovAspiranteHis(models.Model):
@@ -2728,10 +2704,10 @@ class SeTabMovEstudiante(models.Model):
 
 
 class SeTabMovEstudianteRecu(models.Model):
-    rowid_matricula = models.OneToOneField(SeTabEstudiante, models.DO_NOTHING, db_column='rowid_matricula', primary_key=True)
-    consecutivo_est = models.IntegerField()
+    consecutivo_est = models.IntegerField(primary_key=True)
     id_evento_est = models.CharField(max_length=3)
     fecha_mov = models.DateField()
+    rowid_matricula = models.ForeignKey(SeTabEstudiante, models.DO_NOTHING, db_column='rowid_matricula', blank=True, null=True)
     id_tipo_baj = models.IntegerField(blank=True, null=True)
     fecha_reingreso_baj = models.DateField(blank=True, null=True)
     id_uni_mov = models.IntegerField(blank=True, null=True)
@@ -2754,7 +2730,7 @@ class SeTabMovEstudianteRecu(models.Model):
     class Meta:
         managed = False
         db_table = 'se_tab_mov_estudiante_recu'
-        unique_together = (('rowid_matricula', 'consecutivo_est', 'id_evento_est', 'fecha_mov'), ('rowid_matricula', 'consecutivo_est', 'id_evento_est', 'fecha_mov'),)
+        unique_together = (('consecutivo_est', 'id_evento_est', 'fecha_mov'), ('consecutivo_est', 'id_evento_est', 'fecha_mov'),)
 
 
 class SeTabPlaticaServicio(models.Model):
@@ -2786,7 +2762,7 @@ class SeTabProgSer(models.Model):
 
 class SeTabProgramasServicio(models.Model):
     id_programa = models.IntegerField(primary_key=True)
-    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car')
+    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
     rowid_empleado = models.ForeignKey(SeCatEmpleado, models.DO_NOTHING, db_column='rowid_empleado')
     nombre_proyectopss = models.CharField(max_length=100, blank=True, null=True)
     dias_laborarpss = models.CharField(max_length=30, blank=True, null=True)
@@ -3383,7 +3359,7 @@ class TeTabPronosAcu(models.Model):
 
 
 class TeTabPronosPag(models.Model):
-    rowid_pronos = models.CharField(primary_key=True, max_length=10)
+    rowid_pronos = models.IntegerField(primary_key=True)
     rowid_matricula = models.ForeignKey(SeTabEstudiante, models.DO_NOTHING, db_column='rowid_matricula', blank=True, null=True)
     rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
     rowid_tipo_pag = models.ForeignKey(SeCatTipoPago, models.DO_NOTHING, db_column='rowid_tipo_pag', blank=True, null=True)
@@ -3402,7 +3378,7 @@ class TeTabPronosPag(models.Model):
 
 
 class TeTabSaldos(models.Model):
-    rowid_sal = models.CharField(primary_key=True, max_length=10)
+    rowid_sal = models.IntegerField(primary_key=True)
     rowid_ban_ctas = models.ForeignKey(TeProBanDivCuentas, models.DO_NOTHING, db_column='rowid_ban_ctas', blank=True, null=True)
     id_anio_sal = models.IntegerField()
     id_mes_sal = models.IntegerField()

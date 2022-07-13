@@ -131,22 +131,7 @@ urlpatterns = [
 
 
 
-# CRUD Nivel Academico
-    path('vistaNivelAca/', views.vistaNivelAca, name="vistaNivelAca"),
-    path('eliminarNivelAca/<int:id_academico>/', views.eliminarNivelAca, name="eliminarNivelAca"),
-    path('vistaNivelAca/<int:aca_id>/', views.vista_nivel_aca_detail, name="academico-detail"),
-    path('export_print_nivel_academico/', views.Export_print_nivel_academico.as_view(), name="export-print-nivel-academico"),
-    path('export_pdf_nivel_academico/', views.Export_pdf_nivel_academico.as_view(), name="export-pdf-nivel-academico"),
-    path('export_csv_nivel_academico/', views.export_csv_nivel_academico, name="export-csv-nivel-academico"),
-    path('export_xlwt_nivel_academico/', views.export_xlwt_nivel_academico, name="export-xlwt-nivel-academico"),
-# CRUD Plazas
-    path('vistaPlaza/', views.vistaPlaza, name="vistaPlaza"),
-    path('eliminarPlaza/<int:id_plaza>/', views.eliminarPlaza, name="eliminarPlaza"),
-    path('vistaPlaza/<int:plaza_id>/', views.vista_plaza_detail, name="plaza-detail"),
-    path('export_print_plaza/', views.Export_print_plaza.as_view(), name="export-print-plaza"),
-    path('export_pdf_plaza/', views.Export_pdf_plaza.as_view(), name="export-pdf-plaza"),
-    path('export_csv_plaza/', views.export_csv_plaza, name="export-csv-plaza"),
-    path('export_xlwt_plaza/', views.export_xlwt_plaza, name="export-xlwt-plaza"),
+
 
 # CRUD Plan de Estudio 
     path('vistaPlanE/', views.vistaPlanE, name="vistaPlaneEstudios"),
@@ -221,7 +206,46 @@ urlpatterns = [
 
 # -------------------------------------------- Empleados --------------------------------------------- #
 
-
+# CRUD Empleado
+    path('vista-emp/', views.vistaEmpleados, name="vista_emp"),
+    path('eliminar-emp/<int:rowid_empleado>/', views.eliminarEmpleado, name="eliminar_empleado"),
+    path('vista-emp/<int:rowid_empleado>/', views.vista_emp_detail, name="emp-detail"),
+    path('export-print-emp/', views.Export_print_emp.as_view(), name="export_print_emp"),
+    path('export-pdf-emp/', views.Export_pdf_emp.as_view(), name="export_pdf_emp"),
+    path('export-csv-emp/', views.export_csv_emp, name="export_csv_emp"),
+    path('export-xlwt-emp/', views.export_xlwt_emp, name="export_xlwt_emp"),
+# CRUD Nivel Academico
+    path('vista-nivelaca/', views.vistaNivelAca, name="vista_nivelaca"),
+    path('eliminar-nivelaca/<int:rowid_academico>/', views.eliminarNivelAca, name="eliminar_nivelaca"),
+    path('vista-nivelaca/<int:rowid_academico>/', views.vista_nivel_aca_detail, name="academico_detail"),
+    path('export-print-nivel-academico/', views.Export_print_nivel_academico.as_view(), name="export_print_nivel_academico"),
+    path('export-pdf-nivel-academico/', views.Export_pdf_nivel_academico.as_view(), name="export_pdf_nivel_academico"),
+    path('export-csv-nivel-academico/', views.export_csv_nivel_academico, name="export_csv_nivel_academico"),
+    path('export-xlwt-nivel-academico/', views.export_xlwt_nivel_academico, name="export_xlwt_nivel_academico"),
+# CRUD Plazas
+    path('vista-plaza/', views.vistaPlaza, name="vista_plaza"),
+    path('eliminar-plaza/<int:rowid_plaza>/', views.eliminarPlaza, name="eliminar_plaza"),
+    path('vista-plaza/<int:rowid_plaza>/', views.vista_plaza_detail, name="plaza_detail"),
+    path('export-print-plaza/', views.Export_print_plaza.as_view(), name="export_print_plaza"),
+    path('export-pdf-plaza/', views.Export_pdf_plaza.as_view(), name="export_pdf_plaza"),
+    path('export-csv-plaza/', views.export_csv_plaza, name="export_csv_plaza"),
+    path('export-xlwt-plaza/', views.export_xlwt_plaza, name="export_xlwt_plaza"),
+# CRUD Tipo Puesto
+    path('vista-tipopue/', views.vistaTipoPue, name="vista_tipopue"),
+    path('eliminar-tipopue/<int:rowid_puesto>/', views.eliminarTipoPue, name="eliminar_tipopue"),
+    path('vista-tipopue/<int:rowid_puesto>/', views.vista_tipopue_detail, name="tipopue-detail"),
+    path('export-print-tipopue/', views.Export_print_tipopue.as_view(), name="export_print_tipopue"),
+    path('export-pdf-tipopue/', views.Export_pdf_tipopue.as_view(), name="export_pdf_tipopue"),
+    path('export-csv-tipopue/', views.export_csv_tipopue, name="export_csv_tipopue"),
+    path('export-xlwt-tipopue/', views.export_xlwt_tipopue, name="export_xlwt_tipopue"),
+# CRUD Sueldo
+    path('vista-su/', views.vistaSueldos, name="vista_su"),
+    path('eliminar-su/<int:rowid_sueldo>/', views.eliminarSueldos, name="eliminar_su"),
+    path('vista-su/<int:rowid_sueldo>/', views.vista_su_detail, name="su-detail"),
+    path('export-print-su/', views.Export_print_su.as_view(), name="export_print_su"),
+    path('export-pdf-su/', views.Export_pdf_su.as_view(), name="export_pdf_su"),
+    path('export-csv-su/', views.export_csv_su, name="export_csv_su"),
+    path('export-xlwt-su/', views.export_xlwt_su, name="export_xlwt_su"),
 # CRUD Adscripcion
     path('vista-adscripciones/', views.vistaAdscripciones, name="vista_adscripciones"), 
     path('eliminar-adscripcion/<int:rowid_depto>/', views.eliminarAdscripciones, name="eliminar_adscripcion"),

@@ -18,20 +18,25 @@ from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 #Models
-from .models import (SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia,  # Direcciones
-                    SeCatUniversidad, SeCatDivision, SeCatCarrera, SeCatPeriodos, # Universidades
-                    SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
-                    SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
-                    SeCatNivelAcademico, SeCatPlaza, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
-                    SeCatIndicador, SeCatPlaEstudio,
-                    )
+from .models import (
+    SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia,  # Direcciones
+    SeCatUniversidad, SeCatDivision, SeCatCarrera, SeCatPeriodos, # Universidades
+    SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
+    SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
+    SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
+    SeCatIndicador, SeCatPlaEstudio,
+)
 #Views
 from django.views.generic import View
 #formularios
-from .forms import (FormPaises, FormEstados, FormMunicipiosDelegaciones, FormColonias, FormUniversidad, FormNivAca, FormPlaza, FormAreaBachi,
-                    FormMediosDifusion, FormTiposEscuelas, FormEmpCar, FormDivisiones, FormCarreras, FormIndAsp,
-                    FormsIndicador, FormsPlaE, FormGrados,FormSalones, FormBecas, FormTipoCambio, FormTipoBajas,
-                    FormAdscripcion, FormActividades, FormInstitucion, FormPeriodos, FormsAspirantes)
+from .forms import (
+    FormPaises, FormEstados, FormMunicipiosDelegaciones, FormColonias, # Direcciones
+    FormUniversidad, FormDivisiones, FormCarreras, FormPeriodos, # Universidades
+    FormMediosDifusion, FormTiposEscuelas, FormAreaBachi, FormIndAsp, # Aspirantes
+    FormGrados, FormSalones, FormTipoBajas, FormBecas, FormTipoCambio, # Estudintes
+    FormEmpleado, FormsTipoPue, FormSueldo, FormNivAca, FormPlaza, FormAdscripcion, FormActividades, FormInstitucion, FormEmpCar, # Empleados
+    FormsIndicador, FormsPlaE, FormsAspirantes
+)
 
 # -------------------------------------------- Direcciones --------------------------------------------- #
 
@@ -1032,7 +1037,7 @@ def eliminarPeriodo(request, rowid_per):
         per = SeCatPeriodos.objects.get(rowid_per=rowid_per)
         per.estatus_per = "B"
     except SeCatPeriodos.DoesNotExist:
-        raise Http404("La plaza no existe")
+        raise Http404("El Periodo no existe")
     if request.POST: #Sobre escribe los valores
         messages.warning(request, "¡Periodo eliminado con exito!")
         per.save()
@@ -1107,8 +1112,6 @@ def export_xlwt_periodos (request):
             ws.write(row_num,col,str(row[col]), font_style)
     wb.save(response)
     return response
-
-
 
 # -------------------------------------------- Aspirantes --------------------------------------------- #
 
@@ -1238,7 +1241,6 @@ def export_xlwt_medios (request):
             ws.write(row_num,col,str(row[col]), font_style)
     wb.save(response)
     return response
-
 
 ###################################################   Tipo de Escuelas  ###########################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
@@ -1626,270 +1628,7 @@ def export_xlwt_IndAsp (request):
 
 
 
-
-
-
-
-
-
-
-
-
 ####  Viejo modelo #######
-##############################################  Nivel Academico  ##################################################
-#Agregar si es post y lista de todos / Aqui va la paguinacion
-@login_required
-def vistaNivelAca(request):
-    #Lista de todas las divisiones
-    listaNivelAca = SeCatNivelAcademico.objects.filter(estatus_acade="A").order_by('id_academico')
-    contador_id = listaNivelAca.count()
-    page = request.GET.get('page', 1)
-    try:
-        paginator = Paginator(listaNivelAca, 9)
-        listaNivelAca = paginator.page(page)
-    except:
-        raise Http404
-    if request.method == 'POST':
-        form = FormNivAca(request.POST)
-        if form.is_valid():
-            aca = form.save(commit=False)
-            ultimo_id = SeCatNivelAcademico.objects.all().last() # hace una consulta al ultimo registro insertado para poder crear el nuevo id 
-            aca.id_academico = ultimo_id.id_academico + 1 # agrega uno al ultimo id insertado
-            form.save() # Guadar lo ingresadoa l formulario
-            messages.success(request, "¡Nivel Academico agregada con exito!")
-            return redirect('vistaNivelAca') #redirecciona a la vista 
-        else :
-            messages.warning(request, "¡Alguno de los campos no es valido!")
-            return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/GestionNivelAcademico.html",{'entity' : listaNivelAca,'paginator' : paginator,'FormNivAca' : form,'contador' : contador_id,})
-    #Busqueda del search
-    elif request.method == 'GET':
-        busqueda = request.GET.get("search_nivelaca", None)
-        print(busqueda)
-        if busqueda:
-            listaNivelAca = SeCatNivelAcademico.objects.filter(
-                #Revisión de los campos de la tabla en la BD
-                Q(descri_largo_acade__icontains = busqueda),
-                Q(estatus_acade__icontains = "A")
-            ).distinct()
-    form = FormNivAca()
-    data = {
-        'entity' : listaNivelAca,
-        'paginator' : paginator,
-        'FormNivAca' : form,
-        'contador' : contador_id,
-    }
-    return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/GestionNivelAcademico.html",data)
-# Elimina un registro que no elimina solo actualiza Status de A a B
-@login_required
-def eliminarNivelAca(request, id_academico):
-    try:
-        aca = SeCatNivelAcademico.objects.get(id_academico=id_academico)
-        aca.estatus_acade = "B"
-    except SeCatNivelAcademico.DoesNotExist:
-        raise Http404("El nivel academico no existe")
-    
-    if request.POST: #Sobre escribe los valores
-        messages.warning(request, "¡Nivel academico eliminado con exito!")
-        aca.save()
-        return redirect('vistaNivelAca')
-    return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/BorrarNivelAcademico.html", {"Academico": aca})
-# Modifica un registro
-@login_required
-def vista_nivel_aca_detail(request, aca_id):
-    aca = SeCatNivelAcademico.objects.get(id_academico=aca_id)
-    form = FormNivAca(instance = aca)
-    if request.POST: #Sobre escribe los valores
-        form = FormNivAca(request.POST, instance = aca)
-        if form.is_valid():
-            messages.info(request, "¡Nivel academico actualizado con exito!")
-            form.save()
-            return redirect('vistaNivelAca') #retorna despues de actualizar
-        else:
-            return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/ActualizarNivelAcademico.html", {"aca": aca, "FormNivAca" : form})#envia al detalle de errores
-    return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/ActualizarNivelAcademico.html", {"aca": aca, "FormNivAca" : form})#envia al detalle para actualizar
-#Imprimir pfd
-class Export_print_nivel_academico(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        listaNivelAca = SeCatNivelAcademico.objects.filter(estatus_acade="A") 
-        data = {
-            'count': listaNivelAca.count(),
-            'aca': listaNivelAca
-        }
-        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionNivelAcademico/ListaNivelAcademico.html', data)
-        return HttpResponse(pdf, content_type='application/pdf')
-#Exporta a pdf las Carreras
-class Export_pdf_nivel_academico(LoginRequiredMixin, View):
-    def get(self, request,*args, **kwargs):
-        listaNivelAca=SeCatNivelAcademico.objects.filter(estatus_acade="A") 
-        data = {
-            'count': listaNivelAca.count(),
-            'aca': listaNivelAca
-        }
-        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionNivelAcademico/ListaNivelAcademico.html', data)
-        response = HttpResponse(pdf, content_type='application/pdf')
-        filename = 'ListaNivelAcademico.pdf'
-        content = "attachment; filename= %s" %(filename)
-        response['Content-Disposition'] = content
-        return response
-# Exportar divisiones a CSV sin libreria 
-@login_required
-def export_csv_nivel_academico (request):
-    response = HttpResponse(content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename=ListaNivelAcademico.csv;'
-    writer = csv.writer(response)
-    writer.writerow(['ID', 'Descripcion', 'Abreviatura', 'Estatus'])
-    listaNivelAca=SeCatNivelAcademico.objects.filter(estatus_acade="A") 
-    for aca in listaNivelAca:
-        writer.writerow([aca.id_academico, aca.descri_largo_acade, aca.descri_corto_acade, aca.estatus_acade])
-    return response
-# Exportar divisiones a xlwt sin con la libreria XLWT 
-@login_required
-def export_xlwt_nivel_academico (request):
-    response = HttpResponse(content_type="application/ms-excel")
-    response['Content-Disposition'] = 'attachment; filename=ListaNivelAcademico.xls'
-    wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('Nivel Academico')
-    row_num = 0
-    font_style = xlwt.XFStyle()
-    font_style.font.blod = True
-    columns = ['ID', 'Descripcion', 'Abreviatura', 'Estatus']
-    for col in range(len(columns)):
-        ws.write(row_num,col,columns[col], font_style)
-    font_style = xlwt.XFStyle()
-    rows=SeCatNivelAcademico.objects.filter(estatus_acade="A").values_list('id_academico', 'descri_largo_acade',
-                                                                    'descri_corto_acade', 'estatus_acade')
-    for row in rows:
-        row_num+=1
-        for col in range(len(row)):
-            ws.write(row_num,col,str(row[col]), font_style)
-    wb.save(response)
-    return response
-
-##############################################  Plaza  ##########################################################
-#Agregar si es post y lista de todos / Aqui va la paginación
-@login_required
-def vistaPlaza(request):
-    #Lista de todas las divisiones
-    listaPlaza = SeCatPlaza.objects.filter(estatus_plaza="A").order_by('id_plaza')
-    contador_id = listaPlaza.count()
-    page = request.GET.get('page', 1)
-    try:
-        paginator = Paginator(listaPlaza, 9)
-        listaPlaza = paginator.page(page)
-    except:
-        raise Http404
-    if request.method == 'POST':
-        form = FormPlaza(request.POST)
-        if form.is_valid():
-            plaza = form.save(commit=False)
-            ultimo_id = SeCatPlaza.objects.all().last() # hace una consulta al ultimo registro insertado para poder crear el nuevo id 
-            plaza.id_plaza = ultimo_id.id_plaza + 1 # agrega uno al ultimo id insertado
-            form.save()
-            messages.success(request, "¡Plaza agregada con exito!") 
-            return redirect('vistaPlaza') #redirecciona a la vista
-        else :
-            messages.warning(request, "¡Alguno de los campos no es valido!")
-            return render(request, "controlEscolar/catalogos/empleados/GestionPlazas/GestionPlazas.html",{'entity' : listaPlaza, 'paginator' : paginator, 'FormPlaza' : form, 'contador' : contador_id,})
-    #Busqueda del search
-    elif request.method == 'GET':
-        busqueda = request.GET.get("search_plaza", None)
-        if busqueda:
-            listaPlaza = SeCatPlaza.objects.filter(
-                #Revisión de los campos de la tabla en la BD
-                Q(descri_largo_plaza__icontains = busqueda),
-                Q(estatus_plaza__icontains = "A")
-            ).distinct()
-    form = FormPlaza()
-    data = {
-        'entity' : listaPlaza,
-        'paginator' : paginator,
-        'FormPlaza' : form,
-        'contador' : contador_id,
-    }
-    return render(request, "controlEscolar/catalogos/empleados/GestionPlazas/GestionPlazas.html",data)
-# Elimina un registro que no elimina solo actualiza Status de A a B
-@login_required
-def eliminarPlaza(request, id_plaza):
-    try:
-        pla = SeCatPlaza.objects.get(id_plaza=id_plaza)
-        #aca.estatus_acade = "B"
-    except SeCatPlaza.DoesNotExist:
-        raise Http404("La plaza no existe")
-    
-    if request.POST: #Sobre escribe los valores
-        messages.warning(request, "¡Plaza eliminada con exito!")
-        pla.save()
-        return redirect('vistaPlaza')
-    return render(request, "controlEscolar/catalogos/empleados/GestionPlazas/BorrarPlazas.html", {"Plazas": pla})
-# Modifica un registro
-@login_required
-def vista_plaza_detail(request, plaza_id):
-    pla = SeCatPlaza.objects.get(id_plaza=plaza_id)
-    form = FormPlaza(instance = pla)
-    if request.POST: #Sobre escribe los valores
-        form = FormPlaza(request.POST, instance = pla)
-        if form.is_valid():
-            messages.info(request, "¡Plaza actualizada con exito!")
-            form.save()
-        return redirect('vistaPlaza') #retorna despues de actualizar
-    return render(request, "controlEscolar/catalogos/empleados/GestionPlazas/ActualizarPlazas.html", {"pla": pla, "FormPlaza" : form})#envia al detalle para actualizar
-# imprime 
-class Export_print_plaza(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        listaPlaza = SeCatPlaza.objects.filter(estatus_plaza="A") 
-        data = {
-            'count': listaPlaza.count(),
-            'pla': listaPlaza
-        }
-        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionPlazas/listaPlazas.html', data)
-        return HttpResponse(pdf, content_type='application/pdf')
-#Exporta a pdf las Carreras
-class Export_pdf_plaza(LoginRequiredMixin, View):
-    def get(self, request,*args, **kwargs):
-        listaPlaza=SeCatPlaza.objects.filter(estatus_plaza="A") 
-        data = {
-            'count': listaPlaza.count(),
-            'pla': listaPlaza
-        }
-        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionPlazas/listaPlazas.html', data)
-        response = HttpResponse(pdf, content_type='application/pdf')
-        filename = 'ListaPlazas.pdf'
-        content = "attachment; filename= %s" %(filename)
-        response['Content-Disposition'] = content
-        return response
-# Exportar divisiones a CSV sin libreria 
-@login_required
-def export_csv_plaza (request):
-    response = HttpResponse(content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename=ListaPlazas.csv;'
-    writer = csv.writer(response)
-    writer.writerow(['ID', 'Plaza', 'Abreviatura', 'Estatus'])
-    listaPlaza=SeCatPlaza.objects.filter(estatus_plaza="A") 
-    for pla in listaPlaza:
-        writer.writerow([pla.id_plaza, pla.descri_largo_plaza, pla.descri_corto_plaza, pla.estatus_plaza])
-    return response
-# Exportar divisiones a xlwt sin con la libreria XLWT 
-@login_required
-def export_xlwt_plaza (request):
-    response = HttpResponse(content_type="application/ms-excel")
-    response['Content-Disposition'] = 'attachment; filename=ListaPlazas.xls'
-    wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('Nivel Academico')
-    row_num = 0
-    font_style = xlwt.XFStyle()
-    font_style.font.blod = True
-    columns = ['ID', 'Plazas', 'Abreviatura', 'Estatus']
-    for col in range(len(columns)):
-        ws.write(row_num,col,columns[col], font_style)
-    font_style = xlwt.XFStyle()
-    rows=SeCatPlaza.objects.filter(estatus_plaza="A").values_list('id_plaza', 'descri_largo_plaza',
-                                                                    'descri_corto_plaza', 'estatus_plaza')
-    for row in rows:
-        row_num+=1
-        for col in range(len(row)):
-            ws.write(row_num,col,str(row[col]), font_style)
-    wb.save(response)
-    return response
 
 ########################################################### Indicadores ###########################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
@@ -2164,6 +1903,7 @@ def listaEjemplo(request):
 
 
 # -------------------------------------------- Estudiantes --------------------------------------------- #
+
 ###################################################### GRADOS ##############################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
@@ -2801,19 +2541,651 @@ def export_xlwt_tipobajas (request):
     wb.save(response)
     return response
 
-
-
-
-
-
-
-
-
-
-
-
-
 # -------------------------------------------- Empleados --------------------------------------------- #
+
+###################################### Empleados #################################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaEmpleados(request):
+    #Lista de todas las divisiones
+    listaEmp = SeCatEmpleado.objects.filter(estatus_emp="A"). order_by('rowid_empleado')
+    contador_id = listaEmp.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaEmp, 9)
+        listaEmp = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST':
+        form = FormEmpleado(request.POST)
+        if form.is_valid():
+            emp = form.save(commit=False)
+            ultimo_id = SeCatEmpleado.objects.all().order_by('rowid_empleado').last()
+            emp.rowid_empleado = ultimo_id.rowid_empleado + 1
+            emp.save()
+            messages.success(request, "¡Empleado agregado con exito!")
+            #redirecciona a la vista 
+            return redirect('vista_emp')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/empleados/GestionEmpleados/GestionEmpleados.html",{'entity' : listaEmp, 'paginator' : paginator, 'FormEmpleado' : form, 'contador': contador_id})
+    #Busqueda del search
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_emp", None)
+        if busqueda:
+            listaEmp = SeCatEmpleado.objects.filter(
+                #Revisión de los campos de la tabla en la BD
+                Q(nombre_emp__icontains = busqueda),
+                Q(estatus_emp__icontains = "A")
+            ).distinct()
+    form = FormEmpleado()
+    data = {
+        'entity' : listaEmp,
+        'paginator' : paginator,
+        'FormEmpleado' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/empleados/GestionEmpleados/GestionEmpleados.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarEmpleado(request, rowid_empleado):
+    try:
+        emp = SeCatEmpleado.objects.get(rowid_empleado=rowid_empleado)
+        emp.estatus_emp = "B"
+    except SeCatEmpleado.DoesNotExist:
+        raise Http404("El empleado no existe")
+    if request.POST: #Sobre escribe los valores
+        messages.warning(request, "¡Empleado eliminado con exito!")
+        emp.save()
+        return redirect('vista_emp')
+    return render(request, "controlEscolar/catalogos/empleados/GestionEmpleados/BorrarEmpleados.html", {"emp": emp})
+# Modifica un registro
+@login_required
+def vista_emp_detail(request, rowid_empleado):
+    emp = SeCatEmpleado.objects.get(rowid_empleado=rowid_empleado)
+    form = FormEmpleado(instance = emp)
+    if request.method == 'POST': #Sobre escribe los valores
+        form = FormEmpleado(request.POST, instance = emp)
+        if form.is_valid():
+            messages.info(request, "¡Empleado actualizado con exito!")
+            form.save()
+        return redirect('vista_emp') #retorna despues de actualizar
+    return render(request, "controlEscolar/catalogos/empleados/GestionEmpleados/ActualizarEmpleados.html", {"emp": emp, "FormEmpleado" : form})#envia al detalle para actualizar
+# Imprimir 
+class Export_print_emp(LoginRequiredMixin,View):
+    def get(self, request, *args, **kwargs):
+        listaEmp = SeCatEmpleado.objects.filter(estatus_emp="A") 
+        data = {
+            'count': listaEmp.count(),
+            'emp': listaEmp
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionEmpleados/listaEmpleados.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Exporta a pdf las Carreras
+class Export_pdf_emp(LoginRequiredMixin,View):
+    def get(self, request,*args, **kwargs):
+        listaEmp=SeCatEmpleado.objects.filter(estatus_emp="A") 
+        data = {
+            'count': listaEmp.count(),
+            'emp': listaEmp
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionEmpleados/listaEmpleados.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaEmpleados.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar divisiones a CSV sin libreria 
+@login_required
+def export_csv_emp (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaEmpleados.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Nivel Academico','Carrera','Departamento','Estado de Nacimiento','Colonia','Sueldo','ID Empleado','Nombre','Apellido Paterno',
+            'Apellido Materno','RFC','CURP','Direccion','Tel','Email','Sexo','Fecha Alta','User Alta','User Cambio','Fecha Cambio','Estatus Empleado'
+            ,'C.P','Horas Contra','Fecha Nacimiento','Estatus Val','Estatus Comp','Edad Empleado','Estado Civil','Num Vac Max','Num Vac Act'
+            ,'Tipo Contrato','Cedula','FecIcon','FecFcon','Comentario','Estatus Biblio'])
+    listaEmp=SeCatEmpleado.objects.filter(estatus_emp="A") 
+    for e in listaEmp:
+        writer.writerow([e.rowid_academico,e.rowid_car,e.rowid_depto,e.rowid_edo,e.rowid_col,e.rowid_sueldo,e.id_empleado,e.nombre_emp,e.paterno_emp,e.materno_emp 
+            ,e.rfc_emp,e.curp_emp,e.direccion_emp,e.telefono_emp,e.email_emp,e.sexo_emp,e.fecha_alta_emp,e.user_alta_emp,e.user_cambio_emp 
+            ,e.fecha_cambio_emp,e.estatus_emp,e.codpos_emp,e.horas_contra_emp,e.fec_nac_emp,e.estatus_val,e.estatus_comp,e.edad_emp 
+            ,e.estado_civil_emp,e.num_vac_max,e.num_vac_act,e.tipo_contrato_com,e.cedula_emp_com,e.fecicon,e.fecfcon,e.comentario_emp 
+            ,e.estatus_biblio])
+    return response
+# Exportar divisiones a xlwt sin con la libreria XLWT 
+@login_required
+def export_xlwt_emp (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaEmpleados.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Empleados')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Nivel Academico','Carrera','Departamento','Estado de Nacimiento','Colonia','Sueldo','ID Empleado','Nombre','Apellido Paterno',
+            'Apellido Materno','RFC','CURP','Direccion','Tel','Email','Sexo','Fecha Alta','User Alta','User Cambio','Fecha Cambio','Estatus Empleado'
+            ,'C.P','Horas Contra','Fecha Nacimiento','Estatus Val','Estatus Comp','Edad Empleado','Estado Civil','Num Vac Max','Num Vac Act'
+            ,'Tipo Contrato','Cedula','FecIcon','FecFcon','Comentario','Estado de Nacimiento','Estatus Biblio']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatEmpleado.objects.filter(estatus_emp="A").values_list('rowid_academico','rowid_car','rowid_depto','rowid_edo','rowid_col','rowid_sueldo','id_empleado',
+                                                                    'nombre_emp','paterno_emp','materno_emp','rfc_emp','curp_emp','direccion_emp',
+                                                                    'telefono_emp','email_emp','sexo_emp','fecha_alta_emp','user_alta_emp','user_cambio_emp',
+                                                                    'fecha_cambio_emp','estatus_emp','codpos_emp','horas_contra_emp','fec_nac_emp','estatus_val',
+                                                                    'estatus_comp','edad_emp','estado_civil_emp','num_vac_max','num_vac_act','tipo_contrato_com',
+                                                                    'cedula_emp_com','fecicon','fecfcon','comentario_emp','estatus_biblio')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+##############################################  Nivel Academico  ##################################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaNivelAca(request):
+    #Lista de todas las divisiones
+    listaNivelAca = SeCatNivelAcademico.objects.filter(estatus_acade="A").order_by('rowid_academico')
+    contador_id = listaNivelAca.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaNivelAca, 9)
+        listaNivelAca = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST':
+        form = FormNivAca(request.POST)
+        if form.is_valid():
+            aca = form.save(commit=False)
+            ultimo_id = SeCatNivelAcademico.objects.all().order_by('rowid_academico').last() # hace una consulta al ultimo registro insertado para poder crear el nuevo id 
+            aca.rowid_academico =  ultimo_id.rowid_academico + 1 # agrega uno al ultimo id insertado
+            form.save() # Guadar lo ingresadoa l formulario
+            messages.success(request, "¡Nivel Academico agregada con exito!")
+            return redirect('vista_nivelaca') #redirecciona a la vista 
+        else :
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/GestionNivelAcademico.html",{'entity' : listaNivelAca,'paginator' : paginator,'FormNivAca' : form,'contador' : contador_id,})
+    #Busqueda del search
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_nivelaca", None)
+        print(busqueda)
+        if busqueda:
+            listaNivelAca = SeCatNivelAcademico.objects.filter(
+                #Revisión de los campos de la tabla en la BD
+                Q(descri_largo_acade__icontains = busqueda),
+                Q(estatus_acade__icontains = "A")
+            ).distinct()
+    form = FormNivAca()
+    data = {
+        'entity' : listaNivelAca,
+        'paginator' : paginator,
+        'FormNivAca' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/GestionNivelAcademico.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarNivelAca(request, rowid_academico):
+    try:
+        aca = SeCatNivelAcademico.objects.get(rowid_academico=rowid_academico)
+        aca.estatus_acade = "B"
+    except SeCatNivelAcademico.DoesNotExist:
+        raise Http404("El nivel academico no existe")
+    if request.POST: #Sobre escribe los valores
+        aca.save()
+        messages.warning(request, "¡Nivel academico eliminado con exito!")
+        return redirect('vista_nivelaca')
+    return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/BorrarNivelAcademico.html", {"Academico": aca})
+# Modifica un registro
+@login_required
+def vista_nivel_aca_detail(request, rowid_academico):
+    aca = SeCatNivelAcademico.objects.get(rowid_academico=rowid_academico)
+    form = FormNivAca(instance = aca)
+    if request.POST: #Sobre escribe los valores
+        form = FormNivAca(request.POST, instance = aca)
+        if form.is_valid():
+            form.save()
+            messages.info(request, "¡Nivel academico actualizado con exito!")
+            return redirect('vista_nivelaca') #retorna despues de actualizar
+        else:
+            return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/ActualizarNivelAcademico.html", {"aca": aca, "FormNivAca" : form})#envia al detalle de errores
+    return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/ActualizarNivelAcademico.html", {"aca": aca, "FormNivAca" : form})#envia al detalle para actualizar
+#Imprimir pfd
+class Export_print_nivel_academico(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaNivelAca = SeCatNivelAcademico.objects.filter(estatus_acade="A") 
+        data = {
+            'count': listaNivelAca.count(),
+            'aca': listaNivelAca
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionNivelAcademico/ListaNivelAcademico.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Exporta a pdf las Carreras
+class Export_pdf_nivel_academico(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaNivelAca=SeCatNivelAcademico.objects.filter(estatus_acade="A") 
+        data = {
+            'count': listaNivelAca.count(),
+            'aca': listaNivelAca
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionNivelAcademico/ListaNivelAcademico.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaNivelAcademico.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar divisiones a CSV sin libreria 
+@login_required
+def export_csv_nivel_academico (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaNivelAcademico.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['ID', 'Descripcion', 'Abreviatura', 'Estatus'])
+    listaNivelAca=SeCatNivelAcademico.objects.filter(estatus_acade="A") 
+    for aca in listaNivelAca:
+        writer.writerow([aca.id_academico, aca.descri_largo_acade, aca.descri_corto_acade, aca.estatus_acade])
+    return response
+# Exportar divisiones a xlwt sin con la libreria XLWT 
+@login_required
+def export_xlwt_nivel_academico (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaNivelAcademico.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Nivel Academico')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['ID', 'Descripcion', 'Abreviatura', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatNivelAcademico.objects.filter(estatus_acade="A").values_list('id_academico', 'descri_largo_acade',
+                                                                    'descri_corto_acade', 'estatus_acade')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+##############################################  Plaza  ##########################################################
+#Agregar si es post y lista de todos / Aqui va la paginación
+@login_required
+def vistaPlaza(request):
+    #Lista de todas las divisiones
+    listaPlaza = SeCatPlaza.objects.filter(estatus_plaza="A").order_by('rowid_plaza')
+    contador_id = listaPlaza.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaPlaza, 9)
+        listaPlaza = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST':
+        form = FormPlaza(request.POST)
+        if form.is_valid():
+            plaza = form.save(commit=False)
+            ultimo_id = SeCatPlaza.objects.all().order_by('rowid_plaza').last() # hace una consulta al ultimo registro insertado para poder crear el nuevo id 
+            plaza.rowid_plaza = ultimo_id.rowid_plaza + 1 # agrega uno al ultimo id insertado
+            form.save()
+            messages.success(request, "¡Plaza agregada con exito!") 
+            return redirect('vista_plaza') #redirecciona a la vista
+        else :
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/empleados/GestionPlazas/GestionPlazas.html",{'entity' : listaPlaza, 'paginator' : paginator, 'FormPlaza' : form, 'contador' : contador_id,})
+    #Busqueda del search
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_plaza", None)
+        if busqueda:
+            listaPlaza = SeCatPlaza.objects.filter(
+                #Revisión de los campos de la tabla en la BD
+                Q(descri_largo_plaza__icontains = busqueda),
+                Q(estatus_plaza__icontains = "A")
+            ).distinct()
+    form = FormPlaza()
+    data = {
+        'entity' : listaPlaza,
+        'paginator' : paginator,
+        'FormPlaza' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/empleados/GestionPlazas/GestionPlazas.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarPlaza(request, rowid_plaza):
+    try:
+        pla = SeCatPlaza.objects.get(rowid_plaza=rowid_plaza)
+        pla.estatus_plaza = "B"
+    except SeCatPlaza.DoesNotExist:
+        raise Http404("La plaza no existe")
+    if request.POST: #Sobre escribe los valores
+        pla.save()
+        messages.warning(request, "¡Plaza eliminada con exito!")
+        return redirect('vista_plaza')
+    return render(request, "controlEscolar/catalogos/empleados/GestionPlazas/BorrarPlazas.html", {"Plazas": pla})
+# Modifica un registro
+@login_required
+def vista_plaza_detail(request, rowid_plaza):
+    pla = SeCatPlaza.objects.get(rowid_plaza=rowid_plaza)
+    form = FormPlaza(instance = pla)
+    if request.POST: #Sobre escribe los valores
+        form = FormPlaza(request.POST, instance = pla)
+        if form.is_valid():
+            form.save()
+            messages.info(request, "¡Plaza actualizada con exito!")
+        return redirect('vista_plaza') #retorna despues de actualizar
+    return render(request, "controlEscolar/catalogos/empleados/GestionPlazas/ActualizarPlazas.html", {"pla": pla, "FormPlaza" : form})#envia al detalle para actualizar
+# imprime 
+class Export_print_plaza(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaPlaza = SeCatPlaza.objects.filter(estatus_plaza="A") 
+        data = {
+            'count': listaPlaza.count(),
+            'pla': listaPlaza
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionPlazas/listaPlazas.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Exporta a pdf las Carreras
+class Export_pdf_plaza(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaPlaza=SeCatPlaza.objects.filter(estatus_plaza="A") 
+        data = {
+            'count': listaPlaza.count(),
+            'pla': listaPlaza
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionPlazas/listaPlazas.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaPlazas.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar divisiones a CSV sin libreria 
+@login_required
+def export_csv_plaza (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaPlazas.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['ID', 'Plaza', 'Abreviatura', 'Estatus'])
+    listaPlaza=SeCatPlaza.objects.filter(estatus_plaza="A") 
+    for pla in listaPlaza:
+        writer.writerow([pla.id_plaza, pla.descri_largo_plaza, pla.descri_corto_plaza, pla.estatus_plaza])
+    return response
+# Exportar divisiones a xlwt sin con la libreria XLWT 
+@login_required
+def export_xlwt_plaza (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaPlazas.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Nivel Academico')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['ID', 'Plazas', 'Abreviatura', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatPlaza.objects.filter(estatus_plaza="A").values_list('id_plaza', 'descri_largo_plaza',
+                                                                    'descri_corto_plaza', 'estatus_plaza')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+#################### TIPO PUESTOS ######################
+#Agregar si es post y lista de todos / Aqui va la paginación
+@login_required
+def vistaTipoPue(request):
+    #Lista de todas las divisiones
+    listaPue = SeCatTipoPuesto.objects.filter(estatus_pue="A").order_by('rowid_puesto')
+    contador_id = listaPue.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaPue, 9)
+        listaPue = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST':
+        form = FormsTipoPue(request.POST)
+        if form.is_valid():
+            pue = form.save(commit=False)
+            ultimo_id = SeCatTipoPuesto.objects.all().order_by('rowid_puesto').last() # hace una consulta al ultimo registro insertado para poder crear el nuevo id 
+            pue.rowid_puesto = ultimo_id.rowid_puesto + 1 # agrega uno al ultimo id insertado
+            form.save()
+            messages.success(request, "¡Puesto agregada con exito!") 
+            return redirect('vista_tipopue') #redirecciona a la vista
+        else :
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/empleados/GestionTipoPuesto/GestionTipoPuesto.html",{'entity' : listaPue, 'paginator' : paginator, 'FormsTipoPue' : form, 'contador' : contador_id,})
+    #Busqueda del search
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_pue", None)
+        if busqueda:
+            listaPue = SeCatTipoPuesto.objects.filter(
+                #Revisión de los campos de la tabla en la BD
+                Q(descri_largo_pue__icontains = busqueda),
+                Q(estatus_pue__icontains = "A")
+            ).distinct()
+    form = FormsTipoPue()
+    data = {
+        'entity' : listaPue,
+        'paginator' : paginator,
+        'FormsTipoPue' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/empleados/GestionTipoPuesto/GestionTipoPuesto.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarTipoPue(request, rowid_puesto):
+    try:
+        pue = SeCatTipoPuesto.objects.get(rowid_puesto=rowid_puesto)
+        pue.estatus_pue = "B"
+    except SeCatTipoPuesto.DoesNotExist:
+        raise Http404("El puesto no existe")
+    if request.POST: #Sobre escribe los valores
+        pue.save()
+        messages.warning(request, "¡Puesto eliminado con exito!")
+        return redirect('vista_tipopue')
+    return render(request, "controlEscolar/catalogos/empleados/GestionTipoPuesto/BorrarPuesto.html", {"pue": pue})
+# Modifica un registro
+@login_required
+def vista_tipopue_detail(request, rowid_puesto):
+    pue = SeCatTipoPuesto.objects.get(rowid_puesto=rowid_puesto)
+    form = FormsTipoPue(instance = pue)
+    if request.POST: #Sobre escribe los valores
+        form = FormsTipoPue(request.POST, instance = pue)
+        if form.is_valid():
+            form.save()
+            messages.info(request, "¡Puesto actualizado con exito!")
+        return redirect('vista_tipopue') #retorna despues de actualizar
+    return render(request, "controlEscolar/catalogos/empleados/GestionTipoPuesto/ActualizarPuesto.html", {"pue": pue, "FormsTipoPue" : form})#envia al detalle para actualizar
+# imprime 
+class Export_print_tipopue(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaPue = SeCatTipoPuesto.objects.filter(estatus_pue="A") 
+        data = {
+            'count': listaPue.count(),
+            'pue': listaPue
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionTipoPuesto/listaPuestos.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Exporta a pdf las Carreras
+class Export_pdf_tipopue(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaPue=SeCatTipoPuesto.objects.filter(estatus_pue="A") 
+        data = {
+            'count': listaPue.count(),
+            'pue': listaPue
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionTipoPuesto/listaPuestos.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaPuestos.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar divisiones a CSV sin libreria 
+@login_required
+def export_csv_tipopue (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaPuestos.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Plaza','ID', 'Puesto', 'Abreviatura', 'Estatus'])
+    listaPue=SeCatTipoPuesto.objects.filter(estatus_pue="A") 
+    for pue in listaPue:
+        writer.writerow([pue.rowid_plaza,pue.id_puesto, pue.descri_largo_pue, pue.descri_corto_pue, pue.estatus_pue])
+    return response
+# Exportar divisiones a xlwt sin con la libreria XLWT 
+@login_required
+def export_xlwt_tipopue (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaPuestos.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Tipo de Puestos')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Plazas','ID', 'Puesto', 'Abreviatura', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatTipoPuesto.objects.filter(estatus_pue="A").values_list('rowid_plaza','id_puesto', 'descri_largo_pue',
+                                                                    'descri_corto_pue', 'estatus_pue')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+###################################### Sueldos #################################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaSueldos(request):
+    #Lista de todas las divisiones
+    listaSu = SeCatSueldos.objects.filter(estatus_sueldo="A").order_by('rowid_sueldo')
+    contador_id = listaSu.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaSu, 9)
+        listaSu = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST':
+        form = FormSueldo(request.POST)
+        if form.is_valid():
+            su = form.save(commit=False)
+            ultimo_id = SeCatSueldos.objects.all().order_by('rowid_sueldo').last()
+            su.rowid_sueldo = ultimo_id.rowid_sueldo + 1
+            su.save()
+            messages.success(request, "¡Sueldo agregado con exito!")
+            #redirecciona a la vista 
+            return redirect('vista_su')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/empleados/GestionSueldos/GestionSueldos.html",{'entity' : listaSu, 'paginator' : paginator, 'FormSueldo' : form, 'contador': contador_id})
+    #Busqueda del search
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_su", None)
+        if busqueda:
+            listaSu = SeCatSueldos.objects.filter(
+                #Revisión de los campos de la tabla en la BD
+                Q(sueldo__icontains = busqueda),
+                Q(estatus_sueldo__icontains = "A")
+            ).distinct()
+    form = FormSueldo()
+    data = {
+        'entity' : listaSu,
+        'paginator' : paginator,
+        'FormSueldo' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/empleados/GestionSueldos/GestionSueldos.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarSueldos(request, rowid_sueldo):
+    try:
+        su = SeCatSueldos.objects.get(rowid_sueldo=rowid_sueldo)
+        su.estatus_sueldo = "B"
+    except SeCatSueldos.DoesNotExist:
+        raise Http404("El sueldo no existe")
+    if request.method == 'POST': #Sobre escribe los valores
+        messages.warning(request, "¡Sueldo eliminado con exito!")
+        su.save()
+        return redirect('vista_su')
+    return render(request, "controlEscolar/catalogos/empleados/GestionSueldos/BorrarSueldos.html", {"su": su})
+# Modifica un registro
+@login_required
+def vista_su_detail(request, rowid_sueldo):
+    su = SeCatSueldos.objects.get(rowid_sueldo=rowid_sueldo)
+    form = FormSueldo(instance = su)
+    if request.method == 'POST': #Sobre escribe los valores
+        form = FormSueldo(request.POST, instance = su)
+        if form.is_valid():
+            messages.info(request, "¡Sueldo actualizado con exito!")
+            form.save()
+        return redirect('vista_su') #retorna despues de actualizar
+    return render(request, "controlEscolar/catalogos/empleados/GestionSueldos/ActualizarSueldos.html", {"su": su, "FormSueldo" : form})#envia al detalle para actualizar
+# Imprimir
+class Export_print_su(LoginRequiredMixin,View):
+    def get(self, request, *args, **kwargs):
+        listaSu = SeCatSueldos.objects.filter(estatus_sueldo="A") 
+        data = {
+            'count': listaSu.count(),
+            'su': listaSu
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionSueldos/listaSueldos.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Exporta a pdf las Carreras
+class Export_pdf_su(LoginRequiredMixin,View):
+    def get(self, request,*args, **kwargs):
+        listaSu=SeCatSueldos.objects.filter(estatus_sueldo="A") 
+        data = {
+            'count': listaSu.count(),
+            'su': listaSu
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/empleados/GestionSueldos/listaSueldos.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaSueldos.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar divisiones a CSV sin libreria 
+@login_required
+def export_csv_su (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaSueldos.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Puesto', 'ID Sueldo', 'Sueldo', 'Estatus'])
+    listaSu=SeCatSueldos.objects.filter(estatus_sueldo="A") 
+    for s in listaSu:
+        writer.writerow([s.rowid_puesto, s.id_sueldo, s.sueldo, s.estatus_sueldo])
+    return response
+# Exportar divisiones a xlwt sin con la libreria XLWT 
+@login_required
+def export_xlwt_su (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaSueldos.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Sueldos')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Puesto', 'ID Sueldo', 'Sueldo', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatSueldos.objects.filter(estatus_sueldo="A").values_list('rowid_sueldo','rowid_puesto','id_sueldo', 'sueldo', 'estatus_sueldo')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
 
 ##############################################   Adscripcion   #########################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
