@@ -1,32 +1,30 @@
 {% extends '../../../../base.html' %}
-{% block title %}Lista Planes de Estudio{% endblock title %}
+
+{% block title %}Asignaturas{% endblock title %}
+
 {% block body %}
 <meta charset="UTF-8"/>
-    <h2>Lista Planes de Estudio</h2>
-    <h3>Cantidad de Planes: {{ count }}</h3>
+    <h2>Lista de asignaturas</h2>
+    <h3>Cantidad de asignaturas: {{ count }}</h3>
     <table>
         <thead>
             <tr>
-                <th class="cabecera">Id</th>
-                <th class="cabecera">Plan</th>
-                <th class="cabecera">Abreviación</th>
-                <th class="cabecera">Fecha de alta</th>
-                <th class="cabecera">Modificado por:</th>
-                <th class="cabecera">Fecha de baja</th>
-                <th class="cabecera">Modificado por:</th>
+                <th class="cabecera">Plan de estudio</th>
+                <th class="cabecera">Carrera</th>
+                <th class="cabecera">Id Asignatura</th>
+                <th class="cabecera">Nombre</th> 
+                <th class="cabecera">Abreviatura</th>
                 <th class="cabecera">Estatus</th>
         </thead>
         <tbody>
             {% for p in planes %}
             <tr >
-                <td>{{ p.id_plan_est }}</td>
-                <td>{{ p.decri_larga_plan_est }}</td>
-                <td>{{ p.descri_corta_plan_est }}</td>
-                <td>{{ p.fec_alta_estpla }}</td>
-                <td>{{ p.user_alta_estpla }}</td>
-                <td>{{ p.fec_baja_estpla }}</td>
-                <td>{{ p.user_baja_estpla }}</td>
-                <td>{{ p.estatus_plan_est }}</td>
+                <td>{{ p.rowid_plan_est }}</td>
+                <td>{{ p.rowid_car }}</td>
+                <td>{{ p.id_asignatura }}</td>
+                <td>{{ p.descri_larga_asi }}</td>
+                <td>{{ p.descri_corto_asi }}</td>
+                <td>{{ p.estatus_asi }}</td>
             </tr>
             {% endfor %}
         </tbody>

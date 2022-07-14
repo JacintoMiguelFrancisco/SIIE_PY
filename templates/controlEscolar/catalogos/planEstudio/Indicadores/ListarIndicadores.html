@@ -10,8 +10,8 @@
                 <th class="cabecera">Id</th>
                 <th class="cabecera">Indicador</th>
                 <th class="cabecera">Abreviación</th>
-                <th class="cabecera">Estatus</th>
                 <th class="cabecera">Clave</th>
+                <th class="cabecera">Estatus</th>
         </thead>
         <tbody>
             {% for p in indicadores %}
@@ -19,8 +19,8 @@
                 <td>{{ p.id_indicador }}</td>
                 <td>{{ p.descri_largo_ind }}</td>
                 <td>{{ p.descri_corto_ind }}</td>
-                <td>{{ p.estatus_ind }}</td>
                 <td>{{ p.cve_control_ind }}</td>
+                <td>{{ p.estatus_ind }}</td>
             </tr>
             {% endfor %}
         </tbody>

@@ -5,13 +5,14 @@ from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
 #Models
+#Models
 from .models import (
     SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia,  # Direcciones
     SeCatUniversidad, SeCatDivision, SeCatCarrera, SeCatPeriodos, # Universidades
     SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
     SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
-    SeCatIndicador, SeCatPlaEstudio,
+    SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
 )
 # -------------------------------------------- Direcciones --------------------------------------------- #
 
@@ -77,6 +78,39 @@ class PeriodosAdmin(admin.ModelAdmin):
     search_fields = ['evento_per', 'consecutivo_per']
     list_filter = ['estatus_per']
 
+# -------------------------------------------- Plan de Estudios --------------------------------------------- #
+
+##################### Admin de Plan de estudio  ################# 
+@admin.register(SeCatPlaEstudio)
+class PlanEstudioAdmin(admin.ModelAdmin):
+    list_display = ('id_plan_est','decri_larga_plan_est','descri_corta_plan_est','estatus_plan_est','fec_alta_estpla','user_alta_estpla','fec_baja_estpla','user_baja_estpla')
+    search_fields = ['id_plan_est']
+    list_filter = ['estatus_plan_est'] 
+##################### Admin Asignatura  ################# 
+@admin.register(SeCatAsignatura)
+class AsignaturaAdmin(admin.ModelAdmin):
+    list_display =('rowid_asignatura', 'rowid_plan_est' , 'rowid_car' ,'id_asignatura', 'descri_larga_asi' ,'descri_corto_asi' ,'estatus_asi')
+    search_fields = ['rowid_asignatura']
+    list_filter = ['estatus_asi']
+##################### Admin de Indicadores  ################# 
+@admin.register(SeCatIndicador)
+class IndicadoresAdmin(admin.ModelAdmin):
+    list_display = ('id_indicador','descri_largo_ind','descri_corto_ind','estatus_ind','cve_control_ind')
+    search_fields = ['id_indicador']
+    list_filter = ['estatus_ind'] 
+################plan de estudios asignatira admin
+@admin.register(SeProPlanEstudio)
+class PeaAdmin(admin.ModelAdmin):
+    list_display = ('rowid_pro_plan_est','rowid_asignatura','rowid_plan_est','rowid_grado','rowid_car', 'horas_plan_est','creditos_plan_est', 'nota_minima_apro_est', 'valor_pon_final', 'estatus_pea')
+    search_fields = ['rowid_pro_plan_est']
+    list_filter = ['estatus_pea']
+################ admin de plan de estudio asignatura
+@admin.register(SeProAsiIndicador)
+class PeaiAdmin(admin.ModelAdmin):
+    list_display = ('rowid_pro_asi_ind' ,'rowid_pro_plan_est', 'rowid_indicador', 'porcentaje_pro_asi_idi' ,'comen_pro_asi_ind', 'estatus_peai')
+    search_fields = ['rowid_pro_asi_ind']
+    list_filter = ['estatus_peai']
+ 
 # -------------------------------------------- Aspirantes --------------------------------------------- #
 
 ##################### Admin de Medio de difusion ################# 
@@ -179,21 +213,18 @@ class AdscripcionesAdmin(admin.ModelAdmin):
     list_display = ('rowid_depto','id_depto','conse_depto','descri_largo_dep_emp','descri_corto_dep_emp','titular_depto','clave_ser','estatus_depto')
     search_fields = ['descri_largo_dep_emp']
     list_filter = ['estatus_depto'] 
-
 ##################### Actividades  ################# 
 @admin.register(SeCatActividades)
 class ActividadesAdmin(admin.ModelAdmin):
     list_display = ('rowid_actividad','id_actividad','descri_largo_act','descri_corto_act','estatus_act')
     search_fields = ['descri_largo_act']
     list_filter = ['estatus_act'] 
-
 ##################### Instituciones  ################# 
 @admin.register(SeCatInstitucion)
 class InstitucionAdmin(admin.ModelAdmin):
     list_display = ('rowid_institucion','id_institucion','descri_largo_ins','descri_corto_ins','estatus_ins')
     search_fields = ['descri_largo_ins']
     list_filter = ['estatus_ins'] 
-
 ##################### SeTabEmpCar  ################# 
 @admin.register(SeTabEmpCar)
 class EmpCarnAdmin(admin.ModelAdmin):
@@ -201,20 +232,3 @@ class EmpCarnAdmin(admin.ModelAdmin):
     search_fields = ['descri_corto_car_emp']
     list_filter = ['estatus_inst'] 
 
-
-
-
-############# Viejito xD ##############
-##################### Admin de Indicadores  ################# 
-@admin.register(SeCatIndicador)
-class IndicadoresAdmin(admin.ModelAdmin):
-    list_display = ('id_indicador','descri_largo_ind','descri_corto_ind','estatus_ind','cve_control_ind')
-    search_fields = ['id_indicador']
-    list_filter = ['estatus_ind'] 
-
-##################### Admin de Plan de estudio  ################# 
-@admin.register(SeCatPlaEstudio)
-class PlanEstudioAdmin(admin.ModelAdmin):
-    list_display = ('id_plan_est','decri_larga_plan_est','descri_corta_plan_est','estatus_plan_est','fec_alta_estpla','user_alta_estpla','fec_baja_estpla','user_baja_estpla')
-    search_fields = ['id_plan_est']
-    list_filter = ['estatus_plan_est'] 

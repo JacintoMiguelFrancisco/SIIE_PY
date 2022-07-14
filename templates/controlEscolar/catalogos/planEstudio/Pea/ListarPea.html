@@ -1,32 +1,37 @@
 {% extends '../../../../base.html' %}
-{% block title %}Lista Planes de Estudio{% endblock title %}
+
+{% block title %}Plan de estudios{% endblock title %}
+
 {% block body %}
 <meta charset="UTF-8"/>
-    <h2>Lista Planes de Estudio</h2>
+    <h2>Lista plan de estudios</h2>
     <h3>Cantidad de Planes: {{ count }}</h3>
     <table>
         <thead>
             <tr>
-                <th class="cabecera">Id</th>
-                <th class="cabecera">Plan</th>
-                <th class="cabecera">Abreviación</th>
-                <th class="cabecera">Fecha de alta</th>
-                <th class="cabecera">Modificado por:</th>
-                <th class="cabecera">Fecha de baja</th>
-                <th class="cabecera">Modificado por:</th>
+                <th class="cabecera">Asignatura</th>   
+                <th class="cabecera">Plan de estudios</th>
+                <th class="cabecera">Grado</th>
+                <th class="cabecera">Carrera</th>
+                <th class="cabecera">Total de horas</th>
+                <th class="cabecera">Creditos</th>
+                <th class="cabecera">Nota Minima Aprobatoria</th>         
+                <th class="cabecera">Valor Final</th>
                 <th class="cabecera">Estatus</th>
         </thead>
         <tbody>
             {% for p in planes %}
             <tr >
-                <td>{{ p.id_plan_est }}</td>
-                <td>{{ p.decri_larga_plan_est }}</td>
-                <td>{{ p.descri_corta_plan_est }}</td>
-                <td>{{ p.fec_alta_estpla }}</td>
-                <td>{{ p.user_alta_estpla }}</td>
-                <td>{{ p.fec_baja_estpla }}</td>
-                <td>{{ p.user_baja_estpla }}</td>
-                <td>{{ p.estatus_plan_est }}</td>
+                <td>{{ p.rowid_asignatura }}</td>
+                <td>{{ p.rowid_plan_est }}</td>
+                <td>{{ p.rowid_grado }}</td>
+                <td>{{ p.rowid_car }}</td>
+                <td>{{ p.horas_plan_est }}</td>
+                <td>{{ p.creditos_plan_est }}</td>
+                <td>{{ p.nota_minima_apro_est }}</td>
+                <td>{{ p.valor_pon_final}}</td>
+                <td>{{ p.estatus_pea}}</td> 
+                
             </tr>
             {% endfor %}
         </tbody>

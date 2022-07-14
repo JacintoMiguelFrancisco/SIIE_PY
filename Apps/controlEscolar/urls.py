@@ -87,6 +87,49 @@ urlpatterns = [
     path('export-csv-periodos/', views.export_csv_periodos, name="export_csv_periodos"),
     path('export-xlwt-periodos/', views.export_xlwt_periodos, name="export_xlwt_periodos"),
 
+# -------------------------------------------- Plan de Estudios  --------------------------------------------- #
+
+# CRUD PLAN DE ESTUDIO
+    path('vista-PlanE/', views.vistaPlanE, name="vista_Plan_Estudios"),
+    path('eliminar-Plan/<int:rowid_plan_est>/', views.eliminarPlan, name="eliminar_plan"),
+    path('vistaPlanE/<int:rowid_plan_est>/', views.vista_planE_detail, name="vista_planE_detail"), 
+    path('export-pdf-planes/', views.Export_pdf_planE.as_view(), name="export_pdf_planes"),
+    path('export-csv-planes/', views.export_csv_planE, name="export_csv_planes" ),
+    path('export-xlwt-planes/', views.export_xlwt_plan, name="export_xlwt_planes"),
+    path('export-print-plan', views.Export_print_planE.as_view(), name="export_print_plan"),
+# CRUD ASIGNATURA
+    path('vista-asignatura/', views.vistaAsi, name="vista_asignatura"),
+    path('eliminar_asignatura/<int:rowid_asignatura>/', views.eliminarAsignatura),
+    path('vista_asignatura/<str:rowid_asignatura>/', views.vista_asig_detail),
+    path('export-print-asig/', views.Export_print_asi.as_view(), name="export_print_asignatura"),
+    path('export-pdf-asig/', views.Export_pdf_asi.as_view(), name="export_pdf_asignatura"),
+    path('export-csv-asig/', views.export_csv_asi, name="export_csv_asignatura" ),
+    path('export-xlwt-asig/', views.export_xlwt_asi, name="export_xlwt_asignatura"),
+# CRUD INDICADORES
+    path('vista-indicador/', views.vistaIndicador, name="Vista_indicadores"),
+    path('eliminar-indicador/<int:rowid_indicador>/', views.eliminarIndicador, name="eliminar_indi"),
+    path('vista-indicador/<int:rowid_indicador>/', views.vista_indicador_detail, name="vista_indicadores_detail"),
+    path('export-print-ind/', views.Export_print_ind.as_view(), name="export_print_indicadores"),
+    path('export-pdf-indicador/', views.Export_pdf_indi.as_view(), name="export_pdf_indicadores"),
+    path('export-csv-indi/', views.export_csv_indi, name="export_csv_indicadores" ),
+    path('export-xlwt-indicador/', views.export_xlwt_indicador, name="export_xlwt_indicadores"),
+# CRUD PLAN DE ESTUDIO ASIGNATURA
+    path('vista-pea/', views.vistaPea, name="vista_pea"),
+    path('eliminar-pea/<str:rowid_pro_plan_est>', views.eliminarPea, name="eliminar_pea"),
+    path('vista-pea/<str:rowid_pro_plan_est>', views.vista_pea_detail, name="vista_pea_detail"),
+    path('export-print-pea/', views.Export_print_pea.as_view(), name="export_print_pea"),
+    path('export-pdf-pea/', views.Export_pdf_pea.as_view(), name="export_pdf_pea"),
+    path('export-csv-pea/', views.export_csv_pea, name="export_csv_pea" ),
+    path('export-xlwt-pea/', views.export_xlwt_pea, name="export_xlwt_pea"),
+# CRUD PLAN DE ESTUDIO ASIGNATURA INDICADOR
+    path('vista-planEAI/', views.vistaPlanEAI, name="vista_planEAI"),
+    path('eliminar-peai/<int:rowid_pro_asi_ind>/', views.eliminarPeai, name="eliminar-peai"),
+    path('vista-planEAI/<int:rowid_pro_asi_ind>/', views.vista_peai_detail, name="vista_peai_detail"),
+    path('export-print-peai/', views.Export_print_peai.as_view(), name="export_print_peai"),
+    path('export-pdf-peai/', views.Export_pdf_peai.as_view(), name="export_pdf_peai"),
+    path('export-csv-peai/', views.export_csv_peai, name="export_csv_peai" ),
+    path('export-xlwt-peai/', views.export_xlwt_peai, name="export_xlwt_peai"),
+
 # -------------------------------------------- Aspirantes --------------------------------------------- #
 
 # CRUD MEDIO DE DIFUSION
@@ -121,46 +164,6 @@ urlpatterns = [
     path('export-csv-IndAsp/', views.export_csv_IndAsp, name="export_csv_IndAsp" ),
     path('export-xlwt-IndAsp/', views.export_xlwt_IndAsp, name="export_xlwt_IndAsp"),
     path('export-print-IndAsp', views.Export_print_IndAsp.as_view(), name="export_print_IndAsp"),
-
-
-
-
-
-
-
-
-
-
-
-
-# CRUD Plan de Estudio 
-    path('vistaPlanE/', views.vistaPlanE, name="vistaPlaneEstudios"),
-    path('eliminarPlan/<int:id_plan_est>/', views.eliminarPlan, name="eliminar-plan"),
-    path('vistaPlanE/<int:plan_est_id>/', views.vista_planE_detail, name="vista_planE_detail"), 
-    path('export_pdf_planes/', views.Export_pdf_planE.as_view(), name="export-pdf-planes"),
-    path('export_csv_planes/', views.export_csv_planE, name="export-csv-planes" ),
-    path('export_xlwt_planes/', views.export_xlwt_plan, name="export-xlwt-planes"),
-    path('export_print_plan', views.Export_print_planE.as_view(), name="export-print-plan"),
-# CRUD INDICADORES
-    path('vistaIndicador/', views.vistaIndicador, name="VistaIndicadores"),
-    path('eliminarIndicador/<int:id_indicador>/', views.eliminarIndicador, name="eliminar-indi"),
-    path('vistaIndicador/<int:id_indicador>/', views.vista_indicador_detail, name="vista_indicadores_detail"),
-    path('export_pdf_ind/', views.Export_print_ind.as_view(), name="export-print-indicadores"),
-    path('export_pdf_indicador/', views.Export_pdf_indi.as_view(), name="export-pdf-indicadores"),
-    path('export_csv_indi/', views.export_csv_indi, name="export-csv-indicadores" ),
-    path('export_xlwt_indicador/', views.export_xlwt_indicador, name="export-xlwt-indicadores"),
-
-
-# Registro Aspirantes
-    path('listaEjemplo/', views.listaEjemplo),
-
-
-
-
-
-
-
-
 
 # -------------------------------------------- Estudiantes --------------------------------------------- #
 # CRUD GRADOS
@@ -278,4 +281,10 @@ urlpatterns = [
     path('export-csv-EmpCar/', views.export_csv_EmpCar, name="export_csv_EmpCar"),
     path('export-xlwt-EmpCar/', views.export_xlwt_EmpCar, name="export_xlwt_EmpCar"),
     path('export-print-EmpCar/', views.Export_print_EmpCar.as_view(), name="export_print_EmpCar"),
+
+# -------------------------------------------- Operaciones --------------------------------------------- #
+
+# Registro Aspirantes
+    path('listaEjemplo/', views.listaEjemplo),
+
 ]

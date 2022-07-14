@@ -1,5 +1,5 @@
 {% extends '../../../../base.html' %}
-{% block title %}Actualizar Plan de Estudio{% endblock title %}
+{% block title %}Catalogo de Plan de estudio asignatura{% endblock title %}
 
 {% block navbar %}
   {% include 'NavBar.html' %}
@@ -8,7 +8,7 @@
 {% block body %}
 <div class="row">
     <div class="col-md-4 offset-md-4">
-        <h2 class="fs-1" style="text-align: center;">Editar Plan de Estudio</h2>
+        <h2 class="fs-1" style="text-align: center;">Editar Plan de estudio - asignatura</h2>
         <div class="card">
             <div class="card-body">
                 <div class="form-group">
@@ -22,11 +22,12 @@
                                 </div>
                             {% endfor %}
                         {% endif %}
+
+                        {{ FormsPeA.as_p }}
                         
-                        {{ FormsPlaE.as_p }}
                     <div class="form-group d-flex justify-content-evenly">  
                         <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>  
-                        <a class="btn btn-danger btn-block" href="{% url 'vista_Plan_Estudios' %}">Cancelar</a>   
+                        <a class="btn btn-danger btn-block" href="{% url 'vista_pea' %}">Cancelar</a>   
                     </div>
                 </form>
             </div>

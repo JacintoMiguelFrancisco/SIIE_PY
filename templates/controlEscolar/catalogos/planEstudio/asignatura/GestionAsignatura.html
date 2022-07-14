@@ -1,24 +1,24 @@
 {% extends '../../CRUD.html' %}
 
-{% block title %}Gestión Planes de Estudio{% endblock title %}
+{% block title %}Gestion de asignaturas{% endblock title %}
 
 {% block buttons %}
 {% comment %} Espera los botones imprimir {% endcomment %}
-<h3>Gestión Planes de Estudio</h3>
+<h3>Gestión de asignaturas</h3>
     <div class="container mb-4 mt-4">
         <div class="row justify-content-md-center">
             <div class="col col-12 col-sm-3 col-lg-3">
                 {% load bootstrap_icons %}
-                <a href="{% url 'export_csv_planes' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+                <a href="{% url 'export_csv_asignatura' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export_xlwt_planes' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+                <a href="{% url 'export_xlwt_asignatura' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export_pdf_planes' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+                <a href="{% url 'export_pdf_asignatura' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export_print_plan' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+                <a href="{% url 'export_print_asignatura' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
 {% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
 {% block form %}
 <form action="" method="POST">{% csrf_token %}
-    {{ FormsPlaE.as_p }}
+    {{ FormsAsignatura.as_p }}
     <div class="form-group" >
         <button type="submit" class="btn btn-success btn-block text-white" id="save"> Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
     </div>
@@ -37,10 +37,10 @@
 
 {% block search %}
 {% comment %} Busqueda por nombre {% endcomment %}
-<h1>Catálogo - Plan de Estudio</h1>
-<form method="GET" action="{% url 'vista_Plan_Estudios' %}">
+<h1>Catalogo de asignaturas</h1>
+<form method="GET" action="{% url 'vista_asignatura' %}">
     <div class="input-group mb-3 mt-4">
-        <input type="search" class="form-control" placeholder="Escribe el plan de estudios...." name="search_planE">
+        <input type="search" class="form-control" placeholder="Escriba nombre de la asignatura" name="search_asi">
         <div class="input-group-append">
             <span class="input-group-text bg-success">
                 {% load bootstrap_icons %}
@@ -56,17 +56,15 @@
 {% comment %} Espera una tabla que se llena con un for {% endcomment %}
 {% block table %}
 <table class="table table-striped">
-    <p style="text-align: right; font-size: 25px;">Número de planes de estudio: {{ contador }} </p>
+    <p style="text-align: right; font-size: 25px;">Número de registros: {{ contador }} </p>
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Plan</th>
-            <th>Abreviación</th>
-            <th>Feacha de alta</th>
-            <th>Modificado por</th>
-            <th>Fecha de baja</th>
-            <th>Modificado por</th>
-            <th>Estatus</th>
+            <th>Plan de estudio</th>
+            <th>Carrera</th>
+            <th>Id asignatura</th>
+            <th>Asignatura</th>
+            <th>Abreviatura</th>   
+            <th>Estatus</th>         
             <th id="operaciones">Operaciones</th>
         </tr>
     </thead>
@@ -74,21 +72,17 @@
         {% for p in entity %}
         <tr>
             {% load bootstrap_icons %}
-            <td>{{ p.id_plan_est }}</td>
-            <td>{{ p.decri_larga_plan_est }}</td>
-            <td>{{ p.descri_corta_plan_est }}</td>
-            <td>{{ p.fec_alta_estpla }}</td>
-            <td>{{ p.user_alta_estpla }}</td>
-            <td>{{ p.fec_baja_estpla }}</td>
-            <td>{{ p.user_baja_estpla }}</td>
-            <td>{{ p.estatus_plan_est }}</td>
-
-
+            <td>{{ p.rowid_plan_est.decri_larga_plan_est }}</td>
+            <td>{{ p.rowid_car.descri_largo_car }}</td>
+            <td>{{ p.id_asignatura }}</td>
+            <td>{{ p.descri_larga_asi }}</td>
+            <td>{{ p.descri_corto_asi }}</td>
+            <td>{{ p.estatus_asi }}</td>
             <td class="d-flex justify-content-evenly">
-                <a href="../vistaPlanE/{{ p.rowid_plan_est }}/" class="btn btn-warning">
+                <a href="../vista_asignatura/{{ p.rowid_asignatura }}/" class="btn btn-warning">
                     {% bs_icon 'pencil-square' size='1.5em'%}
                 </a>
-                <a href="../eliminar-Plan/{{ p.rowid_plan_est }}/" class="btn btn-danger">
+                <a href="../eliminar_asignatura/{{ p.rowid_asignatura }}/" class="btn btn-danger">
                     {% bs_icon 'trash' size='1.5em'%}
                 </a>
             </td>

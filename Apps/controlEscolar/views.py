@@ -24,7 +24,7 @@ from .models import (
     SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
     SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
-    SeCatIndicador, SeCatPlaEstudio,
+    SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
 )
 #Views
 from django.views.generic import View
@@ -35,7 +35,8 @@ from .forms import (
     FormMediosDifusion, FormTiposEscuelas, FormAreaBachi, FormIndAsp, # Aspirantes
     FormGrados, FormSalones, FormTipoBajas, FormBecas, FormTipoCambio, # Estudintes
     FormEmpleado, FormsTipoPue, FormSueldo, FormNivAca, FormPlaza, FormAdscripcion, FormActividades, FormInstitucion, FormEmpCar, # Empleados
-    FormsIndicador, FormsPlaE, FormsAspirantes
+    FormsPlaE, FormsAsignatura, FormsIndicador, FormsPeA, FormsPeaI, # Plan de Estudio
+    FormsAspirantes, #Aspirante
 )
 
 # -------------------------------------------- Direcciones --------------------------------------------- #
@@ -1113,6 +1114,648 @@ def export_xlwt_periodos (request):
     wb.save(response)
     return response
 
+# -------------------------------------------- Plan de Estudios  --------------------------------------------- #
+
+##############################################   PLAN DE ESTUDIOS    ##############################################
+# #Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaPlanE(request):
+    listaPlanE=SeCatPlaEstudio.objects.filter(estatus_plan_est="A").order_by('rowid_plan_est') #Lista de todos los planes de estudio que tengan el status = A  
+    contador_id = listaPlanE.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaPlanE, 6)
+        listaPlanE = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST': #Valida que sea una peticion de tipo post / Guarda datos
+        form = FormsPlaE(request.POST)
+        if form.is_valid():
+            plan = form.save(commit=False)
+            ultimo_id = SeCatPlaEstudio.objects.all().last() # hace una consulta al ultimo registro insertado para poder crear el nuevo id 
+            plan.rowid_plan_est = ultimo_id.rowid_plan_est + 1 # agrega uno al ultimo id insertado:
+            form.save()
+            messages.success(request, "¡Plan agregado con exito!") 
+            return redirect('vista_Plan_Estudios')#redirecciona a la vista
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/planEstudio/planEstudios/GestionPE.html",{'entity' : listaPlanE, 'paginator' : paginator, 'FormsPlaE' : form, 'contador' : contador_id,})
+    #Busqueda del search
+    elif request.method =='GET':
+        busqueda = request.GET.get("search_planE", None)
+        print(busqueda)
+        if busqueda:
+            listaPlanE = SeCatPlaEstudio.objects.filter(
+                #Revisión de los campos de la tabla en la BD
+                Q(decri_larga_plan_est__icontains = busqueda),
+                Q(estatus_plan_est__icontains = "A")
+            ).distinct()
+    form = FormsPlaE()
+    data = {
+        'entity' : listaPlanE,
+        'paginator' : paginator,
+        'FormsPlaE' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/planEstudio/planEstudios/GestionPE.html",data)
+# Update de estatus de 'A' a 'B' "ELIMINACION"
+@login_required
+def eliminarPlan(request, rowid_plan_est):
+    try:
+        plan = SeCatPlaEstudio.objects.get(rowid_plan_est=rowid_plan_est)
+        plan.estatus_plan_est = "B"
+    except SeCatPlaEstudio.DoesNotExist:
+        raise Http404("El plan no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        messages.warning(request, "¡Plan eliminado con exito!")
+        plan.save()
+        return redirect('vista_Plan_Estudios')
+    return render(request, "controlEscolar/catalogos/planEstudio/PlanEstudios/BorrarPE.html", {"Plan": plan})
+# Modificar 
+@login_required
+def vista_planE_detail(request, rowid_plan_est):
+    plan = SeCatPlaEstudio.objects.get(rowid_plan_est=rowid_plan_est)
+    form = FormsPlaE(instance=plan)
+    if request.method == 'POST': #Sobre escribe los valores
+        form= FormsPlaE(request.POST, instance=plan) 
+        plan.save() #Guarda cambios
+        if form.is_valid():
+            messages.info(request, "¡Plan actualizado con exito!")
+            form.save()
+            return redirect('vista_Plan_Estudios') #retorna despues de actualizar
+        else:
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/planEstudio/PlanEstudios/ActualizarPE.html", {"FormsPlaE": form})#envia al detalle de errores
+    return render(request, "controlEscolar/catalogos/planEstudio/PlanEstudios/ActualizarPE.html", {"FormsPlaE": form})#envia al detalle para actualizar
+# vista para imprimir pdf 
+class Export_print_planE(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaPlan=SeCatPlaEstudio.objects.filter(estatus_plan_est="A") 
+        data = {
+            'count': listaPlan.count(),
+            'planes': listaPlan
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/planEstudios/ListarPE.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#ESTA SI JALA COMO PDF NO LAS MAMADAS DE ARRIBA :D
+class Export_pdf_planE(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaPlan=SeCatPlaEstudio.objects.filter(estatus_plan_est="A") 
+        data = {
+            'count': listaPlan.count(),
+            'planes': listaPlan
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/planEstudios/ListarPE.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaPlanesEstudio.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises al formato  CSV 
+@login_required
+def export_csv_planE (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaPlanesEstudio.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Id', 'Nombre', 'Abreviatura', 'Fecha de alta', 'Modificado por', 'Fecha de baja', 'Modificado por', 'Estatus'])
+    listaPlanE=SeCatPlaEstudio.objects.filter(estatus_plan_est="A") 
+    # listaPaises=SeCatPais.objects.filter(owner=request.user)
+    for plan in listaPlanE:
+        writer.writerow([plan.id_plan_est, plan.decri_larga_plan_est, plan.descri_corta_plan_est,
+                            plan.fec_alta_estpla, plan.user_alta_estpla, plan.fec_baja_estpla, plan.user_baja_estpla, plan.estatus_plan_est])
+    return response
+# Exportar paises a xlwt 
+@login_required
+def export_xlwt_plan (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaPlanesEstudio.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Plan')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Id', 'Nombre', 'Abreviatura',  'Fecha de alta', 'Modificado', 'Fecha de baja', 'Modificado','Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatPlaEstudio.objects.filter(estatus_plan_est="A").values_list('id_plan_est','decri_larga_plan_est', 'descri_corta_plan_est',
+                                                                            'fec_alta_estpla', 'user_alta_estpla', 'fec_baja_estpla', 'user_baja_estpla', 'estatus_plan_est')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+###################################################################  ASIGNATURA     ########################################################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaAsi(request):
+    listaAsignatura=SeCatAsignatura.objects.filter(estatus_asi="A").order_by('rowid_asignatura')#Lista de todos los paises que tengan el status = A
+    contador_id = listaAsignatura.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaAsignatura, 9)
+        listaAsignatura = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST': #Valida que sea una peticion de tipo post / Guarda datos
+        form = FormsAsignatura(request.POST)
+        if form.is_valid():
+            asigna = form.save(commit=False)
+            ultimo_id = SeCatAsignatura.objects.all().last()
+            asigna.rowid_asignatura = ultimo_id.rowid_asignatura + 1
+            asigna.save()
+            messages.success(request, "¡La asignatura fue agregado con exito!")
+            #redirecciona a la vista 
+            return redirect('vista_asignatura')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/planEstudio/asignatura/GestionAsignatura.html",{'entity' : listaAsignatura,'paginator' : paginator, 'FormsAsignatura' : form,'contador' : contador_id,}) 
+    #Busqueda del search
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_asi", None)
+        print(busqueda)
+        if busqueda:
+            listaAsignatura = SeCatAsignatura.objects.filter(
+                #Revisión de los campos de la tabla en la BD
+                Q(descri_larga_asi__icontains = busqueda),
+                Q(estatus_asi__icontains = "A")
+            ).distinct()
+    form = FormsAsignatura()
+    data = {
+        'entity' : listaAsignatura,
+        'paginator' : paginator,
+        'FormsAsignatura' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/planEstudio/asignatura/GestionAsignatura.html",data)
+##Eliminar
+def eliminarAsignatura(request, rowid_asignatura):
+    try:
+        asi = SeCatAsignatura.objects.get(rowid_asignatura=rowid_asignatura)
+        asi.estatus_asi = "B"
+    except SeCatAsignatura.DoesNotExist:
+        raise Http404("La asignatura no existe")
+    if request.POST: #Sobre escrive los valores
+        messages.warning(request, "¡La asignatura fue eliminada con exito!")
+        asi.save()
+        return redirect('vista_asignatura')
+    return render(request, "controlEscolar/catalogos/planEstudio/asignatura/BorrarAsignatura.html", {"Asi": asi})
+#Modificar
+def vista_asig_detail(request, rowid_asignatura):
+    asi = SeCatAsignatura.objects.get(rowid_asignatura=rowid_asignatura)
+    form = FormsAsignatura(instance=asi)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormsAsignatura(request.POST, instance=asi)
+        if form.is_valid():
+            messages.info(request, "Asignatura actualizada")
+            form.save() #Guarda cambios
+            return redirect('vista_asignatura') #retorna despues de actualizar CAMBIAR RETORNO
+        else:
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/planEstudio/asignatura/ActualizarAsignatura.html", {"Asi": asi, "FormsAsignatura" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/planEstudio/asignatura/ActualizarAsignatura.html", {"Asi": asi, "FormsAsignatura" : form})#envia al detalle para actualizar
+# vista para "PRINT"
+class Export_print_asi(View):
+    def get(self, request, *args, **kwargs):
+        listaAsi=SeCatAsignatura.objects.filter(estatus_asi="A") 
+        data = {
+            'count': listaAsi.count(),
+            'planes': listaAsi
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/asignatura/ListarAsignatura.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#PDF
+class Export_pdf_asi(View):
+    def get(self, request,*args, **kwargs):
+        listaAsi=SeCatAsignatura.objects.filter(estatus_asi="A") 
+        data = {
+            'count': listaAsi.count(),
+            'planes': listaAsi
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/asignatura/ListarAsignatura.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaAsignaturas.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises al formato  CSV 
+def export_csv_asi (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaAsignaturas.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Plan de estudio', 'Carrera', 'Id Asignatura', 'Nombre', 'Abreviatura', 'Estatus'])
+    listaAsi=SeCatAsignatura.objects.filter(estatus_asi="A") 
+    # listaPaises=SeCatPais.objects.filter(owner=request.user)
+    for asi in listaAsi:
+        writer.writerow([asi.rowid_plan_est, asi.rowid_car, asi.id_asignatura, asi.descri_larga_asi, asi.descri_corto_asi, asi.estatus_asi])
+    return response
+# Exportar paises a xlwt 
+def export_xlwt_asi (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaAsignatura.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Indicador')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Plan de estudio', 'Carrera', 'Id Asignatura', 'Nombre', 'Abreviatura', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatAsignatura.objects.filter(estatus_asi="A").values_list('rowid_plan_est', 'rowid_car', 'id_asignatura', 'descri_larga_asi', 'descri_corto_asi', 'estatus_asi')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+########################################################### Indicadores ###########################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaIndicador(request):
+    #Lista de todos los paises que tengan el status = A
+    listaIndicador=SeCatIndicador.objects.filter(estatus_ind="A").order_by('rowid_indicador')
+    contador_id = listaIndicador.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaIndicador, 9)
+        listaIndicador = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST':
+        form = FormsIndicador(request.POST) #Valida que sea una peticion de tipo post / Guarda datos
+        if form.is_valid():
+            indi = form.save(commit=False)
+            ultimo_id = SeCatIndicador.objects.all().last() # hace una consulta al ultimo registro insertado para poder crear el nuevo id 
+            indi.rowid_indicador = ultimo_id.rowid_indicador + 1 # agrega uno al ultimo id insertado
+            form.save()
+            messages.success(request, "¡El indicador fue agregado con exito!")
+            return redirect('Vista_indicadores') #redirecciona a la vista 
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/planEstudio/Indicadores/GestionIndicadores.html",{'entity' : listaIndicador, 'paginator' : paginator, 'FormsIndicador' : form, 'contador' : contador_id,})
+    #Busqueda del search
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_indicador", None)
+        print(busqueda)
+        if busqueda:
+            listaIndicador = SeCatIndicador.objects.filter(
+                #Revisión de los campos de la tabla en la BD
+                Q(descri_largo_ind__icontains = busqueda),
+                Q(estatus_ind__icontains = "A")
+            ).distinct()
+    form = FormsIndicador()
+    data = {
+        'entity' : listaIndicador,
+        'paginator' : paginator,
+        'FormsIndicador' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/planEstudio/Indicadores/GestionIndicadores.html",data)
+#Update de estatus de 'A' a 'B' "ELIMINACION"
+@login_required
+def eliminarIndicador(request, rowid_indicador):
+    try:
+        indi = SeCatIndicador.objects.get(rowid_indicador=rowid_indicador)
+        indi.estatus_ind = "B"
+    except SeCatIndicador.DoesNotExist:
+        raise Http404("El indicador no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        messages.warning(request, "¡Indicador eliminado con exito!")
+        indi.save()
+        return redirect('Vista_indicadores')
+    return render(request, "controlEscolar/catalogos/planEstudio/Indicadores/BorrarIndicadores.html", {"Indi": indi})
+###modificar
+@login_required
+def vista_indicador_detail(request, rowid_indicador):
+    indi = SeCatIndicador.objects.get(rowid_indicador=rowid_indicador)
+    form = FormsIndicador(instance=indi)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormsIndicador(request.POST, instance=indi)
+        if form.is_valid():
+            indi.save() #Guarda cambios
+            messages.info(request, "¡Indicador actualizado con exito!")
+            return redirect('Vista_indicadores') #retorna despues de actualizar
+        else:
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/planEstudio/Indicadores/ActualizarIndicadores.html", {"FormsIndicador" : form})#envia al detalle de errores
+    return render(request, "controlEscolar/catalogos/planEstudio/Indicadores/ActualizarIndicadores.html", {"FormsIndicador" : form})#envia al detalle para actualizar
+# vista para "PRINT"
+class Export_print_ind(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaIndi=SeCatIndicador.objects.filter(estatus_ind="A") 
+        data = {
+            'count': listaIndi.count(),
+            'indicadores': listaIndi
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/Indicadores/ListarIndicadores.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#PDF
+class Export_pdf_indi(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaIndi=SeCatIndicador.objects.filter(estatus_ind="A") 
+        data = {
+            'count': listaIndi.count(),
+            'indicadores': listaIndi
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/Indicadores/ListarIndicadores.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaIndicadores.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises al formato  CSV 
+@login_required
+def export_csv_indi (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaIndicadores.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Id', 'Nombre', 'Abreviatura', 'Clave de control', 'Estatus'])
+    listaIndi=SeCatIndicador.objects.filter(estatus_ind="A") 
+    # listaPaises=SeCatPais.objects.filter(owner=request.user)
+    for indi in listaIndi:
+        writer.writerow([indi.id_indicador, indi.descri_largo_ind, indi.descri_corto_ind, indi.cve_control_ind, indi.estatus_ind])
+    return response
+# Exportar paises a xlwt 
+@login_required
+def export_xlwt_indicador (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaIndicador.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Indicador')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Id', 'Nombre', 'Abreviatura', 'Clave de control', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatIndicador.objects.filter(estatus_ind="A").values_list('id_indicador','descri_largo_ind', 'descri_corto_ind', 'cve_control_ind', 'estatus_ind')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+########################################################### Plan de estudios asignaturas  ###########################################
+
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaPea(request):
+    #Lista de todos los paises que tengan el status = A
+    listaPea=SeProPlanEstudio.objects.filter(estatus_pea="A").order_by('rowid_pro_plan_est')
+    contador_id = listaPea.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaPea, 9)
+        listaPea = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST': #Valida que sea una peticion de tipo post / Guarda datos
+        form = FormsPeA(request.POST)
+        if form.is_valid():
+            asigna = form.save(commit=False)
+            ultimo_id = SeProPlanEstudio.objects.all().last()
+            asigna.rowid_pro_plan_est = ultimo_id.rowid_pro_plan_est + 1
+            asigna.save()
+            messages.success(request, "¡La asignatura fue agregado con exito!")
+            #redirecciona a la vista 
+            return redirect('vista_pea')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/planEstudio/Pea/GestionPea.html",{'entity' : listaPea,'paginator' : paginator, 'FormsPeA' : form,'contador' : contador_id,}) 
+    #Busqueda del search
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_asi", None)
+        print(busqueda)
+        if busqueda:
+            listaPea = SeProPlanEstudio.objects.filter(
+                #Revisión de los campos de la tabla en la BD
+                Q(horas_plan_est__icontains = busqueda),
+                Q(estatus_pea__icontains = "A")
+            ).distinct()
+    form = FormsPeA()
+    data = {
+        'entity' : listaPea,
+        'paginator' : paginator,
+        'FormsPeA' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/planEstudio/Pea/GestionPea.html",data)
+##Eliminar
+def eliminarPea(request, rowid_pro_plan_est):
+    try:
+        asi = SeProPlanEstudio.objects.get(rowid_pro_plan_est=rowid_pro_plan_est)
+        asi.estatus_pea = "B"
+    except SeProPlanEstudio.DoesNotExist:
+        raise Http404("La asignatura no existe")
+    if request.POST: #Sobre escrive los valores
+        messages.warning(request, "¡La asignatura fue eliminada con exito!")
+        asi.save()
+        return redirect('vista_pea')
+    return render(request, "controlEscolar/catalogos/planEstudio/Pea/BorrarPea.html", {"Asi": asi})
+##Mod
+def vista_pea_detail(request, rowid_pro_plan_est):
+    asi = SeProPlanEstudio.objects.get(rowid_pro_plan_est=rowid_pro_plan_est)
+    form = FormsPeA(instance=asi)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormsPeA(request.POST, instance=asi)
+        if form.is_valid():
+            messages.info(request, "Asignatura actualizada")
+            form.save() #Guarda cambios
+            return redirect('vista_pea') #retorna despues de actualizar CAMBIAR RETORNO
+        else:
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/planEstudio/Pea/ActualizarPea.html", {"FormsPeA" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/planEstudio/Pea/ActualizarPea.html", {"FormsPeA" : form})#envia al detalle para actualizar
+# vista para "PRINT"
+class Export_print_pea(View):
+    def get(self, request, *args, **kwargs):
+        listaPea=SeProPlanEstudio.objects.filter(estatus_pea="A") 
+        data = {
+            'count': listaPea.count(),
+            'planes': listaPea
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/Pea/ListarPea.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#PDF
+class Export_pdf_pea(View):
+    def get(self, request,*args, **kwargs):
+        listaPea=SeProPlanEstudio.objects.filter(estatus_pea="A") 
+        data = {
+            'count': listaPea.count(),
+            'planes': listaPea
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/Pea/ListarPea.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'listaPlanEstudiosAsignatura.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises al formato  CSV 
+def export_csv_pea (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaAsignaturas.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Asignatura',' Plan', 'Grado', 'Carrera', 'Total de horas', 'Creditos', 'Nota minima','Valor', 'Estatus'])
+    listaAsi=SeProPlanEstudio.objects.filter(estatus_pea="A") 
+    # listaPaises=SeCatPais.objects.filter(owner=request.user)
+    for asi in listaAsi:
+        writer.writerow([asi.rowid_asignatura, asi.rowid_plan_est, asi.rowid_grado, asi.rowid_car, asi.horas_plan_est, asi.creditos_plan_est ,asi.nota_minima_apro_est, asi.valor_pon_final, asi.estatus_pea])
+    return response
+# Exportar paises a xlwt 
+def export_xlwt_pea (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaAsignatura.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Indicador')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Asignatura',' Plan', 'Grado', 'Carrera', 'Total de horas', 'Creditos', 'Nota minima','Valor', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeProPlanEstudio.objects.filter(estatus_pea="A").values_list('rowid_asignatura', 'rowid_plan_est', 'rowid_grado', 'rowid_car', 'horas_plan_est', 'creditos_plan_est', 'nota_minima_apro_est', 'valor_pon_final', 'estatus_pea')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+########################################################### Plan de estudios asignatura indicador   ###########################################
+
+@login_required
+def vistaPlanEAI(request):
+    #Lista de todos los paises que tengan el status = A
+    listaPea=SeProAsiIndicador.objects.filter(estatus_peai="A").order_by('rowid_pro_asi_ind')
+    contador_id = listaPea.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaPea, 9)
+        listaPea = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST': #Valida que sea una peticion de tipo post / Guarda datos
+        form = FormsPeaI(request.POST)
+        if form.is_valid():
+            asigna = form.save(commit=False)
+            ultimo_id = SeProAsiIndicador.objects.all().last()
+            asigna.rowid_pro_asi_ind = ultimo_id.rowid_pro_asi_ind + 1
+            asigna.save()
+            messages.success(request, "¡La asignatura Indicador fue agregado con exito!")
+            #redirecciona a la vista 
+            return redirect('vista_planEAI')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/planEstudio/Peai/GestionPeai.html",{'entity' : listaPea,'paginator' : paginator, 'FormsPeaI' : form,'contador' : contador_id,}) 
+    #Busqueda del search
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_asigna", None)
+        print(busqueda)
+        if busqueda:
+            listaPea = SeProAsiIndicador.objects.filter(
+                #Revisión de los campos de la tabla en la BD
+                Q(porcentaje_pro_asi_idi__icontains = busqueda),
+                Q(estatus_peai__icontains = "A")
+            ).distinct()
+    form = FormsPeaI()
+    data = {
+        'entity' : listaPea,
+        'paginator' : paginator,
+        'FormsPeaI' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/planEstudio/Peai/GestionPeai.html",data)
+##Eliminar
+@login_required
+def eliminarPeai(request, rowid_pro_asi_ind):
+    try:
+        peai = SeProAsiIndicador.objects.get(rowid_pro_asi_ind=rowid_pro_asi_ind)
+        peai.estatus_peai = "B"
+    except SeProAsiIndicador.DoesNotExist:
+        raise Http404("El plan no existe")
+    if request.POST: #Sobre escrive los valores
+        messages.warning(request, "Plan eliminado con exito!")
+        peai.save()
+        return redirect('vista_planEAI')
+    return render(request, "controlEscolar/catalogos/planEstudio/Peai/BorrarPeai.html", {"Plan": peai})
+# Modifica un registro
+@login_required
+def vista_peai_detail(request, rowid_pro_asi_ind):
+    peai = SeProAsiIndicador.objects.get(rowid_pro_asi_ind=rowid_pro_asi_ind)
+    form = FormsPeaI(instance = peai)
+    if request.POST: #Sobre escribe los valores
+        form = FormsPeaI(request.POST, instance = peai)
+        if form.is_valid():
+            messages.info(request, "¡Plan actualizado con exito!")
+            form.save()
+            return redirect('vista_planEAI') #retorna despues de actualizar
+        else:
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/planEstudio/Peai/ActualizarPeai.html", {"peai": peai, "FormsPeaI" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/planEstudio/Peai/ActualizarPeai.html", {"peai": peai, "FormsPeaI" : form})#envia al detalle para actualizar
+# vista para "PRINT"
+class Export_print_peai(View):
+    def get(self, request, *args, **kwargs):
+        listaPeai=SeProAsiIndicador.objects.filter(estatus_peai="A") 
+        data = {
+            'count': listaPeai.count(),
+            'planes': listaPeai
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/Peai/ListarPeai.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#PDF
+class Export_pdf_peai(View):
+    def get(self, request,*args, **kwargs):
+        listaPeai=SeProAsiIndicador.objects.filter(estatus_peai="A") 
+        data = {
+            'count': listaPeai.count(),
+            'planes': listaPeai
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/Peai/ListarPeai.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'listaPlanEstudiosAsignaturaIndicador.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises al formato  CSV 
+def export_csv_peai (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaPlanEstudioAsignaturaIndicador.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Plan de estudios','Indicador', 'Porcentaje', 'Comentario', 'Estatus'])
+    listaAsi=SeProAsiIndicador.objects.filter(estatus_peai="A") 
+    # listaPaises=SeCatPais.objects.filter(owner=request.user)
+    for asi in listaAsi:
+        writer.writerow([asi.rowid_pro_plan_est, asi.rowid_indicador, asi.porcentaje_pro_asi_idi, asi.comen_pro_asi_ind, asi.estatus_peai ])
+    return response
+# Exportar paises a xlwt 
+def export_xlwt_peai (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaPlanEstudioAsignaturaIndicador.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Indicador')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Plan de estudios','Indicador', 'Porcentaje', 'Comentario', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeProAsiIndicador.objects.filter(estatus_peai="A").values_list('rowid_pro_plan_est', 'rowid_indicador', 'porcentaje_pro_asi_idi', 'comen_pro_asi_ind', 'estatus_peai')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
 # -------------------------------------------- Aspirantes --------------------------------------------- #
 
 ##############################################   MEDIOS DE DIFUSION  #######################################
@@ -1622,285 +2265,6 @@ def export_xlwt_IndAsp (request):
             ws.write(row_num,col,str(row[col]), font_style)
     wb.save(response)
     return response
-
-
-
-
-
-
-####  Viejo modelo #######
-
-########################################################### Indicadores ###########################################
-#Agregar si es post y lista de todos / Aqui va la paguinacion
-@login_required
-def vistaIndicador(request):
-    #Lista de todos los paises que tengan el status = A
-    listaIndicador=SeCatIndicador.objects.filter(estatus_ind="A").order_by('id_indicador')
-    contador_id = listaIndicador.count()
-    page = request.GET.get('page', 1)
-    try:
-        paginator = Paginator(listaIndicador, 9)
-        listaIndicador = paginator.page(page)
-    except:
-        raise Http404
-    if request.method == 'POST':
-        form = FormsIndicador(request.POST) #Valida que sea una peticion de tipo post / Guarda datos
-        if form.is_valid():
-            indi = form.save(commit=False)
-            ultimo_id = SeCatIndicador.objects.all().last() # hace una consulta al ultimo registro insertado para poder crear el nuevo id 
-            indi.id_indicador = ultimo_id.id_indicador + 1 # agrega uno al ultimo id insertado
-            form.save()
-            messages.success(request, "¡El indicador fue agregado con exito!")
-            return redirect('VistaIndicadores') #redirecciona a la vista 
-        else:
-            messages.warning(request, "¡Alguno de los campos no es valido!")
-            return render(request, "controlEscolar/catalogos/planEstudio/Indicadores/GestionIndicadores.html",{'entity' : listaIndicador, 'paginator' : paginator, 'FormsIndicador' : form, 'contador' : contador_id,})
-    #Busqueda del search
-    elif request.method == 'GET':
-        busqueda = request.GET.get("search_indicador", None)
-        print(busqueda)
-        if busqueda:
-            listaIndicador = SeCatIndicador.objects.filter(
-                #Revisión de los campos de la tabla en la BD
-                Q(descri_largo_ind__icontains = busqueda),
-                Q(estatus_ind__icontains = "A")
-            ).distinct()
-    form = FormsIndicador()
-    
-    data = {
-        'entity' : listaIndicador,
-        'paginator' : paginator,
-        'FormsIndicador' : form,
-        'contador' : contador_id,
-    }
-    return render(request, "controlEscolar/catalogos/planEstudio/Indicadores/GestionIndicadores.html",data)
-#Update de estatus de 'A' a 'B' "ELIMINACION"
-@login_required
-def eliminarIndicador(request, id_indicador):
-    try:
-        indi = SeCatIndicador.objects.get(id_indicador=id_indicador)
-        indi.estatus_ind = "B"
-    except SeCatIndicador.DoesNotExist:
-        raise Http404("El indicador no existe")
-    if request.method == 'POST': #Sobre escrive los valores
-        messages.warning(request, "¡Indicador eliminado con exito!")
-        indi.save()
-        return redirect('VistaIndicadores')
-    return render(request, "controlEscolar/catalogos/planEstudio/Indicadores/BorrarIndicadores.html", {"Indi": indi})
-###modificar
-@login_required
-def vista_indicador_detail(request, id_indicador):
-    indi = SeCatIndicador.objects.get(id_indicador=id_indicador)
-    form = FormsIndicador(instance=indi)
-    if request.method == 'POST': #Sobre escrive los valores
-        form = FormsIndicador(request.POST, instance=indi)
-        if form.is_valid():
-            indi.save() #Guarda cambios
-            messages.info(request, "¡Indicador actualizado con exito!")
-            return redirect('VistaIndicadores') #retorna despues de actualizar
-        else:
-            return render(request, "controlEscolar/catalogos/planEstudio/Indicadores/Actualizarindicadores.html", {"indi": indi, "FormsIndicador" : form})#envia al detalle de errores
-    return render(request, "controlEscolar/catalogos/planEstudio/Indicadores/Actualizarindicadores.html", {"indi": indi, "FormsIndicador" : form})#envia al detalle para actualizar
-# vista para "PRINT"
-class Export_print_ind(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        listaIndi=SeCatIndicador.objects.filter(estatus_ind="A") 
-        data = {
-            'count': listaIndi.count(),
-            'indicadores': listaIndi
-        }
-        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/Indicadores/ListarIndicadores.html', data)
-        return HttpResponse(pdf, content_type='application/pdf')
-#PDF
-class Export_pdf_indi(LoginRequiredMixin, View):
-    def get(self, request,*args, **kwargs):
-        listaIndi=SeCatIndicador.objects.filter(estatus_ind="A") 
-        data = {
-            'count': listaIndi.count(),
-            'indicadores': listaIndi
-        }
-        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/Indicadores/ListarIndicadores.html', data)
-        response = HttpResponse(pdf, content_type='application/pdf')
-        filename = 'ListaIndicadores.pdf'
-        content = "attachment; filename= %s" %(filename)
-        response['Content-Disposition'] = content
-        return response
-# Exportar paises al formato  CSV 
-@login_required
-def export_csv_indi (request):
-    response = HttpResponse(content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename=ListaIndicadores.csv;'
-    writer = csv.writer(response)
-    writer.writerow(['Id', 'Nombre', 'Abreviatura', 'Estatus', 'Clave de control'])
-    listaIndi=SeCatIndicador.objects.filter(estatus_ind="A") 
-    # listaPaises=SeCatPais.objects.filter(owner=request.user)
-    for indi in listaIndi:
-        writer.writerow([indi.id_indicador, indi.descri_largo_ind, indi.descri_corto_ind, indi.estatus_ind, indi.cve_control_ind])
-    return response
-# Exportar paises a xlwt 
-@login_required
-def export_xlwt_indicador (request):
-    response = HttpResponse(content_type="application/ms-excel")
-    response['Content-Disposition'] = 'attachment; filename=ListaIndicador.xls'
-    wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('Indicador')
-    row_num = 0
-    font_style = xlwt.XFStyle()
-    font_style.font.blod = True
-    columns = ['Id', 'Nombre', 'Abreviatura', 'Estatus', 'Clave de control']
-    for col in range(len(columns)):
-        ws.write(row_num,col,columns[col], font_style)
-    font_style = xlwt.XFStyle()
-    rows=SeCatIndicador.objects.filter(estatus_ind="A").values_list('id_indicador','descri_largo_ind', 'descri_corto_ind', 'estatus_ind', 'cve_control_ind')
-    for row in rows:
-        row_num+=1
-        for col in range(len(row)):
-            ws.write(row_num,col,str(row[col]), font_style)
-    wb.save(response)
-    return response
-##############################################   PLAN DE ESTUDIOS    ##############################################
-# #Agregar si es post y lista de todos / Aqui va la paguinacion
-@login_required
-def vistaPlanE(request):
-    #Lista de todos los planes de estudio que tengan el status = A            
-    listaPlanE=SeCatPlaEstudio.objects.filter(estatus_plan_est="A").order_by('id_plan_est') 
-    contador_id = listaPlanE.count()
-    page = request.GET.get('page', 1)
-    try:
-        paginator = Paginator(listaPlanE, 6)
-        listaPlanE = paginator.page(page)
-    except:
-        raise Http404
-    if request.method == 'POST': #Valida que sea una peticion de tipo post / Guarda datos
-        form = FormsPlaE(request.POST)
-        if form.is_valid():
-            plan = form.save(commit=False)
-            ultimo_id = SeCatPlaEstudio.objects.all().last() # hace una consulta al ultimo registro insertado para poder crear el nuevo id 
-            plan.id_plan_est = ultimo_id.id_plan_est + 1 # agrega uno al ultimo id insertado:
-            form.save()
-            messages.success(request, "¡Plan agregado con exito!") 
-            return redirect('vistaPlaneEstudios')#redirecciona a la vista
-        else:
-            messages.warning(request, "¡Alguno de los campos no es valido!")
-            return render(request, "controlEscolar/catalogos/planEstudio/planEstudios/GestionPE.html",{'entity' : listaPlanE, 'paginator' : paginator, 'FormsPlaE' : form, 'contador' : contador_id,})
-    #Busqueda del search
-    elif request.method =='GET':
-        busqueda = request.GET.get("search_planE", None)
-        print(busqueda)
-        if busqueda:
-            listaPlanE = SeCatPlaEstudio.objects.filter(
-                #Revisión de los campos de la tabla en la BD
-                Q(decri_larga_plan_est__icontains = busqueda),
-                Q(estatus_plan_est__icontains = "A")
-            ).distinct()
-    form = FormsPlaE()
-    data = {
-        'entity' : listaPlanE,
-        'paginator' : paginator,
-        'FormsPlaE' : form,
-        'contador' : contador_id,
-    }
-    return render(request, "controlEscolar/catalogos/planEstudio/planEstudios/GestionPE.html",data)
-# Update de estatus de 'A' a 'B' "ELIMINACION"
-@login_required
-def eliminarPlan(request, id_plan_est):
-    try:
-        plan = SeCatPlaEstudio.objects.get(id_plan_est=id_plan_est)
-        plan.estatus_plan_est = "B"
-    except SeCatPlaEstudio.DoesNotExist:
-        raise Http404("El plan no existe")
-    if request.method == 'POST': #Sobre escrive los valores
-        messages.warning(request, "¡Plan eliminado con exito!")
-        plan.save()
-        return redirect('vistaPlaneEstudios')
-    return render(request, "controlEscolar/catalogos/planEstudio/PlanEstudios/BorrarPE.html", {"Plan": plan})
-# Modificar 
-@login_required
-def vista_planE_detail(request, plan_est_id):
-    plan = SeCatPlaEstudio.objects.get(id_plan_est=plan_est_id)
-    form = FormsPlaE(instance=plan)
-    if request.method == 'POST': #Sobre escribe los valores
-        form= FormsPlaE(request.POST, instance=plan) 
-        plan.save() #Guarda cambios
-        if form.is_valid():
-            messages.info(request, "¡Plan actualizado con exito!")
-            form.save()
-            return redirect('vistaPlaneEstudios') #retorna despues de actualizar
-        else:
-            return render(request, "controlEscolar/catalogos/planEstudio/PlanEstudios/ActualizarPE.html", {"plan": plan, "FormsPlaE": form})#envia al detalle de errores
-    return render(request, "controlEscolar/catalogos/planEstudio/PlanEstudios/ActualizarPE.html", {"plan": plan, "FormsPlaE": form})#envia al detalle para actualizar
-# vista para imprimir pdf 
-class Export_print_planE(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        listaPlan=SeCatPlaEstudio.objects.filter(estatus_plan_est="A") 
-        data = {
-            'count': listaPlan.count(),
-            'planes': listaPlan
-        }
-        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/planEstudios/ListarPE.html', data)
-        return HttpResponse(pdf, content_type='application/pdf')
-#ESTA SI JALA COMO PDF NO LAS MAMADAS DE ARRIBA :D
-class Export_pdf_planE(LoginRequiredMixin, View):
-    def get(self, request,*args, **kwargs):
-        listaPlan=SeCatPlaEstudio.objects.filter(estatus_plan_est="A") 
-        data = {
-            'count': listaPlan.count(),
-            'planes': listaPlan
-        }
-        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/planEstudios/ListarPE.html', data)
-        response = HttpResponse(pdf, content_type='application/pdf')
-        filename = 'ListaPlanesEstudio.pdf'
-        content = "attachment; filename= %s" %(filename)
-        response['Content-Disposition'] = content
-        return response
-# Exportar paises al formato  CSV 
-@login_required
-def export_csv_planE (request):
-    response = HttpResponse(content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename=ListaPlanesEstudio.csv;'
-    writer = csv.writer(response)
-    writer.writerow(['Id', 'Nombre', 'Abreviatura', 'Estatus', 'Fecha de alta', 'Modificado por', 'Fecha de baja', 'Modificado por'])
-    listaPlanE=SeCatPlaEstudio.objects.filter(estatus_plan_est="A") 
-    # listaPaises=SeCatPais.objects.filter(owner=request.user)
-    for plan in listaPlanE:
-        writer.writerow([plan.id_plan_est, plan.decri_larga_plan_est, plan.descri_corta_plan_est, plan.estatus_plan_est,
-                            plan.fec_alta_estpla, plan.user_alta_estpla, plan.fec_baja_estpla, plan.user_baja_estpla])
-    return response
-# Exportar paises a xlwt 
-@login_required
-def export_xlwt_plan (request):
-    response = HttpResponse(content_type="application/ms-excel")
-    response['Content-Disposition'] = 'attachment; filename=ListaPlanesEstudio.xls'
-    wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('Plan')
-    row_num = 0
-    font_style = xlwt.XFStyle()
-    font_style.font.blod = True
-    columns = ['Id', 'Nombre', 'Abreviatura', 'Estatus', 'Fecha de alta', 'Modificado', 'Fecha de baja', 'Modificar']
-    for col in range(len(columns)):
-        ws.write(row_num,col,columns[col], font_style)
-    font_style = xlwt.XFStyle()
-    rows=SeCatPlaEstudio.objects.filter(estatus_plan_est="A").values_list('id_plan_est','decri_larga_plan_est', 'descri_corta_plan_est', 'estatus_plan_est',
-                                                                            'fec_alta_estpla', 'user_alta_estpla', 'fec_baja_estpla', 'user_baja_estpla')
-    for row in rows:
-        row_num+=1
-        for col in range(len(row)):
-            ws.write(row_num,col,str(row[col]), font_style)
-    wb.save(response)
-    return response
-
-
-# Prueba
-def listaEjemplo(request):
-    form = FormsAspirantes()
-    return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/capturaAspirantes.html",{'form': form})
-
-
-
-
-
-
-
 
 # -------------------------------------------- Estudiantes --------------------------------------------- #
 
@@ -3557,8 +3921,6 @@ def export_xlwt_instituciones (request):
     wb.save(response)
     return response
 
-
-
 ##############################################   EmpCar   #########################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
@@ -3681,3 +4043,10 @@ def export_xlwt_EmpCar (request):
             ws.write(row_num,col,str(row[col]), font_style)
     wb.save(response)
     return response
+
+##################################################   Operaciones ####################################################
+
+# Prueba
+def listaEjemplo(request):
+    form = FormsAspirantes()
+    return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/capturaAspirantes.html",{'form': form})

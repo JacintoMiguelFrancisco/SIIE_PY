@@ -206,21 +206,21 @@ class SeCatAreaBachillerato(models.Model):
     def __str__(self):
         texto="{0} / {1}"
         return texto.format(self.descri_larga_bac, self.descri_corta_bac)
-############################################## APARTADO indicador se ocupa##########################################################
+############################################## Tabla Indicador / Es de Plan de estudios pero se ocupa antes ############################################
 class SeCatIndicador(models.Model):
-    id_indicador = models.IntegerField(primary_key=True)
+    rowid_indicador = models.IntegerField(primary_key=True)
+    id_indicador = models.IntegerField()
     descri_largo_ind = models.CharField(max_length=50)
     descri_corto_ind = models.CharField(max_length=10)
-    estatus_ind = models.CharField(max_length=1, blank=True, null=True, default="A")
     cve_control_ind = models.CharField(max_length=1)
-
+    estatus_ind = models.CharField(max_length=1, blank=True, null=True, default="A")
     class Meta:
         managed = False
         db_table = 'se_cat_indicador'
-
+        
     def __str__(self):
-        texto="{0} / {1}"
-        return texto.format(self.descri_largo_ind, self.descri_corto_ind)
+        texto="{0}"
+        return texto.format(self.descri_largo_ind)
 ############################################## Tabla Indicadores Aspirantes ############################
 class SeProIndAsp(models.Model):
     rowid_pro_ind_asp = models.IntegerField(primary_key=True)
@@ -231,6 +231,7 @@ class SeProIndAsp(models.Model):
     class Meta:
         managed = False
         db_table = 'se_pro_ind_asp'
+
     def __str__(self):
         texto = "{0} / {1}"
         return texto.format(self.rowid_pro_ind_asp, self.valor_porcentual)
@@ -250,6 +251,7 @@ class SeCatSalones(models.Model):
     class Meta:
         managed = False
         db_table = 'se_cat_salones'
+
     def __str__(self):
         texto="{0} / {1}"
         return texto.format(self.descri_largo_salon, self.descri_corto_salon)
@@ -263,7 +265,7 @@ class SeCatGrado(models.Model):
         managed = False
         db_table = 'se_cat_grado'
     def __str__(self):
-        texto="{0} / {1}"
+        texto="{0}-{1}"
         return texto.format(self.id_grado, self.descri_corto_gra) 
 ##############################################  Tabla Becas   ##########################################
 class SeCatBecas(models.Model):
@@ -305,6 +307,77 @@ class SeCatTipoBajas(models.Model):
         texto="{0} / {1}"
         return texto.format(self.descri_largo_tipo_baj, self.descri_corto_tipo_baj)
 
+# -------------------------------------------- Plan de Estudios  --------------------------------------------- #
+
+############################################## Tabla Plan de estudios ############################################
+class SeCatPlaEstudio(models.Model):
+    rowid_plan_est = models.IntegerField(primary_key=True)
+    id_plan_est = models.IntegerField()
+    decri_larga_plan_est = models.CharField(max_length=50)
+    descri_corta_plan_est = models.CharField(max_length=10)
+    estatus_plan_est = models.CharField(max_length=1, blank=True, null=True, default="A")
+    fec_alta_estpla = models.DateField(blank=True, null=True)
+    user_alta_estpla = models.CharField(max_length=10, blank=True, null=True)
+    fec_baja_estpla = models.DateField(blank=True, null=True)
+    user_baja_estpla = models.CharField(max_length=10, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_pla_estudio'
+
+    def __str__(self):
+        texto="{0}-{1}"
+        return texto.format(self.descri_corta_plan_est, self.decri_larga_plan_est)
+############################################## Tabla Asignatura ############################################
+class SeCatAsignatura(models.Model):
+    rowid_asignatura = models.IntegerField(primary_key=True)
+    rowid_plan_est = models.ForeignKey('SeCatPlaEstudio', models.DO_NOTHING, db_column='rowid_plan_est', blank=True, null=True)
+    rowid_car = models.ForeignKey('SeCatCarrera', models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
+    id_asignatura = models.CharField(max_length=20)
+    descri_larga_asi = models.CharField(max_length=80)
+    descri_corto_asi = models.CharField(max_length=10)
+    estatus_asi = models.CharField(max_length=1, blank=True, null=True, default="A")
+    class Meta:
+        managed = False
+        db_table = 'se_cat_asignatura'
+    def __str__(self):
+        texto="{0}-{1} "
+        return texto.format(self.rowid_asignatura, self.descri_larga_asi)
+############################################## Tabla Indicador ############################################
+class SeProPlanEstudio(models.Model):
+    rowid_pro_plan_est = models.IntegerField(primary_key=True)
+    rowid_asignatura = models.ForeignKey(SeCatAsignatura, models.DO_NOTHING, db_column='rowid_asignatura', blank=True, null=True)
+    rowid_plan_est = models.ForeignKey(SeCatPlaEstudio, models.DO_NOTHING, db_column='rowid_plan_est', blank=True, null=True)
+    rowid_grado = models.ForeignKey(SeCatGrado, models.DO_NOTHING, db_column='rowid_grado', blank=True, null=True)
+    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
+    horas_plan_est = models.IntegerField()
+    creditos_plan_est = models.DecimalField(max_digits=5, decimal_places=2)
+    nota_minima_apro_est = models.DecimalField(max_digits=5, decimal_places=2)
+    valor_pon_final = models.DecimalField(max_digits=5, decimal_places=2)
+    estatus_pea = models.CharField(max_length=1, blank=True, null=True, default="A")
+
+    class Meta:
+        managed = False
+        db_table = 'se_pro_plan_estudio'
+
+    def __str__(self):
+        texto="ID Plan: {0} / Horas: {1}"
+        return texto.format(self.rowid_pro_plan_est,self.horas_plan_est)
+############################################## Tabla Asi Indicadior ############################################
+class SeProAsiIndicador(models.Model):
+    rowid_pro_asi_ind = models.IntegerField(primary_key=True)
+    rowid_pro_plan_est = models.ForeignKey('SeProPlanEstudio', models.DO_NOTHING, db_column='rowid_pro_plan_est', blank=True, null=True)
+    rowid_indicador = models.ForeignKey(SeCatIndicador, models.DO_NOTHING, db_column='rowid_indicador', blank=True, null=True)
+    porcentaje_pro_asi_idi = models.DecimalField(max_digits=5, decimal_places=2)
+    comen_pro_asi_ind = models.CharField(max_length=30, blank=True, null=True)
+    estatus_peai = models.CharField(max_length=1, blank=True, null=True, default="A")
+    class Meta:
+        managed = False
+        db_table = 'se_pro_asi_indicador'
+
+    def __str__(self):
+        texto="{0}-{1} "
+        return texto.format(self.rowid_pro_asi_ind, self.porcentaje_pro_asi_idi)
 
 # -------------------------------------------- Empleados --------------------------------------------- #
 
@@ -479,30 +552,7 @@ class SeTabEmpCar(models.Model):
         return texto.format(self.rowid_empleado, self.descri_largo_car_emp)
 
 
-
-
-
-############################################## APARTADO PLANES DE ESTUDIO ###############################################
-class SeCatPlaEstudio(models.Model):
-    id_plan_est = models.IntegerField(primary_key=True)
-    decri_larga_plan_est = models.CharField(max_length=50)
-    descri_corta_plan_est = models.CharField(max_length=10)
-    estatus_plan_est = models.CharField(max_length=1, blank=True, null=True, default="A")
-    fec_alta_estpla = models.DateField(blank=True, null=True)
-    user_alta_estpla = models.CharField(max_length=10, blank=True, null=True)
-    fec_baja_estpla = models.DateField(blank=True, null=True)
-    user_baja_estpla = models.CharField(max_length=10, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_pla_estudio'
-
-    def __str__(self):
-        texto="{0} / {1}"
-        return texto.format(self.decri_larga_plan_est, self.descri_corta_plan_est)
-
-
-##############   Operaciones #################
+# -------------------------------------------- Operaciones --------------------------------------------- #
 
 ############################################## TABLA ASPIRANTES ##########################################################
 class SeTabAspirante(models.Model):

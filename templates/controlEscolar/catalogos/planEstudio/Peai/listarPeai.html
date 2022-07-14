@@ -1,32 +1,29 @@
 {% extends '../../../../base.html' %}
-{% block title %}Lista Planes de Estudio{% endblock title %}
+
+{% block title %}Plan de estudios{% endblock title %}
+
 {% block body %}
 <meta charset="UTF-8"/>
-    <h2>Lista Planes de Estudio</h2>
+    <h2>Lista plan de estudios</h2>
     <h3>Cantidad de Planes: {{ count }}</h3>
     <table>
         <thead>
             <tr>
-                <th class="cabecera">Id</th>
-                <th class="cabecera">Plan</th>
-                <th class="cabecera">Abreviación</th>
-                <th class="cabecera">Fecha de alta</th>
-                <th class="cabecera">Modificado por:</th>
-                <th class="cabecera">Fecha de baja</th>
-                <th class="cabecera">Modificado por:</th>
+                <th class="cabecera">Plan de estudio</th>
+                <th class="cabecera">Indicador</th>
+                <th class="cabecera">Porcentaje</th>
+                <th class="cabecera">Comentario</th>
                 <th class="cabecera">Estatus</th>
         </thead>
         <tbody>
             {% for p in planes %}
             <tr >
-                <td>{{ p.id_plan_est }}</td>
-                <td>{{ p.decri_larga_plan_est }}</td>
-                <td>{{ p.descri_corta_plan_est }}</td>
-                <td>{{ p.fec_alta_estpla }}</td>
-                <td>{{ p.user_alta_estpla }}</td>
-                <td>{{ p.fec_baja_estpla }}</td>
-                <td>{{ p.user_baja_estpla }}</td>
-                <td>{{ p.estatus_plan_est }}</td>
+                <td>{{ p.rowid_pro_plan_est}}</td>
+                <td>{{ p.rowid_indicador }}</td>
+                <td>{{ p.porcentaje_pro_asi_idi }}</td>
+                <td>{{ p.comen_pro_asi_ind }}</td>
+                <td>{{ p.estatus_peai }}</td>
+                
             </tr>
             {% endfor %}
         </tbody>

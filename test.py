@@ -1425,7 +1425,7 @@ class SeProAsisTotal(models.Model):
 
 class SeProAspDocu(models.Model):
     rowid_asp_docu = models.IntegerField(primary_key=True)
-    folio_utn_asp = models.ForeignKey('SeTabAspirante', models.DO_NOTHING, db_column='folio_utn_asp', blank=True, null=True)
+    rowid_asp = models.ForeignKey('SeTabAspirante', models.DO_NOTHING, db_column='rowid_asp', blank=True, null=True)
     rowid_doc = models.ForeignKey(SeCatDocumentacion, models.DO_NOTHING, db_column='rowid_doc', blank=True, null=True)
     import_doc = models.CharField(max_length=1, blank=True, null=True)
     entrego_doc = models.CharField(max_length=1, blank=True, null=True)
@@ -1445,10 +1445,7 @@ class SeProAspDocu(models.Model):
 
 class SeProAspDocuHis(models.Model):
     id_doc_his = models.IntegerField(primary_key=True)
-    id_uni_asp_his = models.ForeignKey('SeTabAspiranteHis', models.DO_NOTHING, db_column='id_uni_asp_his', blank=True, null=True)
-    id_div_asp_his = models.IntegerField(blank=True, null=True)
-    id_car_asp_his = models.IntegerField(blank=True, null=True)
-    folio_utn_asp_his = models.CharField(max_length=20, blank=True, null=True)
+    rowid_asp_his = models.ForeignKey('SeTabAspiranteHis', models.DO_NOTHING, db_column='rowid_asp_his', blank=True, null=True)
     import_doc_his = models.CharField(max_length=1, blank=True, null=True)
     entrego_doc_his = models.CharField(max_length=1, blank=True, null=True)
     comentario_doc_his = models.CharField(max_length=100, blank=True, null=True)
@@ -1652,10 +1649,7 @@ class SeProRegistroGlobal(models.Model):
 
 class SeTabAceptadoHis(models.Model):
     id_indicador_ace_his = models.IntegerField(primary_key=True)
-    id_uni_asp_his = models.ForeignKey('SeTabAspiranteHis', models.DO_NOTHING, db_column='id_uni_asp_his', blank=True, null=True)
-    id_div_asp_his = models.IntegerField(blank=True, null=True)
-    id_car_asp_his = models.IntegerField(blank=True, null=True)
-    folio_utn_asp_his = models.CharField(max_length=20, blank=True, null=True)
+    rowid_asp_his = models.ForeignKey('SeTabAspiranteHis', models.DO_NOTHING, db_column='rowid_asp_his', blank=True, null=True)
     calificacion_ace_his = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     folio_cen_ace_his = models.FloatField(blank=True, null=True)
     periodo_ace_his = models.IntegerField(blank=True, null=True)
@@ -1668,7 +1662,7 @@ class SeTabAceptadoHis(models.Model):
 
 class SeTabAceptados(models.Model):
     rowid_ace = models.IntegerField(primary_key=True)
-    folio_utn_asp = models.ForeignKey('SeTabAspirante', models.DO_NOTHING, db_column='folio_utn_asp', blank=True, null=True)
+    rowid_asp = models.ForeignKey('SeTabAspirante', models.DO_NOTHING, db_column='rowid_asp', blank=True, null=True)
     rowid_indicador = models.ForeignKey(SeCatIndicador, models.DO_NOTHING, db_column='rowid_indicador', blank=True, null=True)
     calificacion_ace = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     folio_cen_ace = models.CharField(max_length=15, blank=True, null=True)
@@ -1691,12 +1685,13 @@ class SeTabAsesoresEquipo(models.Model):
 
 
 class SeTabAspirante(models.Model):
-    folio_utn_asp = models.CharField(primary_key=True, max_length=20)
+    rowid_asp = models.IntegerField(primary_key=True)
     rowid_area_bac = models.ForeignKey(SeCatAreaBachillerato, models.DO_NOTHING, db_column='rowid_area_bac', blank=True, null=True)
     rowid_medio_dif = models.ForeignKey(SeCatMedioDifusion, models.DO_NOTHING, db_column='rowid_medio_dif', blank=True, null=True)
     rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
     rowid_tipo_esc = models.ForeignKey(SeCatTipoEscuela, models.DO_NOTHING, db_column='rowid_tipo_esc', blank=True, null=True)
     rowid_col = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='rowid_col', blank=True, null=True)
+    folio_utn_asp = models.CharField(max_length=20)
     fecha_alt_asp = models.DateField()
     mpo_o_alcaldia_nac_asp = models.IntegerField()
     ent_fed_nac_asp = models.IntegerField()
@@ -1763,7 +1758,8 @@ class SeTabAspirante(models.Model):
 
 
 class SeTabAspiranteHis(models.Model):
-    id_uni_asp_his = models.IntegerField(primary_key=True)
+    rowid_asp_his = models.IntegerField(primary_key=True)
+    id_uni_asp_his = models.IntegerField()
     id_div_asp_his = models.IntegerField()
     id_car_asp_his = models.IntegerField()
     folio_utn_asp_his = models.CharField(max_length=20)
@@ -1813,7 +1809,6 @@ class SeTabAspiranteHis(models.Model):
     class Meta:
         managed = False
         db_table = 'se_tab_aspirante_his'
-        unique_together = (('id_uni_asp_his', 'id_div_asp_his', 'id_car_asp_his', 'folio_utn_asp_his'), ('id_uni_asp_his', 'id_div_asp_his', 'id_car_asp_his', 'folio_utn_asp_his'),)
 
 
 class SeTabBitacora(models.Model):
@@ -2109,7 +2104,7 @@ class SeTabConsMto(models.Model):
 
 
 class SeTabConstanciasEgresados(models.Model):
-    id_matricula_egre = models.OneToOneField('SeTabEgresado', models.DO_NOTHING, db_column='id_matricula_egre', primary_key=True)
+    id_matricula_egre = models.ForeignKey('SeTabEgresado', models.DO_NOTHING, db_column='id_matricula_egre', blank=True, null=True)
     fechasolicitud = models.DateField(blank=True, null=True)
     estatussolicitud = models.IntegerField(blank=True, null=True)
     folio = models.IntegerField(blank=True, null=True)

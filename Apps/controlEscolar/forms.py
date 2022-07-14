@@ -1,13 +1,16 @@
 import string
 from django import forms
 
-from .models import (SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia,  # Direcciones
-                    SeCatUniversidad, SeCatDivision, SeCatCarrera, SeCatPeriodos, # Universidades
-                    SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
-                    SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
-                    SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
-                    SeCatIndicador, SeCatPlaEstudio, SeTabAspirante
-                    )
+#Models
+from .models import (
+    SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia,  # Direcciones
+    SeCatUniversidad, SeCatDivision, SeCatCarrera, SeCatPeriodos, # Universidades
+    SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
+    SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
+    SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
+    SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
+    SeTabAspirante # Operaciones / Aspirante
+)
 
 ##########################  Catalogo #################################
 # -------------------------------------------- Direcciones --------------------------------------------- #
@@ -372,6 +375,154 @@ class FormPeriodos(forms.ModelForm):
                 'descripcion_per': 'Descripcion del Periodo',
             }
 
+# -------------------------------------------- Plan de Estudios  --------------------------------------------- #
+
+# Form PLAN DE ESTUDIO 
+class FormsPlaE(forms.ModelForm):
+    class Meta:
+        model= SeCatPlaEstudio
+        fields = '__all__'
+        exclude = ('rowid_plan_est', 'estatus_plan_est')
+        widgets = {
+    'id_plan_est' : forms.TextInput(attrs={'class': 'form-control',
+                                                            'required' : 'True',
+                                                            'placeholder': 'Ingrese el nombre del plan',
+                                                            'style' : 'border-color:#21B64A;'
+                                                            }),
+    'decri_larga_plan_est' : forms.TextInput(attrs={'class': 'form-control',
+                                                            'required' : 'True',
+                                                            'placeholder': 'Ingrese el nombre del plan',
+                                                            'style' : 'border-color:#21B64A;'
+                                                            }),
+    'descri_corta_plan_est' : forms.TextInput(attrs={'class': 'form-control',
+                                                            'required' : 'True',
+                                                            'placeholder': 'Ingrese el nombre del plan',
+                                                            'style' : 'border-color:#21B64A;'
+                                                            }),
+    'fec_alta_estpla'  : forms.DateInput(attrs={'class': 'form-control',
+                                                        'placeholder': 'DD/MM/AAAA',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+    'user_alta_estpla': forms.TextInput(attrs={'class': 'form-control',
+                                                            'required' : 'True',
+                                                            'placeholder': 'Ingrese el nombre del plan',
+                                                            'style' : 'border-color:#21B64A;'
+                                                            }),
+    'fec_baja_estpla' : forms.DateInput(attrs={'class': 'form-control',
+                                                        'placeholder': 'DD/MM/AAAA',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+    'user_baja_estpla' : forms.TextInput(attrs={'class': 'form-control',
+                                                            'required' : 'True',
+                                                            'placeholder': 'Ingrese el nombre del plan',
+                                                            'style' : 'border-color:#21B64A;'
+                                                            }),
+        }
+        ###cambiar data tiem por la otra madre
+        labels ={
+                'id_plan_est' : 'Id plan de estudio *',
+                'decri_larga_plan_est' : 'Nombre del Plan *',
+                'descri_corta_plan_est' : 'Abreviatura *',
+                'fec_alta_estpla' : 'Fecha de alta',
+                'user_alta_estpla' : 'Usuario Alta',
+                'fec_baja_estpla' : 'Fecha de baja',
+                'user_baja_estpla' :'Usuario Baja',
+        }
+# Form ASIGNATURA
+class FormsAsignatura(forms.ModelForm):
+    class Meta:
+        model = SeCatAsignatura
+        fields = '__all__'
+        exclude = ('rowid_asignatura','estatus_asi',)
+        widgets = {
+            'rowid_plan_est': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
+            'rowid_car': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
+            'id_asignatura': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el nombre de la Asignatura', 'style' : 'border-color:#21B64A;'}),
+            'descri_larga_asi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el nombre de la Asignatura', 'style' : 'border-color:#21B64A;'}),
+            'descri_corto_asi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese la abreviatura del Asignatura', 'style' : 'border-color:#21B64A;'}),
+        }
+        labels = {
+                'rowid_plan_est': 'Plan de estudio',
+                'rowid_car': 'Carrera',
+                'id_asignatura': 'Id asignatura',
+                'descri_larga_asi': 'Nombre Asignatura',
+                'descri_corto_asi': 'Abreviatura',
+            }
+#Form INDICADORES 
+class FormsIndicador(forms.ModelForm):
+    CONTROL = ( ('E', 'Estudiante '), ('A','Aspirante') )
+    cve_control_ind = forms.ChoiceField(label='Control *', choices=CONTROL, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    class Meta:
+        model= SeCatIndicador
+        fields= '__all__'
+        exclude = ('rowid_indicador', 'estatus_ind')
+        widgets = {
+            'id_indicador' : forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese el Id del indicador.',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'descri_largo_ind' : forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese el nombre del indicador.',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'descri_corto_ind' : forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Ingrese el nombre del indicador.',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+        }
+        labels ={
+                'id_indicador' : 'Id Indicador',
+                'descri_largo_ind' : 'Nombre Indicador*',
+                'descri_corto_ind' : 'Abreviatura *',
+        }
+#Form Plan de estudio asignatura 
+class FormsPeA(forms.ModelForm):
+    class Meta:
+        model = SeProPlanEstudio
+        fields = '__all__'
+        exclude = ('rowid_pro_plan_est','estatus_pea',)
+        widgets = {
+            'rowid_asignatura' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
+            'rowid_plan_est' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
+            'rowid_grado' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
+            'rowid_car' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
+            'horas_plan_est' :  forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese las horas', 'style' : 'border-color:#21B64A;'}),
+            'creditos_plan_est' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese los creditos', 'style' : 'border-color:#21B64A;'}), 
+            'nota_minima_apro_est' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese la nota minima', 'style' : 'border-color:#21B64A;'}),
+            'valor_pon_final' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el valor final', 'style' : 'border-color:#21B64A;'}),
+        }
+        labels = {
+            'rowid_asignatura' : 'Asignatura',
+            'rowid_plan_est' : 'Plan de estudio',
+            'rowid_grado' : 'Grado',
+            'rowid_car' : 'Carrera',
+            'horas_plan_est' : 'Numero de horas',
+            'creditos_plan_est' : 'Creditos ',
+            'nota_minima_apro_est' : 'Nota minima aprobatoria',
+            'valor_pon_final' : 'Valor final',
+        }
+#Plan de estudio asignatura indicador
+class FormsPeaI(forms.ModelForm):
+    class Meta:
+        model = SeProAsiIndicador
+        fields = '__all__'
+        exclude = ('rowid_pro_asi_ind', 'estatus_peai',)
+        widgets = {
+            'rowid_pro_plan_est' : forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}),
+            'rowid_indicador' : forms.Select(attrs={'class': 'form-control','style' : 'border-color:#21B64A;'}),
+            'porcentaje_pro_asi_idi' :  forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el porcentaje', 'style' : 'border-color:#21B64A;'}),
+            'comen_pro_asi_ind'  :  forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el comentario', 'style' : 'border-color:#21B64A;'}),    
+        }
+        labels = {
+            'rowid_pro_plan_est' : 'Plan de estudio',
+            'rowid_indicador' : 'Indicador',
+            'porcentaje_pro_asi_idi' : 'Porcentaje',
+            'comen_pro_asi_ind' : 'Comentario',
+        }
+
 # -------------------------------------------- Aspirantes --------------------------------------------- #
 
 # FORMS MEDIOS DE DIFUSION 
@@ -653,12 +804,8 @@ class FormTipoBajas(forms.ModelForm):
                 'descri_corto_tipo_baj': 'Abreviatura Tipo de bajas *',
             }
 
-
-
-
-
-
 # -------------------------------------------- Empleado --------------------------------------------- #
+
 ######################## EMPLEADOS ############################
 #forms empleados
 class FormEmpleado(forms.ModelForm):
@@ -1117,97 +1264,6 @@ class FormEmpCar(forms.ModelForm):
             'descri_corto_car_emp': 'Abreviatura *',
         }
 
-
-
-
-
-
-
-
-
-
-
-#Form INDICADORES 
-class FormsIndicador(forms.ModelForm):
-    class Meta:
-        model= SeCatIndicador
-        fields= '__all__'
-        exclude = ('id_indicador', 'estatus_ind')
-        widgets = {
-            'descri_largo_ind' : forms.TextInput(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'placeholder': 'Ingrese el nombre del indicador.',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-
-            'descri_corto_ind' : forms.TextInput(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'placeholder': 'Ingrese la abreviatura',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-
-            'cve_control_ind' : forms.TextInput(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'placeholder': 'Ingrese la clave de control',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-        }
-        labels ={
-                'descri_largo_ind' : 'Nombre *',
-                'descri_corto_ind' : 'Abreviatura *',
-                'cve_control_ind' : 'Clave *',
-        }
-# Form PLAN DE ESTUDIO 
-class FormsPlaE(forms.ModelForm):
-    class Meta:
-        model= SeCatPlaEstudio
-        fields = '__all__'
-        exclude = ('id_plan_est', 'estatus_plan_est')
-        widgets = {
-            'decri_larga_plan_est' : forms.TextInput(attrs={'class': 'form-control',
-                                                            'required' : 'True',
-                                                            'placeholder': 'Ingrese el nombre del plan',
-                                                            'style' : 'border-color:#21B64A;'
-                                                            }),
-
-            'descri_corta_plan_est' : forms.TextInput(attrs={'class': 'form-control',
-                                                                'required' : 'True',
-                                                                'placeholder': 'Ingrese la abreviatura',
-                                                                'style' : 'border-color:#21B64A;'
-                                                                }),
-
-            'fec_alta_estpla' : forms.DateInput(attrs={'class': 'form-control',
-                                                        'placeholder': 'DD/MM/AAAA',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-
-            'user_alta_estpla' : forms.TextInput(attrs={'class': 'form-control',
-                                                        'placeholder': 'Ingrese el usuario que modificó:',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-
-            'fec_baja_estpla' :  forms.DateInput(attrs={'class': 'form-control',
-                                                        'placeholder': 'DD/MM/AAAA',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-
-            'user_baja_estpla' : forms.TextInput(attrs={'class': 'form-control',
-                                                        'placeholder': 'Ingrese el usuario que modificó:', 
-                                                        'style' : 'border-color:#21B64A;'
-                                                        })
-        }
-        ###cambiar data tiem por la otra madre
-        labels ={
-                'decri_larga_plan_est' : 'Nombre *',
-                'descri_corta_plan_est' : 'Abreviatura *',
-                'fec_alta_estpla' : 'Fecha de alta',
-                'user_alta_estpla' : 'Usuario',
-                'fec_baja_estpla' : 'Fecha de baja',
-                'user_baja_estpla' :'Usuario',
-        }
-
-
-
 # -------------------------------------------- Operaciones --------------------------------------------- #
 
 ##########################  Operaciones #################################
@@ -1229,5 +1285,3 @@ class FormsAspirantes(forms.ModelForm):
 
                 # 'descri_corto_gra' : 'Grado *',
         }
-
-    # id_uni / id_div / id_car /  descri_largo_car / descri_corto_car   /  estatus_car / ceneval_car / descri_largo_tit
