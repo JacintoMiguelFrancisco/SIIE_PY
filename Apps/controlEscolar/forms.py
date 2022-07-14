@@ -662,8 +662,18 @@ class FormTipoBajas(forms.ModelForm):
 ######################## EMPLEADOS ############################
 #forms empleados
 class FormEmpleado(forms.ModelForm):
-    # SEXO =( ('M', 'Masculino'), ('F', 'Femenino') )
-    # sexo_emp = forms.ChoiceField(label='Sexo', choices=SEXO, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    VAL = ( ('A', 'Alta'), ('B','Baja') )
+    EDOCIVIL = ( ('S', 'Soltero'), ('C','Casado'), ('V','Viudo'), ('D','Divorciado') )
+    BIBLIO = ( ('A', 'Alta'), ('B','Baja') )
+    SEXO = ( ('M', 'Masculino'), ('F', 'Femenino') )
+    TCON = ( (1, 'Temporal'), (2,'Permanente') )
+    ESCOMP = (('A', 'Alta'), ('B','Baja'))
+    sexo_emp = forms.ChoiceField(label='Sexo', choices=SEXO, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    estatus_val = forms.ChoiceField(label='Estatus Val', choices=VAL, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    estado_civil_emp = forms.ChoiceField(label='Estado Civil', choices=EDOCIVIL, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    estatus_biblio = forms.ChoiceField(label='Estatus Biblioteca', choices=BIBLIO, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    tipo_contrato_com = forms.ChoiceField(label='Tipo de Contrato', choices=TCON, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    estatus_comp = forms.ChoiceField(label='Estatus Comp', choices=ESCOMP, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     class Meta:
         model = SeCatEmpleado
         fields = '__all__'
@@ -738,11 +748,6 @@ class FormEmpleado(forms.ModelForm):
                                                         'style' : 'border-color:#21B64A;', 
                                                         'required' : 'True'
                                                       }), 
-            'sexo_emp': forms.TextInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Por favor, Ingrese el sexo del empleado', 
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }),
             'fecha_alta_emp': forms.DateInput(attrs={'class': 'form-control', 
                                                         'placeholder':'DD/MM/AAAA', 
                                                         'style' : 'border-color:#21B64A;', 
@@ -762,12 +767,7 @@ class FormEmpleado(forms.ModelForm):
                                                         'placeholder':'DD/MM/AAAA', 
                                                         'style' : 'border-color:#21B64A;', 
                                                         'required' : 'True'
-                                                      }), 
-            'estatus_emp': forms.TextInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Por favor, Ingrese el estatus del empleado', 
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }), 
+                                                      }),  
             'codpos_emp': forms.NumberInput(attrs={'class': 'form-control', 
                                                         'placeholder': 'Por favor, Ingrese codigo postal del empleado', 
                                                         'style' : 'border-color:#21B64A;', 
@@ -783,23 +783,8 @@ class FormEmpleado(forms.ModelForm):
                                                         'style' : 'border-color:#21B64A;', 
                                                         'required' : 'True'
                                                       }), 
-            'estatus_val': forms.TextInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Por favor, Ingrese el estatus', 
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }), 
-            'estatus_comp': forms.TextInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Por favor, Ingrese el estatus', 
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }), 
             'edad_emp': forms.NumberInput(attrs={'class': 'form-control', 
                                                         'placeholder': 'Por favor, Ingrese la edad del empleado', 
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }), 
-            'estado_civil_emp': forms.TextInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Por favor, Ingrese el estado civil del empleado', 
                                                         'style' : 'border-color:#21B64A;', 
                                                         'required' : 'True'
                                                       }), 
@@ -813,11 +798,6 @@ class FormEmpleado(forms.ModelForm):
                                                         'style' : 'border-color:#21B64A;', 
                                                         'required' : 'True'
                                                       }), 
-            'tipo_contrato_com': forms.NumberInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Por favor, Ingrese el tipo de contrato del empleado', 
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }),
             'cedula_emp_com': forms.TextInput(attrs={'class': 'form-control', 
                                                         'placeholder': 'Por favor, Ingrese la cedula del empleado', 
                                                         'style' : 'border-color:#21B64A;', 
@@ -837,12 +817,7 @@ class FormEmpleado(forms.ModelForm):
                                                         'placeholder': 'Por favor, Ingrese un comentario', 
                                                         'style' : 'border-color:#21B64A;', 
                                                         'required' : 'True'
-                                                      }),  
-            'estatus_biblio': forms.TextInput(attrs={'class': 'form-control', 
-                                                        'placeholder': 'Por favor, Ingrese el estatus', 
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }),
+                                                      }), 
         }
         labels = {
                 'rowid_academico':'Nivel Academico *',
@@ -860,7 +835,6 @@ class FormEmpleado(forms.ModelForm):
                 'direccion_emp':'Direccion *', 
                 'telefono_emp':'Telefono *', 
                 'email_emp':'Email', 
-                'sexo_emp':'Sexo',
                 'fecha_alta_emp':'Fecha de ALta',
                 'user_alta_emp':'Usuario de Alta',
                 'user_cambio_emp':'Usuario que modifico',
@@ -873,15 +847,12 @@ class FormEmpleado(forms.ModelForm):
                 'horas_contra_emp':'Horas de Contrato', 
         #         'horas_contra_emp':'horas contratadas (lo asigna la division)',
                 'fec_nac_emp':'Fecha de Nacimiento', 
-                'estatus_val':'Estatus Val',
                 'estatus_comp':'Estatus Comp',
         #         'estatus_val':'estos estatus son dependiendo los roles',(Rh y division) 
         #         'estatus_comp':'S', 
                 'edad_emp':'Edad', 
-                'estado_civil_emp':'Estado Civil',
                 'num_vac_max':'Numero Maximo de Vacaciones',
                 'num_vac_act':'Numero de Vacaciones Actuales',
-                'tipo_contrato_com' : 'Tipo de Contrato',
         #         'num_vac_max':'numero de vacaciones', 
         #         'num_vac_act':'actuales', 
         #         'tipo_contrato_com':'1, permante, 2 temporal',
@@ -891,7 +862,6 @@ class FormEmpleado(forms.ModelForm):
         #         'fecicon':'inicio', 
         #         'fecfcon':'fin contrato', 
                 'comentario_emp':'Comentario',
-                'estatus_biblio':'Estatus Biblioteca', 
         #         'estatus_biblio':'estatus val, ',
             }
 # Form Nivel Academico
