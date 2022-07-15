@@ -2,28 +2,542 @@
 {% block title %}Captura Aspirante{% endblock title %}
 
 {% block navbar %}
-  {% include 'NavBar.html' %}
+{% include 'NavBar.html' %}
 {% endblock navbar %}
 
 {% block body %}
 <div class="row">
-    <div class="col-md-4 offset-md-4">
-        <h2 class="fs-1" style="text-align: center;">Aspiranre: </h2>
-        <div class="card">
-            <div class="card-body">
-                <form action="" method="POST">{% csrf_token %}
 
-					<table class="table">
-						{{ form.as_table }}
-					</table>
+  <h2 class="fs-1" style="text-align: center;">Registro aspirante: </h2>
+  <h6 class="text-center mb-5">Un nuevo aspirante, un nuevo futuro.</h6>
+  <div class="card shadow-lg  bg-body rounded">
 
-                    <div class="form-group d-flex justify-content-evenly">  
-                        <button type="submit" class="btn btn-success btn-block text-white">Registrar</button>  
-                        <a class="btn btn-danger btn-block" href="{% url 'vista_AreaBachi' %}">Cancelar</a>   
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    <form action="" method="POST">{% csrf_token %}
+
+      <div class="table-responsive-sm">
+        <table class="table">
+
+          <tr>
+            <th class="text-center">
+              {{ form.folio_utn_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.rowid_area_bac.label}}
+            </th>
+            <th class="text-center">
+              {{form.rowid_medio_dif.label}}
+            </th>
+            <th class="text-center">
+              {{ form.rowid_car.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.folio_utn_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.rowid_area_bac}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.rowid_medio_dif}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.rowid_car}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.rowid_tipo_esc.label}}
+            </th>
+            <th class="text-center">
+              {{ form.rowid_col.label}}
+            </th>
+            <th class="text-center">
+              {{ form.fecha_alt_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.mpo_o_alcaldia_nac_asp.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.rowid_tipo_esc}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.rowid_col}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.fecha_alt_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.mpo_o_alcaldia_nac_asp}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.ent_fed_nac_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.calle_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.num_int_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.num_ext_asp.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.ent_fed_nac_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.calle_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.num_int_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.num_ext_asp}}
+            </th>
+          </tr>
+
+
+          <tr>
+            <th class="text-center">
+              {{ form.codigo_postal_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.tel_cas_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.telefono_oficina_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.sexo_asp.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.codigo_postal_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.tel_cas_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.telefono_oficina_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.sexo_asp}}
+            </th>
+          </tr>
+
+
+          <tr>
+            <th class="text-center">
+              {{ form.edad_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.estado_civil_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.trabaja_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.tipo_de_sangre_asp.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.edad_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.estado_civil_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.trabaja_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.tipo_de_sangre_asp}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.promedio_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.fecini_bach_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.fecfin_bach_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.rfc_asp.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.promedio_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.fecini_bach_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.fecfin_bach_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.rfc_asp}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.curp_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.nom_esc_pro_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.estatus_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.fecha_nac_asp.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.curp_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.nom_esc_pro_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.estatus_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.fecha_nac_asp}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.materno_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.paterno_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.folio_cen_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.nombre_asp.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.materno_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.paterno_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.folio_cen_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.nombre_asp}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.tipo_publica_privada.label}}
+            </th>
+            <th class="text-center">
+              {{ form.periodo_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.anio_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.mat_tutor_asp.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.tipo_publica_privada}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.periodo_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.anio_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.mat_tutor_asp}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.pat_tutor_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.nombre_tutor_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.generacion_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.entidad_estudio.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.pat_tutor_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.nombre_tutor_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.generacion_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.entidad_estudio}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.municipio_estudio.label}}
+            </th>
+            <th class="text-center">
+              {{ form.ronda_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.turno_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.user_alta.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.municipio_estudio}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.ronda_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.turno_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.user_alta}}
+            </th>
+          </tr>
+
+
+          <tr>
+            <th class="text-center">
+              {{ form.user_cambio.label}}
+            </th>
+            <th class="text-center">
+              {{ form.email_asp.label}}
+            </th>
+            <th class="text-center">
+              {{ form.opcioneducativa.label}}
+            </th>
+            <th class="text-center">
+              {{ form.continuidadestudio.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.user_cambio}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.email_asp}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.opcioneducativa}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.continuidadestudio}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.otromediodif.label}}
+            </th>
+            <th class="text-center">
+              {{ form.otromedioinf.label}}
+            </th>
+            <th class="text-center">
+              {{ form.otroopcioneduca.label}}
+            </th>
+            <th class="text-center">
+              {{ form.facebook.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.otromediodif}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.otromedioinf}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.otroopcioneduca}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.facebook}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.twitter.label}}
+            </th>
+            <th class="text-center">
+              {{ form.discapacidad.label}}
+            </th>
+            <th class="text-center">
+              {{ form.tipodiscapacidad.label}}
+            </th>
+            <th class="text-center">
+              {{ form.serviciomedico.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.twitter}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.discapacidad}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.tipodiscapacidad}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.serviciomedico}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.institucionseguro.label}}
+            </th>
+            <th class="text-center">
+              {{ form.otrainstitucionseguro.label}}
+            </th>
+            <th class="text-center">
+              {{ form.numafiliacion.label}}
+            </th>
+            <th class="text-center">
+              {{ form.fechaexpedicioncer.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.institucionseguro}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.otrainstitucionseguro}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.numafiliacion}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.fechaexpedicioncer}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.folio.label}}
+            </th>
+            <th class="text-center">
+              {{ form.fechacompromisocerti.label}}
+            </th>
+            <th class="text-center">
+              {{ form.indigena.label}}
+            </th>
+            <th class="text-center">
+              {{ form.poblacionindigena.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.folio}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.fechacompromisocerti}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.indigena}}
+            </th>
+            <th scope="col" class="text-center">
+              {{ form.poblacionindigena}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.lenguaindigena.label}}
+            </th>
+            <th class="text-center">
+              <label class="mx-2"> </label>
+            </th>
+            <th class="text-center">
+              <label class="mx-2"> </label>
+            </th>
+            <th class="text-center">
+              <label class="mx-2"> </label>
+            </th>
+          </tr>
+
+          <tr>
+            <th scope="col" class="text-center">
+              {{ form.lenguaindigena}}
+            </th>
+            <th scope="col" class="text-center">
+            </th>
+            <th scope="col" class="text-center">
+            </th>
+            <th scope="col" class="text-center">
+            </th>
+          </tr>
+
+        </table>
+      </div>
+
+
+      <div class="form-group d-flex justify-content-evenly">
+        <button type="submit" class="btn btn-success btn-block text-white mb-3 w-25">Registrar</button>
+        <a class="btn btn-danger btn-block mb-3 w-25" href="{% url 'index' %}">Cancelar</a>
+      </div>
+    </form>
+
+
+  </div>
 </div>
 {% endblock %}

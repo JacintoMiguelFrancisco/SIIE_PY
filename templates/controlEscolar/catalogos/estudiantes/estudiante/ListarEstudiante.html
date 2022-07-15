@@ -1,0 +1,360 @@
+{% extends '../../../../base.html' %}
+
+{% block title %}Registro de estudiante{% endblock title %}
+
+{% block body %}
+<meta charset="UTF-8"/>
+{% for p in est %}
+    <h2>Lista de estudiantes</h2>
+    <h3>Cantidad de registros: {{ count }}</h3>
+
+    <table>
+        <thead>
+
+            <tr> 
+                <th class="cabecera">Id</th>
+                <th class="cabecera">Carrera</th>
+                <th class="cabecera">Colonia</th>
+                <th class="cabecera">Grupo</th>
+                <th class="cabecera">Matricula</th>
+                
+            </tr>
+        </thead>
+       
+        <tbody>
+            
+            <tr>
+                <td>{{ p.rowid_matricula }}</td>
+                <td>{{ p.rowid_car }}</td>
+                <td>{{ p.rowid_col }}</td>
+                <td>{{ p.rowid_grupo }}</td>
+                <td>{{ p.id_matricula }}</td>
+                
+            </tr>
+            
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr> 
+                <thead>
+                    <tr> 
+                        <th class="cabecera">Grupo</th>
+                        <th class="cabecera">Periodo</th>
+                        <th class="cabecera">Turno</th>
+                        <th class="cabecera">Generacion</th>
+                        
+                    </tr>
+                </thead>
+                
+            </tr>
+        </thead>
+       
+        <tbody>
+            
+            <tr>
+                <td>{{ p.rowid_grupo }}</td>
+                <td>{{ p.periodo_est }}</td>
+                <td>{{ p.turno_est }}</td>
+                <td>{{ p.generacion_est }}</td>
+                
+            </tr>
+            
+        </tbody>
+    </table>
+<h6>Datos generales:</h6>
+    <!-- parte 3 -->
+    <table>
+        <thead>
+            <tr> 
+                <thead>
+                    <tr> 
+                        <th class="cabecera">Apellido paterno</th>
+                        <th class="cabecera">Apellido materno</th>
+                        <th class="cabecera">Nombre(s)</th>
+                    </tr>
+                </thead>
+                
+            </tr>
+        </thead>
+       
+        <tbody>
+            
+            <tr>
+                <td>{{ p.materno_est }}</td>
+                <td>{{ p.paterno_est }}</td>
+                <td>{{ p.nombre_estu }}</td>
+            </tr>
+            
+        </tbody>
+    </table>
+       <!-- parte 4 -->
+       <table>
+        <thead>
+            <tr> 
+                <thead>
+                    <tr> 
+                        <th class="cabecera">Curp</th>
+                        <th class="cabecera">RFC </th>
+                        <th class="cabecera">Fecha de nacimiento</th>
+                    </tr>
+                </thead>
+                
+            </tr>
+        </thead>
+       
+        <tbody>
+            
+            <tr>
+                <td>{{ p.curp_est }}</td>
+                <td>{{ p.rfc_est }}</td>
+                <td>{{ p.fec_nac_est }}</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+       <!-- parte 5 -->
+       <table>
+        <thead>
+            <tr> 
+                <thead>
+                    <tr> 
+                        <th class="cabecera">Entidad de nacimiento </th>
+                        <th class="cabecera">Municipio </th>
+                        <th class="cabecera">Edad</th>
+                        <th class="cabecera">Sexo</th>
+                    </tr>
+                </thead>
+                
+            </tr>
+        </thead>
+       
+        <tbody>
+            
+            <tr>
+                <td>{{ p.entidad_nac }}</td>
+                <td>{{ p.mpo_del_nac }}</td>
+                <td>{{ p.edad_est }}</td>
+                <td>{{ p.sexo_est }}</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+ <!-- parte 6 -->
+ <table>
+    <thead>
+        <tr> 
+            <thead>
+                <tr> 
+                    <th class="cabecera">Estado civil </th>
+                    <th class="cabecera">Tipo sangre </th>
+                    <th class="cabecera">Trabaja</th>
+                    <th class="cabecera">Telefono trabajo</th>
+                </tr>
+            </thead>
+            
+        </tr>
+    </thead>
+   
+    <tbody>
+        
+        <tr>
+            <td>{{ p.estado_civil_est }}</td>
+            <td>{{ p.tipo_sangre_est }}</td>
+            <td>{{ p.trabaja_est }}</td>
+            <td>{{ p.tel_trabajo }}</td>
+        </tr>
+        
+    </tbody>
+</table>
+
+ <!-- parte 7 -->
+ <h6>Domicilio:</h6>
+ <table>
+    <thead>
+        <tr> 
+            <thead>
+                <tr> 
+                    <th class="cabecera">Calle y numero</th>
+                    <th class="cabecera">CP </th>
+                    <th class="cabecera">Telefono</th>
+                    <th class="cabecera">Correo electronico</th>
+                </tr>
+            </thead>
+            
+        </tr>
+    </thead>
+   
+    <tbody>
+        
+        <tr>
+            <td>{{ p.direccion_est }}  #{{ p.num_ext }}</td>
+            <td>{{ p.codpos }}</td>
+            <td>{{ p.telefono_est }}</td>
+            <td>{{ p.email_est }}</td>
+        </tr>
+        
+    </tbody>
+</table>
+
+ <!-- parte 8 -->
+ <table>
+    <thead>
+        <tr> 
+            <thead>
+                <tr> 
+                    <th class="cabecera">Entidad</th>
+                    <th class="cabecera">Municipio</th>
+                    <th class="cabecera">Colonia</th>
+                </tr>
+            </thead>
+            
+        </tr>
+    </thead>
+   
+    <tbody>
+        
+        <tr>
+            <td>{{ p.entidad_nac }}</td>
+            <td>{{ p.mpo_del_nac }}</td>
+            <td>{{ p.rowid_col }}</td>
+        </tr>
+        
+    </tbody>
+</table>
+<h6>Escuela de procedencia:</h6>
+ <!-- parte 9 -->
+ <table>
+    <thead>
+        <tr> 
+            <thead>
+                <tr> 
+                    <th class="cabecera">Escuela de procedencia</th>
+                    <th class="cabecera">Especialidad del bachillerato</th>
+                    <th class="cabecera">Entidad del bachillerato</th>
+                </tr>
+            </thead>
+            
+        </tr>
+    </thead>
+   
+    <tbody>
+        
+        <tr>
+            <td>{{ p.id_tipo_esc_est }}</td>
+            <td>{{ p.id_area_bach_est }}</td>
+            <td>{{ p.entidad_bach }}</td>
+        </tr>
+        
+    </tbody>
+</table>
+<!-- parte 9 -->
+<table>
+    <thead>
+        <tr> 
+            <thead>
+                <tr> 
+                    <th class="cabecera">Municipio</th>
+                    <th class="cabecera">Periodo de bachillerato</th>
+                    <th class="cabecera">Promedio general</th>
+                </tr>
+            </thead>
+            
+        </tr>
+    </thead>
+   
+    <tbody>
+        
+        <tr>
+            <td>{{ p.mpo_del_bach }}</td>
+            <td>De: {{ p.fecha_ini_bach }} A: {{ p.fecha_fin_bach }}</td>
+            <td>{{ p.promedio_gral_bach }}</td>
+        </tr>
+        
+    </tbody>
+</table>
+<h6>Datos del tutor:</h6>
+<!-- parte 10 -->
+<table>
+    <thead>
+        <tr> 
+            <thead>
+                <tr> 
+                    <th class="cabecera">Apellido materno</th>
+                    <th class="cabecera">Apellido paterno</th>
+                    <th class="cabecera">Nombre(s)</th>
+                </tr>
+            </thead>
+            
+        </tr>
+    </thead>
+   
+    <tbody>
+        
+        <tr>
+            <td>{{ p.mat_tutor_est }}</td>
+            <td>{{ p.pat_tutor_est }}</td>
+            <td>{{ p.nombre_tutor_est }}</td>
+        </tr>
+        
+    </tbody>
+</table>
+
+    {% endfor %}
+
+
+
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+      
+
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        h6{
+            font-size: 10px;
+            text-align: lef;
+        }
+        table {
+            width: 100%;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+            
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: rgb(2, 212, 44);
+             color: rgb(0, 0, 0);
+         }
+
+         /* @page {
+            size: letter landscape;
+            margin: 0.5cm;
+            type: A4;
+        } */
+    </style>
+
+{% endblock body %}

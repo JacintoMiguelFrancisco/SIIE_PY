@@ -92,13 +92,13 @@
 
                     <a class="sub-item-estudiantes">Estudiantes</a>
                       <div class="sub-menu-estudiantes">
-                        <a href="#">Estudiantes</a>
-                        <a href="#">Documentacion</a>
+                        <a href="{% url 'vista_estudiante' %}">Estudiantes</a>
+                        <a href="{% url 'vista_Documentacion' %}">Documentacion</a>
                         <a href="{% url 'vista_Grados' %}">Grado</a>
-                        <a href="#">Grupo</a>
+                        <a href="{% url 'vista_Grupo' %}">Grupo</a>
                         <a href="{% url 'vista_Salones' %}">Salones</a>
                         <a href="{% url 'vista_Becas' %}">Becas</a>
-                        <a href="#">Estatus estudiante</a>
+                        <a href="{% url 'vista_Estatus' %}">Estatus estudiante</a>
                         <a href="{% url 'vista_TipoBajas' %}">Tipos de baja</a>
                         <a href="{% url 'vista_Cambios' %}">Tipos Cambio carrera</a>
                       </div>

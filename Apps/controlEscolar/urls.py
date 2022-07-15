@@ -166,6 +166,39 @@ urlpatterns = [
     path('export-print-IndAsp', views.Export_print_IndAsp.as_view(), name="export_print_IndAsp"),
 
 # -------------------------------------------- Estudiantes --------------------------------------------- #
+
+# CRUD Estudiante
+    path('vista-estudiante/', views.vistaEstudiante, name="vista_estudiante"),
+    path('eliminar-estudiante/<int:rowid_matricula>/', views.eliminarEstudiante, name="eliminar_estu"),
+    path('vista-estudiante/<int:rowid_matricula>/', views.vista_estudiante_detail, name="estu_detail"),
+    path('export-print-estudiante/', views.Export_print_estudiante.as_view(), name="export_print_estudiante"),
+    path('export-pdf-estudiante/', views.Export_pdf_estudiante.as_view(), name="export_pdf_estudiante"),
+    path('export-csv-estudiante/', views.export_csv_estudiante, name="export_csv_estudiante" ),
+    path('export-xlwt-estudiante/', views.export_xlwt_estudiante, name="export_xlwt_estudiante"),
+# CRUD DOCUMENTACION
+    path('vista-Documentacion/', views.vista_Documentacion, name="vista_Documentacion"),
+    path('eliminar-Documentacion/<int:rowid_doc>/', views.eliminar_Documentacion, name="eliminar_Documentacion"),
+    path('vista-Documentacion/<int:rowid_doc>/', views.vista_Documentacion_detail, name="Documentacion_detail"),
+    path('export-print-Documentacion/', views.Export_print_Documentacion.as_view(), name="export_print_Documentacion"),
+    path('export-pdf-Documentacion/', views.Export_pdf_Documentacion.as_view(), name="export_pdf_Documentacion"),
+    path('export-csv-Documentacion/', views.export_csv_Documentacion, name="export_csv_Documentacion" ),
+    path('export-xlwt-Documentacion/', views.export_xlwt_Documentacion, name="export_xlwt_Documentacion"),
+# # CRUD GRUPO
+    path('vista-Grupo/', views.vista_Grupo, name="vista_Grupo"),
+    path('eliminar-Grupo/<int:rowid_grupo>/', views.eliminar_Grupo, name="eliminar_grupo"),
+    path('vista-Grupo/<int:rowid_grupo>/', views.vista_grupo_detail, name="Grupo_detail"),
+    path('export-pdf-grupos/', views.Export_print_grupos.as_view(), name="export_print_grupos"),
+    path('export-pdf-grupo/', views.Export_pdf_grupo.as_view(), name="export_pdf_grupo"),
+    path('export-csv-grupos/', views.export_csv_grupos, name="export_csv_grupos" ),
+    path('export-xlwt-grupos/', views.export_xlwt_grupos, name="export_xlwt_grupos"),
+# CRUD ESTATUS-ESTUDIANTE
+    path('vista-Estatus/', views.vista_Estatus, name="vista_Estatus"),
+    path('eliminar-Estatus/<int:rowid_evento_est>/', views.eliminar_Estatus, name="eliminar_estatus"),
+    path('vista-Estatus/<int:rowid_evento_est>/', views.vista_Estatus_detail, name="estatus_detail"),
+    path('export-print-estatus/', views.Export_print_estatus.as_view(), name="export_print_estatus"),
+    path('export-pdf-estatus/', views.Export_pdf_estatus.as_view(), name="export_pdf_estatus"),
+    path('export-csv-esttatus/', views.export_csv_estatus, name="export_csv_estatus" ),
+    path('export-xlwt-estatus/', views.export_xlwt_estatus, name="export_xlwt_estatus"),
 # CRUD GRADOS
     path('vista-Grados/', views.vista_Grados, name="vista_Grados"),
     path('eliminar-Grado/<int:rowid_grado>/', views.eliminar_Grado, name="eliminar_grado"),

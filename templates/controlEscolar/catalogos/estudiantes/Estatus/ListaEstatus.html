@@ -1,0 +1,69 @@
+{% extends '../../../../base.html' %}
+
+{% block title %}Documentacion Estatus EST/ASP{% endblock title %}
+
+{% block body %}
+<meta charset="UTF-8"/>
+    <h2>Lista de documentos</h2>
+    <h3>Cantidad de documentos: {{ count }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Clave</th> 
+                <th class="cabecera">Consecutivo</th>
+                <th class="cabecera">Nombre</th> 
+                <th class="cabecera">Abreviatura</th>  
+                <th class="cabecera">Estatus</th>  
+        </thead>
+        <tbody>
+            {% for estEst in Estatus %}
+            <tr >
+                <td>{{ estEst.id_evento_est }}</td>
+                <td>{{ estEst.consecutivo_est }}</td>
+                <td>{{ estEst.descri_largo_tipo_est }}</td>
+                <td>{{ estEst.descri_corto_tipo_est }}</td>
+                <td>{{ estEst.estatus_tipo_est }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border: 2px solid #000;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: #000;
+             color: #eee;
+         }
+    </style>
+
+{% endblock body %}

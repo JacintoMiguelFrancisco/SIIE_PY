@@ -1,0 +1,82 @@
+{% extends '../../../../base.html' %}
+{% block title %}Lista Grupos{% endblock title %}
+{% block body %}
+<meta charset="UTF-8"/>
+    <h2>Lista de Grupos</h2>
+    <h3>Cantidad de Grupos: {{ count }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Carrera</th>
+                <th class="cabecera">Grado</th>
+                <th class="cabecera">Clave Grupo</th>
+                <th class="cabecera">Nombre</th>
+                <th class="cabecera">Abreviatura</th>
+                <th class="cabecera">Total de Alumnos</th>
+                <th class="cabecera">Máx. de Alumnos</th>
+                <th class="cabecera">Total de Recursadores</th>
+                <th class="cabecera">Máx. de Recursadores</th>
+                <th class="cabecera">Estatus</th>
+                
+        </thead>
+        <tbody>
+            {% for g in Grupos %}
+            <tr >
+                <td>{{ g.rowid_car.descri_largo_car}}</td>
+                <td>{{ g.rowid_grado.descri_corto_gra}}</td>
+                <td>{{ g.id_grupo}}</td>
+                <td>{{ g.descri_largo_gpo}}</td>
+                <td>{{ g.descri_corto_gpo}}</td>
+                <td>{{ g.lim_gpo}}</td>
+                <td>{{ g.lim_acu_gpo}}</td>
+                <td>{{ g.lim_rec_gpo}}</td>
+                <td>{{ g.lim_acu_rec_gpo}}</td>
+                <td>{{ g.estatus_gpo}}</td>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border: 2px solid #000;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: #000;
+             color: #eee;
+         }
+         @page {
+            size: letter landscape;
+            margin: 0.5cm;
+            type: A4;
+        }
+    </style>
+
+{% endblock body %}

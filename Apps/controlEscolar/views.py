@@ -22,7 +22,7 @@ from .models import (
     SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia,  # Direcciones
     SeCatUniversidad, SeCatDivision, SeCatCarrera, SeCatPeriodos, # Universidades
     SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
-    SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
+    SeTabEstudiante, SeCatDocumentacion, SeCatGrupo, SeCatEstatusEstudiante, SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
     SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
 )
@@ -33,7 +33,7 @@ from .forms import (
     FormPaises, FormEstados, FormMunicipiosDelegaciones, FormColonias, # Direcciones
     FormUniversidad, FormDivisiones, FormCarreras, FormPeriodos, # Universidades
     FormMediosDifusion, FormTiposEscuelas, FormAreaBachi, FormIndAsp, # Aspirantes
-    FormGrados, FormSalones, FormTipoBajas, FormBecas, FormTipoCambio, # Estudintes
+    FormsEstudiante, FormDocumentacion, FormGrupo, FormEstatusEstudiante,FormGrados, FormSalones, FormTipoBajas, FormBecas, FormTipoCambio, # Estudintes
     FormEmpleado, FormsTipoPue, FormSueldo, FormNivAca, FormPlaza, FormAdscripcion, FormActividades, FormInstitucion, FormEmpCar, # Empleados
     FormsPlaE, FormsAsignatura, FormsIndicador, FormsPeA, FormsPeaI, # Plan de Estudio
     FormsAspirantes, #Aspirante
@@ -108,6 +108,7 @@ def vista_paises_detail(request, rowid_pais):
             messages.info(request, "¡Pais actualizado con exito!")
             return redirect('vista_paises') #retorna despues de actualizar
         else:
+            messages.warning(request, "¡Alguno de los campos no es valido!") # Emvia un mensaje para notificar que algun campo no es valido
             return render(request, "controlEscolar/catalogos/direcciones/GestionPaises/ActualizarPais.html", {"pais": pais, "FormPaises" : form})#envia al detalle con los campos no validos
     return render(request, "controlEscolar/catalogos/direcciones/GestionPaises/ActualizarPais.html", {"pais": pais, "FormPaises" : form})#envia al detalle para actualizar
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils
@@ -244,8 +245,9 @@ def vista_estados_detail(request, rowid_edo):
             messages.info(request, "¡Estado actualizado con exito!")
             return redirect('vista_estados') #retorna despues de actualizar
         else:
-            return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/ActualizarEstado.html", {"estado": estado, "FormEstados" : form})#envia al detalle para actualizar
-    return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/ActualizarEstado.html", {"estado": estado, "FormEstados" : form})#envia al detalle para actualizar
+            messages.warning(request, "¡Alguno de los campos no es valido!") # Emvia un mensaje para notificar que algun campo no es valido
+            return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/ActualizarEstado.html", {"FormEstados" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/ActualizarEstado.html", {"FormEstados" : form})#envia al detalle para actualizar
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils
 class Export_print_estados(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -384,6 +386,7 @@ def vista_municipios_detail(request, rowid_mundel):
             messages.info(request, "¡Municipio/Delegación actualizado con exito!")
             return redirect('vista_municipios')  #retorna despues de actualizar              
         else: 
+            messages.warning(request, "¡Alguno de los campos no es valido!") # Emvia un mensaje para notificar que algun campo no es valido
             return render(request, "controlEscolar/catalogos/direcciones/GestionMunicipios/ActualizarMunicipio.html", {"FormMunicipiosDelegaciones" : form})#envia al detalle para actualizar
     return render(request, "controlEscolar/catalogos/direcciones/GestionMunicipios/ActualizarMunicipio.html", {"FormMunicipiosDelegaciones" : form})#envia al detalle para actualizar
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils
@@ -520,6 +523,7 @@ def vista_colonias_detail(request, rowid_col):
             messages.info(request, "¡Colonia actualizada con exito!")
             return redirect('vistaColonias') #retorna despues de actualizar
         else:
+            messages.warning(request, "¡Alguno de los campos no es valido!") # Emvia un mensaje para notificar que algun campo no es valido
             return render(request, "controlEscolar/catalogos/direcciones/GestionColonias/ActualizarColonia.html", {"FormColonias" : form})#envia al detalle para actualizar
     return render(request, "controlEscolar/catalogos/direcciones/GestionColonias/ActualizarColonia.html", {"FormColonias" : form})#envia al detalle para actualizar
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils
@@ -659,8 +663,9 @@ def vista_universidad_detail(request, rowid_uni):
             form.save()
             return redirect('vista_universidades') #retorna despues de actualizar
         else:
-            return render(request, "controlEscolar/catalogos/universidad/GestionUniversidades/ActualizarUniversidad.html", {"uni": uni, "FormUniversidad" : form})#envia al detalle para actualizar
-    return render(request, "controlEscolar/catalogos/universidad/GestionUniversidades/ActualizarUniversidad.html", {"uni": uni, "FormUniversidad" : form})#envia al detalle para actualizar
+            messages.warning(request, "¡Alguno de los campos no es valido!") # Emvia un mensaje para notificar que algun campo no es valido
+            return render(request, "controlEscolar/catalogos/universidad/GestionUniversidades/ActualizarUniversidad.html", {"FormUniversidad" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/universidad/GestionUniversidades/ActualizarUniversidad.html", {"FormUniversidad" : form})#envia al detalle para actualizar
 # primera de pdf posible imprimir
 class Export_print_universidades(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -730,7 +735,6 @@ def export_xlwt_universidades (request):
 def vista_Divisiones(request):
     listaDivisiones = SeCatDivision.objects.filter(estatus_div="A").order_by('rowid_div')
     contador_id = listaDivisiones.count()
-    listaUni = SeCatUniversidad.objects.filter(estatus_uni ="A").order_by('id_uni')
     page = request.GET.get('page', 1)
     try:
         paginator = Paginator(listaDivisiones, 9)
@@ -748,7 +752,7 @@ def vista_Divisiones(request):
             return redirect('vista_Divisiones')
         else:
             messages.warning(request, "¡Alguno de los campos no es valido!")
-            return render(request, "controlEscolar/catalogos/universidad/GestionDivisiones/GestionDivisiones.html",{'entity' : listaDivisiones, 'paginator' : paginator, 'listaUni': listaUni, 'FormDivisiones' : form, 'contador': contador_id,})       
+            return render(request, "controlEscolar/catalogos/universidad/GestionDivisiones/GestionDivisiones.html",{'entity' : listaDivisiones, 'paginator' : paginator, 'FormDivisiones' : form, 'contador': contador_id,})       
     #Busqueda del search
     elif request.method == 'GET':
         busqueda = request.GET.get("search_divisiones", None)
@@ -762,7 +766,6 @@ def vista_Divisiones(request):
     data = {
         'entity' : listaDivisiones,
         'paginator' : paginator,
-        'listaUni': listaUni,
         'FormDivisiones' : form,
         'contador': contador_id,
     }
@@ -793,8 +796,9 @@ def vista_divisiones_detail(request, rowid_div):
             messages.info(request, "¡División actualizada con exito!")
             return redirect('vista_Divisiones')
         else:
-            return render(request, "controlEscolar/catalogos/universidad/GestionDivisiones/ActualizarDivisiones.html", {"div": div, "FormDivisiones" : form})
-    return render(request, "controlEscolar/catalogos/universidad/GestionDivisiones/ActualizarDivisiones.html", {"div": div, "FormDivisiones" : form})
+            messages.warning(request, "¡Alguno de los campos no es valido!") # Emvia un mensaje para notificar que algun campo no es valido
+            return render(request, "controlEscolar/catalogos/universidad/GestionDivisiones/ActualizarDivisiones.html", {"FormDivisiones" : form})
+    return render(request, "controlEscolar/catalogos/universidad/GestionDivisiones/ActualizarDivisiones.html", {"FormDivisiones" : form})
 # primera de pdf posible imprimir 
 class Export_print_divisiones(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -863,7 +867,6 @@ def export_xlwt_divisiones (request):
 def vistaCarreras(request):
     #Lista de todas las divisiones
     listaCarreras = SeCatCarrera.objects.filter(estatus_car="A").order_by('rowid_car')
-    listaDiv = SeCatDivision.objects.filter(estatus_div="A").order_by('rowid_div')
     contador_id = listaCarreras.count()
     page = request.GET.get('page', 1)
     try:
@@ -898,7 +901,6 @@ def vistaCarreras(request):
         'entity' : listaCarreras,
         'paginator' : paginator,
         'FormCarreras' : form,
-        'listaDiv':listaDiv,
         'contador': contador_id,
     }
     return render(request,"controlEscolar/catalogos/universidad/GestionCarreras/GestionCarreras.html",data)
@@ -926,8 +928,10 @@ def vista_carreras_detail(request, rowid_car ):
             messages.info(request, "¡Carrera actualizada con exito!")
             return redirect('vista_carreras') #retorna despues de actualizar
         else:
-            return render(request, "controlEscolar/catalogos/universidad/GestionCarreras/ActualizarCarreras.html", {"car": car, "FormCarreras" : form})#envia al detalle para actualizar
-    return render(request, "controlEscolar/catalogos/universidad/GestionCarreras/ActualizaCarreras.html", {"car": car, "FormCarreras" : form})#envia al detalle para actualizar
+            messages.warning(request, "¡Alguno de los campos no es valido!") # Emvia un mensaje para notificar que algun campo no es valido
+            return render(request, "controlEscolar/catalogos/universidad/GestionCarreras/ActualizaCarreras.html", {"FormCarreras" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/universidad/GestionCarreras/ActualizaCarreras.html", {"FormCarreras" : form})#envia al detalle para actualizar
+#Imprimir
 class Export_print_carreras(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         listaCarreras = SeCatCarrera.objects.filter(estatus_car="A") 
@@ -1054,7 +1058,10 @@ def vista_periodos_detail(request, rowid_per):
         if form.is_valid():
             form.save()
             messages.info(request, "¡Periodo actualizado con exito!")
-        return redirect('vista_periodos') #retorna despues de actualizar
+            return redirect('vista_periodos') #retorna despues de actualizar
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!") # Emvia un mensaje para notificar que algun campo no es valido
+            return render(request, "controlEscolar/catalogos/universidad/GestionPeriodos/ActualizarPeriodos.html", {"FormPeriodos" : form})#envia al detalle para actualizar
     return render(request, "controlEscolar/catalogos/universidad/GestionPeriodos/ActualizarPeriodos.html", {"FormPeriodos" : form})#envia al detalle para actualizar
 # Imprimir
 class Export_print_periodos(LoginRequiredMixin, View):
@@ -1314,8 +1321,8 @@ def vista_asig_detail(request, rowid_asignatura):
             return redirect('vista_asignatura') #retorna despues de actualizar CAMBIAR RETORNO
         else:
             messages.warning(request, "Algun campo no es valido")
-            return render(request, "controlEscolar/catalogos/planEstudio/asignatura/ActualizarAsignatura.html", {"Asi": asi, "FormsAsignatura" : form})#envia al detalle para actualizar
-    return render(request, "controlEscolar/catalogos/planEstudio/asignatura/ActualizarAsignatura.html", {"Asi": asi, "FormsAsignatura" : form})#envia al detalle para actualizar
+            return render(request, "controlEscolar/catalogos/planEstudio/asignatura/ActualizarAsignatura.html", {"FormsAsignatura" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/planEstudio/asignatura/ActualizarAsignatura.html", {"FormsAsignatura" : form})#envia al detalle para actualizar
 # vista para "PRINT"
 class Export_print_asi(View):
     def get(self, request, *args, **kwargs):
@@ -1698,8 +1705,8 @@ def vista_peai_detail(request, rowid_pro_asi_ind):
             return redirect('vista_planEAI') #retorna despues de actualizar
         else:
             messages.warning(request, "Algun campo no es valido")
-            return render(request, "controlEscolar/catalogos/planEstudio/Peai/ActualizarPeai.html", {"peai": peai, "FormsPeaI" : form})#envia al detalle para actualizar
-    return render(request, "controlEscolar/catalogos/planEstudio/Peai/ActualizarPeai.html", {"peai": peai, "FormsPeaI" : form})#envia al detalle para actualizar
+            return render(request, "controlEscolar/catalogos/planEstudio/Peai/ActualizarPeai.html", {"FormsPeaI" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/planEstudio/Peai/ActualizarPeai.html", {"FormsPeaI" : form})#envia al detalle para actualizar
 # vista para "PRINT"
 class Export_print_peai(View):
     def get(self, request, *args, **kwargs):
@@ -1825,8 +1832,9 @@ def vista_medios_detail(request, rowid_medio_dif):
             messages.info(request, "¡Medio de Difusión actualizado con exito!")
             return redirect('vista_Medios')
         else:
-            return render(request, "controlEscolar/catalogos/aspirantes/GestionMediosDifusion/ActualizarMD.html", {"medio": medio, "FormMediosDifusion" : form})
-    return render(request, "controlEscolar/catalogos/aspirantes/GestionMediosDifusion/ActualizarMD.html", {"medio": medio, "FormMediosDifusion" : form})
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/aspirantes/GestionMediosDifusion/ActualizarMD.html", {"FormMediosDifusion" : form})
+    return render(request, "controlEscolar/catalogos/aspirantes/GestionMediosDifusion/ActualizarMD.html", {"FormMediosDifusion" : form})
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils
 class Export_print_medios(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -1891,7 +1899,6 @@ def export_xlwt_medios (request):
 def vista_Escuelas(request):
     listaEscuelas=SeCatTipoEscuela.objects.filter(estatus_esc="A").order_by('rowid_tipo_esc')
     contador_id = listaEscuelas.count()
-    listaCol = SeCatColonia.objects.filter(estatus_col ="A").order_by('id_col')
     page = request.GET.get('page', 1)
     try:
         paginator = Paginator(listaEscuelas, 9)
@@ -1909,7 +1916,7 @@ def vista_Escuelas(request):
             return redirect('vista_Escuelas')
         else:
             messages.warning(request, "¡Alguno de los campos no es valido!")
-            return render(request, "controlEscolar/catalogos/aspirantes/GestionTiposEscuelas/GestionEscuelas.html",{'entity':listaEscuelas, 'listaCol':listaCol, 'paginator':paginator, 'FormTiposEscuelas':form, 'contador':contador_id,})
+            return render(request, "controlEscolar/catalogos/aspirantes/GestionTiposEscuelas/GestionEscuelas.html",{'entity':listaEscuelas, 'paginator':paginator, 'FormTiposEscuelas':form, 'contador':contador_id,})
     #Busqueda del search
     elif request.method == 'GET':
         busqueda = request.GET.get("search_escuelas", None)
@@ -1922,7 +1929,6 @@ def vista_Escuelas(request):
     form = FormTiposEscuelas()
     data = {
         'entity' : listaEscuelas,
-        'listaCol':listaCol,
         'paginator' : paginator,
         'FormTiposEscuelas' : form,
         'contador': contador_id,
@@ -1954,8 +1960,9 @@ def vista_escuelas_detail(request, rowid_tipo_esc):
             messages.info(request, "¡Escuela actualizada con exito!")
             return redirect('vista_Escuelas')
         else:
-            return render(request, "controlEscolar/catalogos/aspirantes/GestionTiposEscuelas/ActualizarEscuela.html", {"escuela": escuela, "FormTiposEscuelas" : form})
-    return render(request, "controlEscolar/catalogos/aspirantes/GestionTiposEscuelas/ActualizarEscuela.html", {"escuela": escuela, "FormTiposEscuelas" : form})
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/aspirantes/GestionTiposEscuelas/ActualizarEscuela.html", {"FormTiposEscuelas" : form})
+    return render(request, "controlEscolar/catalogos/aspirantes/GestionTiposEscuelas/ActualizarEscuela.html", {"FormTiposEscuelas" : form})
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils
 class Export_print_escuelas(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -2080,8 +2087,9 @@ def vista_AreaBachi_detail(request, rowid_area_bac):
             messages.info(request, "¡Área Bachillerato actualizada con exito!")
             return redirect('vista_AreaBachi')
         else:
-            return render(request, "controlEscolar/catalogos/aspirantes/GestionAreaBachi/ActualizarAreaBachi.html", {"AreaBachi": areabachi, "FormAreaBachi" : form})
-    return render(request, "controlEscolar/catalogos/aspirantes/GestionAreaBachi/ActualizarAreaBachi.html", {"AreaBachi": areabachi, "FormAreaBachi" : form})
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/aspirantes/GestionAreaBachi/ActualizarAreaBachi.html", {"FormAreaBachi" : form})
+    return render(request, "controlEscolar/catalogos/aspirantes/GestionAreaBachi/ActualizarAreaBachi.html", {"FormAreaBachi" : form})
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils
 class Export_print_areabachi(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -2207,8 +2215,9 @@ def vista_IndAsp_detail(request, rowid_pro_ind_asp):
             messages.info(request, "¡Indicador Aspirante actualizado con exito!")
             return redirect('vista_IndAsp')
         else:
-            return render(request, "controlEscolar/catalogos/aspirantes/GestionIndAsp/ActualizarIndAsp.html", {"IndAsp": IndAsp, "FormIndAsp" : form})
-    return render(request, "controlEscolar/catalogos/aspirantes/GestionIndAsp/ActualizarIndAsp.html", {"IndAsp": IndAsp, "FormIndAsp" : form})
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/aspirantes/GestionIndAsp/ActualizarIndAsp.html", {"FormIndAsp" : form})
+    return render(request, "controlEscolar/catalogos/aspirantes/GestionIndAsp/ActualizarIndAsp.html", {"FormIndAsp" : form})
 # primera de pdf posible imprimir 
 class Export_print_IndAsp(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -2267,6 +2276,532 @@ def export_xlwt_IndAsp (request):
     return response
 
 # -------------------------------------------- Estudiantes --------------------------------------------- #
+
+######################################### Estudiante ##############################################
+@login_required
+def vistaEstudiante(request):
+    #Lista de todos los planes de estudio que tengan el status = A
+    listaEstudiante=SeTabEstudiante.objects.filter(estatus_est="A").order_by('rowid_matricula')
+    contador_id = listaEstudiante.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaEstudiante, 6)
+        listaEstudiante = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST': #Valida que sea una peticion de tipo post / Guarda datos
+        form = FormsEstudiante(request.POST)
+        if form.is_valid():
+            doc = form.save(commit=False)
+            ultimo_id = SeTabEstudiante.objects.all().last() # hace una consulta al ultimo registro insertado para poder crear el nuevo id
+            doc.rowid_matricula =  ultimo_id.rowid_matricula + 1 # agrega uno al ultimo id insertado:
+            form.save()
+            messages.success(request, "¡Estudiante agregado con exito!")
+            return redirect('vista_estudiante')#redirecciona a la vista
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/estudiantes/estudiante/GestionEstudiante.html",{'entity' : listaEstudiante, 'paginator' : paginator, 'FormsEstudiante' : form, 'contador' : contador_id,})
+    #Busqueda del search
+    elif request.method =='GET':
+        busqueda = request.GET.get("search_estudiante", None)
+        print(busqueda)
+        if busqueda:
+            listaEstudiante = SeTabEstudiante.objects.filter(
+                #Revisión de los campos de la tabla en la BD
+                Q(nombre_estu__icontains = busqueda),
+                Q(estatus_est__icontains = "A")
+            ).distinct()
+    form = FormsEstudiante()
+    data = {
+        'entity' : listaEstudiante,
+        'paginator' : paginator,
+        'FormsEstudiante' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/estudiantes/estudiante/GestionEstudiante.html",data)
+#ELIMINAR
+@login_required
+def eliminarEstudiante(request, rowid_matricula):
+    try:
+        est = SeTabEstudiante.objects.get(rowid_matricula=rowid_matricula)
+        est.estatus_est = "B"
+    except SeTabEstudiante.DoesNotExist:
+        raise Http404("El estudiante no existe")
+    if request.POST: #Sobre escrive los valores
+        messages.warning(request, "¡Estudiante eliminado con exito!")
+        est.save()
+        return redirect('vista_estudiante')
+    return render(request, "controlEscolar/catalogos/estudiantes/estudiante/BorrarEstudiante.html", {"Est": est})
+# Modificar
+@login_required
+def vista_estudiante_detail(request, rowid_matricula):
+    est = SeTabEstudiante.objects.get(rowid_matricula=rowid_matricula)
+    form = FormsEstudiante(instance=est)
+    if request.method == 'POST': #Sobre escribe los valores
+        form= FormsEstudiante(request.POST, instance=est)
+        if form.is_valid():
+            est.save() #Guarda cambios
+            messages.info(request, "¡Estudiante actualizado con exito!")
+            return redirect('vista_estudiante') #retorna despues de actualizar
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/estudiantes/estudiante/ActualizarEstudiante.html", {"FormsEstudiante": form})
+    return render(request, "controlEscolar/catalogos/estudiantes/estudiante/ActualizarEstudiante.html", {"FormsEstudiante": form})
+#print
+class Export_print_estudiante(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaEstudiante=SeTabEstudiante.objects.filter(estatus_est="A")
+        data = {
+            'count': listaEstudiante.count(),
+            'est': listaEstudiante
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/estudiantes/estudiante/ListarEstudiante.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+##PDF
+class Export_pdf_estudiante(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaEstudiante=SeTabEstudiante.objects.filter(estatus_est="A")
+        data = {
+            'count': listaEstudiante.count(),
+            'est': listaEstudiante
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/estudiantes/estudiante/ListarEstudiante.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaEstudiante.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises al formato  CSV
+@login_required
+def export_csv_estudiante (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaEstudiante.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Becas', 'Carrera', 'Colonia', 'Grupo','Id Estado', 'Matricula', 'Nombre(s)', 'Apellido paterno', 'Apelido materno', 'RFC', 'CURP','Direccion', 'Telefono', 'Correo electronico', 'Sexo','Fecha de alta', 'Usuario que dio alta', 'Fecha de baja', 'Uusuario que dio de baja', 'Codigo postal','Fecha de nacimiento','Turno','Generacion','Periodo', 'Año de ingreso', 'Estado civil',  'Apellido materno del tutor', 'Apellido paterno del tutor', 'Folio del estudiante', 'Nacionalidad del estudiante','Mpo', 'Trabajo del estudiante', 'Tipo de sangre', 'Tipo de escuela', 'Área del bachillerato', 'Entidad del bachillerato', 'Mpo del bachillerato', 'Fecha de inicio del bachillerato', 'Fecha de fin del bachillerato', 'Promedio general del bachillerato', 'Telefono del trabajo', 'Edad del estudiante',  'Fecha de vigencia', 'Estatus de inscrito al Imms', 'Imss', 'Clinica', 'Numero de servicio', 'Fecha del servicio social','Fecha ', 'Matricula provicional',  'Beca de aprovechamiento', 'Usuario', 'Contraseña', 'Estatus de biblioteca', 'Tipo de carrera', 'Otras', 'Cedula del TSU', 'Referencia', 'Grasc', 'Institucion del seguro', 'Otras Op','Nacionalidad', 'Discapacidad', 'Tipo de discapacidad',  'Folio certificado', 'Fecha',  'Equivalencia',  'Parentesco tutor','Tipo de estudiante', 'Num exterior', 'Numero interior', 'Estatus'])
+    listaEstudiante=SeTabEstudiante.objects.filter(estatus_est="A")
+    for est in listaEstudiante:
+        writer.writerow([est.rowid_becas, est.rowid_car, est.rowid_col, est.rowid_grupo, est.id_matricula, est.nombre_estu, est.paterno_est, est.materno_est, est.rfc_est, est.curp_est, est.direccion_est, est.telefono_est,  est.email_est, est.sexo_est, est.fecha_alta_est, est.user_alta_est, est.fecha_cambio_est,
+        est.user_cambio_est, est.codpos, est.fec_nac_est, est.turno_est, est.generacion_est, est.periodo_est, est.anio_est, est.estado_civil_est, est.mat_tutor_est, est.pat_tutor_est,  est.nombre_tutor_est, est.no_folio_est, est.entidad_nac, est.mpo_del_nac, est.trabaja_est, est.tipo_sangre_est, est.id_tipo_esc_est, est.id_area_bach_est, est.entidad_bach, est.mpo_del_bach, est.fecha_ini_bach,
+        est.fecha_fin_bach, est.promedio_gral_bach, est.tel_trabajo, est.edad_est, est.fecha_vig_est, est.estatus_inscri_est, est.imss_est,  est.clinica_est, est.num_servicio, est.fec_ser_social, est.fecha_repos_est, est.matri_est, est.beca_pro_est,  est.usuario_est, est.password_est, est.estatus_biblio, est.tipo_carrera_est, est.otras_uts, est.no_cedula_tsu, est.no_referencia, est.grasc,
+        est.institucion_seguro, est.otrainstitucionseguro, est.nacionalidad, est.discapacidad, est.tipodiscapacidad, est.foliocertificado, est.fechaexpedicioncer, est.equivalencia, est.parentescotutor, est.tipoestudiante, est.num_ext, est.num_int, est.estatus_est ])
+    return response
+# Exportar paises a xlwt
+@login_required
+def export_xlwt_estudiante (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListarEstudiante.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Indicador')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Becas', 'Carrera', 'Colonia', 'Grupo','Id Estado', 'Matricula', 'Nombre(s)', 'Apellido paterno', 'Apelido materno', 'RFC', 'CURP','Direccion', 'Telefono', 'Correo electronico', 'Sexo','Fecha de alta', 'Usuario que dio alta', 'Fecha de baja', 'Uusuario que dio de baja', 'Codigo postal','Fecha de nacimiento','Turno','Generacion','Periodo', 'Año de ingreso', 'Estado civil',  'Apellido materno del tutor', 'Apellido paterno del tutor', 'Folio del estudiante', 'Nacionalidad del estudiante','Mpo', 'Trabajo del estudiante', 'Tipo de sangre', 'Tipo de escuela', 'Área del bachillerato', 'Entidad del bachillerato', 'Mpo del bachillerato', 'Fecha de inicio del bachillerato', 'Fecha de fin del bachillerato', 'Promedio general del bachillerato', 'Telefono del trabajo', 'Edad del estudiante',  'Fecha de vigencia', 'Estatus de inscrito al Imms', 'Imss', 'Clinica', 'Numero de servicio', 'Fecha del servicio social','Fecha ', 'Matricula provicional',  'Beca de aprovechamiento', 'Usuario', 'Contraseña', 'Estatus de biblioteca', 'Tipo de carrera', 'Otras', 'Cedula del TSU', 'Referencia', 'Grasc', 'Institucion del seguro', 'Otras Op','Nacionalidad', 'Discapacidad', 'Tipo de discapacidad',  'Folio certificado', 'Fecha',  'Equivalencia',  'Parentesco tutor','Tipo de estudiante', 'Num exterior', 'Numero interior', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeTabEstudiante.objects.filter(estatus_est="A").values_list('rowid_becas', 'rowid_car', 'rowid_col', 'rowid_grupo', 'id_matricula', 'nombre_estu',
+    'paterno_est', 'materno_est', 'rfc_est', 'curp_est', 'direccion_est', 'telefono_est', 'email_est', 'sexo_est', 'fecha_alta_est', 'user_alta_est',
+    'fecha_cambio_est', 'user_cambio_est', 'codpos', 'fec_nac_est', 'turno_est', 'generacion_est', 'periodo_est', 'anio_est',
+    'estado_civil_est', 'mat_tutor_est', 'pat_tutor_est', 'nombre_tutor_est', 'no_folio_est', 'entidad_nac', 'mpo_del_nac', 'trabaja_est', 'tipo_sangre_est',
+    'id_tipo_esc_est', 'id_area_bach_est', 'entidad_bach', 'mpo_del_bach', 'fecha_ini_bach', 'fecha_fin_bach', 'promedio_gral_bach', 'tel_trabajo',
+    'edad_est', 'fecha_vig_est', 'estatus_inscri_est', 'imss_est', 'clinica_est', 'num_servicio', 'fec_ser_social', 'fecha_repos_est',
+    'matri_est', 'beca_pro_est', 'usuario_est', 'password_est', 'estatus_biblio', 'tipo_carrera_est', 'otras_uts',
+    'no_cedula_tsu', 'no_referencia', 'grasc', 'institucion_seguro', 'otrainstitucionseguro', 'nacionalidad',
+    'discapacidad', 'tipodiscapacidad', 'foliocertificado', 'fechaexpedicioncer', 'equivalencia', 'parentescotutor', 'tipoestudiante',
+    'num_ext', 'num_int', 'estatus_est')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+###################################################### DOCUMENTACION ##############################################
+# VISUALIZACION
+@login_required
+def vista_Documentacion(request):
+    listaDoc=SeCatDocumentacion.objects.filter(estatus_doc="A").order_by('rowid_doc') 
+    contador_id = listaDoc.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaDoc, 6)
+        listaDoc = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST':
+        form = FormDocumentacion(request.POST)
+        if form.is_valid():
+            doc = form.save(commit=False)
+            ultimo_id = SeCatDocumentacion.objects.all().order_by('rowid_doc').last() 
+            doc.rowid_doc = ultimo_id.rowid_doc + 1
+            doc.save()
+            messages.success(request, "¡Documentacion agregada con exito!")
+            return redirect('vista_Documentacion')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/estudiantes/Documentacion/GestionDoc.html",{'entity' : listaDoc, 'paginator' : paginator, 'FormDocumentacion' : form, 'contador': contador_id,})       
+    #Busqueda del search
+    elif request.method =='GET':
+        busqueda = request.GET.get("search_doc", None)
+        print(busqueda)
+        if busqueda:
+            listaDoc = SeCatDocumentacion.objects.filter(
+                Q(descri_corto_doc__icontains = busqueda),
+                Q(estatus_doc__icontains = "A")
+            ).distinct()
+    form = FormDocumentacion()
+    data = {
+        'entity' : listaDoc,
+        'paginator' : paginator,
+        'FormDocumentacion' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/estudiantes/Documentacion/GestionDoc.html",data)
+# ELIMINA
+@login_required
+def eliminar_Documentacion(request, rowid_doc):
+    try:
+        doc = SeCatDocumentacion.objects.get(rowid_doc=rowid_doc)
+        doc.estatus_doc = "B"
+    except SeCatDocumentacion.DoesNotExist:
+        raise Http404("El documento no existe")
+    if request.method == 'POST':
+        messages.warning(request, "¡Documento eliminado con exito!")
+        doc.save()
+        return redirect('vista_Documentacion')
+    return render(request, "controlEscolar/catalogos/estudiantes/Documentacion/BorrarDoc.html", {"Doc": doc})
+# MODIFICA 
+@login_required
+def vista_Documentacion_detail(request, rowid_doc):
+    doc = SeCatDocumentacion.objects.get(rowid_doc = rowid_doc)
+    form = FormDocumentacion(instance = doc)
+    if request.method == 'POST':
+        form = FormDocumentacion(request.POST, instance = doc) 
+        if form.is_valid():
+            doc = form.save(commit=False)
+            doc.save()
+            messages.info(request, "¡Documento actualizado con exito!")
+            return redirect('vista_Documentacion')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/estudiantes/Documentacion/ActualizarDoc.html", {"FormDocumentacion": form})
+    return render(request, "controlEscolar/catalogos/estudiantes/Documentacion/ActualizarDoc.html", {"FormDocumentacion": form})
+# PRINT
+class Export_print_Documentacion(View):
+    def get(self, request, *args, **kwargs):
+        listaDoc=SeCatDocumentacion.objects.filter(estatus_doc="A") 
+        data = {
+            'count': listaDoc.count(),
+            'documentos': listaDoc
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/estudiantes/Documentacion/ListaDoc.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+# PDF
+class Export_pdf_Documentacion(View):
+    def get(self, request,*args, **kwargs):
+        listaDoc=SeCatDocumentacion.objects.filter(estatus_doc="A") 
+        data = {
+            'count': listaDoc.count(),
+            'documentos': listaDoc
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/estudiantes/Documentacion/ListaDoc.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaDocumentos.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# CSV 
+@login_required
+def export_csv_Documentacion (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaDocumentos.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Clave Doc','Nombre Doc','Abreviatura Doc','Importancia Doc','Clave CTRL Doc','CTG Doc','Estatus'])
+    listaDoc=SeCatDocumentacion.objects.filter(estatus_doc="A") 
+    # listaPaises=SeCatPais.objects.filter(owner=request.user)
+    for doc in listaDoc:
+        writer.writerow([doc.id_doc, doc.descri_largo_doc, doc.descri_corto_doc , doc.importante_doc, doc.cve_control_doc, doc.estatus_grado, doc.estatus_doc])
+    return response
+# XLWT
+@login_required
+def export_xlwt_Documentacion (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaDocumentos.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Indicador')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Clave Doc','Nombre Doc','Abreviatura Doc','Importancia Doc','Clave CTRL Doc','CTG Doc','Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatDocumentacion.objects.filter(estatus_doc="A").values_list('id_doc','descri_largo_doc', 'descri_corto_doc', 'importante_doc', 'cve_control_doc', 'estatus_grado', 'estatus_doc')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+###################################################### GRUPO ######################################################
+# VISUALIZACION
+@login_required
+def vista_Grupo(request):
+    listaGrupos=SeCatGrupo.objects.filter(estatus_gpo="A").order_by('rowid_grupo') 
+    listaCarrera=SeCatCarrera.objects.filter(estatus_car="A").order_by('id_car')
+    listaGrado=SeCatGrado.objects.filter(estatus_gra="A").order_by('id_grado')
+    contador_id = listaGrupos.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaGrupos, 6)
+        listaGrupos = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST':
+        form = FormGrupo(request.POST)
+        if form.is_valid():
+            gru = form.save(commit=False)
+            ultimo_id = SeCatGrupo.objects.all().last()
+            gru.rowid_grupo = ultimo_id.rowid_grupo + 1
+            form.save()
+            messages.success(request, "¡Grupo agregado con exito!")
+            return redirect('vista_Grupo')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/estudiantes/Grupos/GestionGrupo.html",{ 'entity' : listaGrupos, 'listaCarrera' : listaCarrera, 'listaGrado' : listaGrado, 'paginator' : paginator, 'FormGrupo' : form, 'contador' : contador_id,})
+    #Busqueda del search
+    elif request.method =='GET':
+        busqueda = request.GET.get("search_grupos", None)
+        print(busqueda)
+        if busqueda:
+            listaGrupos = SeCatGrupo.objects.filter(
+                Q(descri_largo_gpo__icontains = busqueda),
+                Q(estatus_gpo__icontains = "A")
+            ).distinct()
+    form = FormGrupo()
+    data = {
+        'entity' : listaGrupos,
+        'listaCarrera' : listaCarrera,
+        'listaGrado' : listaGrado,
+        'paginator' : paginator,
+        'FormGrupo' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/estudiantes/Grupos/GestionGrupo.html",data)
+# ELIMINA
+@login_required
+def eliminar_Grupo(request, rowid_grupo):
+    try:
+        grupo = SeCatGrupo.objects.get(rowid_grupo = rowid_grupo)
+        grupo.estatus_gpo = "B"
+    except SeCatGrupo.DoesNotExist:
+        raise Http404("El grupo no existe")
+    if request.method == 'POST':
+        messages.warning(request, "¡Grupo eliminado con exito!")
+        grupo.save()
+        return redirect('vista_Grupo')
+    return render(request, "controlEscolar/catalogos/estudiantes/Grupos/BorraGrupo.html", {"Grupo": grupo})
+# MODIFICA
+@login_required
+def vista_grupo_detail(request, rowid_grupo):
+    grupo = SeCatGrupo.objects.get(rowid_grupo = rowid_grupo)
+    form = FormGrupo(instance = grupo)
+    if request.method == 'POST':
+        form = FormGrupo(request.POST, instance = grupo) 
+        if form.is_valid():
+            grupo = form.save(commit=False)
+            grupo.save()
+            messages.info(request, "¡Grupo actualizado con exito!")
+            return redirect('vista_Grupo')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/estudiantes/Grupos/ActualizarGrupo.html", {"FormGrupo": form})
+    return render(request, "controlEscolar/catalogos/estudiantes/Grupos/ActualizarGrupo.html", {"FormGrupo": form})
+# PRINT
+class Export_print_grupos(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaGrupo=SeCatGrupo.objects.filter(estatus_gpo="A") 
+        data = {
+            'count': listaGrupo.count(),
+            'Grupos': listaGrupo
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/estudiantes/Grupos/ListaGrupo.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+# PDF
+class Export_pdf_grupo(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaGrupo=SeCatGrupo.objects.filter(estatus_gpo="A") 
+        data = {
+            'count': listaGrupo.count(),
+            'Grupos': listaGrupo
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/estudiantes/Grupos/ListaGrupo.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaGrupos.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# CSV 
+@login_required
+def export_csv_grupos (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaGrupos.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Carrera', 'Grado', 'Clave Grupo', 'Nombre', 'Abreviatura', 'Total de Alumnos','Máx. de Alumnos','Total de Recursadores','Máx. de Recursadores','Estatus'])
+    listaGrupo=SeCatGrupo.objects.filter(estatus_gpo="A") 
+    # listaPaises=SeCatPais.objects.filter(owner=request.user)
+    for gru in listaGrupo:
+        writer.writerow([gru.rowid_car, gru.rowid_grado, gru.id_grupo, gru.descri_largo_gpo, gru.descri_corto_gpo, gru.lim_gpo, gru.lim_acu_gpo, gru.lim_rec_gpo, gru.lim_acu_rec_gpo, gru.estatus_gpo])
+    return response
+# XLWT
+@login_required
+def export_xlwt_grupos (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaGrupos.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Grupos')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Carrera', 'Grado', 'Clave Grupo', 'Nombre', 'Abreviatura', 'Total de Alumnos','Máx. de Alumnos','Total de Recursadores','Máx. de Recursadores','Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatGrupo.objects.filter(estatus_gpo="A").values_list('rowid_car','rowid_grado','id_grupo','descri_largo_gpo','descri_corto_gpo','lim_gpo','lim_acu_gpo','lim_rec_gpo','lim_acu_rec_gpo','estatus_gpo')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+###################################################### ESTATUS ESTUDIANTE #########################################
+# VISUALIZACION
+@login_required
+def vista_Estatus(request): 
+    listaEst=SeCatEstatusEstudiante.objects.filter(estatus_tipo_est="A").order_by('rowid_evento_est') 
+    contador_id = listaEst.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaEst, 6)
+        listaEst = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST':
+        form = FormEstatusEstudiante(request.POST)
+        if form.is_valid():
+            est = form.save(commit=False)
+            ultimo_id = SeCatEstatusEstudiante.objects.all().last() 
+            est.rowid_evento_est = ultimo_id.rowid_evento_est + 1
+            est.save()
+            messages.success(request, "Estatus-Estudiante agregado con exito!")
+            return redirect('vista_Estatus')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/estudiantes/Estatus/GestionEstatus.html",{'entity' : listaEst, 'paginator' : paginator, 'FormEstatusEstudiante' : form, 'contador': contador_id,})       
+    #Busqueda del search
+    elif request.method =='GET':
+        busqueda = request.GET.get("search_est", None)
+        print(busqueda)
+        if busqueda:
+            listaEst = SeCatEstatusEstudiante.objects.filter(
+                Q(descri_corto_tipo_est__icontains = busqueda),
+                Q(estatus_tipo_est__icontains = "A")
+            ).distinct()
+    form = FormEstatusEstudiante()
+    data = {
+        'entity' : listaEst,
+        'paginator' : paginator,
+        'FormEstatusEstudiante' : form,
+        'contador' : contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/estudiantes/Estatus/GestionEstatus.html",data)
+# ELIMINA
+@login_required
+def eliminar_Estatus(request, rowid_evento_est):
+    try:
+        est = SeCatEstatusEstudiante.objects.get(rowid_evento_est = rowid_evento_est)
+        est.estatus_tipo_est = "B"
+    except SeCatEstatusEstudiante.DoesNotExist:
+        raise Http404("Estatus-Estudiante no existe")
+    if request.method == 'POST':
+        messages.warning(request, "¡Estatus-Estudiante eliminado con exito!")
+        est.save()
+        return redirect('vista_Estatus')
+    return render(request, "controlEscolar/catalogos/estudiantes/Estatus/BorrarEstatus.html", {"Est": est})
+# MODIFICA
+@login_required
+def vista_Estatus_detail(request, rowid_evento_est):
+    est = SeCatEstatusEstudiante.objects.get(rowid_evento_est = rowid_evento_est)
+    form = FormEstatusEstudiante(instance = est)
+    if request.method == 'POST':
+        form= FormEstatusEstudiante(request.POST, instance = est) 
+        if form.is_valid():
+            est = form.save(commit=False)
+            est.save()
+            messages.info(request, "¡Estatus-Estudiante actualizado con exito!")
+            return redirect('vista_Estatus')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/estudiantes/Estatus/ActualizarEstatus.html", {"FormEstatusEstudiante": form})
+    return render(request, "controlEscolar/catalogos/estudiantes/Estatus/ActualizarEstatus.html", {"FormEstatusEstudiante": form})
+# PRINT
+class Export_print_estatus(View):
+    def get(self, request, *args, **kwargs):
+        listaEst=SeCatEstatusEstudiante.objects.filter(estatus_tipo_est="A") 
+        data = {
+            'count': listaEst.count(),
+            'Estatus': listaEst
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/estudiantes/Estatus/ListaEstatus.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+# PDF
+class Export_pdf_estatus(View):
+    def get(self, request,*args, **kwargs):
+        listaEst=SeCatEstatusEstudiante.objects.filter(estatus_tipo_est="A") 
+        data = {
+            'count': listaEst.count(),
+            'Estatus': listaEst
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/estudiantes/Estatus/ListaEstatus.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaEstatusEstudiantes.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# CSV
+@login_required
+def export_csv_estatus (request): 
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaEstatusEstudiantes.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Clave','Consecutivo','Nombre','Abreviatura','Estatus'])
+    listaEst=SeCatEstatusEstudiante.objects.filter(estatus_tipo_est="A") 
+    for esta in listaEst:
+        writer.writerow([esta.id_evento_est, esta.consecutivo_est, esta.descri_largo_tipo_est, esta.descri_corto_tipo_est, esta.estatus_tipo_est ])
+    return response
+# XLWT
+@login_required
+def export_xlwt_estatus (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListarEstatusEstudiantes.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('EstatusEstudiantes')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Clave','Consecutivo','Nombre','Abreviatura','Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatEstatusEstudiante.objects.filter(estatus_tipo_est="A").values_list('id_evento_est', 'consecutivo_est', 'descri_largo_tipo_est', 'descri_corto_tipo_est', 'estatus_tipo_est')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
 
 ###################################################### GRADOS ##############################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
@@ -2335,8 +2870,9 @@ def vista_grados_detail(request, rowid_grado):
             messages.info(request, "¡Grado actualizado con exito!")
             return redirect('vista_Grados')
         else:
-            return render(request, "controlEscolar/catalogos/estudiantes/Grados/ActualizarGrado.html", {"grado": grado, "FormGrados" : form})
-    return render(request, "controlEscolar/catalogos/estudiantes/Grados/ActualizarGrado.html", {"grado": grado, "FormGrados" : form})
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/estudiantes/Grados/ActualizarGrado.html", {"FormGrados" : form})
+    return render(request, "controlEscolar/catalogos/estudiantes/Grados/ActualizarGrado.html", {"FormGrados" : form})
 # primera de pdf posible imprimir 
 class Export_print_grados(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -2401,7 +2937,6 @@ def export_xlwt_grados (request):
 def vista_Salones(request):
     listaSalones = SeCatSalones.objects.filter(estatus_salon="A").order_by('rowid_salon')
     contador_id = listaSalones.count()
-    listaCar = SeCatCarrera.objects.filter(estatus_car ="A").order_by('id_car')
     page = request.GET.get('page', 1)
     try:
         paginator = Paginator(listaSalones, 9)
@@ -2419,7 +2954,7 @@ def vista_Salones(request):
             return redirect('vista_Salones')
         else:
             messages.warning(request, "¡Alguno de los campos no es valido!")
-            return render(request, "controlEscolar/catalogos/estudiantes/Salones/GestionSalones.html",{'entity' : listaSalones, 'paginator' : paginator, 'listaCar': listaCar, 'FormSalones' : form, 'contador': contador_id,})       
+            return render(request, "controlEscolar/catalogos/estudiantes/Salones/GestionSalones.html",{'entity' : listaSalones, 'paginator' : paginator, 'FormSalones' : form, 'contador': contador_id,})       
     #Busqueda del search
     elif request.method == 'GET':
         busqueda = request.GET.get("search_salones", None)
@@ -2433,7 +2968,6 @@ def vista_Salones(request):
     data = {
         'entity' : listaSalones,
         'paginator' : paginator,
-        'listaCar': listaCar,
         'FormSalones' : form,
         'contador': contador_id,
     }
@@ -2464,8 +2998,9 @@ def vista_salones_detail(request, rowid_salon):
             messages.info(request, "¡Salón actualizada con exito!")
             return redirect('vista_Salones')
         else:
-            return render(request, "controlEscolar/catalogos/estudiantes/Salones/ActualizarSalones.html", {"sa": sa, "FormSalones" : form})
-    return render(request, "controlEscolar/catalogos/estudiantes/Salones/ActualizarSalones.html", {"sa": sa, "FormSalones" : form})
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/estudiantes/Salones/ActualizarSalones.html", {"FormSalones" : form})
+    return render(request, "controlEscolar/catalogos/estudiantes/Salones/ActualizarSalones.html", {"FormSalones" : form})
 # primera de pdf posible imprimir 
 class Export_print_salones(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -2592,8 +3127,9 @@ def vista_becas_detail(request, rowid_becas):
             messages.info(request, "¡Beca actualizada con exito!")
             return redirect('vista_Becas')
         else:
-            return render(request, "controlEscolar/catalogos/estudiantes/Becas/ActualizarBeca.html", {"beca": beca, "FormBecas" : form})
-    return render(request, "controlEscolar/catalogos/estudiantes/Becas/ActualizarBeca.html", {"beca": beca, "FormBecas" : form})
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/estudiantes/Becas/ActualizarBeca.html", {"FormBecas" : form})
+    return render(request, "controlEscolar/catalogos/estudiantes/Becas/ActualizarBeca.html", {"FormBecas" : form})
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils
 class Export_print_becas(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -2718,8 +3254,9 @@ def vista_cambios_detail(request, rowid_tipo_cambio):
             messages.info(request, "¡Tipo de Cambio actualizado con exito!")
             return redirect('vista_Cambios')
         else:
-            return render(request, "controlEscolar/catalogos/estudiantes/TipoCambio/ActualizarTipoCambio.html", {"cambio": cambio, "FormTipoCambio" : form}) #envia al detalle de errores
-    return render(request, "controlEscolar/catalogos/estudiantes/TipoCambio/ActualizarTipoCambio.html", {"cambio": cambio, "FormTipoCambio" : form}) #envia al detalle para actualizar
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/estudiantes/TipoCambio/ActualizarTipoCambio.html", {"FormTipoCambio" : form}) #envia al detalle de errores
+    return render(request, "controlEscolar/catalogos/estudiantes/TipoCambio/ActualizarTipoCambio.html", {"FormTipoCambio" : form}) #envia al detalle para actualizar
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils
 class Export_print_cambios(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -2845,8 +3382,9 @@ def vista_tipobajas_detail(request, rowid_tipo_baj):
             messages.info(request, "¡Tipo de Baja actualizada con exito!")
             return redirect('vista_TipoBajas')
         else:
-            return render(request, "controlEscolar/catalogos/estudiantes/TipoBajas/ActualizarTipoBajas.html", {"baja": baja, "FormTipoBajas" : form})
-    return render(request, "controlEscolar/catalogos/estudiantes/TipoBajas/ActualizarTipoBajas.html", {"baja": baja, "FormTipoBajas" : form})
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/estudiantes/TipoBajas/ActualizarTipoBajas.html", {"FormTipoBajas" : form})
+    return render(request, "controlEscolar/catalogos/estudiantes/TipoBajas/ActualizarTipoBajas.html", {"FormTipoBajas" : form})
 # primera de pdf posible imprimir 
 class Export_print_tipobajas(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -2911,8 +3449,7 @@ def export_xlwt_tipobajas (request):
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
 def vistaEmpleados(request):
-    #Lista de todas las divisiones
-    listaEmp = SeCatEmpleado.objects.filter(estatus_emp="A"). order_by('rowid_empleado')
+    listaEmp = SeCatEmpleado.objects.filter(estatus_emp="A"). order_by('rowid_empleado')#Lista de todas las divisiones
     contador_id = listaEmp.count()
     page = request.GET.get('page', 1)
     try:
@@ -2928,8 +3465,7 @@ def vistaEmpleados(request):
             emp.rowid_empleado = ultimo_id.rowid_empleado + 1
             emp.save()
             messages.success(request, "¡Empleado agregado con exito!")
-            #redirecciona a la vista 
-            return redirect('vista_emp')
+            return redirect('vista_emp')#redirecciona a la vista 
         else:
             messages.warning(request, "¡Alguno de los campos no es valido!")
             return render(request, "controlEscolar/catalogos/empleados/GestionEmpleados/GestionEmpleados.html",{'entity' : listaEmp, 'paginator' : paginator, 'FormEmpleado' : form, 'contador': contador_id})
@@ -2973,8 +3509,11 @@ def vista_emp_detail(request, rowid_empleado):
         if form.is_valid():
             messages.info(request, "¡Empleado actualizado con exito!")
             form.save()
-        return redirect('vista_emp') #retorna despues de actualizar
-    return render(request, "controlEscolar/catalogos/empleados/GestionEmpleados/ActualizarEmpleados.html", {"emp": emp, "FormEmpleado" : form})#envia al detalle para actualizar
+            return redirect('vista_emp') #retorna despues de actualizar
+        else:
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/empleados/GestionEmpleados/ActualizarEmpleados.html", {"FormEmpleado" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/empleados/GestionEmpleados/ActualizarEmpleados.html", {"FormEmpleado" : form})#envia al detalle para actualizar
 # Imprimir 
 class Export_print_emp(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
@@ -3115,8 +3654,9 @@ def vista_nivel_aca_detail(request, rowid_academico):
             messages.info(request, "¡Nivel academico actualizado con exito!")
             return redirect('vista_nivelaca') #retorna despues de actualizar
         else:
-            return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/ActualizarNivelAcademico.html", {"aca": aca, "FormNivAca" : form})#envia al detalle de errores
-    return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/ActualizarNivelAcademico.html", {"aca": aca, "FormNivAca" : form})#envia al detalle para actualizar
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/ActualizarNivelAcademico.html", {"FormNivAca" : form})#envia al detalle de errores
+    return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/ActualizarNivelAcademico.html", {"FormNivAca" : form})#envia al detalle para actualizar
 #Imprimir pfd
 class Export_print_nivel_academico(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -3240,8 +3780,11 @@ def vista_plaza_detail(request, rowid_plaza):
         if form.is_valid():
             form.save()
             messages.info(request, "¡Plaza actualizada con exito!")
-        return redirect('vista_plaza') #retorna despues de actualizar
-    return render(request, "controlEscolar/catalogos/empleados/GestionPlazas/ActualizarPlazas.html", {"pla": pla, "FormPlaza" : form})#envia al detalle para actualizar
+            return redirect('vista_plaza') #retorna despues de actualizar
+        else:
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/empleados/GestionPlazas/ActualizarPlazas.html", {"FormPlaza" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/empleados/GestionPlazas/ActualizarPlazas.html", {"FormPlaza" : form})#envia al detalle para actualizar
 # imprime 
 class Export_print_plaza(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -3365,8 +3908,11 @@ def vista_tipopue_detail(request, rowid_puesto):
         if form.is_valid():
             form.save()
             messages.info(request, "¡Puesto actualizado con exito!")
-        return redirect('vista_tipopue') #retorna despues de actualizar
-    return render(request, "controlEscolar/catalogos/empleados/GestionTipoPuesto/ActualizarPuesto.html", {"pue": pue, "FormsTipoPue" : form})#envia al detalle para actualizar
+            return redirect('vista_tipopue') #retorna despues de actualizar
+        else:
+            messages.warning(request, "Algun campo no es valido") 
+            return render(request, "controlEscolar/catalogos/empleados/GestionTipoPuesto/ActualizarPuesto.html", {"FormsTipoPue" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/empleados/GestionTipoPuesto/ActualizarPuesto.html", {"FormsTipoPue" : form})#envia al detalle para actualizar
 # imprime 
 class Export_print_tipopue(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -3491,8 +4037,11 @@ def vista_su_detail(request, rowid_sueldo):
         if form.is_valid():
             messages.info(request, "¡Sueldo actualizado con exito!")
             form.save()
-        return redirect('vista_su') #retorna despues de actualizar
-    return render(request, "controlEscolar/catalogos/empleados/GestionSueldos/ActualizarSueldos.html", {"su": su, "FormSueldo" : form})#envia al detalle para actualizar
+            return redirect('vista_su') #retorna despues de actualizar
+        else:
+            messages.warning(request, "Algun campo no es valido")
+            return render(request, "controlEscolar/catalogos/empleados/GestionSueldos/ActualizarSueldos.html", {"FormSueldo" : form})#envia al detalle para actualizar
+    return render(request, "controlEscolar/catalogos/empleados/GestionSueldos/ActualizarSueldos.html", {"FormSueldo" : form})#envia al detalle para actualizar
 # Imprimir
 class Export_print_su(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
@@ -3615,6 +4164,7 @@ def vista_adscripciones_detail(request, rowid_depto):
             messages.info(request, "¡Adscripcion actualizado con exito!")
             return redirect('vista_adscripciones') #retorna despues de actualizar
         else:
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
             return render(request, "controlEscolar/catalogos/empleados/GestionAdscripciones/ActualizarAdscripciones.html", {"Adscripcion" : form})#envia al detalle con los campos no validos
     return render(request, "controlEscolar/catalogos/empleados/GestionAdscripciones/ActualizarAdscripciones.html", {"Adscripcion" : form})#envia al detalle para actualizar
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils
@@ -3738,6 +4288,7 @@ def vista_actididades_detail(request, rowid_actividad):
             messages.info(request, "¡Actividad actualizada con exito!")
             return redirect('vista_actividades') #retorna despues de actualizar
         else:
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
             return render(request, "controlEscolar/catalogos/empleados/GestionActividades/ActualizarActividades.html", {"Actividad" : form})#envia al detalle con los campos no validos
     return render(request, "controlEscolar/catalogos/empleados/GestionActividades/ActualizarActividades.html", {"Actividad" : form})#envia al detalle para actualizar
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils
@@ -3862,6 +4413,7 @@ def vista_instituciones_detail(request, rowid_institucion):
             messages.info(request, "¡Instituciónactualizada con exito!")
             return redirect('vista_instituciones') #retorna despues de actualizar
         else:
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
             return render(request, "controlEscolar/catalogos/empleados/GestionInstituciones/ActualizarInstituciones.html", {"form" : form})#envia al detalle con los campos no validos
     return render(request, "controlEscolar/catalogos/empleados/GestionInstituciones/ActualizarInstituciones.html", {"form" : form})#envia al detalle para actualizar
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils
@@ -3985,6 +4537,7 @@ def vista_EmpCar_detail(request, rowid_emp_car):
             messages.info(request, "¡Emp Car actualizada con exito!")
             return redirect('vista_EmpCars') #retorna despues de actualizar
         else:
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
             return render(request, "controlEscolar/catalogos/empleados/GestionEmpCar/ActualizarEmpCar.html", {"form" : form})#envia al detalle con los campos no validos
     return render(request, "controlEscolar/catalogos/empleados/GestionEmpCar/ActualizarEmpCar.html", {"form" : form})#envia al detalle para actualizar
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils

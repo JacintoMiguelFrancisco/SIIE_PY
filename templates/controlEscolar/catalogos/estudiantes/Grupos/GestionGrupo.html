@@ -1,0 +1,99 @@
+{% extends '../../CRUD.html' %}
+
+{% block title %}Gestión de Grupos{% endblock title %}
+
+{% block buttons %}
+
+<h3>Gestión de Grupos</h3>
+    <div class="container mb-4 mt-4">
+        <div class="row justify-content-md-center">
+            <div class="col col-12 col-sm-3 col-lg-3">
+                {% load bootstrap_icons %}
+                <a href="{% url 'export_csv_grupos' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export_xlwt_grupos' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export_pdf_grupo' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export_print_grupos' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+            </div>
+        </div>
+    </div>
+{% endblock buttons %}
+
+{% block form %}
+<form action="" method="POST">{% csrf_token %}
+
+    {{ FormGrupo.as_p}}
+
+    <div class="form-group" >
+        <button type="submit" class="btn btn-success btn-block text-white" id="save"> Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
+    </div>
+</form>
+{% endblock form %}
+{% block search %}
+
+<h1>Catálogo - Grupos</h1>
+<form method="GET" action="{% url 'vista_Grupo' %}">
+    <div class="input-group mb-3 mt-4">
+        <input type="search" class="form-control" placeholder="Escribe el nombre del grupo ...." name="search_grupos">
+        <div class="input-group-append">
+            <span class="input-group-text bg-success">
+                {% load bootstrap_icons %}
+                <button class="btn btn-success text-white">
+                    {% bs_icon 'search' size='1.5em'%}
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+{% endblock search %}
+
+{% block table %}
+<table class="table table-striped">
+    <p style="text-align: right; font-size: 25px;"> Número de Grupos: {{ contador }} </p>
+    <thead>
+        <tr>
+            <th>Carrera</th>
+            <th>Grado</th>
+            <th>Clave Grupo</th>
+            <th>Nombre</th>
+            <th>Abreviatura</th>
+            <th>Total de Alumnos</th>
+            <th>Máx. de Alumnos</th>
+            <th>Total de Recursadores</th>
+            <th>Máx. de Recursadores</th>
+            <th>Estatus</th>
+            <th id="operaciones">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for g in entity %}
+        <tr>
+            {% load bootstrap_icons %}
+            <td>{{ g.rowid_car.descri_largo_car}}</td>
+            <td>{{ g.rowid_grado.descri_corto_gra}}</td>
+            <td>{{ g.id_grupo}}</td>
+            <td>{{ g.descri_largo_gpo}}</td>
+            <td>{{ g.descri_corto_gpo}}</td>
+            <td>{{ g.lim_gpo}}</td>
+            <td>{{ g.lim_acu_gpo}}</td>
+            <td>{{ g.lim_rec_gpo}}</td>
+            <td>{{ g.lim_acu_rec_gpo}}</td>
+            <td>{{ g.estatus_gpo}}</td>
+            <td class="d-flex justify-content-evenly">
+                <a href="../vista-Grupo/{{ g.rowid_grupo }}/" class="btn btn-warning">
+                    {% bs_icon 'pencil-square' size='1.5em'%}
+                </a>
+                <a href="../eliminar-Grupo/{{ g.rowid_grupo }}/" class="btn btn-danger">
+                    {% bs_icon 'trash' size='1.5em'%}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock table %}

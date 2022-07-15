@@ -1,0 +1,78 @@
+{% extends '../../../../base.html' %}
+
+{% block title %}Documentación Estudiante / Aspirante{% endblock title %}
+
+{% block body %}
+<meta charset="UTF-8"/>
+    <h2>Lista de Documentos</h2>
+    <h3>Cantidad de Documentos: {{ count }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Clave Doc</th> 
+                <th class="cabecera">Nombre Doc</th>
+                <th class="cabecera">Abreviatura Doc</th> 
+                <th class="cabecera">Importancia Doc</th>  
+                <th class="cabecera">Clave CTRL Doc</th>    
+                <th class="cabecera">CTG Doc</th>  
+                <th class="cabecera">Estatus</th>   
+        </thead>
+        <tbody>
+            {% for do in documentos %}
+            <tr >
+                <td>{{ do.id_doc }}</td>
+                <td>{{ do.descri_largo_doc }}</td>
+                <td>{{ do.descri_corto_doc }}</td>
+                <td>{{ do.importante_doc }}</td>
+                <td>{{ do.cve_control_doc }}</td>
+                <td>{{ do.estatus_grado }}</td>
+                <td>{{ do.estatus_doc }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border: 2px solid #000;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: #000;
+             color: #eee;
+         }
+         @page {
+            size: letter landscape;
+            margin: 0.5cm;
+            type: A4;
+        }
+    </style>
+
+{% endblock body %}

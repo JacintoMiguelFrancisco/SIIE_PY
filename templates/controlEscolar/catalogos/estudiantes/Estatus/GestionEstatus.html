@@ -1,0 +1,90 @@
+{% extends '../../CRUD.html' %}
+
+{% block title %}Gestión de Estatus EST/ASP{% endblock title %}
+
+{% block buttons %}
+
+<h3>Gestión de Estatus EST/ASP</h3>
+    <div class="container mb-4 mt-4">
+        <div class="row justify-content-md-center">
+            <div class="col col-12 col-sm-3 col-lg-3">
+                {% load bootstrap_icons %}
+                <a href="{% url 'export_csv_estatus' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export_xlwt_estatus' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export_pdf_estatus' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export_print_estatus' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+            </div>
+        </div>
+    </div>
+{% endblock buttons %}
+
+{% block form %}
+<form action="" method="POST">{% csrf_token %}
+
+    {{ FormEstatusEstudiante.as_p }}
+
+    <div class="form-group" >
+        <button type="submit" class="btn btn-success btn-block text-white" id="save"> Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
+    </div>
+</form>
+{% endblock form %}
+
+{% block search %}
+
+<h1>Catálogo - Estatus EST/ASP</h1>
+<form method="GET" action="{% url 'vista_Estatus' %}">
+    <div class="input-group mb-3 mt-4">
+        <input type="search" class="form-control" placeholder="Ingrese abreviatura del Estatus-Estudiante ......" name="search_est">
+        <div class="input-group-append">
+            <span class="input-group-text bg-success">
+                {% load bootstrap_icons %}
+                <button class="btn btn-success text-white">
+                    {% bs_icon 'search' size='1.5em'%}
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+{% endblock search %}
+
+{% block table %}
+<table class="table table-striped">
+    <p style="text-align: right; font-size: 25px;"> Número de registros: {{ contador }} </p>
+    <thead>
+        <tr>
+            <th>Clave.</th> 
+            <th>Consecutivo</th>
+            <th>Nombre</th> 
+            <th>Abreviatura</th>  
+            <th>Estatus</th>        
+            <th id="operaciones">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for estEst in entity %}
+        <tr>
+            {% load bootstrap_icons %}
+            <td>{{ estEst.id_evento_est }}</td>
+            <td>{{ estEst.consecutivo_est }}</td>
+            <td>{{ estEst.descri_largo_tipo_est }}</td>
+            <td>{{ estEst.descri_corto_tipo_est }}</td>
+            <td>{{ estEst.estatus_tipo_est }}</td>
+            <td class="d-flex justify-content-evenly">
+                <a href="../vista-Estatus/{{ estEst.rowid_evento_est }}/" class="btn btn-warning">
+                    {% bs_icon 'pencil-square' size='1.5em'%}
+                </a>
+                <a href="../eliminar-Estatus/{{ estEst.rowid_evento_est }}/" class="btn btn-danger">
+                    {% bs_icon 'trash' size='1.5em'%}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock table %}

@@ -238,6 +238,36 @@ class SeProIndAsp(models.Model):
 
 # -------------------------------------------- Estudiantes --------------------------------------------- #
 
+############################################## Tabla Documentación ############################
+class SeCatDocumentacion(models.Model):
+    rowid_doc = models.IntegerField(primary_key=True)
+    id_doc = models.IntegerField()
+    descri_largo_doc = models.CharField(max_length=200)
+    descri_corto_doc = models.CharField(max_length=10)
+    importante_doc = models.CharField(max_length=1)
+    cve_control_doc = models.CharField(max_length=4)
+    estatus_grado = models.CharField(max_length=15, blank=True, null=True)
+    estatus_doc = models.CharField(max_length=1, blank=True, null=True, default="A")
+    class Meta:
+        managed = False
+        db_table = 'se_cat_documentacion'
+    def __str__(self):
+        texto = "{0} / {1}"
+        return texto.format(self.descri_largo_doc, self.descri_corto_doc)
+############################################## Tabla Estatus Estudiante #######################
+class SeCatEstatusEstudiante(models.Model):
+    rowid_evento_est = models.IntegerField(primary_key=True)
+    id_evento_est = models.CharField(max_length=3)
+    consecutivo_est = models.IntegerField()
+    descri_largo_tipo_est = models.CharField(max_length=50)
+    descri_corto_tipo_est = models.CharField(max_length=10)
+    estatus_tipo_est = models.CharField(max_length=1, blank=True, null=True, default="A")
+    class Meta:
+        managed = False
+        db_table = 'se_cat_estatus_estudiante'
+    def __str__(self):
+        texto = "{0} / {1}"
+        return texto.format(self.descri_largo_tipo_est, self.descri_corto_tipo_est)
 # ############################################## APARTADO SALONES ######################################
 class SeCatSalones(models.Model):
     rowid_salon = models.IntegerField(primary_key=True)
@@ -278,9 +308,10 @@ class SeCatBecas(models.Model):
     class Meta:
         managed = False
         db_table = 'se_cat_becas'
+        
     def __str__(self):
-        texto="{0} / {1} / {2} / {3} / {4}"
-        return texto.format(self.id_becas, self.valor_ini_bec, self.valor_fin_bec, self.porcentaje_beca, self.estatus_bec)
+        texto="{0}%"
+        return texto.format(self.porcentaje_beca)
 ############################################## Tabla Tipo Cambio #######################################
 class SeCatTipoCambio(models.Model):
     rowid_tipo_cambio = models.IntegerField(primary_key=True)
@@ -306,6 +337,106 @@ class SeCatTipoBajas(models.Model):
     def __str__(self):
         texto="{0} / {1}"
         return texto.format(self.descri_largo_tipo_baj, self.descri_corto_tipo_baj)
+############################################## Tabla Grupop #####################################
+class SeCatGrupo(models.Model):
+    rowid_grupo = models.IntegerField(primary_key=True)
+    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
+    rowid_grado = models.ForeignKey(SeCatGrado, models.DO_NOTHING, db_column='rowid_grado', blank=True, null=True)
+    id_grupo = models.IntegerField()
+    descri_largo_gpo = models.CharField(max_length=60)
+    descri_corto_gpo = models.CharField(max_length=10)
+    estatus_gpo = models.CharField(max_length=1, blank=True, null=True)
+    lim_gpo = models.IntegerField(blank=True, null=True)
+    lim_rec_gpo = models.IntegerField(blank=True, null=True)
+    lim_acu_gpo = models.IntegerField(blank=True, null=True)
+    lim_acu_rec_gpo = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'se_cat_grupo'
+    def __str__(self):
+        texto="{0}"
+        return texto.format(self.descri_largo_gpo)
+############################################## Tabla Estudiante #####################################
+class SeTabEstudiante(models.Model):
+    rowid_matricula = models.IntegerField(primary_key=True)
+    rowid_becas = models.ForeignKey(SeCatBecas, models.DO_NOTHING, db_column='rowid_becas', blank=True, null=True)
+    rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
+    rowid_col = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='rowid_col', blank=True, null=True)
+    rowid_grupo = models.ForeignKey(SeCatGrupo, models.DO_NOTHING, db_column='rowid_grupo', blank=True, null=True)
+    id_matricula = models.FloatField()
+    nombre_estu = models.CharField(max_length=40)
+    paterno_est = models.CharField(max_length=30)
+    materno_est = models.CharField(max_length=30)
+    fec_nac_est = models.DateField()
+    entidad_nac = models.IntegerField(blank=True, null=True)
+    mpo_del_nac = models.IntegerField(blank=True, null=True)
+    estado_civil_est = models.CharField(max_length=1, blank=True, null=True)
+    trabaja_est = models.CharField(max_length=1, blank=True, null=True)
+    tel_trabajo = models.CharField(max_length=15, blank=True, null=True)
+    tipo_sangre_est = models.CharField(max_length=10, blank=True, null=True)
+    rfc_est = models.CharField(max_length=15)
+    curp_est = models.CharField(max_length=25)
+    direccion_est = models.CharField(max_length=60)
+    num_ext = models.CharField(max_length=30, blank=True, null=True)
+    num_int = models.CharField(max_length=30, blank=True, null=True)
+    codpos = models.CharField(max_length=5)
+    telefono_est = models.CharField(max_length=15, blank=True, null=True)
+    email_est = models.CharField(max_length=50, blank=True, null=True)
+    sexo_est = models.CharField(max_length=1)
+    edad_est = models.IntegerField(blank=True, null=True)
+    fecha_alta_est = models.DateField(blank=True, null=True)
+    user_alta_est = models.CharField(max_length=10, blank=True, null=True)
+    fecha_cambio_est = models.DateField(blank=True, null=True)
+    user_cambio_est = models.CharField(max_length=10, blank=True, null=True)
+    mat_tutor_est = models.CharField(max_length=30, blank=True, null=True)
+    pat_tutor_est = models.CharField(max_length=30, blank=True, null=True)
+    nombre_tutor_est = models.CharField(max_length=40, blank=True, null=True)
+    turno_est = models.IntegerField(blank=True, null=True)
+    generacion_est = models.IntegerField(blank=True, null=True)
+    periodo_est = models.IntegerField(blank=True, null=True)
+    anio_est = models.IntegerField(blank=True, null=True)
+    no_folio_est = models.IntegerField(blank=True, null=True)
+    id_tipo_esc_est = models.IntegerField(blank=True, null=True)
+    id_area_bach_est = models.IntegerField(blank=True, null=True)
+    entidad_bach = models.IntegerField(blank=True, null=True)
+    mpo_del_bach = models.IntegerField(blank=True, null=True)
+    fecha_ini_bach = models.IntegerField(blank=True, null=True)
+    fecha_fin_bach = models.IntegerField(blank=True, null=True)
+    promedio_gral_bach = models.DecimalField(max_digits=5, decimal_places=2)
+    fecha_vig_est = models.DateField(blank=True, null=True)
+    estatus_inscri_est = models.CharField(max_length=1, blank=True, null=True)
+    imss_est = models.CharField(max_length=25, blank=True, null=True)
+    clinica_est = models.IntegerField(blank=True, null=True)
+    num_servicio = models.FloatField(blank=True, null=True)
+    fec_ser_social = models.DateField(blank=True, null=True)
+    fecha_repos_est = models.DateField(blank=True, null=True)
+    matri_est = models.FloatField(blank=True, null=True)
+    beca_pro_est = models.CharField(max_length=1, blank=True, null=True)
+    usuario_est = models.CharField(max_length=10, blank=True, null=True)
+    password_est = models.CharField(max_length=10, blank=True, null=True)
+    estatus_biblio = models.CharField(max_length=1, blank=True, null=True)
+    tipo_carrera_est = models.IntegerField(blank=True, null=True)
+    otras_uts = models.IntegerField(blank=True, null=True)
+    no_cedula_tsu = models.CharField(max_length=30, blank=True, null=True)
+    no_referencia = models.CharField(max_length=20, blank=True, null=True)
+    grasc = models.CharField(max_length=2, blank=True, null=True)
+    institucion_seguro = models.CharField(max_length=25, blank=True, null=True)
+    otrainstitucionseguro = models.CharField(max_length=40, blank=True, null=True)
+    nacionalidad = models.CharField(max_length=20, blank=True, null=True)
+    discapacidad = models.CharField(max_length=5, blank=True, null=True)
+    tipodiscapacidad = models.CharField(max_length=40, blank=True, null=True)
+    foliocertificado = models.CharField(max_length=40, blank=True, null=True)
+    fechaexpedicioncer = models.DateField(blank=True, null=True)
+    equivalencia = models.CharField(max_length=5, blank=True, null=True)
+    parentescotutor = models.CharField(max_length=40, blank=True, null=True)
+    tipoestudiante = models.CharField(max_length=5, blank=True, null=True)
+    estatus_est = models.CharField(max_length=1, blank=True, null=True, default="A")
+
+    
+    class Meta:
+        managed = False
+        db_table = 'se_tab_estudiante'
 
 # -------------------------------------------- Plan de Estudios  --------------------------------------------- #
 

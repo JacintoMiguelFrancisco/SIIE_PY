@@ -12,7 +12,18 @@
         <div class="card">
             <div class="card-body">
                 <form action="" method="POST">{% csrf_token %}
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <strong class="text-dark">{{ message }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
                     {{ FormPeriodos.as_p }}
+                    
                     <br>
                     <div class="form-group d-flex justify-content-evenly">  
                         <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>  

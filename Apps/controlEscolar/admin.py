@@ -10,7 +10,7 @@ from .models import (
     SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia,  # Direcciones
     SeCatUniversidad, SeCatDivision, SeCatCarrera, SeCatPeriodos, # Universidades
     SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
-    SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
+    SeTabEstudiante, SeCatDocumentacion,SeCatGrupo,SeCatEstatusEstudiante, SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
     SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
 )
@@ -140,6 +140,40 @@ class IndAspAdmin(admin.ModelAdmin):
 
 # -------------------------------------------------------- APARTADO ESTUDIANTES -------------------------------------------------- #
 
+
+##################### Admin de Plan de estudio  ################# 
+@admin.register(SeTabEstudiante)
+class EstudianteAdmin(admin.ModelAdmin):
+    list_display = ('rowid_matricula', 'rowid_becas', 'rowid_car', 'rowid_col', 'rowid_grupo', 'id_matricula', 'nombre_estu',
+    'paterno_est', 'materno_est', 'rfc_est', 'curp_est', 'direccion_est', 'telefono_est', 'email_est', 'sexo_est', 'fecha_alta_est', 'user_alta_est',
+    'fecha_cambio_est', 'user_cambio_est', 'estatus_est', 'codpos', 'fec_nac_est', 'turno_est', 'generacion_est', 'periodo_est', 'anio_est',
+    'estado_civil_est', 'mat_tutor_est', 'pat_tutor_est', 'nombre_tutor_est', 'no_folio_est', 'entidad_nac', 'mpo_del_nac', 'trabaja_est', 'tipo_sangre_est',
+    'id_tipo_esc_est', 'id_area_bach_est', 'entidad_bach', 'mpo_del_bach', 'fecha_ini_bach', 'fecha_fin_bach', 'promedio_gral_bach', 'tel_trabajo',
+    'edad_est', 'fecha_vig_est', 'estatus_inscri_est', 'imss_est', 'clinica_est', 'num_servicio', 'fec_ser_social', 'fecha_repos_est',
+    'matri_est', 'beca_pro_est', 'usuario_est', 'password_est', 'estatus_biblio', 'tipo_carrera_est', 'otras_uts', 'otras_uts',
+    'no_cedula_tsu', 'no_referencia', 'grasc', 'institucion_seguro', 'otrainstitucionseguro', 'nacionalidad',
+    'discapacidad', 'tipodiscapacidad', 'foliocertificado', 'fechaexpedicioncer', 'equivalencia', 'parentescotutor', 'tipoestudiante',
+    'num_ext', 'num_int')
+    search_fields =['rowid_matricula']
+    list_filter = ['estatus_est']
+###############  Documentación  ##################
+@admin.register(SeCatDocumentacion)
+class DocumentacionAdmin(admin.ModelAdmin):
+    list_display = ('rowid_doc', 'id_doc' ,'descri_corto_doc' ,'descri_largo_doc' ,'importante_doc', 'cve_control_doc' ,'estatus_grado', 'estatus_doc' )
+    search_fields =['rowid_doc']
+    list_filter = ['estatus_doc']
+##################### Grupo ######################
+@admin.register(SeCatGrupo)
+class GrupoAdmin(admin.ModelAdmin):
+    list_display = ('rowid_grupo','rowid_car','rowid_grado','id_grupo','descri_largo_gpo','descri_corto_gpo','lim_gpo','lim_acu_gpo','lim_rec_gpo','lim_acu_rec_gpo','estatus_gpo')
+    search_fields =['rowid_grupo']
+    list_filter = ['estatus_gpo']
+############### Estatus Estudiante ###############
+@admin.register(SeCatEstatusEstudiante)
+class EstatusEstAdmin(admin.ModelAdmin):
+    list_display = ('rowid_evento_est', 'id_evento_est' ,'consecutivo_est' ,'descri_largo_tipo_est', 'descri_largo_tipo_est', 'estatus_tipo_est')
+    search_fields =['rowid_evento_est']
+    list_filter = ['estatus_tipo_est']
 # ##################### Admin de Grado  ####################### 
 @admin.register(SeCatSalones)
 class GradoAdmin(admin.ModelAdmin):

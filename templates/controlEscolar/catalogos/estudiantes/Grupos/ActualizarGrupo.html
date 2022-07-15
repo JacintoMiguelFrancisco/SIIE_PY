@@ -1,5 +1,5 @@
 {% extends '../../../../base.html' %}
-{% block title %}Catalogo de Sueldos{% endblock title %}
+{% block title %}Cátálogo - Grupos{% endblock title %}
 
 {% block navbar %}
   {% include 'NavBar.html' %}
@@ -8,7 +8,7 @@
 {% block body %}
 <div class="row">
     <div class="col-md-4 offset-md-4">
-        <h2 class="fs-1" style="text-align: center;">Editar Sueldo</h2>
+        <h2 class="fs-1" style="text-align: center;">Editar Grupo:</h2>
         <div class="card">
             <div class="card-body">
                 <form action="" method="POST">{% csrf_token %}
@@ -22,11 +22,11 @@
                         {% endfor %}
                     {% endif %}
 
-                    {{ FormSueldo.as_p }}
-                    
+                    {{ FormGrupo.as_p }}
+
                     <div class="form-group d-flex justify-content-evenly">  
                         <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>  
-                        <a class="btn btn-danger btn-block" href="{% url 'vista_su' %}">Cancelar</a>   
+                        <a class="btn btn-danger btn-block" href="{% url 'vista_Grupo' %}">Cancelar</a>   
                     </div>
                 </form>
             </div>
