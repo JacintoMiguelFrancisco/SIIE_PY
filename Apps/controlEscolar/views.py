@@ -1146,7 +1146,7 @@ def vistaPlanE(request):
             return redirect('vista_Plan_Estudios')#redirecciona a la vista
         else:
             messages.warning(request, "¡Alguno de los campos no es valido!")
-            return render(request, "controlEscolar/catalogos/planEstudio/planEstudios/GestionPE.html",{'entity' : listaPlanE, 'paginator' : paginator, 'FormsPlaE' : form, 'contador' : contador_id,})
+            return render(request, "controlEscolar/catalogos/planEstudio/PlanEstudios/GestionPE.html",{'entity' : listaPlanE, 'paginator' : paginator, 'FormsPlaE' : form, 'contador' : contador_id,})
     #Busqueda del search
     elif request.method =='GET':
         busqueda = request.GET.get("search_planE", None)
@@ -1164,7 +1164,7 @@ def vistaPlanE(request):
         'FormsPlaE' : form,
         'contador' : contador_id,
     }
-    return render(request, "controlEscolar/catalogos/planEstudio/planEstudios/GestionPE.html",data)
+    return render(request, "controlEscolar/catalogos/planEstudio/PlanEstudios/GestionPE.html",data)
 # Update de estatus de 'A' a 'B' "ELIMINACION"
 @login_required
 def eliminarPlan(request, rowid_plan_est):
@@ -1202,7 +1202,7 @@ class Export_print_planE(LoginRequiredMixin, View):
             'count': listaPlan.count(),
             'planes': listaPlan
         }
-        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/planEstudios/ListarPE.html', data)
+        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/PlanEstudios/ListarPE.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 #ESTA SI JALA COMO PDF NO LAS MAMADAS DE ARRIBA :D
 class Export_pdf_planE(LoginRequiredMixin, View):
@@ -1212,7 +1212,7 @@ class Export_pdf_planE(LoginRequiredMixin, View):
             'count': listaPlan.count(),
             'planes': listaPlan
         }
-        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/planEstudios/ListarPE.html', data)
+        pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/PlanEstudios/ListarPE.html', data)
         response = HttpResponse(pdf, content_type='application/pdf')
         filename = 'ListaPlanesEstudio.pdf'
         content = "attachment; filename= %s" %(filename)
