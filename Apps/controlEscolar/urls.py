@@ -39,6 +39,14 @@ urlpatterns = [
     path('export-xlwt-municipios/', views.export_xlwt_municipios, name="export_xlwt_municipios"),
     path('export-print-municipios', views.Export_print_municipios.as_view(), name="export_print_municipios"),
     path('listaMunicipios/', views.listaMunicipios),
+# CRUD ASENTAMIENTO
+    path('vista-asen/', views.vistaAsen, name="vista_asen"),
+    path('eliminar-asen/<int:rowid_asentamiento>/', views.eliminarAsen, name="eliminar_asen"),
+    path('vista-asen/<int:rowid_asentamiento>/', views.vista_asen_detail, name="vista_asen"),
+    path('export-pdf-asen/', views.Export_pdf_asen.as_view(), name="export_pdf_asen"),
+    path('export-csv-asen/', views.export_csv_asen, name="export_csv_asen"),
+    path('export-xlwt-asen/', views.export_xlwt_asen, name="export_xlwt_asen"),
+    path('export-print-asen/', views.Export_print_asen.as_view(), name="export_print_asen"),
 # CRUD COLONIAS
     path('vistaColonias/', views.vistaColonias, name="vistaColonias"), 
     path('eliminarColonia/<int:rowid_col>/', views.eliminarColonia, name="eliminar-colonia"),
@@ -132,6 +140,14 @@ urlpatterns = [
 
 # -------------------------------------------- Aspirantes --------------------------------------------- #
 
+# CRUD Escuela de Procedencia
+    path('vista-escpro/', views.vistaEscProc, name="vista_escpro"),
+    path('eliminar-escpro/<int:rowid_esc_proc>/', views.eliminarEscProc, name="eliminar_escpro"),
+    path('vista-escpro/<int:rowid_esc_proc>/', views.vista_escpro_detail, name="vista_escpro"),
+    path('export-pdf-escpro/', views.Export_pdf_escpro.as_view(), name="export_pdf_escpro"),
+    path('export-csv-escpro/', views.export_csv_escpro, name="export_csv_escpro"),
+    path('export-xlwt-escpro/', views.export_xlwt_escpro, name="export_xlwt_escpro"),
+    path('export-print-escpro/', views.Export_print_escpro.as_view(), name="export_print_escpro"),
 # CRUD MEDIO DE DIFUSION
     path('vista-Medios/', views.vista_Medios, name="vista_Medios"), 
     path('eliminar-Medio/<int:rowid_medio_dif>/', views.eliminar_Medio, name="eliminar_medio"),

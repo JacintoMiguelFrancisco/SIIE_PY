@@ -1,32 +1,30 @@
 {% extends '../../../../base.html' %}
 
-{% block title %}Lista Colonias{% endblock title %}
+{% block title %}Lista Escuela de Procedencia{% endblock title %}
 
 {% block body %}
-    <h2>Lista Colonias</h2>
-    <h3>Cantidad de Colonias: {{ count }}</h3>
+    <h2>Lista Escuelas de Procedencia</h2>
+    <h3>Cantidad de Escuelas: {{ count }}</h3>
     <table>
         <thead>
             <tr>
-                <th class="cabecera">Clave</th>
-                <th class="cabecera">Municipio</th>
-                <th class="cabecera">Asentamiento</th>
-                <th class="cabecera">Colonia</th>
-                <th class="cabecera">Abreviación</th>
-                <th class="cabecera">Codigo Postal</th>
-                <th class="cabecera">Estatus</th>    
+                <th class="cabecera">Municipio/Delegacion</th>
+                <th class="cabecera">CCT</th>
+                <th class="cabecera">Nombre de Escuela</th>
+                <th class="cabecera">Tipo de Escuela</th>
+                <th class="cabecera">Servicio</th>
+                <th class="cabecera">Estatus</th>
             </tr>
         </thead>
         <tbody>
-            {% for c in colonias %}
+            {% for ep in escpro %}
             <tr >
-                <td>{{ c.id_col }}</td>
-                <td>{{ c.rowid_mundel.descri_largo_mundel }}</td>
-                <td>{{ c.rowid_asentamiento.descri_largo_asentamiento }}</td>
-                <td>{{ c.descri_largo_col }}</td>
-                <td>{{ c.descrip_corto_col }}</td>
-                <td>{{ c.codposcol }}</td>
-                <td>{{ c.estatus_col }}</td>
+                <td>{{ ep.rowid_mundel. }}</td>
+                <td>{{ ep.cct_esc_proc }}</td>
+                <td>{{ ep.nombre_esc_proc }}</td>
+                <td>{{ ep.control_esc_proc }}</td>
+                <td>{{ ep.servicio_esc_proc }}</td>
+                <td>{{ ep.estatus_esc_proc }}</td>
             </tr>
             {% endfor %}
         </tbody>

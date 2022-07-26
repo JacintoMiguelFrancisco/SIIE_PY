@@ -3,10 +3,10 @@ from django import forms
 
 #Models
 from .models import (
-    SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia,  # Direcciones
+    SeCatPais, SeCatEstado, SeCatMunicipioDelegacion, SeCatAsentamiento,SeCatColonia,  # Direcciones
     SeCatUniversidad, SeCatDivision, SeCatCarrera, SeCatPeriodos, # Universidades
     SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
-    SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
+    SeCatEscuelaProcedencia, SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
     SeTabEstudiante, SeCatDocumentacion,SeCatGrupo,SeCatEstatusEstudiante, SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
     SeTabAspirante # Operaciones / Aspirante
@@ -111,6 +111,34 @@ class FormMunicipiosDelegaciones(forms.ModelForm):
             'descri_largo_mundel' : 'Municipio/Delegación *',
             'descri_corto_mundel' : 'Abreviatura *',
         }
+# Form Asentamiento 
+class FormAsentamiento(forms.ModelForm):
+    class Meta:
+        model = SeCatAsentamiento
+        fields = '__all__'
+        exclude = ('estatus_asentamiento','rowid_asentamiento')
+        widgets = {
+            'id_asentamiento': forms.NumberInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Por favor, Ingrese la clave del Asentamiento',
+                                                        'style' : 'border-color:#21B64A;',
+                                                        }),
+            'descri_largo_asentamiento': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Por favor, Ingrese el nombre del Asentamiento',
+                                                        'style' : 'border-color:#21B64A;',
+                                                        }),
+            'descri_corto_asentamiento': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Por favor, Ingrese la abreviatura del Asentamiento',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+        }
+        labels = {
+                'id_asentamiento': 'Clave del Asentamiento *',
+                'descri_largo_asentamiento': 'Nombre Asentamiento *',
+                'descri_corto_asentamiento': 'Abreviatura *',
+        }
 # FORM Colonias
 class FormColonias(forms.ModelForm):
     class Meta:
@@ -119,6 +147,10 @@ class FormColonias(forms.ModelForm):
         exclude = ('rowid_col', 'estatus_col') 
         widgets = {
             'rowid_mundel': forms.Select(attrs={'class': 'form-control',
+                                            'required' : 'True',
+                                            'style' : 'border-color:#21B64A;'
+                                            }),
+            'rowid_asentamiento': forms.Select(attrs={'class': 'form-control',
                                             'required' : 'True',
                                             'style' : 'border-color:#21B64A;'
                                             }),
@@ -144,6 +176,7 @@ class FormColonias(forms.ModelForm):
         }
         labels = {
             'rowid_mundel': 'Municipio *',
+            'rowid_asentamiento': 'Asentamiento *',
             'id_col': 'Clave *',
             'descri_largo_col': 'Colonia *',
             'descrip_corto_col': 'Abreviatura *',
@@ -525,6 +558,45 @@ class FormsPeaI(forms.ModelForm):
 
 # -------------------------------------------- Aspirantes --------------------------------------------- #
 
+################## Escuela Procedencia ########################
+class FormEscProc(forms.ModelForm):
+    class Meta:
+        model = SeCatEscuelaProcedencia
+        fields = '__all__'
+        exclude = ('estatus_esc_proc','rowid_esc_proc')
+        widgets = {
+            'rowid_mundel': forms.Select(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'style' : 'border-color:#21B64A;',
+                                                        }),
+            'cct_esc_proc': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Por favor, Ingrese la clave del Centro de Trabajo',
+                                                        'style' : 'border-color:#21B64A;',
+                                                        }),
+            'nombre_esc_proc': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Por favor, Ingrese el nombre de la Escuela de Procedencia',
+                                                        'style' : 'border-color:#21B64A;',
+                                                        }),
+            'control_esc_proc': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Por favor, Ingrese el control de la escuela de procedencia',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+            'servicio_esc_proc': forms.TextInput(attrs={'class': 'form-control',
+                                                        'required' : 'True',
+                                                        'placeholder': 'Por favor, Ingrese el servicio de la escuela de procedencia',
+                                                        'style' : 'border-color:#21B64A;'
+                                                        }),
+        }
+        labels = {
+                'rowid_mundel': 'Municipio *',
+                'cct_esc_proc': 'Clave del Centro de Trabajo *',
+                'nombre_esc_proc': 'Nombre de la Escuela de Procedencia *',
+                'control_esc_proc': 'Tipo de Escuela *',
+                'servicio_esc_proc': 'Servicio que ofrece la escuela *',
+        }
 # FORMS MEDIOS DE DIFUSION 
 class FormMediosDifusion(forms.ModelForm):
     class Meta:

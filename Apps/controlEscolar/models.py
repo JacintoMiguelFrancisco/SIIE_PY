@@ -49,15 +49,29 @@ class SeCatMunicipioDelegacion(models.Model):
     def __str__(self):
         texto="{0} - {1} "
         return texto.format(self.id_mundel, self.descri_largo_mundel)
+############################################## Asentamiento #############################################
+class SeCatAsentamiento(models.Model):
+    rowid_asentamiento = models.AutoField(primary_key=True)
+    id_asentamiento = models.IntegerField()
+    descri_largo_asentamiento = models.CharField(max_length=50)
+    descri_corto_asentamiento = models.CharField(max_length=10)
+    estatus_asentamiento = models.CharField(max_length=1, default="A")
+    class Meta:
+        managed = False
+        db_table = 'se_cat_asentamiento'
+    def __str__(self):
+        texto="{0}-{1}"
+        return texto.format(self.descri_largo_asentamiento, self.descri_corto_asentamiento)
 ############################################## Tabla Colonias ############################################
 class SeCatColonia(models.Model):
-    rowid_col = models.AutoField(primary_key=True)
+    rowid_col = models.IntegerField(primary_key=True)
     rowid_mundel = models.ForeignKey('SeCatMunicipioDelegacion', models.DO_NOTHING, db_column='rowid_mundel', blank=True, null=True)
+    rowid_asentamiento = models.ForeignKey(SeCatAsentamiento, models.DO_NOTHING, db_column='rowid_asentamiento', blank=True, null=True)
     id_col = models.IntegerField()
-    descri_largo_col = models.CharField(max_length=50)
+    descri_largo_col = models.CharField(max_length=150)
     descrip_corto_col = models.CharField(max_length=10)
+    estatus_col = models.CharField(max_length=1, blank=True, null=True)
     codposcol = models.CharField(max_length=5, blank=True, null=True)
-    estatus_col = models.CharField(max_length=1, blank=True, null=True, default="A")
 
     class Meta:
         managed = False
@@ -158,6 +172,21 @@ class SeCatPeriodos(models.Model):
 
 # -------------------------------------------- Aspirantes --------------------------------------------- #
 
+##############################################  Escuela Procedencia ############################################## 
+class SeCatEscuelaProcedencia(models.Model):
+    rowid_esc_proc = models.AutoField(primary_key=True)
+    rowid_mundel = models.ForeignKey('SeCatMunicipioDelegacion', models.DO_NOTHING, db_column='rowid_mundel', blank=True, null=True)
+    cct_esc_proc = models.CharField(max_length=20)
+    nombre_esc_proc = models.CharField(max_length=200)
+    control_esc_proc = models.CharField(max_length=20)
+    servicio_esc_proc = models.CharField(max_length=50, blank=True, null=True)
+    estatus_esc_proc = models.CharField(max_length=1, blank=True, null=True, default="A")
+    class Meta:
+        managed = False
+        db_table = 'se_cat_escuela_procedencia'
+    def __str__(self):
+        texto="{0} - {1} "
+        return texto.format(self.cct_esc_proc, self.nombre_esc_proc)
 ############################################## Tabla Medios de Difusión ################################
 class SeCatMedioDifusion(models.Model):
     rowid_medio_dif = models.IntegerField(primary_key=True)

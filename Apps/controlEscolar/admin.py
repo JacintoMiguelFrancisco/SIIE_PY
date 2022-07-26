@@ -1,15 +1,15 @@
 from django.contrib import admin
 
+# Import - export
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 # Register your models here.
 #Models
-#Models
 from .models import (
-    SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia,  # Direcciones
+    SeCatPais, SeCatEstado, SeCatMunicipioDelegacion, SeCatAsentamiento, SeCatColonia,  # Direcciones
     SeCatUniversidad, SeCatDivision, SeCatCarrera, SeCatPeriodos, # Universidades
-    SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
+    SeCatEscuelaProcedencia, SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
     SeTabEstudiante, SeCatDocumentacion,SeCatGrupo,SeCatEstatusEstudiante, SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
     SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
@@ -39,6 +39,17 @@ class MunicipioDelegacionAdmin(admin.ModelAdmin):
     list_display = ('rowid_mundel','rowid_edo','id_mundel','descri_largo_mundel','descri_corto_mundel','estatus_mundel')
     search_fields = ['id_mundel', 'descri_largo_mundel']
     list_filter = ['estatus_mundel']
+##################### Asentamiento ################################
+class AsentamientoResources(resources.ModelResource):
+    fields = ('rowid_asentamiento', 'id_asentamiento', 'descri_largo_asentamiento', 'descri_corto_asentamiento', 'estatus_asentamiento')
+    class Meta:
+        model = SeCatAsentamiento
+@admin.register(SeCatAsentamiento)
+class AsentamientoAdmin(ImportExportModelAdmin):
+    resources_class = AsentamientoResources
+    list_display = ('rowid_asentamiento', 'id_asentamiento', 'descri_largo_asentamiento', 'descri_corto_asentamiento', 'estatus_asentamiento')
+    search_fields = ['rowid_asentamiento', 'descri_largo_asentamiento', 'descri_corto_asentamiento']
+    list_filter = ['estatus_asentamiento']
 # ##################### Admin de Colonias  ###################### 
 @admin.register(SeCatColonia)
 class ColoniaAdmin(admin.ModelAdmin):
@@ -113,6 +124,17 @@ class PeaiAdmin(admin.ModelAdmin):
  
 # -------------------------------------------- Aspirantes --------------------------------------------- #
 
+##################### Escuela de Procedencia ################################
+class EscProcResources(resources.ModelResource):
+    fields = ('rowid_esc_proc', 'rowid_mundel', 'cct_esc_proc', 'nombre_esc_proc', 'control_esc_proc', 'servicio_esc_proc', 'estatus_esc_proc')
+    class Meta:
+        model = SeCatEscuelaProcedencia
+@admin.register(SeCatEscuelaProcedencia)
+class EscProcAdmin(ImportExportModelAdmin):
+    resources_class = EscProcResources
+    list_display = ('rowid_esc_proc', 'rowid_mundel', 'cct_esc_proc', 'nombre_esc_proc', 'control_esc_proc', 'servicio_esc_proc', 'estatus_esc_proc')
+    search_fields = ['rowid_esc_proc', 'cct_esc_proc', 'nombre_esc_proc', 'estatus_esc_proc']
+    list_filter = ['estatus_esc_proc']
 ##################### Admin de Medio de difusion ################# 
 @admin.register(SeCatMedioDifusion)
 class MedioDifusionAdmin(admin.ModelAdmin):

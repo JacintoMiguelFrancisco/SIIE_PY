@@ -1,24 +1,24 @@
 {% extends '../../CRUD.html' %}
 
-{% block title %}Gestión Colonias{% endblock title %}
+{% block title %}Gestión Asentamientos{% endblock title %}
 
 {% block buttons %}
 {% comment %} Espera los botones imprimir {% endcomment %}
-<h3>Gestión de Colonias</h3>
+<h3>Gestión de Asentamientos</h3>
     <div class="container mb-4 mt-4">
         <div class="row justify-content-md-center">
             <div class="col col-12 col-sm-3 col-lg-3">
                 {% load bootstrap_icons %}
-                <a href="{% url 'export-csv-colonias' %}" type="button" class="btn btn-primary" id="button"> CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+                <a href="{% url 'export_csv_asen' %}" type="button" class="btn btn-primary" id="button"> CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-xlwt-colonias' %}" type="button" class="btn btn-success" id="button"> Excel {% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+                <a href="{% url 'export_xlwt_asen' %}" type="button" class="btn btn-success" id="button"> Excel {% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-pdf-colonias' %}" type="button" class="btn btn-danger" id="button"> PDF {% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+                <a href="{% url 'export_pdf_asen' %}" type="button" class="btn btn-danger" id="button"> PDF {% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
             </div>
             <div class="col col-12 col-sm-3 col-lg-3">
-                <a href="{% url 'export-print-colonias' %}" type="button" class="btn btn-secondary"id="button"> Print {% bs_icon 'printer' size='1.5em'%}</a>
+                <a href="{% url 'export_print_asen' %}" type="button" class="btn btn-secondary"id="button"> Print {% bs_icon 'printer' size='1.5em'%}</a>
             </div>
         </div>
     </div>
@@ -29,7 +29,7 @@
 {% block form %}
     <form action="" method="POST">{% csrf_token %}
 
-            {{ FormColonias.as_p }}
+            {{ FormAsentamiento.as_p }}
             
         <div class="form-group" >
             <button type="submit" class="btn btn-success btn-block text-white" id="save"> Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
@@ -38,10 +38,10 @@
 {% endblock form %}
 {% block search %}
 {% comment %} Busqueda por nombre {% endcomment %}
-<h1>Catálogo - Colonias</h1>
-<form method="GET" action="{% url 'vistaColonias' %}">
+<h1>Catálogo - Asentamientos</h1>
+<form method="GET" action="{% url 'vista_asen' %}">
     <div class="input-group mb-3 mt-4">
-        <input type="search" class="form-control" placeholder="Escribe el nombre de la Colonia..." name="search_colonias">
+        <input type="search" class="form-control" placeholder="Escribe el nombre del Asentamiento..." name="search_asen">
         <div class="input-group-append">
             <span class="input-group-text bg-success">
                 {% load bootstrap_icons %}
@@ -56,35 +56,29 @@
 {% comment %} Espera una tabla que se llena con un for {% endcomment %}
 {% block table %}
 <table class="table table-striped">
-    <p style="text-align: right; font-size: 25px;"> Número de Colonias: {{ contador }} </p>
+    <p style="text-align: right; font-size: 25px;"> Número de Asentamientos: {{ contador }} </p>
     <thead>
         <tr>
             <th>Clave</th>
-            <th>Municipio</th>
             <th>Asentamiento</th>
-            <th>Colonia</th>
             <th>Abreviación</th>
-            <th>Codigo Postal</th>
             <th>Estatus</th>
             <th id="operaciones">Operaciones</th>
         </tr>
     </thead>
     <tbody>
-        {% for c in entity %}
+        {% for a in entity %}
         <tr>
             {% load bootstrap_icons %}
-            <td>{{ c.id_col }}</td>
-            <td>{{ c.rowid_mundel.descri_largo_mundel }}</td>
-            <td>{{ c.rowid_asentamiento.descri_largo_asentamiento }}</td>
-            <td>{{ c.descri_largo_col }}</td>
-            <td>{{ c.descrip_corto_col }}</td>
-            <td>{{ c.codposcol }}</td>
-            <td>{{ c.estatus_col }}</td>
+            <td>{{ a.id_asentamiento }}</td>
+            <td>{{ a.descri_largo_asentamiento }}</td>
+            <td>{{ a.descri_corto_asentamiento }}</td>
+            <td>{{ a.estatus_asentamiento }}</td>
             <td class="d-flex justify-content-evenly">
-                <a href="../vistaColonias/{{c.rowid_col}}/" class="btn btn-warning">
+                <a href="../vista-asen/{{a.rowid_asentamiento}}/" class="btn btn-warning">
                     {% bs_icon 'pencil-square' size='1.5em'%}
                 </a>
-                <a href="../eliminarColonia/{{c.rowid_col}}/" class="btn btn-danger">
+                <a href="../eliminar-asen/{{a.rowid_asentamiento}}/" class="btn btn-danger">
                     {% bs_icon 'trash' size='1.5em'%}
                 </a>
             </td>

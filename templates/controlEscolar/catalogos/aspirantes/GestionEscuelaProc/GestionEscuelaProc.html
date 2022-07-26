@@ -1,0 +1,97 @@
+{% extends '../../CRUD.html' %}
+
+{% block title %}Gestion Escuela de Procedencia{% endblock title %}
+
+{% block buttons %}
+{% comment %} Espera los botones imprimir {% endcomment %}
+<h3>Gestión Escuela de Procedencia</h3>
+    <div class="container mb-4 mt-4">
+        <div class="row justify-content-md-center">
+            <div class="col col-12 col-sm-3 col-lg-3">
+                {% load bootstrap_icons %}
+                <a href="{% url 'export_csv_escpro' %}" type="button" class="btn btn-primary" id="button">CSV {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export_xlwt_escpro' %}" type="button" class="btn btn-success" id="button">Excel{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export_pdf_escpro' %}" type="button" class="btn btn-danger" id="button">PDF{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
+            </div>
+            <div class="col col-12 col-sm-3 col-lg-3">
+                <a href="{% url 'export_print_escpro' %}" type="button" class="btn btn-secondary"id="button">Print {% bs_icon 'printer' size='1.5em'%}</a>
+            </div>
+        </div>
+    </div>
+{% endblock buttons %}
+
+
+{% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
+{% block form %}
+<form action="" method="POST">{% csrf_token %}
+    <div class="form-group">
+
+        {{ FormEscProc.as_p }}
+
+    </div>
+    <div class="form-group" >
+        <button type="submit" class="btn btn-success btn-block text-white" id="save">Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
+    </div>
+</form>
+{% endblock form %}
+
+{% block search %}
+{% comment %} Busqueda por nombre {% endcomment %}
+<h1>Catálogo - Escuela de Procedencia</h1>
+<form method="GET" action="{% url 'vista_escpro' %}">
+    <div class="input-group mb-3 mt-4">
+        <input type="search" class="form-control" placeholder="Escribe nombre Escuela de Procedencia..." name="search_escpro">
+        <div class="input-group-append">
+            <span class="input-group-text bg-success">
+                {% load bootstrap_icons %}
+                <button class="btn btn-success text-white">
+                    {% bs_icon 'search' size='1.5em'%}
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+{% endblock search %}
+
+{% comment %} Espera una tabla que se llena con un for {% endcomment %}
+{% block table %}
+<table class="table table-striped">
+    <p style="text-align: right; font-size: 25px;">Número de Escuelas: {{ contador }} </p>
+    <thead>
+        <tr>
+            <th>Municipio/Delegacion</th>
+            <th>CCT</th>
+            <th>Nombre de Escuela</th>
+            <th>Tipo Escuela</th>
+            <th>Servicio</th>
+            <th>Estatus</th>
+            <th id="operaciones">Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ep in entity %}
+        <tr>
+            {% load bootstrap_icons %}
+            <td>{{ ep.rowid_mundel.descri_largo_mundel }}</td>
+            <td>{{ ep.cct_esc_proc }}</td>
+            <td>{{ ep.nombre_esc_proc }}</td>
+            <td>{{ ep.control_esc_proc }}</td>
+            <td>{{ ep.servicio_esc_proc }}</td>
+            <td>{{ ep.estatus_esc_proc }}</td>
+            <td class="d-flex justify-content-evenly">
+                <a href="../vista-escpro/{{ ep.rowid_esc_proc }}/" class="btn btn-warning">
+                    {% bs_icon 'pencil-square' size='1.5em'%}
+                </a>
+                <a href="../eliminar-escpro/{{ ep.rowid_esc_proc }}/" class="btn btn-danger">
+                    {% bs_icon 'trash' size='1.5em'%}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock table %}

@@ -19,9 +19,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 #Models
 from .models import (
-    SeCatPais, SeCatEstado, SeCatMunicipioDelegacion,SeCatColonia,  # Direcciones
+    SeCatPais, SeCatEstado, SeCatMunicipioDelegacion, SeCatAsentamiento, SeCatColonia,  # Direcciones
     SeCatUniversidad, SeCatDivision, SeCatCarrera, SeCatPeriodos, # Universidades
-    SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
+    SeCatEscuelaProcedencia, SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
     SeTabEstudiante, SeCatDocumentacion, SeCatGrupo, SeCatEstatusEstudiante, SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
     SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
@@ -30,9 +30,9 @@ from .models import (
 from django.views.generic import View
 #formularios
 from .forms import (
-    FormPaises, FormEstados, FormMunicipiosDelegaciones, FormColonias, # Direcciones
+    FormPaises, FormEstados, FormMunicipiosDelegaciones, FormAsentamiento, FormColonias, # Direcciones
     FormUniversidad, FormDivisiones, FormCarreras, FormPeriodos, # Universidades
-    FormMediosDifusion, FormTiposEscuelas, FormAreaBachi, FormIndAsp, # Aspirantes
+    FormEscProc, FormMediosDifusion, FormTiposEscuelas, FormAreaBachi, FormIndAsp, # Aspirantes
     FormsEstudiante, FormDocumentacion, FormGrupo, FormEstatusEstudiante,FormGrados, FormSalones, FormTipoBajas, FormBecas, FormTipoCambio, # Estudintes
     FormEmpleado, FormsTipoPue, FormSueldo, FormNivAca, FormPlaza, FormAdscripcion, FormActividades, FormInstitucion, FormEmpCar, # Empleados
     FormsPlaE, FormsAsignatura, FormsIndicador, FormsPeA, FormsPeaI, # Plan de Estudio
@@ -455,6 +455,130 @@ def listaMunicipios(request):
     # listaPaises=SeCatPais.objects.filter(estatus_pais="A") 
     return render(request, "controlEscolar/catalogos/direcciones/GestionMunicipios/listaMunicipios.html", {"municipios":listaMunicipios})
 
+##############################################   Asentamiento   #########################################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaAsen(request):
+    listaAsen = SeCatAsentamiento.objects.filter(estatus_asentamiento="A").order_by('rowid_asentamiento')
+    contador_id = listaAsen.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaAsen, 7)
+        listaAsen = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST':
+        form = FormAsentamiento(request.POST)
+        if form.is_valid():
+            asen = form.save(commit=False)
+            ultimo_id = SeCatAsentamiento.objects.all().order_by('rowid_asentamiento').last()
+            asen.rowid_asentamiento = ultimo_id.rowid_asentamiento + 1
+            asen.save()
+            messages.success(request, "¡Asentamiento agregado con exito!")
+            return redirect('vista_asen')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/direcciones/GestionAsentamiento/GestionAsentamiento.html",{'entity' : listaAsen,'paginator' : paginator,'FormAsentamiento' : form,'contador': contador_id})
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_asen", None)
+        if busqueda:
+            listaAsen = SeCatAsentamiento.objects.filter(
+                Q(descri_largo_asentamiento__icontains = busqueda),
+                Q(estatus_asentamiento__icontains = "A")
+            ).distinct()
+    form = FormAsentamiento()
+    data = {
+        'entity' : listaAsen,
+        'paginator' : paginator,
+        'FormAsentamiento' : form,
+        'contador': contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/direcciones/GestionAsentamiento/GestionAsentamiento.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarAsen(request, rowid_asentamiento):
+    try:
+        asen = SeCatAsentamiento.objects.get(rowid_asentamiento = rowid_asentamiento)
+        asen.estatus_asentamiento = "B"
+    except SeCatAsentamiento.DoesNotExist:
+        raise Http404("El Asentamiento no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        asen.save()
+        messages.warning(request, "¡Asentamiento eliminado con exito!")
+        return redirect('vista_asen')
+    return render(request, "controlEscolar/catalogos/direcciones/GestionAsentamiento/BorrarAsentamiento.html", {"Asen": asen})
+# Modifica un registro
+@login_required
+def vista_asen_detail(request, rowid_asentamiento):
+    asen = SeCatAsentamiento.objects.get(rowid_asentamiento = rowid_asentamiento)
+    form = FormAsentamiento(instance=asen)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormAsentamiento(request.POST, instance = asen)
+        if form.is_valid():
+            form.save()  #Guarda los cambios
+            messages.info(request, "¡Asentamiento actualizado con exito!")
+            return redirect('vista_asen') #retorna despues de actualizar
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/direcciones/GestionAsentamiento/ActualizarAsentamiento.html", {"FormAsentamiento" : form})#envia al detalle con los campos no validos
+    return render(request, "controlEscolar/catalogos/direcciones/GestionAsentamiento/ActualizarAsentamiento.html", {"FormAsentamiento" : form})#envia al detalle para actualizar
+# primera de pdf posible imprimir / Funciona con la misma funcion en utils
+class Export_print_asen(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaAsen = SeCatAsentamiento.objects.filter(estatus_asentamiento="A")
+        data = {
+            'count': listaAsen.count(),
+            'asen': listaAsen
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/direcciones/GestionAsentamiento/ListaAsen.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Clase para crear Pdf / Funciona con la misma funcion en utils
+class Export_pdf_asen(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaAsen = SeCatAsentamiento.objects.filter(estatus_asentamiento="A")
+        data = {
+            'count': listaAsen.count(),
+            'asen': listaAsen
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/direcciones/GestionAsentamiento/ListaAsen.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'Lista Asentamientos.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises a CSV sin libreria
+@login_required
+def export_csv_asen (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=Lista Asentamientos.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Clave', 'Asentamiento','Abreviacion', 'Estatus'])
+    listaAsen = SeCatAsentamiento.objects.filter(estatus_asentamiento="A")
+    for a in listaAsen:
+        writer.writerow([a.id_asentamiento, a.descri_largo_asentamiento, a.descri_corto_asentamiento, a.estatus_asentamiento])
+    return response
+# Exportar paises a xlwt sin con la libreria XLWT
+@login_required
+def export_xlwt_asen (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=Lista Asentamiento.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Asentamiento')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Clave','Asentamiento','Abreviacion', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatAsentamiento.objects.filter(estatus_asentamiento="A").values_list('id_asentamiento', 'descri_largo_asentamiento','descri_corto_asentamiento', 'estatus_asentamiento')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
 ###################################################   Colonias   #####################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
@@ -556,11 +680,11 @@ def export_csv_colonias (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaColonias.csv'
     writer = csv.writer(response)
-    writer.writerow(['Municipio/Delegación','Clave', 'Colonia', 'Abreviatura', 'Codigo Postal', 'Estatus'])
+    writer.writerow(['Municipio/Delegación', 'Asentamiento','Clave', 'Colonia', 'Abreviatura', 'Codigo Postal', 'Estatus'])
     listaColonias=SeCatColonia.objects.filter(estatus_col="A") 
     # listaPaises=SeCatPais.objects.filter(owner=request.user)
     for col in listaColonias:
-        writer.writerow([col.rowid_mundel.descri_largo_mundel, col.id_col, col.descri_largo_col, col.descrip_corto_col, col.codposcol, col.estatus_col])
+        writer.writerow([col.rowid_mundel.descri_largo_mundel, col.rowid_asentamiento.descri_largo_asentamiento ,col.id_col, col.descri_largo_col, col.descrip_corto_col, col.codposcol, col.estatus_col])
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
@@ -572,11 +696,11 @@ def export_xlwt_colonias (request):
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.blod = True
-    columns = ['Municipio/Delegación','Clave', 'Colonia', 'Abreviatura', 'Codigo Postal', 'Estatus']
+    columns = ['Municipio/Delegación', 'Asentamiento','Clave', 'Colonia', 'Abreviatura', 'Codigo Postal', 'Estatus']
     for col in range(len(columns)):
         ws.write(row_num,col,columns[col], font_style)
     font_style = xlwt.XFStyle()
-    rows=SeCatColonia.objects.filter(estatus_col="A").values_list('rowid_mundel', 'id_col', 'descri_largo_col', 'descrip_corto_col', 'codposcol', 'estatus_col')
+    rows=SeCatColonia.objects.filter(estatus_col="A").values_list('rowid_mundel', 'rowid_asentamiento','id_col', 'descri_largo_col', 'descrip_corto_col', 'codposcol', 'estatus_col')
     for row in rows:
         row_num+=1
         for col in range(len(row)):
@@ -1764,6 +1888,130 @@ def export_xlwt_peai (request):
     return response
 
 # -------------------------------------------- Aspirantes --------------------------------------------- #
+
+##############################################   Escuela de Procedencia   #########################################################
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaEscProc(request):
+    listaEscProc = SeCatEscuelaProcedencia.objects.filter(estatus_esc_proc="A").order_by('rowid_esc_proc')
+    contador_id = listaEscProc.count()
+    page = request.GET.get('page', 1)
+    try:
+        paginator = Paginator(listaEscProc, 7)
+        listaEscProc = paginator.page(page)
+    except:
+        raise Http404
+    if request.method == 'POST':
+        form = FormEscProc(request.POST)
+        if form.is_valid():
+            escpro = form.save(commit=False)
+            ultimo_id = SeCatEscuelaProcedencia.objects.all().order_by('rowid_esc_proc').last()
+            escpro.rowid_esc_proc = ultimo_id.rowid_esc_proc + 1
+            escpro.save()
+            messages.success(request, "¡Escuela agregada con exito!")
+            return redirect('vista_escpro')
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/aspirantes/GestionEscuelaProc/GestionEscuelaProc.html",{'entity' : listaEscProc,'paginator' : paginator,'FormEscProc' : form,'contador': contador_id})
+    elif request.method == 'GET':
+        busqueda = request.GET.get("search_escpro", None)
+        if busqueda:
+            listaEscProc = SeCatEscuelaProcedencia.objects.filter(
+                Q(nombre_esc_proc__icontains = busqueda),
+                Q(estatus_esc_proc__icontains = "A")
+            ).distinct()
+    form = FormEscProc()
+    data = {
+        'entity' : listaEscProc,
+        'paginator' : paginator,
+        'FormEscProc' : form,
+        'contador': contador_id,
+    }
+    return render(request, "controlEscolar/catalogos/aspirantes/GestionEscuelaProc/GestionEscuelaProc.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarEscProc(request, rowid_esc_proc):
+    try:
+        escpro = SeCatEscuelaProcedencia.objects.get(rowid_esc_proc = rowid_esc_proc)
+        escpro.estatus_esc_proc = "B"
+    except SeCatEscuelaProcedencia.DoesNotExist:
+        raise Http404("La Escuela no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        escpro.save()
+        messages.warning(request, "¡Escuela eliminado con exito!")
+        return redirect('vista_escpro')
+    return render(request, "controlEscolar/catalogos/aspirantes/GestionEscuelaProc/BorrarEscuelaProc.html", {"EscPro": escpro})
+# Modifica un registro
+@login_required
+def vista_escpro_detail(request, rowid_esc_proc):
+    escpro = SeCatEscuelaProcedencia.objects.get(rowid_esc_proc = rowid_esc_proc)
+    form = FormEscProc(instance=escpro)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormEscProc(request.POST, instance = escpro)
+        if form.is_valid():
+            form.save()  #Guarda los cambios
+            messages.info(request, "¡Escuela actualizada con exito!")
+            return redirect('vista_escpro') #retorna despues de actualizar
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!")
+            return render(request, "controlEscolar/catalogos/aspirantes/GestionEscuelaProc/ActualizarEscuelaProc.html", {"FormEscProc" : form})#envia al detalle con los campos no validos
+    return render(request, "controlEscolar/catalogos/aspirantes/GestionEscuelaProc/ActualizarEscuelaProc.html", {"FormEscProc" : form})#envia al detalle para actualizar
+# primera de pdf posible imprimir / Funciona con la misma funcion en utils
+class Export_print_escpro(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaEscProc = SeCatEscuelaProcedencia.objects.filter(estatus_esc_proc="A")
+        data = {
+            'count': listaEscProc.count(),
+            'escpro': listaEscProc
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/aspirantes/GestionEscuelaProc/ListaEscuelaProc.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Clase para crear Pdf / Funciona con la misma funcion en utils
+class Export_pdf_escpro(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaEscProc = SeCatEscuelaProcedencia.objects.filter(estatus_esc_proc="A")
+        data = {
+            'count': listaEscProc.count(),
+            'escpro': listaEscProc
+        }
+        pdf = render_to_pdf('controlEscolar/catalogos/aspirantes/GestionEscuelaProc/ListaEscuelaProc.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'Lista Escuelas.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises a CSV sin libreria
+@login_required
+def export_csv_escpro (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=Lista Escuelas.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Municipio', 'CCT','Nombre de la escuela', 'Tipo de Escuela', 'Servicio','Estatus'])
+    listaEscProc = SeCatEscuelaProcedencia.objects.filter(estatus_esc_proc="A")
+    for ep in listaEscProc:
+        writer.writerow([ep.rowid_mundel, ep.cct_esc_proc, ep.nombre_esc_proc, ep.control_esc_proc, ep.servicio_esc_proc, ep.estatus_esc_proc])
+    return response
+# Exportar paises a xlwt sin con la libreria XLWT
+@login_required
+def export_xlwt_escpro (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=Lista Escuelas.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Escuelas de Procedencia')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Municipio','CCT','Nombre de la Escuela', 'Tipo de Escuela', 'Servicio', 'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows=SeCatEscuelaProcedencia.objects.filter(estatus_esc_proc="A").values_list('rowid_mundel', 'cct_esc_proc','nombre_esc_proc', 'control_esc_proc','servicio_esc_proc','estatus_esc_proc')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
 
 ##############################################   MEDIOS DE DIFUSION  #######################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
