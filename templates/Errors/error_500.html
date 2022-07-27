@@ -1,7 +1,7 @@
 {% extends '../base.html' %}
 {% load static %}
 
-{% block title %}Error 404{% endblock title %}
+{% block title %}Error 500{% endblock title %}
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'css/Errors/style.css' %}" />
@@ -15,8 +15,9 @@
 {% block body %}
 <div class="container" id="contenedor">
   <img id="logo" src="{% static 'img/logo_utn.png' %}" class="mb-3">
-  <h5 id="titulo" class=" fs-3 fw-bolder mb-4 px-3">Al parecer estas leyendo una pagina que no existe</h5>
-  <img id="e404" class="img-fluid mb-0" src="{% static 'img/Errors/404.png' %}">
+
+  <h5 id="titulo500" class="fs-3 fw-bolder mb-4 px-3">Al parecer hay un error interno con el servidor</h5>
+  <img id="e500" class="img-fluid mb-0" src="{% static 'img/Errors/500.png' %}">
   <img id="error404" class="img-fluid mb-5" src="{% static 'img/Errors/error404.png' %}">
   <div>
     <button class="btn btn-secondary">
@@ -24,6 +25,8 @@
         {% bs_icon 'arrow-return-left' size='1em'%}Regresa al inicio
       </a>
     </button>
+
+
   </div>
 </div>
 {% endblock body %}
