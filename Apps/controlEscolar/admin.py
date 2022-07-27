@@ -166,11 +166,11 @@ class IndAspAdmin(admin.ModelAdmin):
 ##################### Admin de Plan de estudio  ################# 
 @admin.register(SeTabEstudiante)
 class EstudianteAdmin(admin.ModelAdmin):
-    list_display = ('rowid_matricula', 'rowid_becas', 'rowid_car', 'rowid_col', 'rowid_grupo', 'id_matricula', 'nombre_estu',
+    list_display = ('rowid_matricula', 'rowid_becas', 'rowid_car', 'rowid_col','rowid_mundel','rowid_esc_proc', 'rowid_grupo', 'id_matricula', 'nombre_estu',
     'paterno_est', 'materno_est', 'rfc_est', 'curp_est', 'direccion_est', 'telefono_est', 'email_est', 'sexo_est', 'fecha_alta_est', 'user_alta_est',
     'fecha_cambio_est', 'user_cambio_est', 'estatus_est', 'codpos', 'fec_nac_est', 'turno_est', 'generacion_est', 'periodo_est', 'anio_est',
-    'estado_civil_est', 'mat_tutor_est', 'pat_tutor_est', 'nombre_tutor_est', 'no_folio_est', 'entidad_nac', 'mpo_del_nac', 'trabaja_est', 'tipo_sangre_est',
-    'id_tipo_esc_est', 'id_area_bach_est', 'entidad_bach', 'mpo_del_bach', 'fecha_ini_bach', 'fecha_fin_bach', 'promedio_gral_bach', 'tel_trabajo',
+    'estado_civil_est', 'mat_tutor_est', 'pat_tutor_est', 'nombre_tutor_est', 'no_folio_est',  'trabaja_est', 'tipo_sangre_est',
+    'id_tipo_esc_est', 'id_area_bach_est', 'fecha_ini_bach', 'fecha_fin_bach', 'promedio_gral_bach', 'tel_trabajo',
     'edad_est', 'fecha_vig_est', 'estatus_inscri_est', 'imss_est', 'clinica_est', 'num_servicio', 'fec_ser_social', 'fecha_repos_est',
     'matri_est', 'beca_pro_est', 'usuario_est', 'password_est', 'estatus_biblio', 'tipo_carrera_est', 'otras_uts', 'otras_uts',
     'no_cedula_tsu', 'no_referencia', 'grasc', 'institucion_seguro', 'otrainstitucionseguro', 'nacionalidad',

@@ -58,7 +58,7 @@
               {{ form.fecha_alt_asp.label}}
             </th>
             <th class="text-center">
-              {{ form.mpo_o_alcaldia_nac_asp.label}}
+              {{ form.rowid_mundel.label}}
             </th>
           </tr>
 
@@ -72,15 +72,12 @@
             <th scope="col" class="text-center">
               {{ form.fecha_alt_asp}}
             </th>
-            <th scope="col" class="text-center">
-              {{ form.mpo_o_alcaldia_nac_asp}}
+            <th class="text-center">
+              {{ form.rowid_mundel}}
             </th>
           </tr>
 
           <tr>
-            <th class="text-center">
-              {{ form.ent_fed_nac_asp.label}}
-            </th>
             <th class="text-center">
               {{ form.calle_asp.label}}
             </th>
@@ -93,9 +90,6 @@
           </tr>
 
           <tr>
-            <th scope="col" class="text-center">
-              {{ form.ent_fed_nac_asp}}
-            </th>
             <th scope="col" class="text-center">
               {{ form.calle_asp}}
             </th>
@@ -204,13 +198,10 @@
               {{ form.curp_asp.label}}
             </th>
             <th class="text-center">
-              {{ form.nom_esc_pro_asp.label}}
-            </th>
-            <th class="text-center">
               {{ form.fecha_nac_asp.label}}
             </th>
             <th class="text-center">
-              {{ form.materno_asp.label}}
+              {{ form.rowid_esc_proc.label}}
             </th>
           </tr>
 
@@ -219,18 +210,17 @@
               {{ form.curp_asp}}
             </th>
             <th scope="col" class="text-center">
-              {{ form.nom_esc_pro_asp}}
-            </th>
-            <th scope="col" class="text-center">
               {{ form.fecha_nac_asp}}
             </th>
             <th scope="col" class="text-center">
-              {{ form.materno_asp}}
+              {{ form.rowid_esc_proc}}
             </th>
-
           </tr>
 
           <tr>
+            <th class="text-center">
+              {{ form.materno_asp.label}}
+            </th>
             <th class="text-center">
               {{ form.paterno_asp.label}}
             </th>
@@ -240,12 +230,12 @@
             <th class="text-center">
               {{ form.nombre_asp.label}}
             </th>
-            <th class="text-center">
-              {{ form.tipo_publica_privada.label}}
-            </th>
           </tr>
 
           <tr>
+            <th scope="col" class="text-center">
+              {{ form.materno_asp}}
+            </th>
             <th scope="col" class="text-center">
               {{ form.paterno_asp}}
             </th>
@@ -254,9 +244,6 @@
             </th>
             <th scope="col" class="text-center">
               {{ form.nombre_asp}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.tipo_publica_privada}}
             </th>
           </tr>
 
@@ -270,9 +257,6 @@
             <th class="text-center">
               {{ form.mat_tutor_asp.label}}
             </th>
-            <th class="text-center">
-              {{ form.pat_tutor_asp.label}}
-            </th>
           </tr>
 
           <tr>
@@ -285,73 +269,55 @@
             <th scope="col" class="text-center">
               {{ form.mat_tutor_asp}}
             </th>
-            <th scope="col" class="text-center">
-              {{ form.pat_tutor_asp}}
-            </th>
           </tr>
 
           <tr>
+            <th class="text-center">
+              {{ form.pat_tutor_asp.label}}
+            </th>
             <th class="text-center">
               {{ form.nombre_tutor_asp.label}}
             </th>
             <th class="text-center">
               {{ form.generacion_asp.label}}
             </th>
-            <th class="text-center">
-              {{ form.entidad_estudio.label}}
-            </th>
-            <th class="text-center">
-              {{ form.municipio_estudio.label}}
-            </th>
           </tr>
 
           <tr>
+            <th scope="col" class="text-center">
+              {{ form.pat_tutor_asp}}
+            </th>
             <th scope="col" class="text-center">
               {{ form.nombre_tutor_asp}}
             </th>
             <th scope="col" class="text-center">
               {{ form.generacion_asp}}
             </th>
-            <th scope="col" class="text-center">
-              {{ form.entidad_estudio}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.municipio_estudio}}
-            </th>
           </tr>
 
           <tr>
-            <th class="text-center">
-              {{ form.ronda_asp.label}}
-            </th>
             <th class="text-center">
               {{ form.turno_asp.label}}
             </th>
             <th class="text-center">
               {{ form.user_alta.label}}
             </th>
-            <th class="text-center">
-              {{ form.user_cambio.label}}
-            </th>
           </tr>
 
           <tr>
-            <th scope="col" class="text-center">
-              {{ form.ronda_asp}}
-            </th>
             <th scope="col" class="text-center">
               {{ form.turno_asp}}
             </th>
             <th scope="col" class="text-center">
               {{ form.user_alta}}
             </th>
-            <th scope="col" class="text-center">
-              {{ form.user_cambio}}
-            </th>
           </tr>
 
 
           <tr>
+            <th class="text-center">
+              {{ form.user_cambio.label}}
+            </th>
             <th class="text-center">
               {{ form.email_asp.label}}
             </th>
@@ -361,12 +327,12 @@
             <th class="text-center">
               {{ form.continuidadestudio.label}}
             </th>
-            <th class="text-center">
-              {{ form.otromediodif.label}}
-            </th>
           </tr>
 
           <tr>
+            <th scope="col" class="text-center">
+              {{ form.user_cambio}}
+            </th>
             <th scope="col" class="text-center">
               {{ form.email_asp}}
             </th>
@@ -376,12 +342,12 @@
             <th scope="col" class="text-center">
               {{ form.continuidadestudio}}
             </th>
-            <th scope="col" class="text-center">
-              {{ form.otromediodif}}
-            </th>
           </tr>
 
           <tr>
+            <th class="text-center">
+              {{ form.otromediodif.label}}
+            </th>
             <th class="text-center">
               {{ form.otromedioinf.label}}
             </th>
@@ -391,12 +357,12 @@
             <th class="text-center">
               {{ form.facebook.label}}
             </th>
-            <th class="text-center">
-              {{ form.twitter.label}}
-            </th>
           </tr>
 
           <tr>
+            <th scope="col" class="text-center">
+              {{ form.otromediodif}}
+            </th>
             <th scope="col" class="text-center">
               {{ form.otromedioinf}}
             </th>
@@ -406,12 +372,12 @@
             <th scope="col" class="text-center">
               {{ form.facebook}}
             </th>
-            <th scope="col" class="text-center">
-              {{ form.twitter}}
-            </th>
           </tr>
 
           <tr>
+            <th class="text-center">
+              {{ form.twitter.label}}
+            </th>
             <th class="text-center">
               {{ form.discapacidad.label}}
             </th>
@@ -421,13 +387,12 @@
             <th class="text-center">
               {{ form.serviciomedico.label}}
             </th>
-            <th class="text-center">
-              {{ form.institucionseguro.label}}
-            </th>
           </tr>
 
           <tr>
-
+            <th scope="col" class="text-center">
+              {{ form.twitter}}
+            </th>
             <th scope="col" class="text-center">
               {{ form.discapacidad}}
             </th>
@@ -437,12 +402,12 @@
             <th scope="col" class="text-center">
               {{ form.serviciomedico}}
             </th>
-            <th scope="col" class="text-center">
-              {{ form.institucionseguro}}
-            </th>
           </tr>
 
           <tr>
+            <th class="text-center">
+              {{ form.institucionseguro.label}}
+            </th>
             <th class="text-center">
               {{ form.otrainstitucionseguro.label}}
             </th>
@@ -452,12 +417,12 @@
             <th class="text-center">
               {{ form.fechaexpedicioncer.label}}
             </th>
-            <th class="text-center">
-              {{ form.folio.label}}
-            </th>
           </tr>
 
           <tr>
+            <th scope="col" class="text-center">
+              {{ form.institucionseguro}}
+            </th>
             <th scope="col" class="text-center">
               {{ form.otrainstitucionseguro}}
             </th>
@@ -467,12 +432,12 @@
             <th scope="col" class="text-center">
               {{ form.fechaexpedicioncer}}
             </th>
-            <th scope="col" class="text-center">
-              {{ form.folio}}
-            </th>
           </tr>
 
           <tr>
+            <th class="text-center">
+              {{ form.folio.label}}
+            </th>
             <th class="text-center">
               {{ form.fechacompromisocerti.label}}
             </th>
@@ -482,12 +447,12 @@
             <th class="text-center">
               {{ form.poblacionindigena.label}}
             </th>
-            <th class="text-center">
-              {{ form.lenguaindigena.label}}
-            </th>
           </tr>
 
           <tr>
+            <th scope="col" class="text-center">
+              {{ form.folio}}
+            </th>
             <th scope="col" class="text-center">
               {{ form.fechacompromisocerti}}
             </th>
@@ -497,17 +462,46 @@
             <th scope="col" class="text-center">
               {{ form.poblacionindigena}}
             </th>
+          </tr>
+
+          <tr>
+            <th class="text-center">
+              {{ form.lenguaindigena.label}}
+            </th>
+            <th class="text-center">
+              <label class="mx-2"> </label>
+            </th>
+            <th class="text-center">
+              <label class="mx-2"> </label>
+            </th>
+            <th class="text-center">
+              <label class="mx-2"> </label>
+            </th>
+          </tr>
+
+          <tr>
             <th scope="col" class="text-center">
               {{ form.lenguaindigena}}
             </th>
+            <th scope="col" class="text-center">
+            </th>
+            <th scope="col" class="text-center">
+            </th>
+            <th scope="col" class="text-center">
+            </th>
           </tr>
+
         </table>
       </div>
+
+
       <div class="form-group d-flex justify-content-evenly">
         <button type="submit" class="btn btn-success btn-block text-white mb-3 w-25">Registrar</button>
         <a class="btn btn-danger btn-block mb-3 w-25" href="{% url 'index' %}">Cancelar</a>
       </div>
     </form>
+
+
   </div>
 </div>
 {% endblock %}

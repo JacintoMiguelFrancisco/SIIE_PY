@@ -763,6 +763,8 @@ class FormsEstudiante(forms.ModelForm):
             'rowid_becas' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
             'rowid_car' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
             'rowid_col' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
+            'rowid_mundel' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
+            'rowid_esc_proc' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
             'rowid_grupo' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
             'id_matricula' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese la matricula', 'style' : 'border-color:#21B64A;'}),
             'nombre_estu' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el o nombres del alumno ', 'style' : 'border-color:#21B64A;'}),
@@ -785,12 +787,8 @@ class FormsEstudiante(forms.ModelForm):
             'pat_tutor_est' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese apellido paterno del tutor', 'style' : 'border-color:#21B64A;'}),
             'nombre_tutor_est' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese nombre del tutor', 'style' : 'border-color:#21B64A;'}),
             'no_folio_est' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese no de folio del estudiante', 'style' : 'border-color:#21B64A;'}),
-            'entidad_nac' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese entidad el numero de nacimiento', 'style' : 'border-color:#21B64A;'}),
-            'mpo_del_nac' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese numero de municipio del estudiante', 'style' : 'border-color:#21B64A;'}),
             'tipo_sangre_est' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese tipo de sangre del estudiante', 'style' : 'border-color:#21B64A;'}),
             'id_area_bach_est' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el código del area de bachillerato', 'style' : 'border-color:#21B64A;'}),
-            'entidad_bach': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el código de entidad del bachillerato', 'style' : 'border-color:#21B64A;'}),
-            'mpo_del_bach' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el código del municipio', 'style' : 'border-color:#21B64A;'}),
             'fecha_ini_bach' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese año de inicio en bachillerato', 'style' : 'border-color:#21B64A;'}),
             'fecha_fin_bach' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese año de termino en bachillerato', 'style' : 'border-color:#21B64A;'}),
             'promedio_gral_bach' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese promedio general de bachillerato', 'style' : 'border-color:#21B64A;'}),
@@ -825,6 +823,8 @@ class FormsEstudiante(forms.ModelForm):
             'rowid_becas' : 'Becas *',
             'rowid_car' : 'Carrera *',
             'rowid_col' : 'Colonia *',
+            'rowid_mundel' : 'Municipio/Delegacion *',
+            'rowid_esc_proc' : 'Escuela de Procedencia *',
             'rowid_grupo' : 'Grupo *',
             'id_matricula' : 'Matricula *',
             'nombre_estu' : 'Nombre *',
@@ -847,12 +847,8 @@ class FormsEstudiante(forms.ModelForm):
             'pat_tutor_est' : 'Apellido paterno del tutor *',
             'nombre_tutor_est' : 'Nombre(s) del tutor *',
             'no_folio_est' : 'Folio *',
-            'entidad_nac' : 'Entidad de nacimiento *',
-            'mpo_del_nac' : 'Municipio *',
             'tipo_sangre_est' : 'Tipo de sangre *',
             'id_area_bach_est' : 'Area bachillerato *',
-            'entidad_bach': 'Entidad del bachillerato *',
-            'mpo_del_bach' : 'Municipio del bachillerato *',
             'fecha_ini_bach' : 'Año de inicio *',
             'fecha_fin_bach' : 'Año de termino *',
             'promedio_gral_bach' : 'Promedio general bachillerato *',
@@ -1617,12 +1613,12 @@ class FormEmpCar(forms.ModelForm):
 # -------------------------------------------- Operaciones --------------------------------------------- #
 
 ##########################  Operaciones #################################
+
 # Froms Aspirantes
 class FormsAspirantes(forms.ModelForm):
     SEXO = ( ('M', 'Masculino'), ('F', 'Femenino') )
     EDOCIVIL = ( ('S', 'Soltero'), ('C','Casado'), ('V','Viudo'), ('D','Divorciado') )
     TRAB = ( ('S', 'Si'), ('N','No') )
-    TESC = ( (1, 'Pública'), (2,'Privada') )
     PERIODOS = ((0,'Seleccione el Periodo'),(1,'Enero-Abril'),(2,'Mayo-Agosto'),(3,'Septiembre-Diciembre'))
     TURNO = ( ('M','Matutino'), ('V','Vespertino') )
     DIS = ( ('S', 'Si'), ('N','No') )
@@ -1631,7 +1627,6 @@ class FormsAspirantes(forms.ModelForm):
     sexo_asp = forms.ChoiceField(label='Sexo', choices=SEXO, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     estado_civil_asp = forms.ChoiceField(label='Estado Civil', choices=EDOCIVIL, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     trabaja_asp = forms.ChoiceField(label='Trabaja', choices=TRAB, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
-    tipo_publica_privada = forms.ChoiceField(label='Tipo de Escuela', choices=TESC, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     periodo_asp = forms.ChoiceField(label='Periodo:',choices=PERIODOS,widget=forms.Select(attrs={'class': 'form-control','style': 'border-color:#21B64A;'}))
     turno_asp = forms.ChoiceField(label='Turno', choices=TURNO, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     discapacidad = forms.ChoiceField(label='Discapacidad', choices=DIS, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
@@ -1640,13 +1635,17 @@ class FormsAspirantes(forms.ModelForm):
     class Meta:
         model= SeTabAspirante
         fields= '__all__'
-        exclude = ('estatus_asp',)
+        exclude = ('estatus_asp','rowid_asp')
         widgets = {
             'folio_utn_asp' : forms.TextInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
                                                     'placeholder': 'Ingrese el folio del aspirante',
                                                     'style' : 'border-color:#21B64A;'
                                                     }),
+            'rowid_mundel' : forms.Select(attrs={'class': 'form-control',
+                                                                    'required' : 'True',
+                                                                    'style' : 'border-color:#21B64A;'
+                                                                    }),
             'rowid_area_bac' :  forms.Select(attrs={'class': 'form-control',
                                                                     'required' : 'True',
                                                                     'style' : 'border-color:#21B64A;'
@@ -1655,6 +1654,10 @@ class FormsAspirantes(forms.ModelForm):
                                                         'required' : 'True',
                                                         'style' : 'border-color:#21B64A;'
                                                         }),
+            'rowid_esc_proc' : forms.Select(attrs={'class': 'form-control',
+                                                                    'required' : 'True',
+                                                                    'style' : 'border-color:#21B64A;'
+                                                                    }),
             'rowid_car' : forms.Select(attrs={'class': 'form-control',
                                                 'required' : 'True',
                                                 'style' : 'border-color:#21B64A;'
@@ -1672,16 +1675,6 @@ class FormsAspirantes(forms.ModelForm):
                                                     'placeholder': 'DD/MM/AAAA',
                                                     'style' : 'border-color:#21B64A;'
                                                     }), 
-            'mpo_o_alcaldia_nac_asp' : forms.NumberInput(attrs={'class': 'form-control',
-                                                            'required' : 'True',
-                                                            'placeholder': 'Ingrese el Municipio o Alcaldia',
-                                                            'style' : 'border-color:#21B64A;'
-                                                            }),
-            'ent_fed_nac_asp' : forms.NumberInput(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'placeholder': 'Ingrese el Estado',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }), 
             'calle_asp' : forms.TextInput(attrs={'class': 'form-control',
                                                 'required' : 'True',
                                                 'placeholder': 'Ingrese la calle',
@@ -1729,7 +1722,7 @@ class FormsAspirantes(forms.ModelForm):
                                                     }), 
             'fecini_bach_asp' : forms.DateInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
-                                                        'placeholder': 'Ingrese el nombre del plan',
+                                                        'placeholder': 'Ingrese la fecha de inicio del Bachillerato',
                                                         'style' : 'border-color:#21B64A;'
                                                         }), 
             'fecfin_bach_asp' : forms.DateInput(attrs={'class': 'form-control',
@@ -1800,16 +1793,6 @@ class FormsAspirantes(forms.ModelForm):
             'generacion_asp' : forms.TextInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
                                                         'placeholder': 'Ingrese la generacion',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }), 
-            'entidad_estudio' : forms.NumberInput(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'placeholder': 'Ingrese la entidad de estudio',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }), 
-            'municipio_estudio' : forms.NumberInput(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'placeholder': 'Ingrese el nombre del plan',
                                                         'style' : 'border-color:#21B64A;'
                                                         }), 
             'ronda_asp' : forms.NumberInput(attrs={'class': 'form-control',
@@ -1915,14 +1898,14 @@ class FormsAspirantes(forms.ModelForm):
         }
         labels = {
             'folio_utn_asp' : 'Folio del Aspirante *', 
+            'rowid_mundel' : 'Municipio/Delegacion *',
             'rowid_area_bac' : 'Area de Bachillerato *',
             'rowid_medio_dif' : 'Medio de Difusion *',
+            'rowid_esc_proc' : 'Escuela de Procedencia *',
             'rowid_car' : 'Carrera *',
             'rowid_tipo_esc' : 'Tipo Escuela *',
             'rowid_col' : 'Colonia *',
             'fecha_alt_asp' : 'Fecha de Alta *' ,
-            'mpo_o_alcaldia_nac_asp' : 'Municipio/Alcaldia de Nacimiento del Aspirante *',
-            'ent_fed_nac_asp' : 'Estado de Nacimiento del Aspirante *' ,
             'calle_asp' : 'Calle del Aspirante *' ,
             'num_int_asp' : 'Numero Interior ' ,
             'num_ext_asp' : 'Numero Exterior *',
@@ -1946,9 +1929,7 @@ class FormsAspirantes(forms.ModelForm):
             'mat_tutor_asp' : 'Apellido Materno del Tutor del Aspirante *', 
             'pat_tutor_asp' : 'Apellido Paterno del Tutor del Aspirante *' ,
             'nombre_tutor_asp' : 'Nombre del Tutor del Aspirante *',
-            'generacion_asp' : 'Generacion del Aspirante ',
-            'entidad_estudio' : 'Entidad de Estudio del Aspirante ', 
-            'municipio_estudio' : 'Municipio de Estudio del Aspirante *', 
+            'generacion_asp' : 'Generacion del Aspirante ', 
             'ronda_asp' : 'Ronda del Aspirante ',
             'user_alta' : 'Usuario que dio de alta ', 
             'user_cambio' : 'Usuario que hizo cambios ', 

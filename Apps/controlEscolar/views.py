@@ -588,7 +588,7 @@ def vistaColonias(request):
     contador_id = listaColonias.count()
     page = request.GET.get('page', 1)
     try:
-        paginator = Paginator(listaColonias, 9)
+        paginator = Paginator(listaColonias, 6)
         listaColonias = paginator.page(page)
     except:
         raise Http404
@@ -2619,17 +2619,17 @@ class Export_pdf_estudiante(LoginRequiredMixin, View):
         content = "attachment; filename= %s" %(filename)
         response['Content-Disposition'] = content
         return response
-# Exportar paises al formato  CSV
+# Exportar paises a  csv
 @login_required
 def export_csv_estudiante (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaEstudiante.csv;'
     writer = csv.writer(response)
-    writer.writerow(['Becas', 'Carrera', 'Colonia', 'Grupo','Id Estado', 'Matricula', 'Nombre(s)', 'Apellido paterno', 'Apelido materno', 'RFC', 'CURP','Direccion', 'Telefono', 'Correo electronico', 'Sexo','Fecha de alta', 'Usuario que dio alta', 'Fecha de baja', 'Uusuario que dio de baja', 'Codigo postal','Fecha de nacimiento','Turno','Generacion','Periodo', 'Año de ingreso', 'Estado civil',  'Apellido materno del tutor', 'Apellido paterno del tutor', 'Folio del estudiante', 'Nacionalidad del estudiante','Mpo', 'Trabajo del estudiante', 'Tipo de sangre', 'Tipo de escuela', 'Área del bachillerato', 'Entidad del bachillerato', 'Mpo del bachillerato', 'Fecha de inicio del bachillerato', 'Fecha de fin del bachillerato', 'Promedio general del bachillerato', 'Telefono del trabajo', 'Edad del estudiante',  'Fecha de vigencia', 'Estatus de inscrito al Imms', 'Imss', 'Clinica', 'Numero de servicio', 'Fecha del servicio social','Fecha ', 'Matricula provicional',  'Beca de aprovechamiento', 'Usuario', 'Contraseña', 'Estatus de biblioteca', 'Tipo de carrera', 'Otras', 'Cedula del TSU', 'Referencia', 'Grasc', 'Institucion del seguro', 'Otras Op','Nacionalidad', 'Discapacidad', 'Tipo de discapacidad',  'Folio certificado', 'Fecha',  'Equivalencia',  'Parentesco tutor','Tipo de estudiante', 'Num exterior', 'Numero interior', 'Estatus'])
+    writer.writerow(['Becas', 'Carrera', 'Colonia','Municipio','Escuela de Procedencia', 'Grupo','Id Estado', 'Matricula', 'Nombre(s)', 'Apellido paterno', 'Apelido materno', 'RFC', 'CURP','Direccion', 'Telefono', 'Correo electronico', 'Sexo','Fecha de alta', 'Usuario que dio alta', 'Fecha de baja', 'Usuario que dio de baja', 'Codigo postal','Fecha de nacimiento','Turno','Generacion','Periodo', 'Año de ingreso', 'Estado civil',  'Apellido materno del tutor', 'Apellido paterno del tutor', 'Folio del estudiante', 'Trabajo del estudiante', 'Tipo de sangre', 'Tipo de escuela', 'Área del bachillerato', 'Fecha de inicio del bachillerato', 'Fecha de fin del bachillerato', 'Promedio general del bachillerato', 'Telefono del trabajo', 'Edad del estudiante',  'Fecha de vigencia', 'Estatus de inscrito al Imms', 'Imss', 'Clinica', 'Numero de servicio', 'Fecha del servicio social','Fecha ', 'Matricula provicional',  'Beca de aprovechamiento', 'Usuario', 'Contraseña', 'Estatus de biblioteca', 'Tipo de carrera', 'Otras', 'Cedula del TSU', 'Referencia', 'Grasc', 'Institucion del seguro', 'Otras Op','Nacionalidad', 'Discapacidad', 'Tipo de discapacidad',  'Folio certificado', 'Fecha',  'Equivalencia',  'Parentesco tutor','Tipo de estudiante', 'Num exterior', 'Numero interior', 'Estatus'])
     listaEstudiante=SeTabEstudiante.objects.filter(estatus_est="A")
     for est in listaEstudiante:
-        writer.writerow([est.rowid_becas, est.rowid_car, est.rowid_col, est.rowid_grupo, est.id_matricula, est.nombre_estu, est.paterno_est, est.materno_est, est.rfc_est, est.curp_est, est.direccion_est, est.telefono_est,  est.email_est, est.sexo_est, est.fecha_alta_est, est.user_alta_est, est.fecha_cambio_est,
-        est.user_cambio_est, est.codpos, est.fec_nac_est, est.turno_est, est.generacion_est, est.periodo_est, est.anio_est, est.estado_civil_est, est.mat_tutor_est, est.pat_tutor_est,  est.nombre_tutor_est, est.no_folio_est, est.entidad_nac, est.mpo_del_nac, est.trabaja_est, est.tipo_sangre_est, est.id_tipo_esc_est, est.id_area_bach_est, est.entidad_bach, est.mpo_del_bach, est.fecha_ini_bach,
+        writer.writerow([est.rowid_becas, est.rowid_car, est.rowid_col,est.rowid_mundel, est.rowid_esc_proc, est.rowid_grupo, est.id_matricula, est.nombre_estu, est.paterno_est, est.materno_est, est.rfc_est, est.curp_est, est.direccion_est, est.telefono_est,  est.email_est, est.sexo_est, est.fecha_alta_est, est.user_alta_est, est.fecha_cambio_est,
+        est.user_cambio_est, est.codpos, est.fec_nac_est, est.turno_est, est.generacion_est, est.periodo_est, est.anio_est, est.estado_civil_est, est.mat_tutor_est, est.pat_tutor_est,  est.nombre_tutor_est, est.no_folio_est, est.trabaja_est, est.tipo_sangre_est, est.id_tipo_esc_est, est.id_area_bach_est, est.fecha_ini_bach,
         est.fecha_fin_bach, est.promedio_gral_bach, est.tel_trabajo, est.edad_est, est.fecha_vig_est, est.estatus_inscri_est, est.imss_est,  est.clinica_est, est.num_servicio, est.fec_ser_social, est.fecha_repos_est, est.matri_est, est.beca_pro_est,  est.usuario_est, est.password_est, est.estatus_biblio, est.tipo_carrera_est, est.otras_uts, est.no_cedula_tsu, est.no_referencia, est.grasc,
         est.institucion_seguro, est.otrainstitucionseguro, est.nacionalidad, est.discapacidad, est.tipodiscapacidad, est.foliocertificado, est.fechaexpedicioncer, est.equivalencia, est.parentescotutor, est.tipoestudiante, est.num_ext, est.num_int, est.estatus_est ])
     return response
@@ -2643,15 +2643,15 @@ def export_xlwt_estudiante (request):
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.blod = True
-    columns = ['Becas', 'Carrera', 'Colonia', 'Grupo','Id Estado', 'Matricula', 'Nombre(s)', 'Apellido paterno', 'Apelido materno', 'RFC', 'CURP','Direccion', 'Telefono', 'Correo electronico', 'Sexo','Fecha de alta', 'Usuario que dio alta', 'Fecha de baja', 'Uusuario que dio de baja', 'Codigo postal','Fecha de nacimiento','Turno','Generacion','Periodo', 'Año de ingreso', 'Estado civil',  'Apellido materno del tutor', 'Apellido paterno del tutor', 'Folio del estudiante', 'Nacionalidad del estudiante','Mpo', 'Trabajo del estudiante', 'Tipo de sangre', 'Tipo de escuela', 'Área del bachillerato', 'Entidad del bachillerato', 'Mpo del bachillerato', 'Fecha de inicio del bachillerato', 'Fecha de fin del bachillerato', 'Promedio general del bachillerato', 'Telefono del trabajo', 'Edad del estudiante',  'Fecha de vigencia', 'Estatus de inscrito al Imms', 'Imss', 'Clinica', 'Numero de servicio', 'Fecha del servicio social','Fecha ', 'Matricula provicional',  'Beca de aprovechamiento', 'Usuario', 'Contraseña', 'Estatus de biblioteca', 'Tipo de carrera', 'Otras', 'Cedula del TSU', 'Referencia', 'Grasc', 'Institucion del seguro', 'Otras Op','Nacionalidad', 'Discapacidad', 'Tipo de discapacidad',  'Folio certificado', 'Fecha',  'Equivalencia',  'Parentesco tutor','Tipo de estudiante', 'Num exterior', 'Numero interior', 'Estatus']
+    columns = ['Becas', 'Carrera', 'Colonia','Municipio','Escuela de Procedencia', 'Grupo','Id Estado', 'Matricula', 'Nombre(s)', 'Apellido paterno', 'Apelido materno', 'RFC', 'CURP','Direccion', 'Telefono', 'Correo electronico', 'Sexo','Fecha de alta', 'Usuario que dio alta', 'Fecha de baja', 'Uusuario que dio de baja', 'Codigo postal','Fecha de nacimiento','Turno','Generacion','Periodo', 'Año de ingreso', 'Estado civil',  'Apellido materno del tutor', 'Apellido paterno del tutor', 'Folio del estudiante', 'Trabajo del estudiante', 'Tipo de sangre', 'Tipo de escuela', 'Área del bachillerato', 'Fecha de inicio del bachillerato', 'Fecha de fin del bachillerato', 'Promedio general del bachillerato', 'Telefono del trabajo', 'Edad del estudiante',  'Fecha de vigencia', 'Estatus de inscrito al Imms', 'Imss', 'Clinica', 'Numero de servicio', 'Fecha del servicio social','Fecha ', 'Matricula provicional',  'Beca de aprovechamiento', 'Usuario', 'Contraseña', 'Estatus de biblioteca', 'Tipo de carrera', 'Otras', 'Cedula del TSU', 'Referencia', 'Grasc', 'Institucion del seguro', 'Otras Op','Nacionalidad', 'Discapacidad', 'Tipo de discapacidad',  'Folio certificado', 'Fecha',  'Equivalencia',  'Parentesco tutor','Tipo de estudiante', 'Num exterior', 'Numero interior', 'Estatus']
     for col in range(len(columns)):
         ws.write(row_num,col,columns[col], font_style)
     font_style = xlwt.XFStyle()
-    rows=SeTabEstudiante.objects.filter(estatus_est="A").values_list('rowid_becas', 'rowid_car', 'rowid_col', 'rowid_grupo', 'id_matricula', 'nombre_estu',
+    rows=SeTabEstudiante.objects.filter(estatus_est="A").values_list('rowid_becas', 'rowid_car', 'rowid_col','rowid_mundel','rowid_esc_proc', 'rowid_grupo', 'id_matricula', 'nombre_estu',
     'paterno_est', 'materno_est', 'rfc_est', 'curp_est', 'direccion_est', 'telefono_est', 'email_est', 'sexo_est', 'fecha_alta_est', 'user_alta_est',
     'fecha_cambio_est', 'user_cambio_est', 'codpos', 'fec_nac_est', 'turno_est', 'generacion_est', 'periodo_est', 'anio_est',
-    'estado_civil_est', 'mat_tutor_est', 'pat_tutor_est', 'nombre_tutor_est', 'no_folio_est', 'entidad_nac', 'mpo_del_nac', 'trabaja_est', 'tipo_sangre_est',
-    'id_tipo_esc_est', 'id_area_bach_est', 'entidad_bach', 'mpo_del_bach', 'fecha_ini_bach', 'fecha_fin_bach', 'promedio_gral_bach', 'tel_trabajo',
+    'estado_civil_est', 'mat_tutor_est', 'pat_tutor_est', 'nombre_tutor_est', 'no_folio_est', 'trabaja_est', 'tipo_sangre_est',
+    'id_tipo_esc_est', 'id_area_bach_est', 'fecha_ini_bach', 'fecha_fin_bach', 'promedio_gral_bach', 'tel_trabajo',
     'edad_est', 'fecha_vig_est', 'estatus_inscri_est', 'imss_est', 'clinica_est', 'num_servicio', 'fec_ser_social', 'fecha_repos_est',
     'matri_est', 'beca_pro_est', 'usuario_est', 'password_est', 'estatus_biblio', 'tipo_carrera_est', 'otras_uts',
     'no_cedula_tsu', 'no_referencia', 'grasc', 'institucion_seguro', 'otrainstitucionseguro', 'nacionalidad',

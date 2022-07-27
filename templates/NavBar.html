@@ -92,7 +92,7 @@
                         <a href="{% url 'vista_Medios' %}">Medios de Difusion</a>
                         <a href="{% url 'vista_Escuelas' %}">Tipos de escuela</a>
                         <a href="{% url 'vista_AreaBachi' %}">Área Bachillerato</a>
-                        <a href="{% url 'vista_IndAsp' %}">Indicadores Arpirantes</a>
+                        <a href="{% url 'vista_IndAsp' %}">Indicadores Aspirantes</a>
                       </div>
 
                     <a class="sub-item-estudiantes">Estudiantes</a>
@@ -607,8 +607,7 @@
         {% else %}
             <!-- Iniciar Sesion -->
           <div class="item">
-            <a class="sub-btn-caja">
-              {% bs_icon 'person' size='1.5em' %}Inisiar Sesión</a>
+            <a class="sub-btn-caja" href="{% url 'login' %}">{% bs_icon 'person' size='1.5em' %}Iniciar Sesión</a>
           </div>
         {% endif %}
   
