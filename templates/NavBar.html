@@ -18,9 +18,12 @@
   </button>
 
   <span class="navbar-brand mb-0 text-light">
-    <span id="iconUser">{% bs_icon 'person' size='2em' %}</span>
-    <span id="nameUser">Bienvenido: {{ request.user.username }}</span>
+    {% if user.is_authenticated %}
+      <span id="iconUser">{% bs_icon 'person' size='2em' %}</span>
+      <span id="nameUser">Bienvenido: {{ request.user.username }}</span>
+    {% endif %}
   </span>
+
   {% if request.user.is_authenticated %}
 
   <span class="navbar-brand mb-0 text-light ">
@@ -39,13 +42,13 @@
         {% load static %}
         <img src="{% static 'img/logo.gif'%}" style="text-align:center; width: 100px; height: 100px;">
       </h5>
-
     </div>
+
     <div class="offcanvas-body text-dark p-1">
       <div class="side-bar">
         <div class="menu">
-
           <!--MENU CONTROL ESCOLAR-->
+          {% if user.is_authenticated %}
           <div class="item">
             <a class="sub-btn">
               {% bs_icon 'gear' size='1.5em' %} Control escolar
@@ -600,6 +603,15 @@
               </div>
           </div>
         </div>
+
+        {% else %}
+            <!-- Iniciar Sesion -->
+          <div class="item">
+            <a class="sub-btn-caja">
+              {% bs_icon 'person' size='1.5em' %}Inisiar Sesión</a>
+          </div>
+        {% endif %}
+  
       </div>
     </div>
   </div>

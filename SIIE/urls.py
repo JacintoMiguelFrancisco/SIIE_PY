@@ -6,10 +6,9 @@ from django.conf import settings
 #Views
 from . import views 
 from SIIE.views import index
-from .views import Error404View 
+from .views import Error404View, Error500View
 # Errores 
-from django.conf.urls import handler404
-
+from django.conf.urls import handler404, handler500
 
 urlpatterns = [
     path('', index, name="index"),
@@ -19,6 +18,7 @@ urlpatterns = [
     path('controlEscolar/', include("Apps.controlEscolar.urls")),
 ]
 handler404 = Error404View.as_view()
+handler500 = Error500View.as_error_view()
 
 if settings.DEBUG:
     from django.conf.urls.static import static
