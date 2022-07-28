@@ -14,7 +14,7 @@ class SeCatPais(models.Model):
     class Meta:
         managed = False
         db_table = 'se_cat_pais'
-
+        
     def __str__(self):
         texto="{0} / {1} / {2} "
         return texto.format(self.id_pais, self.descri_largo_pais, self.descri_corto_pais)
@@ -29,7 +29,7 @@ class SeCatEstado(models.Model):
     class Meta:
         managed = False
         db_table = 'se_cat_estado'
-
+    
     def __str__(self):
         texto="{0} / {1} / {2}"
         return texto.format(self.id_edo, self.descri_largo_edo, self.descri_corto_edo)
@@ -70,7 +70,7 @@ class SeCatColonia(models.Model):
     id_col = models.IntegerField()
     descri_largo_col = models.CharField(max_length=150)
     descrip_corto_col = models.CharField(max_length=10)
-    estatus_col = models.CharField(max_length=1, blank=True, null=True)
+    estatus_col = models.CharField(max_length=1, blank=True, null=True, default="A")
     codposcol = models.CharField(max_length=5, blank=True, null=True)
 
     class Meta:
@@ -374,7 +374,7 @@ class SeCatGrupo(models.Model):
     id_grupo = models.IntegerField()
     descri_largo_gpo = models.CharField(max_length=60)
     descri_corto_gpo = models.CharField(max_length=10)
-    estatus_gpo = models.CharField(max_length=1, blank=True, null=True)
+    estatus_gpo = models.CharField(max_length=1, blank=True, null=True, default="A")
     lim_gpo = models.IntegerField(blank=True, null=True)
     lim_rec_gpo = models.IntegerField(blank=True, null=True)
     lim_acu_gpo = models.IntegerField(blank=True, null=True)
@@ -409,7 +409,7 @@ class SeTabEstudiante(models.Model):
     user_alta_est = models.CharField(max_length=10, blank=True, null=True)
     fecha_cambio_est = models.DateField(blank=True, null=True)
     user_cambio_est = models.CharField(max_length=10, blank=True, null=True)
-    estatus_est = models.CharField(max_length=1, blank=True, null=True)
+    estatus_est = models.CharField(max_length=1, blank=True, null=True, default="A")
     codpos = models.CharField(max_length=5)
     fec_nac_est = models.DateField()
     turno_est = models.IntegerField(blank=True, null=True)
@@ -739,7 +739,7 @@ class SeTabAspirante(models.Model):
     fecfin_bach_asp = models.IntegerField()
     rfc_asp = models.CharField(max_length=15)
     curp_asp = models.CharField(max_length=25)
-    estatus_asp = models.CharField(max_length=1, blank=True, null=True)
+    estatus_asp = models.CharField(max_length=1, blank=True, null=True, default="A")
     fecha_nac_asp = models.DateField()
     materno_asp = models.CharField(max_length=30)
     paterno_asp = models.CharField(max_length=30)

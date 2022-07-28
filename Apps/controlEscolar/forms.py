@@ -44,15 +44,25 @@ class FormPaises(forms.ModelForm):
         }
 # Form Estados
 class FormEstados(forms.ModelForm):
+
+    rowid_pais = forms.ModelChoiceField(queryset = SeCatPais.objects.filter(estatus_pais="A"),
+                                  required=True,
+                                  label="Pais: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    
     class Meta:
         model = SeCatEstado
         fields = '__all__'
         exclude = ('rowid_edo', 'estatus_edo',)
         widgets = {
-            'rowid_pais': forms.Select(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
             'id_edo': forms.NumberInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
                                                         'placeholder': 'Ingrese la clave del Estado.',
@@ -70,13 +80,10 @@ class FormEstados(forms.ModelForm):
                                                         }),
         }
         labels = {
-                'rowid_pais': 'Pais: *',
                 'id_edo': 'Clave Estado: *',
                 'descri_largo_edo': 'Estado: *',
                 'descri_corto_edo': 'Abreviatura: *',
-                'id_entidad_federativa': 'Clave Entidad Federativa:',
-                'c_nom_ent': 'Entidad Federativa: ',
-            }
+        }
 # Form Municipios/Delegaciones 
 class FormMunicipiosDelegaciones(forms.ModelForm):
     class Meta:
@@ -1507,7 +1514,7 @@ class FormAdscripcion(forms.ModelForm):
                                                 'placeholder': 'Ingrese el Titular.',
                                                 'style' : 'border-color:#21B64A;'                                                
                                                 }),
-            'clave_ser': forms.TextInput(attrs={'class': 'form-control',
+            'clave_ser': forms.NumberInput(attrs={'class': 'form-control',
                                                 'placeholder': 'Ingrese la Clave servicio.',
                                                 'style' : 'border-color:#21B64A;'                                                
                                                 }),

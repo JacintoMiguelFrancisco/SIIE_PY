@@ -2797,8 +2797,6 @@ def export_xlwt_Documentacion (request):
 @login_required
 def vista_Grupo(request):
     listaGrupos=SeCatGrupo.objects.filter(estatus_gpo="A").order_by('rowid_grupo') 
-    listaCarrera=SeCatCarrera.objects.filter(estatus_car="A").order_by('id_car')
-    listaGrado=SeCatGrado.objects.filter(estatus_gra="A").order_by('id_grado')
     contador_id = listaGrupos.count()
     page = request.GET.get('page', 1)
     try:
@@ -2817,7 +2815,7 @@ def vista_Grupo(request):
             return redirect('vista_Grupo')
         else:
             messages.warning(request, "¡Alguno de los campos no es valido!")
-            return render(request, "controlEscolar/catalogos/estudiantes/Grupos/GestionGrupo.html",{ 'entity' : listaGrupos, 'listaCarrera' : listaCarrera, 'listaGrado' : listaGrado, 'paginator' : paginator, 'FormGrupo' : form, 'contador' : contador_id,})
+            return render(request, "controlEscolar/catalogos/estudiantes/Grupos/GestionGrupo.html",{ 'entity' : listaGrupos, 'paginator' : paginator, 'FormGrupo' : form, 'contador' : contador_id,})
     #Busqueda del search
     elif request.method =='GET':
         busqueda = request.GET.get("search_grupos", None)
@@ -2830,8 +2828,6 @@ def vista_Grupo(request):
     form = FormGrupo()
     data = {
         'entity' : listaGrupos,
-        'listaCarrera' : listaCarrera,
-        'listaGrado' : listaGrado,
         'paginator' : paginator,
         'FormGrupo' : form,
         'contador' : contador_id,
