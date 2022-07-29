@@ -69,25 +69,10 @@
         <button type="submit" class="btn btn-success mb-3">Iniciar Sesion</button>
 
         <div class="d-flex">
-          <div class="my-3" style="text-align: center;">
-            {% comment %} {% url 'password_change' %} {% endcomment %}
-          </div>
+          <div class="my-3" style="text-align: center;"> </div>
           <div class="flex-grow-1">
-            <span>¿Olvidaste tu contraseña?<a href="#" style="color:#21B64A;"> Recuperar</a></span>
-
-          </div>
-
+            {% comment %} <span>¿No tienes cuenta?<a href="{% url 'signup' %}" style="color:#21B64A;"> Registrate</a> </span> {% endcomment %}
         </div>
-
-
-        <div class="d-flex">
-          <div class="my-3" style="text-align: center;">
-          </div>
-          <div class="flex-grow-1">
-            <span>¿No tienes cuenta?<a href="{% url 'signup' %}" style="color:#21B64A;"> Registrate</a>
-            </span>
-
-          </div>
 
       </form>
     </div>

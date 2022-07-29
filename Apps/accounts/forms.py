@@ -13,7 +13,7 @@ class SignupForm(forms.Form):
         min_length=4, 
         max_length=50,
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Ingrese nombre de usuario.', 'style' : 'border-color:#21B64A;'}),
-        label = 'Nombre de Usuario: *',
+        label = 'Nombre de Usuario: ',
     )
 
     first_name = forms.CharField(
@@ -33,13 +33,8 @@ class SignupForm(forms.Form):
         min_length=6,
         max_length=70,
         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder':'ejemplo@ejemplo.com', 'style' : 'border-color:#21B64A;'}),
-        label = 'Correo electronico: *',
+        label = 'Correo electronico:',
     )
-
-    # user_permissions = forms.CharField(
-    #     widget=forms.SelectMultiple(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}),
-    #     label = 'Permisos: *',
-    # )
 
     password = forms.CharField(
         max_length=70,

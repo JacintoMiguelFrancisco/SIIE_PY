@@ -86,16 +86,24 @@ class FormEstados(forms.ModelForm):
         }
 # Form Municipios/Delegaciones 
 class FormMunicipiosDelegaciones(forms.ModelForm):
+    rowid_edo = forms.ModelChoiceField(queryset = SeCatEstado.objects.filter(estatus_edo="A"),
+                                  required=True,
+                                  label="Estado: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeCatMunicipioDelegacion
         fields = '__all__'
         exclude = ('rowid_mundel','estatus_mundel')
 
         widgets = {
-            'rowid_edo': forms.Select(attrs={'class': 'form-control',
-                                            'required' : 'True',
-                                            'style' : 'border-color:#21B64A;'
-                                            }),
             'id_mundel': forms.NumberInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
                                                     'placeholder': 'Ingrese clave del Municipio/Delegación',
@@ -113,7 +121,6 @@ class FormMunicipiosDelegaciones(forms.ModelForm):
                                                             }), 
         }
         labels = {
-            'rowid_edo' : 'Estado *',
             'id_mundel' : 'Id Municipio/Delegación *',
             'descri_largo_mundel' : 'Municipio/Delegación *',
             'descri_corto_mundel' : 'Abreviatura *',
@@ -148,19 +155,35 @@ class FormAsentamiento(forms.ModelForm):
         }
 # FORM Colonias
 class FormColonias(forms.ModelForm):
+    rowid_mundel = forms.ModelChoiceField(queryset = SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A"),
+                                  required=True,
+                                  label="Municipio/Delegacion: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_asentamiento = forms.ModelChoiceField(queryset = SeCatAsentamiento.objects.filter(estatus_asentamiento="A"),
+                                  required=True,
+                                  label="Asentamiento: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeCatColonia
         fields = '__all__'
         exclude = ('rowid_col', 'estatus_col') 
         widgets = {
-            'rowid_mundel': forms.Select(attrs={'class': 'form-control',
-                                            'required' : 'True',
-                                            'style' : 'border-color:#21B64A;'
-                                            }),
-            'rowid_asentamiento': forms.Select(attrs={'class': 'form-control',
-                                            'required' : 'True',
-                                            'style' : 'border-color:#21B64A;'
-                                            }),
             'id_col': forms.NumberInput(attrs={'class': 'form-control',
                                                 'required' : 'True',
                                                 'placeholder': 'Ingrese la clave la Colonia',
@@ -182,8 +205,6 @@ class FormColonias(forms.ModelForm):
                                                 }),
         }
         labels = {
-            'rowid_mundel': 'Municipio *',
-            'rowid_asentamiento': 'Asentamiento *',
             'id_col': 'Clave *',
             'descri_largo_col': 'Colonia *',
             'descrip_corto_col': 'Abreviatura *',
@@ -194,15 +215,23 @@ class FormColonias(forms.ModelForm):
 
 # Form Universidad
 class FormUniversidad(forms.ModelForm):
+    rowid_col = forms.ModelChoiceField(queryset = SeCatColonia.objects.filter(estatus_col="A"),
+                                  required=True,
+                                  label="Colonia: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeCatUniversidad
         fields = '__all__'
         exclude = ('rowid_uni', 'estatus_uni')
         widgets = {
-            'rowid_col': forms.Select(attrs={'class': 'form-control',
-                                                    'required' : 'True',
-                                                    'style' : 'border-color:#21B64A;'
-                                                }),
             'id_uni': forms.TextInput(attrs={'class': 'form-control',
                                                     'placeholder': 'Por favor, Ingrese el tipo de organizacion',
                                                     'style' : 'border-color:#21B64A;'
@@ -270,7 +299,6 @@ class FormUniversidad(forms.ModelForm):
                                                     }),
         }
         labels = {
-                'rowid_col': 'Colonia *',
                 'id_uni': 'Id universidad*',
                 'nombre_uni': 'Nombre *',
                 'tipo_org_uni': 'Tipo de organizacion *',
@@ -289,15 +317,23 @@ class FormUniversidad(forms.ModelForm):
             }
 # fFORMS DIVISIONES 
 class FormDivisiones(forms.ModelForm):
+    rowid_uni = forms.ModelChoiceField(queryset = SeCatUniversidad.objects.filter(estatus_uni="A"),
+                                  required=True,
+                                  label="Universidad: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeCatDivision
         fields = '__all__'
         exclude = ('rowid_div', 'estatus_div')
         widgets = {
-            'rowid_uni': forms.Select(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
             'id_div': forms.NumberInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
                                                         'placeholder': 'Ingrese clave de la división.',
@@ -339,7 +375,6 @@ class FormDivisiones(forms.ModelForm):
                                                 'placeholder': 'Ingrese Email de la división'}),
         }
         labels = {
-                'rowid_uni': 'Universidad *',
                 'id_div':'Clave División *',
                 'descri_larga_div': 'Nombre Division *',
                 'descri_corta_div': 'Abreviatura División *',
@@ -354,14 +389,23 @@ class FormDivisiones(forms.ModelForm):
             }
 # Form Carreras
 class FormCarreras(forms.ModelForm):
+    rowid_div = forms.ModelChoiceField(queryset = SeCatDivision.objects.filter(estatus_div="A"),
+                                  required=True,
+                                  label="Division: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeCatCarrera
         fields = '__all__'
         exclude = ('estatus_car','rowid_car' )
         widgets = {
-            'rowid_div':forms.Select(attrs={'class': 'form-control',
-                                                       'required' : 'True','placeholder': 'Seleccione la Division',
-                                                       'style': 'border-color:#21B64A;'}),
             'id_car': forms.NumberInput(attrs={'class': 'form-control',
                                                        'required' : 'True','placeholder': 'Por favor, Ingrese el ID de la carrera',
                                                        'style': 'border-color:#21B64A;'}),
@@ -376,7 +420,6 @@ class FormCarreras(forms.ModelForm):
                                                        'style': 'border-color:#21B64A;'}),
         }
         labels = {
-                'rowid_div': 'Division',
                 'id_car': 'Id Carrera',
                 'descri_largo_car': 'Carrera',
                 'descri_corto_car': 'Abreviatura',
@@ -392,12 +435,23 @@ class FormPeriodos(forms.ModelForm):
         (3,'Septiembre-Diciembre')
     )
     periodo_per = forms.ChoiceField(label='Periodo:',choices=PERIODOS,widget=forms.Select(attrs={'class': 'form-control','style': 'border-color:#21B64A;'}))
+    rowid_car = forms.ModelChoiceField(queryset = SeCatCarrera.objects.filter(estatus_car="A"),
+                                  required=True,
+                                  label="Carrera: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeCatPeriodos
         field = '__all__'
         exclude = ('rowid_per','estatus_per')
         widgets = {
-            'rowid_car':forms.Select(attrs={'class': 'form-control', 'placeholder':'Seleccione una Carrera','style': 'border-color:#21B64A;'}),
             'evento_per': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Ingrese evento','style': 'border-color:#21B64A;'}),
             'consecutivo_per': forms.NumberInput(attrs={'class': 'form-control', 'placeholder':'Ingrese consecutivo','style': 'border-color:#21B64A;'}),
             'fecha_inicial_per': forms.DateInput(attrs={'class':'form-control', 'placeholder':'DD/MM/AAAA','style': 'border-color:#21B64A;'}),
@@ -406,7 +460,6 @@ class FormPeriodos(forms.ModelForm):
             'descripcion_per': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese descripcion de la plaza','style': 'border-color:#21B64A;'}),
         }
         labels = {
-                'rowid_car':'Carrera',
                 'evento_per': 'Evento',
                 'consecutivo_per': 'Consecutivo',
                 'fecha_inicial_per': 'Fecha inicial',
@@ -470,20 +523,40 @@ class FormsPlaE(forms.ModelForm):
         }
 # Form ASIGNATURA
 class FormsAsignatura(forms.ModelForm):
+    rowid_plan_est = forms.ModelChoiceField(queryset = SeCatPlaEstudio.objects.filter(estatus_plan_est="A"),
+                                  required=True,
+                                  label="Plan de Estudio: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_car = forms.ModelChoiceField(queryset = SeCatCarrera.objects.filter(estatus_car="A"),
+                                  required=True,
+                                  label="Carrera: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeCatAsignatura
         fields = '__all__'
         exclude = ('rowid_asignatura','estatus_asi',)
         widgets = {
-            'rowid_plan_est': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
-            'rowid_car': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
             'id_asignatura': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el nombre de la Asignatura', 'style' : 'border-color:#21B64A;'}),
             'descri_larga_asi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el nombre de la Asignatura', 'style' : 'border-color:#21B64A;'}),
             'descri_corto_asi': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese la abreviatura del Asignatura', 'style' : 'border-color:#21B64A;'}),
         }
         labels = {
-                'rowid_plan_est': 'Plan de estudio',
-                'rowid_car': 'Carrera',
                 'id_asignatura': 'Id asignatura',
                 'descri_larga_asi': 'Nombre Asignatura',
                 'descri_corto_asi': 'Abreviatura',
@@ -520,25 +593,65 @@ class FormsIndicador(forms.ModelForm):
         }
 #Form Plan de estudio asignatura 
 class FormsPeA(forms.ModelForm):
+    rowid_asignatura = forms.ModelChoiceField(queryset = SeCatAsignatura.objects.filter(estatus_asi="A"),
+                                  required=True,
+                                  label="Asignatura: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_plan_est = forms.ModelChoiceField(queryset = SeCatPlaEstudio.objects.filter(estatus_plan_est="A"),
+                                  required=True,
+                                  label="Plan de Estudio: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_grado = forms.ModelChoiceField(queryset = SeCatGrado.objects.filter(estatus_gra="A"),
+                                  required=True,
+                                  label="Grado: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_car = forms.ModelChoiceField(queryset = SeCatCarrera.objects.filter(estatus_car="A"),
+                                  required=True,
+                                  label="Carrera: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeProPlanEstudio
         fields = '__all__'
         exclude = ('rowid_pro_plan_est','estatus_pea',)
         widgets = {
-            'rowid_asignatura' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
-            'rowid_plan_est' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
-            'rowid_grado' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
-            'rowid_car' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
             'horas_plan_est' :  forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese las horas', 'style' : 'border-color:#21B64A;'}),
             'creditos_plan_est' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese los creditos', 'style' : 'border-color:#21B64A;'}), 
             'nota_minima_apro_est' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese la nota minima', 'style' : 'border-color:#21B64A;'}),
             'valor_pon_final' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el valor final', 'style' : 'border-color:#21B64A;'}),
         }
         labels = {
-            'rowid_asignatura' : 'Asignatura',
-            'rowid_plan_est' : 'Plan de estudio',
-            'rowid_grado' : 'Grado',
-            'rowid_car' : 'Carrera',
             'horas_plan_est' : 'Numero de horas',
             'creditos_plan_est' : 'Creditos ',
             'nota_minima_apro_est' : 'Nota minima aprobatoria',
@@ -546,19 +659,39 @@ class FormsPeA(forms.ModelForm):
         }
 #Plan de estudio asignatura indicador
 class FormsPeaI(forms.ModelForm):
+    rowid_pro_plan_est = forms.ModelChoiceField(queryset = SeProPlanEstudio.objects.filter(estatus_pea="A"),
+                                  required=True,
+                                  label="Plan de Estudio: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_indicador = forms.ModelChoiceField(queryset = SeCatIndicador.objects.filter(estatus_ind="A"),
+                                  required=True,
+                                  label="Indicador: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeProAsiIndicador
         fields = '__all__'
         exclude = ('rowid_pro_asi_ind', 'estatus_peai',)
         widgets = {
-            'rowid_pro_plan_est' : forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}),
-            'rowid_indicador' : forms.Select(attrs={'class': 'form-control','style' : 'border-color:#21B64A;'}),
             'porcentaje_pro_asi_idi' :  forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el porcentaje', 'style' : 'border-color:#21B64A;'}),
             'comen_pro_asi_ind'  :  forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el comentario', 'style' : 'border-color:#21B64A;'}),    
         }
         labels = {
-            'rowid_pro_plan_est' : 'Plan de estudio',
-            'rowid_indicador' : 'Indicador',
             'porcentaje_pro_asi_idi' : 'Porcentaje',
             'comen_pro_asi_ind' : 'Comentario',
         }
@@ -567,15 +700,23 @@ class FormsPeaI(forms.ModelForm):
 
 ################## Escuela Procedencia ########################
 class FormEscProc(forms.ModelForm):
+    rowid_mundel = forms.ModelChoiceField(queryset = SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A"),
+                                  required=True,
+                                  label="Municipio/Delegacion: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeCatEscuelaProcedencia
         fields = '__all__'
         exclude = ('estatus_esc_proc','rowid_esc_proc')
         widgets = {
-            'rowid_mundel': forms.Select(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'style' : 'border-color:#21B64A;',
-                                                        }),
             'cct_esc_proc': forms.TextInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
                                                         'placeholder': 'Por favor, Ingrese la clave del Centro de Trabajo',
@@ -598,7 +739,6 @@ class FormEscProc(forms.ModelForm):
                                                         }),
         }
         labels = {
-                'rowid_mundel': 'Municipio *',
                 'cct_esc_proc': 'Clave del Centro de Trabajo *',
                 'nombre_esc_proc': 'Nombre de la Escuela de Procedencia *',
                 'control_esc_proc': 'Tipo de Escuela *',
@@ -634,15 +774,23 @@ class FormMediosDifusion(forms.ModelForm):
             }
 # Forms TIPOS DE ESCUELAS
 class FormTiposEscuelas(forms.ModelForm):
+    rowid_col = forms.ModelChoiceField(queryset = SeCatColonia.objects.filter(estatus_col="A"),
+                                  required=True,
+                                  label="Colonia: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeCatTipoEscuela
         fields = '__all__'
         exclude = ('rowid_tipo_esc', 'estatus_esc')
         widgets = {
-            'rowid_col': forms.Select(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
             'id_tipo_esc':  forms.NumberInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
                                                         'placeholder': 'Ingrese clave del Tipo de Escuela.',
@@ -705,19 +853,35 @@ class FormAreaBachi(forms.ModelForm):
             }
 # Forms INDICADORES ASPIRANTES
 class FormIndAsp(forms.ModelForm):
+    rowid_car = forms.ModelChoiceField(queryset = SeCatCarrera.objects.filter(estatus_car="A"),
+                                  required=True,
+                                  label="Carrera: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_indicador = forms.ModelChoiceField(queryset = SeCatIndicador.objects.filter(estatus_ind="A"),
+                                  required=True,
+                                  label="Indicador: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model= SeProIndAsp
         fields= '__all__'
         exclude = ('rowid_pro_ind_asp', 'estatus_indicadores')
         widgets = {
-            'rowid_car': forms.Select(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-            'rowid_indicador': forms.Select(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
             'valor_porcentual': forms.NumberInput(attrs={'class': 'form-control',
                                                         'required': 'True',
                                                         'placeholder': 'Ingrese valor porcentual del Indicador Aspirante.',
@@ -726,8 +890,6 @@ class FormIndAsp(forms.ModelForm):
                                                     }),
         }
         labels = {
-                'rowid_car' : 'Carrera *',
-                'rowid_indicador' : 'Indicador *',
                 'valor_porcentual' : 'Valor porcentual del Indicador Aspirante *',
         }
 
@@ -762,17 +924,83 @@ class FormsEstudiante(forms.ModelForm):
     sexo_est = forms.ChoiceField(label='¿Sexo?*', choices=SEXO, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     trabaja_est = forms.ChoiceField(label='¿Trabajas?*', choices=TRAB, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     estado_civil_est = forms.ChoiceField(label='Estado civil *', choices=EDOCIVIL, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    rowid_becas = forms.ModelChoiceField(queryset = SeCatBecas.objects.filter(estatus_bec="A"),
+                                  required=True,
+                                  label="Becas: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_car = forms.ModelChoiceField(queryset = SeCatCarrera.objects.filter(estatus_car="A"),
+                                  required=True,
+                                  label="Carrera: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_col = forms.ModelChoiceField(queryset = SeCatColonia.objects.filter(estatus_col="A"),
+                                  required=True,
+                                  label="Colonia: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_mundel = forms.ModelChoiceField(queryset = SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A"),
+                                  required=True,
+                                  label="Municipio/Delegacion: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_esc_proc = forms.ModelChoiceField(queryset = SeCatEscuelaProcedencia.objects.filter(estatus_esc_proc="A"),
+                                  required=True,
+                                  label="Escuela de Procedencia: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_grupo = forms.ModelChoiceField(queryset = SeCatGrupo.objects.filter(estatus_gpo="A"),
+                                  required=True,
+                                  label="Grupo: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeTabEstudiante
         fields = '__all__'
         exclude = ('rowid_matricula', 'estatus_est')
         widgets = {
-            'rowid_becas' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
-            'rowid_car' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
-            'rowid_col' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
-            'rowid_mundel' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
-            'rowid_esc_proc' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
-            'rowid_grupo' : forms.Select(attrs={'class': 'form-control', 'placeholder': 'Seleccionar datos', 'style' : 'border-color:#21B64A;'}),
             'id_matricula' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese la matricula', 'style' : 'border-color:#21B64A;'}),
             'nombre_estu' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el o nombres del alumno ', 'style' : 'border-color:#21B64A;'}),
             'paterno_est' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el apellido paterno ', 'style' : 'border-color:#21B64A;'}),
@@ -827,12 +1055,6 @@ class FormsEstudiante(forms.ModelForm):
             
         }
         labels = {
-            'rowid_becas' : 'Becas *',
-            'rowid_car' : 'Carrera *',
-            'rowid_col' : 'Colonia *',
-            'rowid_mundel' : 'Municipio/Delegacion *',
-            'rowid_esc_proc' : 'Escuela de Procedencia *',
-            'rowid_grupo' : 'Grupo *',
             'id_matricula' : 'Matricula *',
             'nombre_estu' : 'Nombre *',
             'paterno_est' : 'Apellido paterno*',
@@ -932,15 +1154,35 @@ class FormDocumentacion(forms.ModelForm):
         }
 ##forms Grupo
 class FormGrupo(forms.ModelForm):
+    rowid_car = forms.ModelChoiceField(queryset = SeCatCarrera.objects.filter(estatus_car="A"),
+                                  required=True,
+                                  label="Carrera: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_grado = forms.ModelChoiceField(queryset = SeCatGrado.objects.filter(estatus_gra="A"),
+                                  required=True,
+                                  label="Grado: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeCatGrupo
         fields = '__all__'
         exclude = ('rowid_grupo','estatus_gpo',)
         widgets = {
-            'rowid_car' : forms.Select(attrs={'class' : 'form-control',
-                                                'style' : 'border-color:#21B64A;'}),
-            'rowid_grado' : forms.Select(attrs={'class': 'form-control',
-                                                'style' : 'border-color:#21B64A;'}),
             'id_grupo'  :  forms.NumberInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
                                                     'placeholder': 'Ingrese clave del grupo',
@@ -967,8 +1209,6 @@ class FormGrupo(forms.ModelForm):
                                                             'style' : 'border-color:#21B64A;'}),
         }
         labels = {
-            'rowid_car' : 'Carrera',
-            'rowid_grado' : 'Grado',
             'id_grupo'  :  'Clave del Grupo *',
             'descri_largo_gpo' : 'Nombre del Grupo *',
             'descri_corto_gpo' : 'Abreviatura del Grupo *',
@@ -1022,14 +1262,23 @@ class FormSalones(forms.ModelForm):
         (2,'No'),
     )
     compartido_salon = forms.ChoiceField(label='Compartido:', choices=COMPARTIDO, widget=forms.Select(attrs={'class':'form-control', 'style':'border-color:#21B64A;'}))
+    rowid_car = forms.ModelChoiceField(queryset = SeCatCarrera.objects.filter(estatus_car="A"),
+                                  required=True,
+                                  label="Carrera: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model= SeCatSalones
         fields= '__all__'
         exclude = ('rowid_salon', 'estatus_salon')
         widgets = {
-            'rowid_car': forms.Select(attrs={'class': 'form-control',
-                                                'style' : 'border-color:#21B64A;'
-                                                }),
             'id_salon': forms.NumberInput(attrs={'class': 'form-control',
                                                 'required' : 'True',
                                                 'placeholder': 'Ingrese clave del Salón.',
@@ -1045,7 +1294,6 @@ class FormSalones(forms.ModelForm):
                                                 }),
         }
         labels = {
-                'rowid_car' : 'Carrera',
                 'id_salon' : 'Clave del Salón *',
                 'descri_largo_salon' : 'Nombre del Salón',
                 'descri_corto_salon' : 'Abreviatura del Salón',
@@ -1174,35 +1422,83 @@ class FormEmpleado(forms.ModelForm):
     estatus_biblio = forms.ChoiceField(label='Estatus Biblioteca', choices=BIBLIO, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     tipo_contrato_com = forms.ChoiceField(label='Tipo de Contrato', choices=TCON, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     estatus_comp = forms.ChoiceField(label='Estatus Comp', choices=ESCOMP, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    rowid_car = forms.ModelChoiceField(queryset = SeCatCarrera.objects.filter(estatus_car="A"),
+                                  required=True,
+                                  label="Carrera: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_col = forms.ModelChoiceField(queryset = SeCatColonia.objects.filter(estatus_col="A"),
+                                  required=True,
+                                  label="Colonia: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_academico = forms.ModelChoiceField(queryset = SeCatNivelAcademico.objects.filter(estatus_acade="A"),
+                                  required=True,
+                                  label="Nivel Academico: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_depto = forms.ModelChoiceField(queryset = SeCatDeptoEmp.objects.filter(estatus_depto="A"),
+                                  required=True,
+                                  label="Departamento: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_edo = forms.ModelChoiceField(queryset = SeCatEstado.objects.filter(estatus_edo="A"),
+                                  required=True,
+                                  label="Estado: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_sueldo = forms.ModelChoiceField(queryset = SeCatSueldos.objects.filter(estatus_sueldo="A"),
+                                  required=True,
+                                  label="Sueldo: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeCatEmpleado
         fields = '__all__'
         exclude = ('rowid_empleado', 'estatus_emp')
-        widgets = {
-            'rowid_academico': forms.Select(attrs={'class': 'form-control',  
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }),
-            'rowid_car': forms.Select(attrs={'class': 'form-control',  
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }), 
-            'rowid_depto': forms.Select(attrs={'class': 'form-control', 
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }),
-            'rowid_edo': forms.Select(attrs={'class': 'form-control',  
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }),
-            'rowid_col': forms.Select(attrs={'class': 'form-control', 
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }), 
-            'rowid_sueldo': forms.Select(attrs={'class': 'form-control', 
-                                                        'style' : 'border-color:#21B64A;', 
-                                                        'required' : 'True'
-                                                      }), 
+        widgets = { 
             'id_empleado': forms.NumberInput(attrs={'class': 'form-control', 
                                                         'placeholder': 'Por favor, Ingrese el ID del empleado', 
                                                         'style' : 'border-color:#21B64A;', 
@@ -1319,13 +1615,7 @@ class FormEmpleado(forms.ModelForm):
                                                         'required' : 'True'
                                                       }), 
         }
-        labels = {
-                'rowid_academico':'Nivel Academico *',
-                'rowid_car':'Carrera *', 
-                'rowid_depto':'Departamento *',
-                'rowid_edo' :'Estado de Nacimiento *', 
-                'rowid_col':'Colonia *',  
-                'rowid_sueldo':'Sueldo *', 
+        labels = { 
                 'id_empleado':'ID Empleado *',
                 'nombre_emp':'Nombre *', 
                 'paterno_emp':'Apellido Paterno *', 
@@ -1422,16 +1712,23 @@ class FormPlaza(forms.ModelForm):
             }
 # Froms TIPO PUESTO
 class FormsTipoPue(forms.ModelForm):
+    rowid_plaza = forms.ModelChoiceField(queryset = SeCatPlaza.objects.filter(estatus_plaza="A"),
+                                  required=True,
+                                  label="Plaza: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model= SeCatTipoPuesto
         fields= '__all__'
         exclude = ('estatus_pue',)
         widgets = {
-            'rowid_plaza': forms.Select(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'placeholder': 'Seleccione la Plaza.',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
             'id_puesto': forms.NumberInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
                                                         'placeholder': 'Ingrese la clave del Puesto',
@@ -1449,22 +1746,29 @@ class FormsTipoPue(forms.ModelForm):
                                                         }),
         }
         labels = {
-                'rowid_plaza':'Plaza *',
                 'id_puesto':'ID del Puesto *',
                 'descri_largo_pue':'Puesto *',
                 'descri_corto_pue' : 'Abreviacion *',
         }
 # Froms Sueldos
 class FormSueldo(forms.ModelForm):
+    rowid_puesto = forms.ModelChoiceField(queryset = SeCatTipoPuesto.objects.filter(estatus_pue="A"),
+                                  required=True,
+                                  label="Puesto: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model= SeCatSueldos
         fields= '__all__'
         exclude = ('rowid_sueldo','estatus_sueldo')
         widgets = {
-            'rowid_puesto' : forms.Select(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
             'id_sueldo': forms.NumberInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
                                                         'placeholder': 'Ingrese el ID del sueldo.',
@@ -1478,8 +1782,6 @@ class FormSueldo(forms.ModelForm):
         }
 
         labels = {
-
-                'rowid_puesto' : 'Puesto *',
                 'id_sueldo': 'ID del Sueldo *',
                 'sueldo': 'Sueldo *',
         }
@@ -1585,20 +1887,35 @@ class FormInstitucion(forms.ModelForm):
         }
 # FORM Carrera Empleado
 class FormEmpCar(forms.ModelForm):  
+    rowid_institucion = forms.ModelChoiceField(queryset = SeCatInstitucion.objects.filter(estatus_ins="A"),
+                                  required=True,
+                                  label="Institucion: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_empleado = forms.ModelChoiceField(queryset = SeCatEmpleado.objects.filter(estatus_emp="A"),
+                                  required=True,
+                                  label="Empleado: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model = SeTabEmpCar
         fields = '__all__'
         exclude = ('rowid_emp_car', 'estatus_inst')          
         widgets = {
-            'rowid_institucion': forms.Select(attrs={'class': 'form-control',
-                                            'required' : 'True',
-                                            'initial':'FIXED',
-                                            'style' : 'border-color:#21B64A;'
-                                            }),
-            'rowid_empleado': forms.Select(attrs={'class': 'form-control',
-                                            'required' : 'True',
-                                            'style' : 'border-color:#21B64A;'
-                                            }),
             'descri_largo_car_emp': forms.TextInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
                                                     'placeholder': 'Ingrese el nombre de la carrera .',
@@ -1611,8 +1928,6 @@ class FormEmpCar(forms.ModelForm):
                                                     }),
         }
         labels = {
-            'rowid_empleado': 'Empleado *',
-            'rowid_institucion': 'Institución *',
             'descri_largo_car_emp': 'Carrera*',
             'descri_corto_car_emp': 'Abreviatura *',
         }
@@ -1639,6 +1954,90 @@ class FormsAspirantes(forms.ModelForm):
     discapacidad = forms.ChoiceField(label='Discapacidad', choices=DIS, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     serviciomedico = forms.ChoiceField(label='Servicio Medico', choices=SERMED, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     indigena = forms.ChoiceField(label='Indigena', choices=IND, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    rowid_mundel = forms.ModelChoiceField(queryset = SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A"),
+                                  required=True,
+                                  label="Municipio/Delegacion: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_area_bac = forms.ModelChoiceField(queryset = SeCatAreaBachillerato.objects.filter(estatus_bac="A"),
+                                  required=True,
+                                  label="Area Bachillerato: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_medio_dif = forms.ModelChoiceField(queryset = SeCatMedioDifusion.objects.filter(estatus_dif="A"),
+                                  required=True,
+                                  label="Medio de Difusion: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_esc_proc = forms.ModelChoiceField(queryset = SeCatEscuelaProcedencia.objects.filter(estatus_esc_proc="A"),
+                                  required=True,
+                                  label="Escuela de Procedencia: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_car = forms.ModelChoiceField(queryset = SeCatCarrera.objects.filter(estatus_car="A"),
+                                  required=True,
+                                  label="Carrera: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_tipo_esc = forms.ModelChoiceField(queryset = SeCatTipoEscuela.objects.filter(estatus_esc="A"),
+                                  required=True,
+                                  label="Tipo Escuela: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_col = forms.ModelChoiceField(queryset = SeCatColonia.objects.filter(estatus_col="A"),
+                                  required=True,
+                                  label="Colonia: *",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
     class Meta:
         model= SeTabAspirante
         fields= '__all__'
@@ -1649,34 +2048,6 @@ class FormsAspirantes(forms.ModelForm):
                                                     'placeholder': 'Ingrese el folio del aspirante',
                                                     'style' : 'border-color:#21B64A;'
                                                     }),
-            'rowid_mundel' : forms.Select(attrs={'class': 'form-control',
-                                                                    'required' : 'True',
-                                                                    'style' : 'border-color:#21B64A;'
-                                                                    }),
-            'rowid_area_bac' :  forms.Select(attrs={'class': 'form-control',
-                                                                    'required' : 'True',
-                                                                    'style' : 'border-color:#21B64A;'
-                                                                    }),
-            'rowid_medio_dif' : forms.Select(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }),
-            'rowid_esc_proc' : forms.Select(attrs={'class': 'form-control',
-                                                                    'required' : 'True',
-                                                                    'style' : 'border-color:#21B64A;'
-                                                                    }),
-            'rowid_car' : forms.Select(attrs={'class': 'form-control',
-                                                'required' : 'True',
-                                                'style' : 'border-color:#21B64A;'
-                                                }), 
-            'rowid_tipo_esc' : forms.Select(attrs={'class': 'form-control',
-                                                    'required' : 'True',
-                                                    'style' : 'border-color:#21B64A;'
-                                                    }),
-            'rowid_col' : forms.Select(attrs={'class': 'form-control',
-                                              'required' : 'True',
-                                              'style' : 'border-color:#21B64A;'
-                                               }), 
             'fecha_alt_asp' : forms.DateInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
                                                     'placeholder': 'DD/MM/AAAA',
@@ -1904,14 +2275,7 @@ class FormsAspirantes(forms.ModelForm):
                                                         }),
         }
         labels = {
-            'folio_utn_asp' : 'Folio del Aspirante *', 
-            'rowid_mundel' : 'Municipio/Delegacion *',
-            'rowid_area_bac' : 'Area de Bachillerato *',
-            'rowid_medio_dif' : 'Medio de Difusion *',
-            'rowid_esc_proc' : 'Escuela de Procedencia *',
-            'rowid_car' : 'Carrera *',
-            'rowid_tipo_esc' : 'Tipo Escuela *',
-            'rowid_col' : 'Colonia *',
+            'folio_utn_asp' : 'Folio del Aspirante *',
             'fecha_alt_asp' : 'Fecha de Alta *' ,
             'calle_asp' : 'Calle del Aspirante *' ,
             'num_int_asp' : 'Numero Interior ' ,

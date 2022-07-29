@@ -3,13 +3,11 @@
 # Django
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse
-# from django.views.generic import DetailView
-from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
-# from django.views import generic
+
+# Mensajes
+from django.contrib import messages
 
 # Models
 # from django.contrib.auth.models import User
@@ -74,7 +72,10 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            messages.success(request, "¡Usuario agregado con exito!")
+            return redirect('signup')
+        else:
+            return render(request=request, template_name='registration/signup.html', context={'form': form})
     else:
         form = SignupForm()
 

@@ -820,8 +820,8 @@ def export_csv_universidades (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaUniversidades.csv;'
     writer = csv.writer(response)
-    writer.writerow(['Id', 'Id Colonia', 'Id Universidad', 'Nombre universidad', 'Tipo de organización', 'Dirección', 'Correo',
-                'RFC', 'Cod. Pos.', 'Tel 1', 'Tel 2', 'Tel 3', 'Ext 1', 'Ext 2', 'Ext 3', 'Email', 'Pag. Internet', 'Contacto', 'Estatus'])
+    writer.writerow(['Id', 'Id Colonia', 'Id Universidad', 'Nombre universidad', 'Tipo de organización', 'Dirección',
+                    'RFC', 'Cod. Pos.', 'Tel 1', 'Tel 2', 'Tel 3', 'Ext 1', 'Ext 2', 'Ext 3', 'Email', 'Pag. Internet', 'Contacto', 'Estatus'])
     listaUniversidades=SeCatUniversidad.objects.filter(estatus_uni="A")
     for uni in listaUniversidades:
         writer.writerow([uni.rowid_uni, uni.rowid_col, uni.id_uni, uni.nombre_uni, uni.tipo_org_uni, uni.direccion_uni, uni.rfc_uni,
@@ -838,7 +838,7 @@ def export_xlwt_universidades (request):
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.blod = True
-    columns = ['Id', 'Id Colonia', 'Id Universidad', 'Nombre universidad', 'Tipo de organización', 'Dirección', 'Correo',
+    columns = ['Id', 'Id Colonia', 'Id Universidad', 'Nombre universidad', 'Tipo de organización', 'Dirección',
                 'RFC', 'Cod. Pos.', 'Tel 1', 'Tel 2', 'Tel 3','Ext 1', 'Ext 2', 'Ext 3', 'Email', 'Pag. Internet', 'Contacto', 'Estatus']
     for col in range(len(columns)):
         ws.write(row_num,col,columns[col], font_style)
@@ -2474,7 +2474,7 @@ class Export_print_IndAsp(LoginRequiredMixin, View):
             'count': listaIndAsp.count(),
             'IndAsp': listaIndAsp
         }
-        pdf = render_to_pdf('controlEscolar/catalogos/aspirantes/GestionIndAsp/listaIndAsp.html', data)
+        pdf = render_to_pdf('controlEscolar/catalogos/aspirantes/GestionIndAsp/ListaIndAsp.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 #Exporta a pdf las Divisiones
 class Export_pdf_IndAsp(LoginRequiredMixin, View):
@@ -2484,7 +2484,7 @@ class Export_pdf_IndAsp(LoginRequiredMixin, View):
             'count': listaIndAsp.count(),
             'IndAsp': listaIndAsp
         }
-        pdf = render_to_pdf('controlEscolar/catalogos/aspirantes/GestionIndAsp/listaIndAsp.html', data)
+        pdf = render_to_pdf('controlEscolar/catalogos/aspirantes/GestionIndAsp/ListaIndAsp.html', data)
         response = HttpResponse(pdf, content_type='application/pdf')
         filename = 'ListaIndicadoresAspirantes.pdf'
         content = "attachment; filename= %s" %(filename)
@@ -3125,7 +3125,7 @@ class Export_print_grados(LoginRequiredMixin, View):
             'count': listaGrados.count(),
             'grados': listaGrados
         }
-        pdf = render_to_pdf('controlEscolar/catalogos/estudiantes/Grados/listarGrados.html', data)
+        pdf = render_to_pdf('controlEscolar/catalogos/estudiantes/Grados/ListarGrados.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 #Exporta a pdf las grados
 class Export_pdf_grado(LoginRequiredMixin, View):
@@ -3135,7 +3135,7 @@ class Export_pdf_grado(LoginRequiredMixin, View):
             'count': listaGrados.count(),
             'grados': listaGrados
         }
-        pdf = render_to_pdf('controlEscolar/catalogos/estudiantes/Grados/listarGrados.html', data)
+        pdf = render_to_pdf('controlEscolar/catalogos/estudiantes/Grados/ListarGrados.html', data)
         response = HttpResponse(pdf, content_type='application/pdf')
         filename = 'ListaGrados.pdf'
         content = "attachment; filename= %s" %(filename)
