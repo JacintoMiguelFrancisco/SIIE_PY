@@ -13,483 +13,529 @@
   <div class="card shadow-lg  bg-body rounded">
 
     <form action="" method="POST">{% csrf_token %}
+      <div class="table-responsive-sm mt-4">
 
-      <div class="table-responsive-sm">
-        <table class="table">
+
+
+
+        <table class="table mt-3">
 
           <tr>
-            <th class="text-center">
+            <th class="text-center" colspan="5">
               {{ form.folio_utn_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.rowid_area_bac.label}}
-            </th>
-            <th class="text-center">
-              {{form.rowid_medio_dif.label}}
-            </th>
-            <th class="text-center">
-              {{ form.rowid_car.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th scope="col" class="text-center">
               {{ form.folio_utn_asp}}
             </th>
-            <th scope="col" class="text-center">
-              {{ form.rowid_area_bac}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.rowid_medio_dif}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.rowid_car}}
+          </tr>
+          <tr>
+            <th class="text-center" colspan="5">
+              {{ form.folio_cen_asp.label}}
+              {{ form.folio_cen_asp}}
             </th>
           </tr>
 
+          </tr>
+          <!--DATOS DEL ASPIRANTE -->
+          <thead class="table-success">
+            <th colspan="5">Datos aspirante</th>
+          </thead>
+
           <tr>
-            <th class="text-center">
-              {{ form.rowid_tipo_esc.label}}
+            <th class="text-center" colspan="2">
+              {{ form.paterno_asp.label}}
             </th>
             <th class="text-center">
-              {{ form.rowid_col.label}}
+              {{ form.materno_asp.label}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.nombre_asp.label}}
+            </th>
+
+
+
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="2">
+              {{ form.paterno_asp}}
             </th>
             <th class="text-center">
-              {{ form.fecha_alt_asp.label}}
+              {{ form.materno_asp}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.nombre_asp}}
+            </th>
+
+
+          </tr>
+
+          <tr>
+            <th colspan="5"></th>
+          </tr>
+
+          <!--FECHA Y LUGAR DE NACIMIENTO -->
+          <tr>
+            <thead class="table-success ">
+              <th colspan="5">Fecha y lugar de nacimiento del aspirante</th>
+            </thead>
+
+            <th class="text-center" colspan="2">
+              {{ form.fecha_nac_asp.label}}
             </th>
             <th class="text-center">
+              {{ form.rfc_asp.label}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.curp_asp.label}}
+            </th>
+
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="2">
+              {{ form.fecha_nac_asp}}
+            </th>
+            <th class="text-center">
+              {{ form.rfc_asp}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.curp_asp}}
+            </th>
+
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="3">
               {{ form.rowid_mundel.label}}
             </th>
+            <th class="text-center" colspan="2">
+              {{ form.rowid_col.label}}
+            </th>
+
           </tr>
 
           <tr>
-            <th scope="col" class="text-center">
-              {{ form.rowid_tipo_esc}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.rowid_col}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.fecha_alt_asp}}
-            </th>
-            <th class="text-center">
+            <th class="text-center" colspan="3">
               {{ form.rowid_mundel}}
             </th>
+            <th class="text-center" colspan="2">
+              {{ form.rowid_col}}
+            </th>
           </tr>
 
           <tr>
-            <th class="text-center">
+            <th colspan="5"></th>
+          </tr>
+
+          <!--DOMICILIO PARTICULAR -->
+          <tr>
+            <thead class="table-success ">
+              <th colspan="5">Domicilio particular del aspirante</th>
+            </thead>
+            <th class="text-center" colspan="3">
               {{ form.calle_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.num_int_asp.label}}
             </th>
             <th class="text-center">
               {{ form.num_ext_asp.label}}
             </th>
+            <th class="text-center" colspan="1">
+              {{ form.num_int_asp.label}}
+            </th>
           </tr>
 
           <tr>
-            <th scope="col" class="text-center">
+            <th class="text-center" colspan="3">
               {{ form.calle_asp}}
             </th>
-            <th scope="col" class="text-center">
-              {{ form.num_int_asp}}
-            </th>
-            <th scope="col" class="text-center">
+            <th class="text-center">
               {{ form.num_ext_asp}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.num_int_asp}}
             </th>
           </tr>
 
-
           <tr>
-            <th class="text-center">
-              {{ form.codigo_postal_asp.label}}
+            <th class="text-center" colspan="2">
+              {{ form.rowid_mundel.label}}
             </th>
             <th class="text-center">
+              {{ form.rowid_col.label}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.codigo_postal_asp.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="2">
+              {{ form.rowid_mundel}}
+            </th>
+            <th class="text-center">
+              {{ form.rowid_col}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.codigo_postal_asp}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="2">
               {{ form.tel_cas_asp.label}}
             </th>
             <th class="text-center">
               {{ form.telefono_oficina_asp.label}}
             </th>
-            <th class="text-center">
+            <th class="text-center" colspan="1">
+              {{ form.edad_asp.label}}
+            </th>
+            <th class="text-center" colspan="1">
               {{ form.sexo_asp.label}}
             </th>
           </tr>
 
           <tr>
-            <th scope="col" class="text-center">
-              {{ form.codigo_postal_asp}}
-            </th>
-            <th scope="col" class="text-center">
+            <th class="text-center" colspan="2">
               {{ form.tel_cas_asp}}
             </th>
-            <th scope="col" class="text-center">
+            <th class="text-center">
               {{ form.telefono_oficina_asp}}
             </th>
-            <th scope="col" class="text-center">
+            <th class="text-center" colspan="1">
+              {{ form.edad_asp}}
+            </th>
+            <th class="text-center" colspan="1">
               {{ form.sexo_asp}}
             </th>
           </tr>
 
-
           <tr>
-            <th class="text-center">
-              {{ form.edad_asp.label}}
-            </th>
-            <th class="text-center">
+            <th class="text-center" colspan="1">
               {{ form.estado_civil_asp.label}}
             </th>
-            <th class="text-center">
+            <th class="text-center" colspan="1">
               {{ form.trabaja_asp.label}}
             </th>
-            <th class="text-center">
+            <th class="text-center" colspan="1">
+              {{ form.email_asp.label}}
+            </th>
+            <th class="text-center" colspan="1">
               {{ form.tipo_de_sangre_asp.label}}
             </th>
+            <th class="text-center" colspan="1">
+              {{ form.turno_asp.label}}
+            </th>
+
           </tr>
 
           <tr>
-            <th scope="col" class="text-center">
-              {{ form.edad_asp}}
-            </th>
-            <th scope="col" class="text-center">
+            <th class="text-center" colspan="1">
               {{ form.estado_civil_asp}}
             </th>
-            <th scope="col" class="text-center">
+            <th class="text-center" colspan="1">
               {{ form.trabaja_asp}}
             </th>
-            <th scope="col" class="text-center">
+            <th class="text-center" colspan="1">
+              {{ form.email_asp}}
+            </th>
+            <th class="text-center" colspan="1">
               {{ form.tipo_de_sangre_asp}}
             </th>
-          </tr>
-
-          <tr>
-            <th class="text-center">
-              {{ form.promedio_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.fecini_bach_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.fecfin_bach_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.rfc_asp.label}}
+            <th class="text-center" colspan="1">
+              {{ form.turno_asp}}
             </th>
           </tr>
 
-          <tr>
-            <th scope="col" class="text-center">
-              {{ form.promedio_asp}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.fecini_bach_asp}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.fecfin_bach_asp}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.rfc_asp}}
-            </th>
-          </tr>
 
           <tr>
-            <th class="text-center">
-              {{ form.curp_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.fecha_nac_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.rowid_esc_proc.label}}
-            </th>
+            <th colspan="5"></th>
           </tr>
 
+          <!--DATOS TUTOR -->
           <tr>
-            <th scope="col" class="text-center">
-              {{ form.curp_asp}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.fecha_nac_asp}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.rowid_esc_proc}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center">
-              {{ form.materno_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.paterno_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.folio_cen_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.nombre_asp.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th scope="col" class="text-center">
-              {{ form.materno_asp}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.paterno_asp}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.folio_cen_asp}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.nombre_asp}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center">
-              {{ form.periodo_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.anio_asp.label}}
+            <thead class="table-success ">
+              <th colspan="5">Datos del tutor</th>
+            </thead>
+            <th class="text-center" colspan="2">
+              {{ form.pat_tutor_asp.label}}
             </th>
             <th class="text-center">
               {{ form.mat_tutor_asp.label}}
             </th>
-          </tr>
-
-          <tr>
-            <th scope="col" class="text-center">
-              {{ form.periodo_asp}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.anio_asp}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.mat_tutor_asp}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center">
-              {{ form.pat_tutor_asp.label}}
-            </th>
-            <th class="text-center">
+            <th class="text-center" colspan="2">
               {{ form.nombre_tutor_asp.label}}
             </th>
-            <th class="text-center">
-              {{ form.generacion_asp.label}}
-            </th>
           </tr>
 
           <tr>
-            <th scope="col" class="text-center">
+            <th class="text-center" colspan="2">
               {{ form.pat_tutor_asp}}
             </th>
-            <th scope="col" class="text-center">
+            <th class="text-center">
+              {{ form.mat_tutor_asp}}
+            </th>
+            <th class="text-center" colspan="2">
               {{ form.nombre_tutor_asp}}
             </th>
-            <th scope="col" class="text-center">
-              {{ form.generacion_asp}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center">
-              {{ form.turno_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.user_alta.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th scope="col" class="text-center">
-              {{ form.turno_asp}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.user_alta}}
-            </th>
           </tr>
 
 
           <tr>
-            <th class="text-center">
-              {{ form.user_cambio.label}}
+            <th colspan="5"></th>
+          </tr>
+
+          <!--ANTECEDENTES ACADEMICOS -->
+          <tr>
+            <thead class="table-success ">
+              <th colspan="5">Antecedentes academicos</th>
+            </thead>
+            <th class="text-center" colspan="2">
+              {{ form.rowid_mundel.label}}
             </th>
             <th class="text-center">
-              {{ form.email_asp.label}}
+              {{ form.rowid_esc_proc.label}}
+            </th>
+
+            <th class="text-center" colspan="2">
+              {{ form.rowid_tipo_esc.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="2">
+              {{ form.rowid_mundel}}
             </th>
             <th class="text-center">
+              {{ form.rowid_esc_proc}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.rowid_tipo_esc}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="2">
+              {{ form.rowid_area_bac.label}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.promedio_asp.label}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.fecini_bach_asp.label}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.fecfin_bach_asp.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="2">
+              {{ form.rowid_area_bac}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.promedio_asp}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.fecini_bach_asp}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.fecfin_bach_asp}}
+            </th>
+          </tr>
+
+
+          <tr>
+            <th class="text-center" colspan="2">
+              {{ form.rowid_medio_dif.label}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.otromediodif.label}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.otromedioinf.label}}
+            </th>
+
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="2">
+              {{ form.rowid_medio_dif}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.otromediodif}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.otromedioinf}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="2">
               {{ form.opcioneducativa.label}}
             </th>
             <th class="text-center">
+              {{ form.otroopcioneduca.label}}
+            </th>
+            <th class="text-center" colspan="2">
               {{ form.continuidadestudio.label}}
             </th>
           </tr>
 
           <tr>
-            <th scope="col" class="text-center">
-              {{ form.user_cambio}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.email_asp}}
-            </th>
-            <th scope="col" class="text-center">
+            <th class="text-center" colspan="2">
               {{ form.opcioneducativa}}
             </th>
-            <th scope="col" class="text-center">
-              {{ form.continuidadestudio}}
-            </th>
-          </tr>
-
-          <tr>
             <th class="text-center">
-              {{ form.otromediodif.label}}
-            </th>
-            <th class="text-center">
-              {{ form.otromedioinf.label}}
-            </th>
-            <th class="text-center">
-              {{ form.otroopcioneduca.label}}
-            </th>
-            <th class="text-center">
-              {{ form.facebook.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th scope="col" class="text-center">
-              {{ form.otromediodif}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.otromedioinf}}
-            </th>
-            <th scope="col" class="text-center">
               {{ form.otroopcioneduca}}
             </th>
-            <th scope="col" class="text-center">
-              {{ form.facebook}}
+            <th class="text-center" colspan="2">
+              {{ form.continuidadestudio}}
             </th>
+
           </tr>
 
           <tr>
-            <th class="text-center">
-              {{ form.twitter.label}}
-            </th>
-            <th class="text-center">
-              {{ form.discapacidad.label}}
-            </th>
-            <th class="text-center">
-              {{ form.tipodiscapacidad.label}}
-            </th>
-            <th class="text-center">
-              {{ form.serviciomedico.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th scope="col" class="text-center">
-              {{ form.twitter}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.discapacidad}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.tipodiscapacidad}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.serviciomedico}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center">
-              {{ form.institucionseguro.label}}
-            </th>
-            <th class="text-center">
-              {{ form.otrainstitucionseguro.label}}
-            </th>
-            <th class="text-center">
-              {{ form.numafiliacion.label}}
-            </th>
-            <th class="text-center">
+            <th class="text-center" colspan="2">
               {{ form.fechaexpedicioncer.label}}
             </th>
-          </tr>
-
-          <tr>
-            <th scope="col" class="text-center">
-              {{ form.institucionseguro}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.otrainstitucionseguro}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.numafiliacion}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.fechaexpedicioncer}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center">
+            <th class="text-center" colspan="2">
               {{ form.folio.label}}
             </th>
-            <th class="text-center">
+            <th class="text-center" colspan="2">
               {{ form.fechacompromisocerti.label}}
             </th>
-            <th class="text-center">
-              {{ form.indigena.label}}
+
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="2">
+              {{ form.fechaexpedicioncer}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.folio}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.fechacompromisocerti}}
+            </th>
+
+          </tr>
+
+          <tr>
+            <th colspan="5"></th>
+          </tr>
+
+          <!--REDES SOCIALES -->
+          <tr>
+            <thead class="table-success ">
+              <th colspan="5">Redes sociales</th>
+            </thead>
+            <th class="text-center" colspan="3">
+              {{ form.facebook.label}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.twitter.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="3">
+              {{ form.facebook}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.twitter}}
+            </th>
+          </tr>
+
+          <tr>
+            <th colspan="5"></th>
+          </tr>
+          <!--OTRO -->
+          <tr>
+            <thead class="table-success ">
+              <th colspan="5">Otro</th>
+            </thead>
+            <th class="text-center" colspan="1">
+              {{ form.discapacidad.label}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.tipodiscapacidad.label}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.serviciomedico.label}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.institucionseguro.label}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.numafiliacion.label}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="1">
+              {{ form.discapacidad}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.tipodiscapacidad}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.serviciomedico}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.institucionseguro}}
+            </th>
+            <th class="text-center" colspan="1">
+              {{ form.numafiliacion}}
+            </th>
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="2">
+              {{ form.otrainstitucionseguro.label}}
             </th>
             <th class="text-center">
               {{ form.poblacionindigena.label}}
             </th>
-          </tr>
-
-          <tr>
-            <th scope="col" class="text-center">
-              {{ form.folio}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.fechacompromisocerti}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.indigena}}
-            </th>
-            <th scope="col" class="text-center">
-              {{ form.poblacionindigena}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center">
+            <th class="text-center" colspan="2">
               {{ form.lenguaindigena.label}}
             </th>
-            <th class="text-center">
-              <label class="mx-2"> </label>
+          </tr>
+
+          <tr>
+            <th class="text-center" colspan="2">
+              {{ form.otrainstitucionseguro}}
             </th>
             <th class="text-center">
-              <label class="mx-2"> </label>
+              {{ form.poblacionindigena}}
             </th>
-            <th class="text-center">
-              <label class="mx-2"> </label>
+            <th class="text-center" colspan="2">
+              {{ form.lenguaindigena}}
             </th>
           </tr>
 
           <tr>
-            <th scope="col" class="text-center">
-              {{ form.lenguaindigena}}
+            <th class="text-center" colspan="2">
+              {{ form.generacion_asp.label}}
             </th>
-            <th scope="col" class="text-center">
+            <th class="text-center" colspan="1">
+              {{ form.user_alta.label}}
             </th>
-            <th scope="col" class="text-center">
-            </th>
-            <th scope="col" class="text-center">
+            <th class="text-center" colspan="2">
+              {{ form.fecha_alt_asp.label}}
             </th>
           </tr>
+
+          <tr>
+            <th class="text-center" colspan="2">
+              {{ form.generacion_asp}}
+            </th>
+            <th class="text-center" ccolspan="1">
+              {{ form.user_alta}}
+            </th>
+            <th class="text-center" colspan="2">
+              {{ form.fecha_alt_asp}}
+            </th>
+          </tr>
+
 
         </table>
       </div>
