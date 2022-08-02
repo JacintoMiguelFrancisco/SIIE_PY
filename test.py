@@ -8,144 +8,420 @@
 from django.db import models
 
 
-class AccountsProfile(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    website = models.CharField(max_length=200)
-    biography = models.TextField()
-    phone_number = models.CharField(max_length=20)
-    picture = models.CharField(max_length=100, blank=True, null=True)
-    created = models.DateTimeField()
-    modified = models.DateTimeField()
-    user = models.OneToOneField('AuthUser', models.DO_NOTHING)
+class MiCatAsignatura(models.Model):
+    id_asignatura = models.CharField(primary_key=True, max_length=20)
+    id_plan_est = models.IntegerField()
+    id_uni = models.IntegerField()
+    id_div = models.IntegerField()
+    id_car = models.IntegerField()
+    descri_larga_asi = models.CharField(max_length=80)
+    descri_corto_asi = models.CharField(max_length=10)
+    estatus_asi = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'accounts_profile'
+        db_table = 'mi_cat_asignatura'
 
 
-class AuthGroup(models.Model):
-    name = models.CharField(unique=True, max_length=150)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_group'
-
-
-class AuthGroupPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+class MiCatCct(models.Model):
+    cct = models.CharField(primary_key=True, max_length=20)
+    turno_cct = models.CharField(max_length=1)
+    nombre_cct = models.CharField(max_length=200, blank=True, null=True)
+    cve_mpo_del_cct = models.CharField(max_length=3, blank=True, null=True)
+    cve_ent_fed_cct = models.CharField(max_length=2, blank=True, null=True)
+    control_cct = models.CharField(max_length=20, blank=True, null=True)
+    servicio_cct = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'auth_group_permissions'
-        unique_together = (('group', 'permission'),)
+        db_table = 'mi_cat_cct'
+        unique_together = (('cct', 'turno_cct'), ('cct', 'turno_cct'),)
 
 
-class AuthPermission(models.Model):
-    name = models.CharField(max_length=255)
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
-    codename = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_permission'
-        unique_together = (('content_type', 'codename'),)
-
-
-class AuthUser(models.Model):
-    password = models.CharField(max_length=128)
-    last_login = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.BooleanField()
-    username = models.CharField(unique=True, max_length=150)
-    first_name = models.CharField(max_length=150)
-    last_name = models.CharField(max_length=150)
-    email = models.CharField(max_length=254)
-    is_staff = models.BooleanField()
-    is_active = models.BooleanField()
-    date_joined = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user'
-
-
-class AuthUserGroups(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_groups'
-        unique_together = (('user', 'group'),)
-
-
-class AuthUserUserPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
-    permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'auth_user_user_permissions'
-        unique_together = (('user', 'permission'),)
-
-
-class ControlescolarSecatpais(models.Model):
-    id_pais = models.IntegerField(primary_key=True)
-    descri_largo_pais = models.CharField(max_length=50, blank=True, null=True)
-    descri_corto_pais = models.CharField(max_length=10, blank=True, null=True)
-    estatus_pais = models.CharField(max_length=1, blank=True, null=True)
+class MiCatEmpleado(models.Model):
+    id_uni = models.IntegerField()
+    id_div = models.IntegerField()
+    id_car = models.IntegerField()
+    id_empleado = models.IntegerField(primary_key=True)
+    id_academico = models.IntegerField(blank=True, null=True)
+    id_depto = models.CharField(max_length=3, blank=True, null=True)
+    conse_depto = models.IntegerField(blank=True, null=True)
+    id_edo = models.IntegerField(blank=True, null=True)
+    id_mundel = models.IntegerField(blank=True, null=True)
+    id_col = models.IntegerField(blank=True, null=True)
+    id_plaza = models.IntegerField(blank=True, null=True)
+    id_puesto = models.IntegerField(blank=True, null=True)
+    id_sueldo = models.IntegerField(blank=True, null=True)
+    nombre_emp = models.CharField(max_length=40)
+    paterno_emp = models.CharField(max_length=30)
+    materno_emp = models.CharField(max_length=30)
+    rfc_emp = models.CharField(max_length=15)
+    curp_emp = models.CharField(max_length=25)
+    direccion_emp = models.CharField(max_length=60)
+    telefono_emp = models.CharField(max_length=15, blank=True, null=True)
+    email_emp = models.CharField(max_length=35, blank=True, null=True)
+    sexo_emp = models.CharField(max_length=1)
+    fecha_alta_emp = models.DateField(blank=True, null=True)
+    user_alta_emp = models.CharField(max_length=10, blank=True, null=True)
+    user_cambio_emp = models.CharField(max_length=10, blank=True, null=True)
+    fecha_cambio_emp = models.DateField(blank=True, null=True)
+    estatus_emp = models.CharField(max_length=1, blank=True, null=True)
+    codpos_emp = models.IntegerField()
+    horas_contra_emp = models.IntegerField()
+    fec_nac_emp = models.DateField()
+    estatus_val = models.CharField(max_length=1, blank=True, null=True)
+    estatus_comp = models.CharField(max_length=1, blank=True, null=True)
+    edad_emp = models.IntegerField(blank=True, null=True)
+    estado_civil_emp = models.CharField(max_length=1, blank=True, null=True)
+    num_vac_max = models.IntegerField(blank=True, null=True)
+    num_vac_act = models.IntegerField(blank=True, null=True)
+    tipo_contrato_com = models.IntegerField(blank=True, null=True)
+    cedula_emp_com = models.CharField(max_length=20, blank=True, null=True)
+    fecicon = models.DateField(blank=True, null=True)
+    fecfcon = models.DateField(blank=True, null=True)
+    comentario_emp = models.CharField(max_length=30, blank=True, null=True)
+    id_edo_nac_emp = models.IntegerField(blank=True, null=True)
+    estatus_biblio = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'controlEscolar_secatpais'
+        db_table = 'mi_cat_empleado'
+        unique_together = (('id_empleado', 'id_uni', 'id_div', 'id_car'), ('id_empleado', 'id_uni', 'id_div', 'id_car'),)
 
 
-class DjangoAdminLog(models.Model):
-    action_time = models.DateTimeField()
-    object_id = models.TextField(blank=True, null=True)
-    object_repr = models.CharField(max_length=200)
-    action_flag = models.SmallIntegerField()
-    change_message = models.TextField()
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+class MiCatEmpresas(models.Model):
+    id_empresa = models.IntegerField(primary_key=True)
+    id_uni = models.IntegerField(blank=True, null=True)
+    id_div = models.IntegerField(blank=True, null=True)
+    id_car = models.IntegerField(blank=True, null=True)
+    id_edo = models.IntegerField(blank=True, null=True)
+    id_mundel = models.IntegerField(blank=True, null=True)
+    id_col = models.IntegerField(blank=True, null=True)
+    id_giro = models.IntegerField(blank=True, null=True)
+    id_subgiro = models.IntegerField(blank=True, null=True)
+    razon_social_cia = models.CharField(max_length=300)
+    direccion_cia = models.CharField(max_length=500, blank=True, null=True)
+    rfc_cia = models.CharField(max_length=15, blank=True, null=True)
+    codpos_cia = models.IntegerField(blank=True, null=True)
+    telefono1_cia = models.CharField(max_length=15, blank=True, null=True)
+    telefono2_cia = models.CharField(max_length=15, blank=True, null=True)
+    telefono3_cia = models.CharField(max_length=15, blank=True, null=True)
+    fax1_cia = models.CharField(max_length=15, blank=True, null=True)
+    fax2_cia = models.CharField(max_length=15, blank=True, null=True)
+    fax3_cia = models.CharField(max_length=15, blank=True, null=True)
+    ext1_cia = models.CharField(max_length=7, blank=True, null=True)
+    ext2_cia = models.CharField(max_length=7, blank=True, null=True)
+    ext3_cia = models.CharField(max_length=7, blank=True, null=True)
+    mail_cia = models.CharField(max_length=100, blank=True, null=True)
+    pagina_internet_cia = models.CharField(max_length=35, blank=True, null=True)
+    estatus_cia = models.CharField(max_length=1, blank=True, null=True)
+    representante_legal = models.CharField(max_length=250, blank=True, null=True)
+    tipo_empresa = models.CharField(max_length=3, blank=True, null=True)
+    tamanio_emp = models.CharField(max_length=3, blank=True, null=True)
+    sector_emp = models.CharField(max_length=3, blank=True, null=True)
+    caracter = models.CharField(max_length=3, blank=True, null=True)
+    cargo_rep = models.CharField(max_length=500, blank=True, null=True)
+    rama_em = models.CharField(max_length=200, blank=True, null=True)
+    id_programa = models.IntegerField(blank=True, null=True)
+    vigencia = models.CharField(max_length=100, blank=True, null=True)
+    tipovinculacion = models.CharField(max_length=25, blank=True, null=True)
+    facebook = models.CharField(max_length=30, blank=True, null=True)
+    twitter = models.CharField(max_length=30, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'django_admin_log'
+        db_table = 'mi_cat_empresas'
 
 
-class DjangoContentType(models.Model):
-    app_label = models.CharField(max_length=100)
-    model = models.CharField(max_length=100)
-
-    class Meta:
-        managed = False
-        db_table = 'django_content_type'
-        unique_together = (('app_label', 'model'),)
-
-
-class DjangoMigrations(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    app = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    applied = models.DateTimeField()
+class MiCatGrupo(models.Model):
+    id_grado = models.IntegerField()
+    id_grupo = models.IntegerField(primary_key=True)
+    id_uni = models.IntegerField(blank=True, null=True)
+    id_div = models.IntegerField(blank=True, null=True)
+    id_car = models.IntegerField(blank=True, null=True)
+    descri_largo_gpo = models.CharField(max_length=60)
+    descri_corto_gpo = models.CharField(max_length=10)
+    estatus_gpo = models.CharField(max_length=1, blank=True, null=True)
+    lim_gpo = models.IntegerField(blank=True, null=True)
+    lim_rec_gpo = models.IntegerField(blank=True, null=True)
+    lim_acu_gpo = models.IntegerField(blank=True, null=True)
+    lim_acu_rec_gpo = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'django_migrations'
+        db_table = 'mi_cat_grupo'
+        unique_together = (('id_grupo', 'id_grado'), ('id_grupo', 'id_grado'),)
 
 
-class DjangoSession(models.Model):
-    session_key = models.CharField(primary_key=True, max_length=40)
-    session_data = models.TextField()
-    expire_date = models.DateTimeField()
+class MiCatPeriodos(models.Model):
+    id_car = models.IntegerField(blank=True, null=True)
+    evento_per = models.CharField(primary_key=True, max_length=3)
+    consecutivo_per = models.IntegerField()
+    fecha_inicial_per = models.DateField(blank=True, null=True)
+    fecha_final_per = models.DateField(blank=True, null=True)
+    anio_per = models.IntegerField(blank=True, null=True)
+    periodo_per = models.IntegerField(blank=True, null=True)
+    descripcion_per = models.CharField(max_length=255, blank=True, null=True)
+    estatus_per = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'django_session'
+        db_table = 'mi_cat_periodos'
+        unique_together = (('evento_per', 'consecutivo_per'), ('evento_per', 'consecutivo_per'),)
+
+
+class MiCatSalones(models.Model):
+    id_uni = models.IntegerField()
+    id_div = models.IntegerField()
+    id_car = models.IntegerField()
+    id_salon = models.IntegerField(primary_key=True)
+    descri_corto_salon = models.CharField(max_length=10, blank=True, null=True)
+    descri_largo_salon = models.CharField(max_length=50, blank=True, null=True)
+    estatus_salon = models.CharField(max_length=1, blank=True, null=True)
+    tipo_salon = models.CharField(max_length=3, blank=True, null=True)
+    compartido_salon = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'mi_cat_salones'
+        unique_together = (('id_salon', 'id_uni', 'id_div', 'id_car'), ('id_salon', 'id_uni', 'id_div', 'id_car'),)
+
+
+class MiCatSepormex(models.Model):
+    d_codigo = models.CharField(max_length=5, blank=True, null=True)
+    d_asenta = models.CharField(max_length=150, blank=True, null=True)
+    d_tipo_asenta = models.CharField(max_length=50, blank=True, null=True)
+    d_mnpio = models.CharField(max_length=50, blank=True, null=True)
+    d_estado = models.CharField(max_length=50, blank=True, null=True)
+    d_ciudad = models.CharField(max_length=50, blank=True, null=True)
+    d_cp = models.CharField(max_length=5, blank=True, null=True)
+    c_estado = models.CharField(primary_key=True, max_length=2)
+    c_oficina = models.CharField(max_length=5, blank=True, null=True)
+    c_cp = models.CharField(max_length=5, blank=True, null=True)
+    c_tipo_asenta = models.CharField(max_length=2, blank=True, null=True)
+    c_mnpio = models.CharField(max_length=3)
+    id_asenta_cpcons = models.CharField(max_length=4)
+    d_zona = models.CharField(max_length=50, blank=True, null=True)
+    c_cve_ciudad = models.CharField(max_length=5, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'mi_cat_sepormex'
+        unique_together = (('c_estado', 'c_mnpio', 'id_asenta_cpcons'), ('c_estado', 'c_mnpio', 'id_asenta_cpcons'),)
+
+
+class MiParTipoConsecutivo(models.Model):
+    id_uni = models.IntegerField()
+    id_div = models.IntegerField()
+    id_tipo_par = models.IntegerField(primary_key=True)
+    nombre_tabla = models.CharField(max_length=60, blank=True, null=True)
+    nombre_atributo = models.CharField(max_length=60, blank=True, null=True)
+    num_conse_inicial = models.FloatField(blank=True, null=True)
+    num_conse_final = models.FloatField(blank=True, null=True)
+    estatus_par = models.CharField(max_length=1, blank=True, null=True)
+    num_conse_actual = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'mi_par_tipo_consecutivo'
+        unique_together = (('id_tipo_par', 'id_uni', 'id_div'), ('id_tipo_par', 'id_uni', 'id_div'),)
+
+
+class MiProAsiIndicador(models.Model):
+    id_indicador = models.IntegerField(primary_key=True)
+    id_uni = models.IntegerField()
+    id_div = models.IntegerField()
+    id_asignatura = models.CharField(max_length=20)
+    id_plan_est = models.IntegerField()
+    id_grado = models.IntegerField()
+    id_car = models.IntegerField()
+    porcentaje_pro_asi_idi = models.DecimalField(max_digits=5, decimal_places=2)
+    comen_pro_asi_ind = models.CharField(max_length=30, blank=True, null=True)
+    estatus_peai = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'mi_pro_asi_indicador'
+        unique_together = (('id_indicador', 'id_uni', 'id_div', 'id_asignatura', 'id_plan_est', 'id_grado', 'id_car'), ('id_indicador', 'id_uni', 'id_div', 'id_asignatura', 'id_plan_est', 'id_grado', 'id_car'),)
+
+
+class MiProEgreDoc(models.Model):
+    id_doc = models.IntegerField()
+    id_matricula_egre = models.CharField(primary_key=True, max_length=20)
+    id_uni = models.IntegerField()
+    id_div = models.IntegerField()
+    id_car = models.IntegerField()
+    importante_doc_egre = models.CharField(max_length=1, blank=True, null=True)
+    entrego_doc_egre = models.CharField(max_length=1, blank=True, null=True)
+    fec_alta_egre = models.DateField(blank=True, null=True)
+    usr_alta_egre = models.CharField(max_length=10, blank=True, null=True)
+    comentario_doc_engre = models.CharField(max_length=100, blank=True, null=True)
+    estado_doc_egre = models.CharField(max_length=1, blank=True, null=True)
+    fec_baja_egre = models.DateField(blank=True, null=True)
+    usr_baja_egre = models.CharField(max_length=10, blank=True, null=True)
+    fec_cambio_egre = models.DateField(blank=True, null=True)
+    usr_cambio_egre = models.CharField(max_length=10, blank=True, null=True)
+    anio_utn = models.IntegerField(blank=True, null=True)
+    periodo_utn = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'mi_pro_egre_doc'
+
+
+class MiProEgresadoEmpresa(models.Model):
+    id_empresa = models.IntegerField()
+    id_uni = models.IntegerField(primary_key=True)
+    id_div = models.IntegerField()
+    id_car = models.IntegerField()
+    id_matricula_egre = models.CharField(max_length=20)
+    fecha_ini_emp_egre = models.DateField()
+    fecha_fin_emp_egre = models.DateField(blank=True, null=True)
+    estatus_emp_egre = models.CharField(max_length=1, blank=True, null=True)
+    nombre_jefe_emp = models.CharField(max_length=250, blank=True, null=True)
+    cargo_jefe = models.CharField(max_length=100, blank=True, null=True)
+    telefono_jefe_egre = models.CharField(max_length=15, blank=True, null=True)
+    extension_jefe_egre = models.CharField(max_length=5, blank=True, null=True)
+    fax_jefe_egre = models.CharField(max_length=15, blank=True, null=True)
+    mail_jefe_egre = models.CharField(max_length=30, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'mi_pro_egresado_empresa'
+        unique_together = (('id_uni', 'id_div', 'id_car', 'id_matricula_egre', 'fecha_ini_emp_egre', 'id_empresa'), ('id_uni', 'id_div', 'id_car', 'id_matricula_egre', 'fecha_ini_emp_egre', 'id_empresa'),)
+
+
+class MiProGpoAsig(models.Model):
+    id_asignatura = models.CharField(max_length=20)
+    id_grado = models.IntegerField()
+    id_grupo = models.IntegerField()
+    id_uni = models.IntegerField()
+    id_div = models.IntegerField()
+    id_car = models.IntegerField()
+    id_empleado = models.IntegerField()
+    periodo_hor = models.IntegerField(primary_key=True)
+    estatus_asignatura = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'mi_pro_gpo_asig'
+        unique_together = (('periodo_hor', 'id_asignatura', 'id_grado', 'id_grupo', 'id_uni', 'id_div', 'id_car', 'id_empleado'), ('periodo_hor', 'id_asignatura', 'id_grado', 'id_grupo', 'id_uni', 'id_div', 'id_car', 'id_empleado'),)
+
+
+class MiProIndAsp(models.Model):
+    id_indicador = models.IntegerField(primary_key=True)
+    id_uni = models.IntegerField()
+    id_div = models.IntegerField()
+    id_car = models.IntegerField()
+    valor_porcentual = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    estatus_indicadores = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'mi_pro_ind_asp'
+        unique_together = (('id_indicador', 'id_uni', 'id_div', 'id_car'), ('id_indicador', 'id_uni', 'id_div', 'id_car'),)
+
+
+class MiProPlanEstudio(models.Model):
+    id_asignatura = models.CharField(primary_key=True, max_length=20)
+    id_uni = models.IntegerField()
+    id_div = models.IntegerField()
+    id_car = models.IntegerField()
+    id_grado = models.IntegerField()
+    id_plan_est = models.IntegerField()
+    horas_plan_est = models.IntegerField()
+    creditos_plan_est = models.DecimalField(max_digits=5, decimal_places=2)
+    nota_minima_apro_est = models.DecimalField(max_digits=5, decimal_places=2)
+    valor_pon_final = models.DecimalField(max_digits=5, decimal_places=2)
+    estatus_pea = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'mi_pro_plan_estudio'
+        unique_together = (('id_asignatura', 'id_uni', 'id_div', 'id_car', 'id_grado', 'id_plan_est'), ('id_asignatura', 'id_uni', 'id_div', 'id_car', 'id_grado', 'id_plan_est'),)
+
+
+class MiTabEstudiante(models.Model):
+    id_matricula = models.FloatField(primary_key=True)
+    id_edo = models.IntegerField(blank=True, null=True)
+    id_mundel = models.IntegerField(blank=True, null=True)
+    id_col = models.IntegerField(blank=True, null=True)
+    id_grado = models.IntegerField(blank=True, null=True)
+    id_grupo = models.IntegerField(blank=True, null=True)
+    id_uni = models.IntegerField(blank=True, null=True)
+    id_div = models.IntegerField(blank=True, null=True)
+    id_car = models.IntegerField(blank=True, null=True)
+    id_becas = models.IntegerField(blank=True, null=True)
+    paterno_est = models.CharField(max_length=30)
+    materno_est = models.CharField(max_length=30)
+    rfc_est = models.CharField(max_length=15)
+    curp_est = models.CharField(max_length=25)
+    direccion_est = models.CharField(max_length=60)
+    telefono_est = models.CharField(max_length=15, blank=True, null=True)
+    email_est = models.CharField(max_length=50, blank=True, null=True)
+    sexo_est = models.CharField(max_length=1)
+    fecha_alta_est = models.DateField(blank=True, null=True)
+    user_alta_est = models.CharField(max_length=10, blank=True, null=True)
+    fecha_cambio_est = models.DateField(blank=True, null=True)
+    user_cambio_est = models.CharField(max_length=10, blank=True, null=True)
+    estatus_est = models.CharField(max_length=1, blank=True, null=True)
+    codpos = models.CharField(max_length=5)
+    fec_nac_est = models.DateField()
+    turno_est = models.IntegerField(blank=True, null=True)
+    generacion_est = models.IntegerField(blank=True, null=True)
+    periodo_est = models.IntegerField(blank=True, null=True)
+    anio_est = models.IntegerField(blank=True, null=True)
+    estado_civil_est = models.CharField(max_length=1, blank=True, null=True)
+    mat_tutor_est = models.CharField(max_length=30, blank=True, null=True)
+    pat_tutor_est = models.CharField(max_length=30, blank=True, null=True)
+    nombre_tutor_est = models.CharField(max_length=40, blank=True, null=True)
+    no_folio_est = models.IntegerField(blank=True, null=True)
+    entidad_nac = models.IntegerField(blank=True, null=True)
+    mpo_del_nac = models.IntegerField(blank=True, null=True)
+    trabaja_est = models.CharField(max_length=1, blank=True, null=True)
+    tipo_sangre_est = models.CharField(max_length=10, blank=True, null=True)
+    id_tipo_esc_est = models.IntegerField(blank=True, null=True)
+    id_area_bach_est = models.IntegerField(blank=True, null=True)
+    entidad_bach = models.IntegerField(blank=True, null=True)
+    mpo_del_bach = models.IntegerField(blank=True, null=True)
+    fecha_ini_bach = models.IntegerField(blank=True, null=True)
+    fecha_fin_bach = models.IntegerField(blank=True, null=True)
+    promedio_gral_bach = models.DecimalField(max_digits=5, decimal_places=2)
+    tel_trabajo = models.CharField(max_length=15, blank=True, null=True)
+    edad_est = models.IntegerField(blank=True, null=True)
+    fecha_vig_est = models.DateField(blank=True, null=True)
+    estatus_inscri_est = models.CharField(max_length=1, blank=True, null=True)
+    imss_est = models.CharField(max_length=25, blank=True, null=True)
+    clinica_est = models.IntegerField(blank=True, null=True)
+    num_servicio = models.FloatField(blank=True, null=True)
+    fec_ser_social = models.DateField(blank=True, null=True)
+    fecha_repos_est = models.DateField(blank=True, null=True)
+    matri_est = models.FloatField(blank=True, null=True)
+    beca_pro_est = models.CharField(max_length=1, blank=True, null=True)
+    usuario_est = models.CharField(max_length=10, blank=True, null=True)
+    password_est = models.CharField(max_length=10, blank=True, null=True)
+    estatus_biblio = models.CharField(max_length=1, blank=True, null=True)
+    tipo_carrera_est = models.IntegerField(blank=True, null=True)
+    otras_uts = models.IntegerField(blank=True, null=True)
+    no_cedula_tsu = models.CharField(max_length=30, blank=True, null=True)
+    no_referencia = models.CharField(max_length=20, blank=True, null=True)
+    grasc = models.CharField(max_length=2, blank=True, null=True)
+    institucion_seguro = models.CharField(max_length=25, blank=True, null=True)
+    otrainstitucionseguro = models.CharField(max_length=40, blank=True, null=True)
+    nacionalidad = models.CharField(max_length=20, blank=True, null=True)
+    discapacidad = models.CharField(max_length=5, blank=True, null=True)
+    tipodiscapacidad = models.CharField(max_length=40, blank=True, null=True)
+    foliocertificado = models.CharField(max_length=40, blank=True, null=True)
+    fechaexpedicioncer = models.DateField(blank=True, null=True)
+    equivalencia = models.CharField(max_length=5, blank=True, null=True)
+    parentescotutor = models.CharField(max_length=40, blank=True, null=True)
+    tipoestudiante = models.CharField(max_length=5, blank=True, null=True)
+    num_ext = models.CharField(max_length=30, blank=True, null=True)
+    num_int = models.CharField(max_length=30, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'mi_tab_estudiante'
 
 
 class Pagosalumnos(models.Model):
@@ -705,21 +981,6 @@ class SeCatCarrera(models.Model):
     class Meta:
         managed = False
         db_table = 'se_cat_carrera'
-
-
-class SeCatCct(models.Model):
-    cct = models.CharField(primary_key=True, max_length=20)
-    turno_cct = models.CharField(max_length=1)
-    nombre_cct = models.CharField(max_length=200, blank=True, null=True)
-    cve_mpo_del_cct = models.CharField(max_length=3, blank=True, null=True)
-    cve_ent_fed_cct = models.CharField(max_length=2, blank=True, null=True)
-    control_cct = models.CharField(max_length=20, blank=True, null=True)
-    servicio_cct = models.CharField(max_length=50, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_cct'
-        unique_together = (('cct', 'turno_cct'), ('cct', 'turno_cct'),)
 
 
 class SeCatClinica(models.Model):
@@ -1306,29 +1567,6 @@ class SeCatSector(models.Model):
         db_table = 'se_cat_sector'
 
 
-class SeCatSepormex(models.Model):
-    d_codigo = models.CharField(max_length=5, blank=True, null=True)
-    d_asenta = models.CharField(max_length=150, blank=True, null=True)
-    d_tipo_asenta = models.CharField(max_length=50, blank=True, null=True)
-    d_mnpio = models.CharField(max_length=50, blank=True, null=True)
-    d_estado = models.CharField(max_length=50, blank=True, null=True)
-    d_ciudad = models.CharField(max_length=50, blank=True, null=True)
-    d_cp = models.CharField(max_length=5, blank=True, null=True)
-    c_estado = models.CharField(primary_key=True, max_length=2)
-    c_oficina = models.CharField(max_length=5, blank=True, null=True)
-    c_cp = models.CharField(max_length=5, blank=True, null=True)
-    c_tipo_asenta = models.CharField(max_length=2, blank=True, null=True)
-    c_mnpio = models.CharField(max_length=3)
-    id_asenta_cpcons = models.CharField(max_length=4)
-    d_zona = models.CharField(max_length=50, blank=True, null=True)
-    c_cve_ciudad = models.CharField(max_length=5, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'se_cat_sepormex'
-        unique_together = (('c_estado', 'c_mnpio', 'id_asenta_cpcons'), ('c_estado', 'c_mnpio', 'id_asenta_cpcons'),)
-
-
 class SeCatSubgiros(models.Model):
     rowid_subgiro = models.IntegerField(primary_key=True)
     rowid_giro = models.ForeignKey(SeCatGiros, models.DO_NOTHING, db_column='rowid_giro', blank=True, null=True)
@@ -1751,12 +1989,14 @@ class SeTabAsesoresEquipo(models.Model):
 
 class SeTabAspirante(models.Model):
     rowid_asp = models.IntegerField(primary_key=True)
+    rowid_edo = models.ForeignKey(SeCatEstado, models.DO_NOTHING, db_column='rowid_edo', blank=True, null=True)
     rowid_mundel = models.ForeignKey(SeCatMunicipioDelegacion, models.DO_NOTHING, db_column='rowid_mundel', blank=True, null=True)
     rowid_area_bac = models.ForeignKey(SeCatAreaBachillerato, models.DO_NOTHING, db_column='rowid_area_bac', blank=True, null=True)
+    rowid_mundel_nac = models.ForeignKey(SeCatMunicipioDelegacion, models.DO_NOTHING, db_column='rowid_mundel_nac', blank=True, null=True)
     rowid_medio_dif = models.ForeignKey(SeCatMedioDifusion, models.DO_NOTHING, db_column='rowid_medio_dif', blank=True, null=True)
     rowid_esc_proc = models.ForeignKey(SeCatEscuelaProcedencia, models.DO_NOTHING, db_column='rowid_esc_proc', blank=True, null=True)
+    rowid_edo_nac = models.ForeignKey(SeCatEstado, models.DO_NOTHING, db_column='rowid_edo_nac', blank=True, null=True)
     rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
-    rowid_tipo_esc = models.ForeignKey(SeCatTipoEscuela, models.DO_NOTHING, db_column='rowid_tipo_esc', blank=True, null=True)
     rowid_col = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='rowid_col', blank=True, null=True)
     folio_utn_asp = models.CharField(max_length=20)
     fecha_alt_asp = models.DateField()
@@ -2320,12 +2560,15 @@ class SeTabEstatusTitulado(models.Model):
 
 class SeTabEstudiante(models.Model):
     rowid_matricula = models.IntegerField(primary_key=True)
+    rowid_mundel = models.ForeignKey(SeCatMunicipioDelegacion, models.DO_NOTHING, db_column='rowid_mundel', blank=True, null=True)
     rowid_becas = models.ForeignKey(SeCatBecas, models.DO_NOTHING, db_column='rowid_becas', blank=True, null=True)
     rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
     rowid_col = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='rowid_col', blank=True, null=True)
-    rowid_mundel = models.ForeignKey(SeCatMunicipioDelegacion, models.DO_NOTHING, db_column='rowid_mundel', blank=True, null=True)
+    rowid_edo = models.ForeignKey(SeCatEstado, models.DO_NOTHING, db_column='rowid_edo', blank=True, null=True)
+    rowid_mundel_nac = models.ForeignKey(SeCatMunicipioDelegacion, models.DO_NOTHING, db_column='rowid_mundel_nac', blank=True, null=True)
     rowid_esc_proc = models.ForeignKey(SeCatEscuelaProcedencia, models.DO_NOTHING, db_column='rowid_esc_proc', blank=True, null=True)
     rowid_grupo = models.ForeignKey(SeCatGrupo, models.DO_NOTHING, db_column='rowid_grupo', blank=True, null=True)
+    rowid_edo_nac = models.ForeignKey(SeCatEstado, models.DO_NOTHING, db_column='rowid_edo_nac', blank=True, null=True)
     id_matricula = models.FloatField()
     nombre_estu = models.CharField(max_length=40)
     paterno_est = models.CharField(max_length=30)

@@ -389,12 +389,15 @@ class SeCatGrupo(models.Model):
 ############################################## Tabla Estudiante #####################################
 class SeTabEstudiante(models.Model):
     rowid_matricula = models.IntegerField(primary_key=True)
+    rowid_mundel = models.ForeignKey(SeCatMunicipioDelegacion, models.DO_NOTHING, db_column='rowid_mundel', blank=True, null=True)
     rowid_becas = models.ForeignKey(SeCatBecas, models.DO_NOTHING, db_column='rowid_becas', blank=True, null=True)
     rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
     rowid_col = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='rowid_col', blank=True, null=True)
-    rowid_mundel = models.ForeignKey(SeCatMunicipioDelegacion, models.DO_NOTHING, db_column='rowid_mundel', blank=True, null=True)
+    rowid_edo = models.ForeignKey(SeCatEstado, models.DO_NOTHING, db_column='rowid_edo', blank=True, null=True)
+    rowid_mundel_nac = models.ForeignKey(SeCatMunicipioDelegacion, models.DO_NOTHING, db_column='rowid_mundel_nac', blank=True, null=True, related_name='rowid_mundel_nac0')
     rowid_esc_proc = models.ForeignKey(SeCatEscuelaProcedencia, models.DO_NOTHING, db_column='rowid_esc_proc', blank=True, null=True)
     rowid_grupo = models.ForeignKey(SeCatGrupo, models.DO_NOTHING, db_column='rowid_grupo', blank=True, null=True)
+    rowid_edo_nac = models.ForeignKey(SeCatEstado, models.DO_NOTHING, db_column='rowid_edo_nac', blank=True, null=True, related_name='rowid_edo_nac0')
     id_matricula = models.FloatField()
     nombre_estu = models.CharField(max_length=40)
     paterno_est = models.CharField(max_length=30)
@@ -409,7 +412,6 @@ class SeTabEstudiante(models.Model):
     user_alta_est = models.CharField(max_length=10, blank=True, null=True)
     fecha_cambio_est = models.DateField(blank=True, null=True)
     user_cambio_est = models.CharField(max_length=10, blank=True, null=True)
-    estatus_est = models.CharField(max_length=1, blank=True, null=True, default="A")
     codpos = models.CharField(max_length=5)
     fec_nac_est = models.DateField()
     turno_est = models.IntegerField(blank=True, null=True)
@@ -459,6 +461,8 @@ class SeTabEstudiante(models.Model):
     tipoestudiante = models.CharField(max_length=5, blank=True, null=True)
     num_ext = models.CharField(max_length=30, blank=True, null=True)
     num_int = models.CharField(max_length=30, blank=True, null=True)
+    estatus_est = models.CharField(max_length=1, blank=True, null=True, default="A")
+
     class Meta:
         managed = False
         db_table = 'se_tab_estudiante'
@@ -713,13 +717,15 @@ class SeTabEmpCar(models.Model):
 ############################################## TABLA ASPIRANTES ##########################################################
 
 class SeTabAspirante(models.Model):
-    rowid_asp = models.AutoField(primary_key=True)
+    rowid_asp = models.IntegerField(primary_key=True)
+    rowid_edo = models.ForeignKey(SeCatEstado, models.DO_NOTHING, db_column='rowid_edo', blank=True, null=True)
     rowid_mundel = models.ForeignKey(SeCatMunicipioDelegacion, models.DO_NOTHING, db_column='rowid_mundel', blank=True, null=True)
     rowid_area_bac = models.ForeignKey(SeCatAreaBachillerato, models.DO_NOTHING, db_column='rowid_area_bac', blank=True, null=True)
+    rowid_mundel_nac = models.ForeignKey(SeCatMunicipioDelegacion, models.DO_NOTHING, db_column='rowid_mundel_nac', blank=True, null=True, related_name='rowid_mundel_nac1')
     rowid_medio_dif = models.ForeignKey(SeCatMedioDifusion, models.DO_NOTHING, db_column='rowid_medio_dif', blank=True, null=True)
     rowid_esc_proc = models.ForeignKey(SeCatEscuelaProcedencia, models.DO_NOTHING, db_column='rowid_esc_proc', blank=True, null=True)
+    rowid_edo_nac = models.ForeignKey(SeCatEstado, models.DO_NOTHING, db_column='rowid_edo_nac', blank=True, null=True, related_name='rowid_edo_nac1')
     rowid_car = models.ForeignKey(SeCatCarrera, models.DO_NOTHING, db_column='rowid_car', blank=True, null=True)
-    rowid_tipo_esc = models.ForeignKey(SeCatTipoEscuela, models.DO_NOTHING, db_column='rowid_tipo_esc', blank=True, null=True)
     rowid_col = models.ForeignKey(SeCatColonia, models.DO_NOTHING, db_column='rowid_col', blank=True, null=True)
     folio_utn_asp = models.CharField(max_length=20)
     fecha_alt_asp = models.DateField()
@@ -739,7 +745,7 @@ class SeTabAspirante(models.Model):
     fecfin_bach_asp = models.IntegerField()
     rfc_asp = models.CharField(max_length=15)
     curp_asp = models.CharField(max_length=25)
-    estatus_asp = models.CharField(max_length=1, blank=True, null=True, default="A")
+    estatus_asp = models.CharField(max_length=1, blank=True, null=True)
     fecha_nac_asp = models.DateField()
     materno_asp = models.CharField(max_length=30)
     paterno_asp = models.CharField(max_length=30)
@@ -774,8 +780,7 @@ class SeTabAspirante(models.Model):
     indigena = models.CharField(max_length=4, blank=True, null=True)
     poblacionindigena = models.CharField(max_length=25, blank=True, null=True)
     lenguaindigena = models.CharField(max_length=25, blank=True, null=True)
+
     class Meta:
         managed = False
         db_table = 'se_tab_aspirante'
-
-

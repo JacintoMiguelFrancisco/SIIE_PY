@@ -4,10 +4,8 @@
 
 {% block body %}
 <meta charset="UTF-8"/>
+<h3>Cantidad de registros: {{ count }}</h3>
 {% for p in est %}
-    <h2>Lista de estudiantes</h2>
-    <h3>Cantidad de registros: {{ count }}</h3>
-
     <table>
         <thead>
 
@@ -25,7 +23,7 @@
             
             <tr>
                 <td>{{ p.rowid_matricula }}</td>
-                <td>{{ p.rowid_car }}</td>
+                <td>{{ p.rowid_car.descri_largo_car }}</td>
                 <td>{{ p.rowid_col }}</td>
                 <td>{{ p.rowid_grupo }}</td>
                 <td>{{ p.id_matricula }}</td>
@@ -301,8 +299,11 @@
         
     </tbody>
 </table>
-
-    {% endfor %}
+<br>
+<br>
+<br>
+<br>
+{% endfor %}
 
 
 
