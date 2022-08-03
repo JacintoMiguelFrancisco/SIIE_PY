@@ -2014,18 +2014,6 @@ class FormsAspirantes(forms.ModelForm):
                                       }
                                   )
                                   )
-    rowid_tipo_esc = forms.ModelChoiceField(queryset = SeCatTipoEscuela.objects.filter(estatus_esc="A"),
-                                  required=True,
-                                  label="Tipo Escuela: *",
-                                  widget=forms.Select(
-                                      attrs={
-                                        'onchange': 'load_sub_codes();',
-                                        'class': 'form-control',
-                                        'required' : 'True',
-                                        'style' : 'border-color:#21B64A;'
-                                      }
-                                  )
-                                  )
     rowid_col = forms.ModelChoiceField(queryset = SeCatColonia.objects.filter(estatus_col="A"),
                                   required=True,
                                   label="Colonia: *",
@@ -2041,7 +2029,7 @@ class FormsAspirantes(forms.ModelForm):
     class Meta:
         model= SeTabAspirante
         fields= '__all__'
-        exclude = ('estatus_asp','rowid_asp')
+        exclude = ('estatus_asp','rowid_asp','rowid_tipo_esc')
         widgets = {
             'folio_utn_asp' : forms.TextInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
@@ -2118,11 +2106,6 @@ class FormsAspirantes(forms.ModelForm):
                                                 'placeholder': 'Ingrese el CURP',
                                                 'style' : 'border-color:#21B64A;'
                                                 }), 
-            'nom_esc_pro_asp' : forms.TextInput(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'placeholder': 'Ingrese la escuela de procedencia',
-                                                        'style' : 'border-color:#21B64A;'
-                                                        }), 
             'fecha_nac_asp' : forms.TextInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
                                                     'placeholder': 'Ingrese la fecha de nacimiento',
@@ -2173,11 +2156,6 @@ class FormsAspirantes(forms.ModelForm):
                                                         'placeholder': 'Ingrese la generacion',
                                                         'style' : 'border-color:#21B64A;'
                                                         }), 
-            'ronda_asp' : forms.NumberInput(attrs={'class': 'form-control',
-                                                'required' : 'True',
-                                                'placeholder': 'Ingrese la ronda',
-                                                'style' : 'border-color:#21B64A;'
-                                                }), 
             'user_alta' : forms.TextInput(attrs={'class': 'form-control',
                                                 'required' : 'True',
                                                 'placeholder': 'Ingrese el nombre del usuario',
@@ -2290,7 +2268,6 @@ class FormsAspirantes(forms.ModelForm):
             'fecfin_bach_asp' : 'Fecha de Termino de Bachillerato del Aspirante *',
             'rfc_asp' : 'RFC del Aspirante *' ,
             'curp_asp' : 'CURP del Aspirante *', 
-            'nom_esc_pro_asp' : 'Nombre de escuela de Procedencia *', 
             'fecha_nac_asp' : 'Fecha de Nacimiento del Aspirante *' ,
             'materno_asp' : 'Apellido Materno del Aspirante *' ,
             'paterno_asp' : 'Apellido Paterno del Aspirante *',
@@ -2301,7 +2278,6 @@ class FormsAspirantes(forms.ModelForm):
             'pat_tutor_asp' : 'Apellido Paterno del Tutor del Aspirante *' ,
             'nombre_tutor_asp' : 'Nombre del Tutor del Aspirante *',
             'generacion_asp' : 'Generacion del Aspirante ', 
-            'ronda_asp' : 'Ronda del Aspirante ',
             'user_alta' : 'Usuario que dio de alta ', 
             'user_cambio' : 'Usuario que hizo cambios ', 
             'email_asp' : 'Email del Aspirante ' ,
