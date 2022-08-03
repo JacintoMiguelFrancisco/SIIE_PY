@@ -948,9 +948,9 @@ class FormsEstudiante(forms.ModelForm):
                                       }
                                   )
                                   )
-    rowid_col = forms.ModelChoiceField(queryset = SeCatColonia.objects.filter(estatus_col="A"),
+    rowid_mundel = forms.ModelChoiceField(queryset = SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A"),
                                   required=True,
-                                  label="Colonia: *",
+                                  label="Municipio/Delegacion: *",
                                   widget=forms.Select(
                                       attrs={
                                         'onchange': 'load_sub_codes();',
@@ -960,9 +960,9 @@ class FormsEstudiante(forms.ModelForm):
                                       }
                                   )
                                   )
-    rowid_mundel = forms.ModelChoiceField(queryset = SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A"),
+    rowid_col = forms.ModelChoiceField(queryset = SeCatColonia.objects.filter(estatus_col="A"),
                                   required=True,
-                                  label="Municipio/Delegacion: *",
+                                  label="Colonia: *",
                                   widget=forms.Select(
                                       attrs={
                                         'onchange': 'load_sub_codes();',

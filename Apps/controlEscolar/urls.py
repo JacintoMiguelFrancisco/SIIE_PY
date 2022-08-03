@@ -334,6 +334,6 @@ urlpatterns = [
 # -------------------------------------------- Operaciones --------------------------------------------- #
 
 # Registro Aspirantes
-    path('listaEjemplo/', views.listaEjemplo),
+    path('registro-aspirante/', views.registroAspirante, name="registro_aspirante"),
 
 ]

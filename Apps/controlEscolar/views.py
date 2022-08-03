@@ -4844,6 +4844,6 @@ def export_xlwt_EmpCar (request):
 ##################################################   Operaciones ####################################################
 
 # Prueba
-def listaEjemplo(request):
+def registroAspirante(request):
     form = FormsAspirantes()
     return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/capturaAspirantes.html",{'form': form})
