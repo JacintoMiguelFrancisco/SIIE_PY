@@ -896,7 +896,7 @@ class FormIndAsp(forms.ModelForm):
 # -------------------------------------------- Estudiantes --------------------------------------------- #
 
 ##forms ESTUDANTE
-class FormsEstudiante(forms.ModelForm):
+class FormsEstudiante(forms.ModelForm): # beca_pro_est
     EDOCIVIL = ( ('S', 'Soltero'), ('C','Casado'), ('V','Viudo'), ('D','Divorciado') )
     TRAB = ( ('S', 'Si'), ('N','No') )
     RESSN = ( ('1', 'Si'), ('2','No') )
@@ -912,6 +912,8 @@ class FormsEstudiante(forms.ModelForm):
         (2,'Mayo-Agosto'),
         (3,'Septiembre-Diciembre')
     ) 
+    BECA = ( ('S', 'Si'), ('N','No') )
+    TIPOCARRERA = ( ('1', 'TSU'), ('2','INGENIARIA') )
     discapacidad = forms.ChoiceField(label='Discapacidad *', choices=TRAB, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     tipoestudiante = forms.ChoiceField(label='Tipo Estudiante *', choices=TIPEST, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     grasc = forms.ChoiceField(label='Grasc *', choices=TRAB, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
@@ -924,6 +926,9 @@ class FormsEstudiante(forms.ModelForm):
     sexo_est = forms.ChoiceField(label='¿Sexo?*', choices=SEXO, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     trabaja_est = forms.ChoiceField(label='¿Trabajas?*', choices=TRAB, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     estado_civil_est = forms.ChoiceField(label='Estado civil *', choices=EDOCIVIL, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    beca_pro_est = forms.ChoiceField(label='Otro tipo de Beca*', choices=BECA, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    tipo_carrera_est = forms.ChoiceField(label='Tipo Carrera*', choices=TIPOCARRERA, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+
     rowid_becas = forms.ModelChoiceField(queryset = SeCatBecas.objects.filter(estatus_bec="A"),
                                   required=True,
                                   label="Becas: *",
@@ -1036,10 +1041,8 @@ class FormsEstudiante(forms.ModelForm):
             'fec_ser_social' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese fecha de servicio DD/MM/AAAA', 'style' : 'border-color:#21B64A;'}),
             'fecha_repos_est' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese la fecha de reposicion DD/MM/AAAA. ', 'style' : 'border-color:#21B64A;'}),
             'matri_est' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese la matricula del estudiante', 'style' : 'border-color:#21B64A;'}),
-            'beca_pro_est' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el tipo de beca del estudiante', 'style' : 'border-color:#21B64A;'}),
             'usuario_est' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el usuario del estudiante', 'style' : 'border-color:#21B64A;'}),
             'password_est' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese la contraseña del estudiante', 'style' : 'border-color:#21B64A;'}),
-            'tipo_carrera_est' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el código de carrera del estudiante', 'style' : 'border-color:#21B64A;'}),
             'no_cedula_tsu' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el numero de cedula de TSU', 'style' : 'border-color:#21B64A;'}),
             'no_referencia' : forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese el número de referencia', 'style' : 'border-color:#21B64A;'}),
             'institucion_seguro' : forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Por favor, Ingrese la institucion de seguro', 'style' : 'border-color:#21B64A;'}),
@@ -1055,7 +1058,7 @@ class FormsEstudiante(forms.ModelForm):
             
         }
         labels = {
-            'id_matricula' : 'Matricula *',
+            'id_matricula' : 'Id Matricula*',
             'nombre_estu' : 'Nombre *',
             'paterno_est' : 'Apellido paterno*',
             'materno_est' : 'Apellido materno *',
@@ -1089,11 +1092,9 @@ class FormsEstudiante(forms.ModelForm):
             'num_servicio' : 'Numero de servicio social *',
             'fec_ser_social' : 'Fecha de servicio social *',
             'fecha_repos_est' : 'Fecha de reposicion de credencial *',
-            'matri_est' : 'Matricula*',
-            'beca_pro_est' : 'Beca *',
+            'matri_est' : 'Matricula Estudiante*',
             'usuario_est' : 'Usuario*',
             'password_est' : 'Contraseña*',
-            'tipo_carrera_est' : 'Tipo carrera *',
             'no_cedula_tsu' : 'Cedula *',
             'no_referencia' : 'Referencia *',
             'institucion_seguro' : ' Institucion del seguro *',

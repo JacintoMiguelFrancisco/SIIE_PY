@@ -1,10 +1,10 @@
 {% extends '../../CRUD.html' %}
 
-{% block title %}Gestión Municipios/Delegaciones{% endblock title %}
+{% block title %}Gestión Municipios/Alcaldias{% endblock title %}
 
 {% block buttons %}
 {% comment %} Espera los botones imprimir {% endcomment %}
-<h3>Gestión de Municipios/Delegaciones</h3>
+<h3>Gestión de Municipios/Alcaldias</h3>
     <div class="container mb-4 mt-4">
         <div class="row justify-content-md-center">
             <div class="col col-12 col-sm-3 col-lg-3">
@@ -39,7 +39,7 @@
 
 {% block search %}
 {% comment %} Busqueda por nombre {% endcomment %}
-<h1>Catálogo - Municipios/Delegaciones</h1>
+<h1>Catálogo - Municipios/Alcaldias</h1>
 <form method="GET" action="{% url 'vista_municipios' %}">
     <div class="input-group mb-3 mt-4">
         <input type="search" class="form-control" placeholder="Escribe el nombre del Municipio/Delegación..." name="search_municipios">
@@ -58,12 +58,12 @@
 {% comment %} Espera una tabla que se llena con un for {% endcomment %}
 {% block table %}
 <table class="table table-striped">
-    <p style="text-align: right; font-size: 25px;"> Número de Municipios/Delegaciones: {{ contador }} </p>
+    <p style="text-align: right; font-size: 25px;"> Número de Municipios/Alcaldias: {{ contador }} </p>
     <thead>
         <tr>
             <th>Estado</th>
             <th>Clave</th>
-            <th>Municipio/Delegación</th>
+            <th>Municipio/Alcaldias</th>
             <th>Abreviatura</th>
             <th>Estatus</th>
             <th id="operaciones">Operaciones</th>

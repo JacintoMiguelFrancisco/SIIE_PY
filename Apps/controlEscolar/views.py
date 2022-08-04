@@ -12,6 +12,8 @@ import xlwt
 from Apps.controlEscolar.utils import render_to_pdf
 #paginador
 from django.core.paginator import Paginator
+# Fecha
+import datetime
 #Search Datos y consultas
 from django.db.models import Q
 #Login control de inicios de sesion
@@ -4846,4 +4848,9 @@ def export_xlwt_EmpCar (request):
 # Prueba
 def registroAspirante(request):
     form = FormsAspirantes()
-    return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/capturaAspirantes.html",{'form': form})
+    fecha_now = datetime.datetime.now() # se asigna en el forms a fecha_alt_asp
+    data = {
+        'form': form, 
+        'fecha_now' : fecha_now.strftime('%d/%m/%Y')
+    }
+    return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/capturaAspirantes.html", data)

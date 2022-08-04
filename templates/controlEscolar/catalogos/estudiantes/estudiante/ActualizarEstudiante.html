@@ -5,31 +5,662 @@
 {% endblock navbar %}
 {% block body %}
 <div class="row">
-    <div class="col-md-4 offset-md-4">
-        <h2 class="fs-1" style="text-align: center;">Editar documento</h2>
-        <div class="card">
-            <div class="card-body">
-                <div class="form-group">
-                <form action="" method="POST">{% csrf_token %}
+    <h2 class="fs-1" style="text-align: center;">Editar Estudiante</h2>
+    <form action="" method="POST">{% csrf_token %}
 
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                <strong class="text-dark">{{ message }}</strong>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <strong class="text-dark">{{ message }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
 
-                    {{ FormsEstudiante.as_p }}
-                    
-                    <div class="form-group d-flex justify-content-evenly">
-                        <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>
-                        <a class="btn btn-danger btn-block" href="{% url 'vista_estudiante' %}">Cancelar</a>
-                    </div>
-                </form>
-            </div>
+        <table class="table mt-3">
+            <!--ESTUDIANTE-->
+            <thead class="table-success">
+                <th colspan="5">Estudiante</th>
+            </thead>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.id_matricula.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.matri_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.fecha_alta_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.rowid_grupo.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.id_matricula}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.matri_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.fecha_alta_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.rowid_grupo}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.rowid_car.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.periodo_est.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.anio_est.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.tipoestudiante.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.rowid_car}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.periodo_est}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.anio_est}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.tipoestudiante}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.turno_est.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.rowid_becas.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.generacion_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.id_tipo_esc_est.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.turno_est}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.rowid_becas}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.generacion_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.id_tipo_esc_est}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.beca_pro_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.user_alta_est.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.fecha_cambio_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.user_cambio_est.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.beca_pro_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.user_alta_est}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.fecha_cambio_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.user_cambio_est}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.no_folio_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.estatus_biblio.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.tipo_carrera_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.no_cedula_tsu.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.no_folio_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.estatus_biblio}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.tipo_carrera_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.no_cedula_tsu}}
+                </th>
+            </tr>
+    
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.no_referencia.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.fecha_vig_est.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.fec_ser_social.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.fecha_repos_est.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.no_referencia}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.fecha_vig_est}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.fec_ser_social}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.fecha_repos_est}}
+                </th>
+            </tr>
+    
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.grasc.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.otras_uts.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.equivalencia.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.estatus_inscri_est.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.grasc}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.otras_uts}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.equivalencia}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.estatus_inscri_est}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th colspan="5">
+                </th>
+            </tr>
+            <!--DATOS PERSONALES-->
+            <thead class="table-success">
+                <th colspan="5">Datos Personales</th>
+            </thead>
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.paterno_est.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.materno_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.nombre_estu.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.fec_nac_est.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.paterno_est}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.materno_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.nombre_estu}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.fec_nac_est}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.curp_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.rfc_est.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.rowid_mundel.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.rowid_col.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.curp_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.rfc_est}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.rowid_mundel}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.rowid_col}}
+                </th>
+            </tr>
+    
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.sexo_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.edad_est.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.trabaja_est.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.tel_trabajo.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.sexo_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.edad_est}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.trabaja_est}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.tel_trabajo}}
+                </th>
+            </tr>
+    
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.tipo_sangre_est.label}}
+                </th>
+                <th class="text-center" colspan="3">
+                {{ FormsEstudiante.nacionalidad.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.estado_civil_est.label}}
+                </th>
+    
+            </tr>
+    
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.tipo_sangre_est}}
+                </th>
+                <th class="text-center" colspan="3">
+                {{ FormsEstudiante.nacionalidad}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.estado_civil_est}}
+                </th>
+            </tr>
+    
+    
+            <tr>
+                <th colspan="5">
+                </th>
+            </tr>
+    
+            <!--DIRECCION Y TELEFONO-->
+            <tr>
+                <thead class="table-success">
+                <th colspan="5">Direccion y telefono</th>
+                </thead>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.direccion_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.codpos.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.num_int.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.direccion_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.codpos}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.num_int}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.num_ext.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.email_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.telefono_est.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.num_ext}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.email_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.telefono_est}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th colspan="5">
+                </th>
+            </tr>
+    
+            <!--DATOS DEL PADRE O TUTOR-->
+            <tr>
+                <thead class="table-success">
+                <th colspan="5">Datos del padre o tutor</th>
+                </thead>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.pat_tutor_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.mat_tutor_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.nombre_tutor_est.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.pat_tutor_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.mat_tutor_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.nombre_tutor_est}}
+                </th>
+            </tr>
+    
+    
+            <tr>
+                <th class="text-center" colspan="3">
+                {{ FormsEstudiante.parentescotutor.label}}
+                </th>
+                <th class="text-center" colspan="2">
+    
+                </th>
+                <th class="text-center" colspan="2">
+    
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="3">
+                {{ FormsEstudiante.parentescotutor}}
+                </th>
+                <th class="text-center" colspan="2">
+    
+                </th>
+                <th class="text-center" colspan="2">
+    
+                </th>
+            </tr>
+    
+    
+    
+    
+            <tr>
+                <th colspan="5">
+                </th>
+            </tr>
+    
+            <!--ANTECEDENTES ESCOLARES-->
+            <tr>
+                <thead class="table-success">
+                <th colspan="5">Antecedentes escolares</th>
+                </thead>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.rowid_esc_proc.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.id_area_bach_est.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.fecha_ini_bach.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.fecha_fin_bach.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.rowid_esc_proc}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.id_area_bach_est}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.fecha_ini_bach}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.fecha_fin_bach}}
+                </th>
+            </tr>
+    
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.promedio_gral_bach.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.foliocertificado.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.fechaexpedicioncer.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.promedio_gral_bach}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.foliocertificado}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.fechaexpedicioncer}}
+                </th>
+            </tr>
+    
+    
+    
+            <tr>
+                <th colspan="5">
+                </th>
+            </tr>
+    
+            <!--OTROS-->
+            <tr>
+                <thead class="table-success">
+                <th colspan="5">Otros</th>
+                </thead>
+            </tr>
+    
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.imss_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.clinica_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.institucion_seguro.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.imss_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.clinica_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.institucion_seguro}}
+                </th>
+            </tr>
+    
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.otrainstitucionseguro.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.num_servicio.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.discapacidad.label}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.tipodiscapacidad.label}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.otrainstitucionseguro}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.num_servicio}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.discapacidad}}
+                </th>
+                <th class="text-center" colspan="1">
+                {{ FormsEstudiante.tipodiscapacidad}}
+                </th>
+            </tr>
+    
+            <tr>
+                <th colspan="5">
+                </th>
+            </tr>
+    
+            <!--ACCESO-->
+            <tr>
+                <thead class="table-success">
+                <th colspan="5">Acceso</th>
+                </thead>
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="3">
+                {{ FormsEstudiante.usuario_est.label}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.password_est.label}}
+                </th>
+    
+            </tr>
+    
+            <tr>
+                <th class="text-center" colspan="3">
+                {{ FormsEstudiante.usuario_est}}
+                </th>
+                <th class="text-center" colspan="2">
+                {{ FormsEstudiante.password_est}}
+                </th>
+            </tr>
+    
+    
+            </table>
+        
+        <div class="form-group d-flex justify-content-evenly">
+            <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>
+            <a class="btn btn-danger btn-block" href="{% url 'vista_estudiante' %}">Cancelar</a>
         </div>
-    </div>
+    </form> 
 </div>
 {% endblock %}

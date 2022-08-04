@@ -179,6 +179,7 @@
                     <th class="cabecera">CP </th>
                     <th class="cabecera">Telefono</th>
                     <th class="cabecera">Correo electronico</th>
+                    <th class="cabecera">Colonia</th>
                 </tr>
             </thead>
             
@@ -192,36 +193,12 @@
             <td>{{ p.codpos }}</td>
             <td>{{ p.telefono_est }}</td>
             <td>{{ p.email_est }}</td>
-        </tr>
-        
-    </tbody>
-</table>
-
- <!-- parte 8 -->
- <table>
-    <thead>
-        <tr> 
-            <thead>
-                <tr> 
-                    <th class="cabecera">Entidad</th>
-                    <th class="cabecera">Municipio</th>
-                    <th class="cabecera">Colonia</th>
-                </tr>
-            </thead>
-            
-        </tr>
-    </thead>
-   
-    <tbody>
-        
-        <tr>
-            <td>{{ p.entidad_nac }}</td>
-            <td>{{ p.mpo_del_nac }}</td>
             <td>{{ p.rowid_col }}</td>
         </tr>
         
     </tbody>
 </table>
+
 <h6>Escuela de procedencia:</h6>
  <!-- parte 9 -->
  <table>
@@ -303,6 +280,12 @@
 <br>
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 {% endfor %}
 
 
@@ -347,7 +330,7 @@
             background: #eee;
          }
          .cabecera{
-             background: rgb(2, 212, 44);
+             background: rgb(209, 231, 221);
              color: rgb(0, 0, 0);
          }
 
