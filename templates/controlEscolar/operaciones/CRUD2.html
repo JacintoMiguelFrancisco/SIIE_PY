@@ -1,0 +1,61 @@
+{% extends '../../base.html' %}
+
+{% block title %}{% endblock title %}
+
+{% block head %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/crud/crudStyle.css' %}" />
+{% endblock head %}
+
+{% block navbar %}
+{% include 'NavBar.html' %}
+{% endblock navbar %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <strong class="text-dark">{{ message }}</strong>
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <!--BUSCADOR-->
+    {% block search %}
+
+    {% endblock search %}
+  </div>
+  {% block buttons %}
+  {% comment %} Espera los botones imprimir {% endcomment %}
+  {% endblock buttons %}
+
+  <hr>
+  <div>
+
+  </div>
+  <div class="card mr-3 shadow-lg">
+    <div class="card-body">
+
+      {% block form %}
+      {% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
+      {% endblock form %}
+
+    </div>
+  </div>
+
+  <div class="card shadow-lg mt-5">
+    <div class="table-responsive py-2">
+      {% block table %}
+      {% comment %} Espera una tabla que se llena con un for {% endcomment %}
+      {% endblock table %}
+    </div>
+  </div>
+  {% include "paginacion.html" %}
+  {% endblock %}

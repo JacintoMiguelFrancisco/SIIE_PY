@@ -27,6 +27,7 @@ from .models import (
     SeTabEstudiante, SeCatDocumentacion, SeCatGrupo, SeCatEstatusEstudiante, SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
     SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
+    SeTabAspirante, #Aspirante
 )
 #Views
 from django.views.generic import View
@@ -4845,12 +4846,44 @@ def export_xlwt_EmpCar (request):
 
 ##################################################   Operaciones ####################################################
 
-# Prueba
+##############################################   Captura aspirante   #########################################################
+@login_required
 def registroAspirante(request):
-    form = FormsAspirantes()
+    listaAsp  = SeTabAspirante.objects.filter(estatus_asp="A").order_by('rowid_asp')
+    contador_id = listaAsp.count() 
     fecha_now = datetime.datetime.now() # se asigna en el forms a fecha_alt_asp
-    data = {
-        'form': form, 
+    page = request.GET.get('page', 1)  
+    try:  
+        paginator = Paginator(listaAsp, 7)
+        listaAsp  = paginator.page(page)
+    except: 
+        raise Http404
+    if request.method == 'POST': 
+        form = FormsAspirantes(request.POST) 
+        if form.is_valid(): 
+            regasp = form.save(commit=False)
+            ultimo_id = SeTabAspirante.objects.all().order_by('rowid_asp').last() 
+            regasp.rowid_asp =  ultimo_id.rowid_asp + 1 
+            regasp.fecha_alt_asp = fecha_now.strftime('%d/%m/%Y')
+            regasp.save() 
+            messages.success(request, "Aspirante Tegistrado con exito!")       
+            return redirect('registro_aspirante') 
+        else: 
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
+            return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/capturaAspirantes.html",{'entity' : listaAsp ,'paginator' : paginator,'form' : form,'contador': contador_id, 'fecha_now' : fecha_now.strftime('%d/%m/%Y')})       
+    elif request.method == 'GET': 
+        busqueda = request.GET.get("search_aspirante", None) 
+        if busqueda: 
+            listaAsp  = SeTabAspirante.objects.filter( 
+                Q(nombre_asp__icontains = busqueda),
+                Q(estatus_asp__icontains = "A")
+            ).distinct()
+    form = FormsAspirantes()  
+    data = { 
+        'entity' : listaAsp ,
+        'paginator' : paginator,
+        'form' : form,
+        'contador': contador_id,
         'fecha_now' : fecha_now.strftime('%d/%m/%Y')
     }
-    return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/capturaAspirantes.html", data)
+    return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/capturaAspirantes.html",data)

@@ -1,733 +1,658 @@
-{% extends '../../../../base.html' %}
-{% block title %}Captura Aspirante{% endblock title %}
+{% extends '../../CRUD2.html' %}
 
-{% block navbar %}
-{% include 'NavBar.html' %}
-{% endblock navbar %}
+{% block title %}Registro Aspirantes.{% endblock title %}
 
-{% block body %}
-<div class="row">
-
-  <h2 class="fs-1" style="text-align: center;">Registro aspirante: </h2>
-  <h6 class="text-center mb-5">Un nuevo aspirante, un nuevo futuro.</h6>
-  {% block buttons %}
-  {% comment %} Espera los botones imprimir {% endcomment %}
-
-  <div class="container mb-4 mt-4">
-    <div class="row justify-content-md-center">
-      <div class="col col-12 col-sm-3 col-lg-3">
-        {% load bootstrap_icons %}
-        <a href="{% url 'export_csv_estudiante' %}" type="button" class="btn btn-primary w-100" id="button">
-          Pais {% bs_icon 'file-earmark-bar-graph' size='1.5em'%}</a>
-      </div>
-      <div class="col col-12 col-sm-3 col-lg-3">
-        <a href="{% url 'export_xlwt_estudiante' %}" type="button" class="btn btn-success w-100" id="button">
-          Estado{% bs_icon 'file-earmark-excel' size='1.5em'%}</a>
-      </div>
-      <div class="col col-12 col-sm-3 col-lg-3">
-        <a href="{% url 'export_pdf_estudiante' %}" type="button" class="btn btn-danger w-100" id="button">
-          Municipio{% bs_icon 'file-earmark-pdf' size='1.5em'%}</a>
-      </div>
-      <div class="col col-12 col-sm-3 col-lg-3">
-        <a href="{% url 'export_print_estudiante' %}" type="button" class="btn btn-secondary w-100" id="button">
-          Colonia {% bs_icon 'printer' size='1.5em'%}</a>
-      </div>
+{% block buttons %}
+{% comment %} Espera los botones imprimir {% endcomment %}
+<div class="container mb-4 mt-4">
+  <div class="row justify-content-md-center">
+    <div class="col col-12 col-sm-3 col-lg-3">
+      {% load bootstrap_icons %}
+      <a href="{% url 'vista_municipios' %}" type="button" class="btn btn-success" id="button">Municipios {% bs_icon 'plus' size='2em'%}</a>
+    </div>
+    <div class="col col-12 col-sm-3 col-lg-3">
+      <a href="{% url 'vista_asen' %}" type="button" class="btn btn-success" id="button">Asentamientos {% bs_icon 'plus' size='2em'%}</a>
+    </div>
+    <div class="col col-12 col-sm-3 col-lg-3">
+      <a href="{% url 'vistaColonias' %}" type="button" class="btn btn-success" id="button">Colonias {% bs_icon 'plus' size='2em'%}</a>
+    </div>
+    <div class="col col-12 col-sm-3 col-lg-3">
+      <a href="#" type="button" class="btn btn-success" id="button">Pagos{% bs_icon 'plus' size='2em'%}</a>
     </div>
   </div>
-  {% endblock buttons %}
-  <div class="card shadow-lg  bg-body rounded">
-
-    <form action="" method="POST">{% csrf_token %}
-      <div class="table-responsive-sm mt-4">
-
-        <table class="table mt-3">
-          <!--Encabezado 1-->
-          <thead class="table-success">
-            <th colspan="5">Alta aspirante</th>
-          </thead>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              Fecha del sistema
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.folio_utn_asp.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.folio_cen_asp.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ fecha_now}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.folio_utn_asp}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.folio_cen_asp}}
-            </th>
-          </tr>
-
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.user_alta.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.user_cambio.label}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.turno_asp.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.user_alta}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.user_cambio}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.turno_asp}}
-            </th>
-          </tr>
-
-          <tr>
-            <th colspan="5"></th>
-          </tr>
-
-          <!--DATOS DEL ASPIRANTE -->
-          <thead class="table-success">
-            <th colspan="5">Datos aspirante</th>
-          </thead>
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.nombre_asp.label}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.paterno_asp.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.materno_asp.label}}
-            </th>
-
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.nombre_asp}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.paterno_asp}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.materno_asp}}
-            </th>
-
-          </tr>
-
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.fecha_nac_asp.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.curp_asp.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.rfc_asp.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.fecha_nac_asp}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.curp_asp}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.rfc_asp}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.sexo_asp.label}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.edad_asp.label}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.email_asp.label}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.tipo_de_sangre_asp.label}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.estado_civil_asp.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.sexo_asp}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.edad_asp}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.email_asp}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.tipo_de_sangre_asp}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.estado_civil_asp}}
-            </th>
-          </tr>
-
-
-
-          <tr>
-            <th colspan="5"></th>
-          </tr>
-
-          <!--DOMICILIO-->
-          <tr>
-            <thead class="table-success ">
-              <th colspan="5">Domicilio</th>
-            </thead>
-
-          <tr>
-            <th class="text-center" colspan="3">
-              {{ form.calle_asp.label}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.num_int_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.num_ext_asp.label}}
-            </th>
-
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="3">
-              {{ form.calle_asp}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.num_int_asp}}
-            </th>
-            <th class="text-center">
-              {{ form.num_ext_asp}}
-            </th>
-
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.rowid_mundel.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.rowid_col.label}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.codigo_postal_asp.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.rowid_mundel}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.rowid_col}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.codigo_postal_asp}}
-            </th>
-          </tr>
-
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.trabaja_asp.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.tel_cas_asp.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.telefono_oficina_asp.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.trabaja_asp}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.tel_cas_asp}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.telefono_oficina_asp}}
-            </th>
-          </tr>
-
-
-          <tr>
-            <th colspan="5"></th>
-          </tr>
-
-          <!--DATOS TUTOR-->
-          <tr>
-            <thead class="table-success ">
-              <th colspan="5">Datos tutor</th>
-            </thead>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.pat_tutor_asp.label}}
-            </th>
-            <th class="text-center">
-              {{ form.mat_tutor_asp.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.nombre_tutor_asp.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.pat_tutor_asp}}
-            </th>
-            <th class="text-center">
-              {{ form.mat_tutor_asp}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.nombre_tutor_asp}}
-            </th>
-          </tr>
-
-
-
-          <tr>
-            <th colspan="5"></th>
-          </tr>
-
-          <!--Antecedentes academicos -->
-          <tr>
-            <thead class="table-success ">
-              <th colspan="5">Antecedentes academicos</th>
-            </thead>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.rowid_esc_proc.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.rowid_area_bac.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.promedio_asp.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.rowid_esc_proc}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.rowid_area_bac}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.promedio_asp}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.fecini_bach_asp.label}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.fecfin_bach_asp.label}}
-            </th>
-            <th class="text-center" colspan="3">
-              {{ form.rowid_car.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.fecini_bach_asp}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.fecfin_bach_asp}}
-            </th>
-            <th class="text-center" colspan="3">
-              {{ form.rowid_car}}
-            </th>
-          </tr>
-
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.fechaexpedicioncer.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.folio.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.fechacompromisocerti.label}}
-            </th>
-          </tr>
-
-          <tr>
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.fechaexpedicioncer}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.folio}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.fechacompromisocerti}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.periodo_asp.label}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.anio_asp.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.generacion_asp.label}}
-            </th>
-
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.periodo_asp}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.anio_asp}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.generacion_asp}}
-            </th>
-          </tr>
-
-
-
-          <tr>
-            <th colspan="5"></th>
-          </tr>
-
-
-          <!--Medios difusion-->
-          <tr>
-            <thead class="table-success ">
-              <th colspan="5">Medios de difusion</th>
-            </thead>
-          </tr>
-
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.rowid_medio_dif.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.opcioneducativa.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.continuidadestudio.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.rowid_medio_dif}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.opcioneducativa}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.continuidadestudio}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.otromediodif.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.otromedioinf.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.otroopcioneduca.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.otromediodif}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.otromedioinf}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.otroopcioneduca}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.fechaexpedicioncer.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.folio.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.fechacompromisocerti.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.fechaexpedicioncer}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.folio}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.fechacompromisocerti}}
-            </th>
-
-          </tr>
-
-          <tr>
-            <th colspan="5"></th>
-          </tr>
-
-          <!--REDES SOCIALES -->
-          <tr>
-            <thead class="table-success ">
-              <th colspan="5">Redes sociales</th>
-            </thead>
-            <th class="text-center" colspan="3">
-              {{ form.facebook.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.twitter.label}}
-            </th>
-
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="3">
-              {{ form.facebook}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.twitter}}
-            </th>
-          </tr>
-
-          <tr>
-            <th colspan="5"></th>
-          </tr>
-
-          <!--SERVICIO MEDICO -->
-
-          <tr>
-            <thead class="table-success ">
-              <th colspan="5">Servicio Medico</th>
-            </thead>
-            <th class="text-center" colspan="1">
-              {{ form.serviciomedico.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.institucionseguro.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.otrainstitucionseguro.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.serviciomedico}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.institucionseguro}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.otrainstitucionseguro}}
-            </th>
-
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.numafiliacion.label}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.discapacidad.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.tipodiscapacidad.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="2">
-              {{ form.numafiliacion}}
-            </th>
-            <th class="text-center" colspan="1">
-              {{ form.discapacidad}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.tipodiscapacidad}}
-            </th>
-
-          </tr>
-
-          <tr>
-            <th colspan="5"></th>
-          </tr>
-
-
-          <!--DATOS ADICIONALES -->
-
-          <tr>
-            <thead class="table-success ">
-              <th colspan="5">Datos adicionales</th>
-            </thead>
-            <th class="text-center" colspan="1">
-              {{ form.indigena.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.poblacionindigena.label}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.lenguaindigena.label}}
-            </th>
-          </tr>
-
-          <tr>
-            <th class="text-center" colspan="1">
-              {{ form.indigena}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.poblacionindigena}}
-            </th>
-            <th class="text-center" colspan="2">
-              {{ form.lenguaindigena}}
-            </th>
-          </tr>
-
-        </table>
-      </div>
-
-
-      <div class="form-group d-flex justify-content-evenly">
-        <button type="submit" class="btn btn-success btn-block text-white mb-3 w-25">Registrar</button>
-        <a class="btn btn-danger btn-block mb-3 w-25" href="{% url 'index' %}">Cancelar</a>
-      </div>
-    </form>
-  </div>
 </div>
-{% endblock %}
+{% endblock buttons %}
+
+{% comment %} Espera un formulario con los campos de texto y botones {% endcomment %}
+{% block form %}
+<div class="row">
+
+  {% if form.errors %}
+    <ul class = "user-msg error">
+        {% for field in form %}
+            {% for error in field.errors %}
+                <li>
+                    {% if field != '__all__' %}
+                        <strong>{{ field.label }}:</strong>
+                    {% endif %}
+                    {{ error }}
+                </li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form action="" method="POST"> {% csrf_token %}
+    <div class="table-responsive-sm mt-2">
+      <table class="table mt-3">
+        <!--Encabezado 1-->
+        <thead class="table-success">
+          <th colspan="5">Alta aspirante</th>
+        </thead>
+
+        <tr>
+          <th class="text-center" colspan="1">
+            Fecha del sistema
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.folio_utn_asp.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.folio_cen_asp.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ fecha_now}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.folio_utn_asp}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.folio_cen_asp}}
+          </th>
+        </tr>
 
 
-{% comment %} Espera una tabla que se llena con un for {% endcomment %}
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.user_alta.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.user_cambio.label}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.turno_asp.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.user_alta}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.user_cambio}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.turno_asp}}
+          </th>
+        </tr>
+
+        <tr>
+          <th colspan="5"></th>
+        </tr>
+
+        <!--DATOS DEL ASPIRANTE -->
+        <thead class="table-success">
+          <th colspan="5">Datos aspirante</th>
+        </thead>
+
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.nombre_asp.label}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.paterno_asp.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.materno_asp.label}}
+          </th>
+
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.nombre_asp}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.paterno_asp}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.materno_asp}}
+          </th>
+
+        </tr>
+
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.fecha_nac_asp.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.curp_asp.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.rfc_asp.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.fecha_nac_asp}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.curp_asp}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.rfc_asp}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.sexo_asp.label}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.edad_asp.label}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.email_asp.label}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.tipo_de_sangre_asp.label}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.estado_civil_asp.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.sexo_asp}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.edad_asp}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.email_asp}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.tipo_de_sangre_asp}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.estado_civil_asp}}
+          </th>
+        </tr>
+
+
+
+        <tr>
+          <th colspan="5"></th>
+        </tr>
+
+        <!--DOMICILIO-->
+        <tr>
+          <thead class="table-success ">
+            <th colspan="5">Domicilio</th>
+          </thead>
+
+        <tr>
+          <th class="text-center" colspan="3">
+            {{ form.calle_asp.label}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.num_int_asp.label}}
+          </th>
+          <th class="text-center">
+            {{ form.num_ext_asp.label}}
+          </th>
+
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="3">
+            {{ form.calle_asp}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.num_int_asp}}
+          </th>
+          <th class="text-center">
+            {{ form.num_ext_asp}}
+          </th>
+
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.rowid_mundel.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.rowid_col.label}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.codigo_postal_asp.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.rowid_mundel}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.rowid_col}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.codigo_postal_asp}}
+          </th>
+        </tr>
+
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.trabaja_asp.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.tel_cas_asp.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.telefono_oficina_asp.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.trabaja_asp}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.tel_cas_asp}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.telefono_oficina_asp}}
+          </th>
+        </tr>
+
+
+        <tr>
+          <th colspan="5"></th>
+        </tr>
+
+        <!--DATOS TUTOR-->
+        <tr>
+          <thead class="table-success ">
+            <th colspan="5">Datos tutor</th>
+          </thead>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.pat_tutor_asp.label}}
+          </th>
+          <th class="text-center">
+            {{ form.mat_tutor_asp.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.nombre_tutor_asp.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.pat_tutor_asp}}
+          </th>
+          <th class="text-center">
+            {{ form.mat_tutor_asp}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.nombre_tutor_asp}}
+          </th>
+        </tr>
+
+
+
+        <tr>
+          <th colspan="5"></th>
+        </tr>
+
+        <!--Antecedentes academicos -->
+        <tr>
+          <thead class="table-success ">
+            <th colspan="5">Antecedentes academicos</th>
+          </thead>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.rowid_esc_proc.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.rowid_area_bac.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.promedio_asp.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.rowid_esc_proc}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.rowid_area_bac}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.promedio_asp}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.fecini_bach_asp.label}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.fecfin_bach_asp.label}}
+          </th>
+          <th class="text-center" colspan="3">
+            {{ form.rowid_car.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.fecini_bach_asp}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.fecfin_bach_asp}}
+          </th>
+          <th class="text-center" colspan="3">
+            {{ form.rowid_car}}
+          </th>
+        </tr>
+
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.fechaexpedicioncer.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.folio.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.fechacompromisocerti.label}}
+          </th>
+        </tr>
+
+        <tr>
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.fechaexpedicioncer}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.folio}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.fechacompromisocerti}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.periodo_asp.label}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.anio_asp.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.generacion_asp.label}}
+          </th>
+
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.periodo_asp}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.anio_asp}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.generacion_asp}}
+          </th>
+        </tr>
+
+
+
+        <tr>
+          <th colspan="5"></th>
+        </tr>
+
+
+        <!--Medios difusion-->
+        <tr>
+          <thead class="table-success ">
+            <th colspan="5">Medios de difusion</th>
+          </thead>
+        </tr>
+
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.rowid_medio_dif.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.opcioneducativa.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.continuidadestudio.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.rowid_medio_dif}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.opcioneducativa}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.continuidadestudio}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.otromediodif.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.otromedioinf.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.otroopcioneduca.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.otromediodif}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.otromedioinf}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.otroopcioneduca}}
+          </th>
+        </tr>
+
+
+        <tr>
+          <th colspan="5"></th>
+        </tr>
+
+        <!--REDES SOCIALES -->
+        <tr>
+          <thead class="table-success ">
+            <th colspan="5">Redes sociales</th>
+          </thead>
+          <th class="text-center" colspan="3">
+            {{ form.facebook.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.twitter.label}}
+          </th>
+
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="3">
+            {{ form.facebook}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.twitter}}
+          </th>
+        </tr>
+
+        <tr>
+          <th colspan="5"></th>
+        </tr>
+
+        <!--SERVICIO MEDICO -->
+
+        <tr>
+          <thead class="table-success ">
+            <th colspan="5">Servicio Medico</th>
+          </thead>
+          <th class="text-center" colspan="1">
+            {{ form.serviciomedico.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.institucionseguro.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.otrainstitucionseguro.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.serviciomedico}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.institucionseguro}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.otrainstitucionseguro}}
+          </th>
+
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.numafiliacion.label}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.discapacidad.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.tipodiscapacidad.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="2">
+            {{ form.numafiliacion}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.discapacidad}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.tipodiscapacidad}}
+          </th>
+
+        </tr>
+
+        <tr>
+          <th colspan="5"></th>
+        </tr>
+
+
+        <!--DATOS ADICIONALES -->
+
+        <tr>
+          <thead class="table-success ">
+            <th colspan="5">Datos adicionales</th>
+          </thead>
+          <th class="text-center" colspan="1">
+            {{ form.indigena.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.poblacionindigena.label}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.lenguaindigena.label}}
+          </th>
+        </tr>
+
+        <tr>
+          <th class="text-center" colspan="1">
+            {{ form.indigena}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.poblacionindigena}}
+          </th>
+          <th class="text-center" colspan="2">
+            {{ form.lenguaindigena}}
+          </th>
+        </tr>
+
+      </table>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-success btn-block text-white" id="save">
+        Guardar {% bs_icon 'check2-square' size='1.5em'%}</button>
+    </div>
+  </form>
+</div>
+{% endblock form %}
+
+{% block search %}
+{% comment %} Busqueda por nombre {% endcomment %}
+<h2 class="fs-1" style="text-align: center;">Registro aspirante: </h2>
+<h6 class="text-center mb-5">Un nuevo aspirante, un nuevo futuro.</h6>
+<form method="GET" action="{% url 'registro_aspirante' %}">
+  <div class="input-group mb-3 mt-4">
+    <input type="search" class="form-control" placeholder="Ingrese el nombre del aspirante" name="search_aspirante">
+    <div class="input-group-append">
+      <span class="input-group-text bg-success">
+        {% load bootstrap_icons %}
+        <button class="btn btn-success text-white">
+          {% bs_icon 'search' size='1.5em'%}
+        </button>
+      </span>
+    </div>
+  </div>
+</form>
+{% endblock search %}
+
 {% block table %}
-<table class="table table-striped">
-  <p style="text-align: right; font-size: 25px;">Número de registros: {{ contador }} </p>
+{% comment %} Espera una tabla que se llena con un for {% endcomment %}
+<table class="table table-striped mt-5">
+  <p style="text-align: right; font-size: 25px;" class="mt-5">Número de registros: {{ contador }} </p>
   <thead>
     <tr>
-      <th>Becas</th>
-      <th>Carrera</th>
-      <th>Colonia</th>
-      <th>Municipio/Delegacion</th>
-      <th>Escuela de Procedencia</th>
-      <th>Grupo</th>
-      <th>Matricula</th>
-      <th>Nombre del estudiante</th>
-      <th>Apellido paterno</th>
+      <th>Nombre</th>
+      <th>Apellido Paterno</th>
       <th>Apellido materno</th>
-      <th>RFC</th>
-      <th>CURP</th>
-      <th>Direccion</th>
-      <th>Telefono</th>
-      <th>Correo electronico</th>
-      <th>Sexo</th>
-      <th>Fecha de alta</th>
-      <th>Modifico</th>
-      <th>Fecha baja</th>
-      <th>Modifico</th>
-      <th>Cp</th>
-      <th>Fecha de nacimiento</th>
-      <th>Turno</th>
-      <th>Generacion</th>
-      <th>Periodo</th>
-      <th>Año</th>
-      <th>Estado civil</th>
-      <th>Apellido materno del tutor</th>
-      <th>Apellido paterno del tutor</th>
-      <th>Nombre del tutor</th>
-      <th>Numero de folio</th>
-      <th>Entidad de nacimiento</th>
-      <th>Mpo de nacimiento</th>
-      <th>Trabajo del estudiante</th>
-      <th>Tipo de sangre del estudiante</th>
-      <th>Id tipo de escuela</th>
-      <th>Id area de bachillerato</th>
-      <th>Entidad del bachillerato</th>
-      <th>Mpo del bachillerato</th>
-      <th>Fecha de inicio bachillerato</th>
-      <th>Fecha de termino de bachillerato</th>
-      <th>Promedio general bachillerato</th>
-      <th>Telefono trabajo</th>
       <th>Edad</th>
-      <th>Fecha de vigencia</th>
-      <th>Estatus del inscrito</th>
-      <th>Imss</th>
-      <th>Clinica</th>
-      <th>Numero de servicio</th>
-      <th>Fecha de servicio social</th>
-      <th>Fecha de repositorio</th>
-      <th>Matricula estudiante</th>
-      <th>Beca</th>
-      <th>Usuario </th>
-      <th>Contraseña</th>
-      <th>Estatus biblioteca</th>
-      <th>Tipo de carrera</th>
-      <th>Otras</th>
-      <th>Cedula</th>
-      <th>Referencia</th>
-      <th>Grasc</th>
-      <th>Institucion del seguro</th>
-      <th>Otra institucion</th>
-      <th>Nacionalidad</th>
-      <th>Discapacidad</th>
-      <th>Tipo de discapacidad</th>
-      <th>Folio certificado</th>
-      <th>Fecha de expedicion</th>
-      <th>Equivalencia</th>
-      <th>Parentesco tutor</th>
-      <th>Tipo de estudiante</th>
-      <th>Numero exterior</th>
-      <th>Numero interior</th>
-      <th>Estatus</th>
       <th id="operaciones">Operaciones</th>
     </tr>
   </thead>
@@ -735,81 +660,14 @@
     {% for p in entity %}
     <tr>
       {% load bootstrap_icons %}
-      <td>{{ p.rowid_becas }}</td>
-      <td>{{ p.rowid_car }}</td>
-      <td>{{ p.rowid_col }}</td>
-      <td>{{ p.rowid_mundel }}</td>
-      <td>{{ p.rowid_esc_proc }}</td>
-      <td>{{ p.rowid_grupo }}</td>
-      <td>{{ p.id_matricula }}</td>
-      <td>{{ p.nombre_estu }}</td>
-      <td>{{ p.paterno_est }}</td>
-      <td>{{ p.materno_est }}</td>
-      <td>{{ p.rfc_est }}</td>
-      <td>{{ p.curp_est }}</td>
-      <td>{{ p.direccion_est }}</td>
-      <td>{{ p.telefono_est }}</td>
-      <td>{{ p.email_est}}</td>
-      <td>{{ p.sexo_est }}</td>
-      <td>{{ p.fecha_alta_est }}</td>
-      <td>{{ p.user_alta_est }}</td>
-      <td>{{ p.fecha_cambio_est }}</td>
-      <td>{{ p.user_cambio_est }}</td>
-      <td>{{ p.codpos }}</td>
-      <td>{{ p.fec_nac_est }}</td>
-      <td>{{ p.turno_est }}</td>
-      <td>{{ p.generacion_est }}</td>
-      <td>{{ p.periodo_est }}</td>
-      <td>{{ p.anio_est }}</td>
-      <td>{{ p.estado_civil_est }}</td>
-      <td>{{ p.mat_tutor_est }}</td>
-      <td>{{ p.pat_tutor_est }}</td>
-      <td>{{ p.nombre_tutor_est }}</td>
-      <td>{{ p.no_folio_est }}</td>
-      <td>{{ p.entidad_nac }}</td>
-      <td>{{ p.mpo_del_nac }}</td>
-      <td>{{ p.trabaja_est }}</td>
-      <td>{{ p.tipo_sangre_est }}</td>
-      <td>{{ p.id_tipo_esc_est }}</td>
-      <td>{{ p.id_area_bach_est }}</td>
-      <td>{{ p.entidad_bach }}</td>
-      <td>{{ p.mpo_del_bach }}</td>
-      <td>{{ p.fecha_ini_bach }}</td>
-      <td>{{ p.fecha_fin_bach }}</td>
-      <td>{{ p.promedio_gral_bach }}</td>
-      <td>{{ p.tel_trabajo }}</td>
-      <td>{{ p.edad_est }}</td>
-      <td>{{ p.fecha_vig_est }}</td>
-      <td>{{ p.estatus_inscri_est }}</td>
-      <td>{{ p.imss_est }}</td>
-      <td>{{ p.clinica_est }}</td>
-      <td>{{ p.num_servicio }}</td>
-      <td>{{ p.fec_ser_social }}</td>
-      <td>{{ p.fecha_repos_est }}</td>
-      <td>{{ p.matri_est }}</td>
-      <td>{{ p.beca_pro_est }}</td>
-      <td>{{ p.usuario_est }}</td>
-      <td>{{ p.password_est }}</td>
-      <td>{{ p.estatus_biblio }}</td>
-      <td>{{ p.tipo_carrera_est }}</td>
-      <td>{{ p.otras_uts }}</td>
-      <td>{{ p.no_cedula_tsu }}</td>
-      <td>{{ p.no_referencia }}</td>
-      <td>{{ p.grasc }}</td>
-      <td>{{ p.institucion_seguro }}</td>
-      <td>{{ p.otrainstitucionseguro }}</td>
-      <td>{{ p.nacionalidad }}</td>
-      <td>{{ p.discapacidad }}</td>
-      <td>{{ p.tipodiscapacidad }}</td>
-      <td>{{ p.foliocertificado }}</td>
-      <td>{{ p.fechaexpedicioncer }}</td>
-      <td>{{ p.equivalencia }}</td>
-      <td>{{ p.parentescotutor }}</td>
-      <td>{{ p.tipoestudiante }}</td>
-      <td>{{ p.num_ext }}</td>
-      <td>{{ p.num_int }}</td>
-      <td>{{ p.estatus_est }}</td>
+      <td>{{ p.nombre_asp }}</td>
+      <td>{{ p.paterno_asp }}</td>
+      <td>{{ p.materno_asp }}</td>
+      <td>{{ p.edad_asp }}</td>
       <td class="d-flex justify-content-evenly">
+        <a href="../vista-estudiante/{{ p.rowid_matricula }}/" class="btn btn-danger">
+          {% bs_icon 'file-earmark-pdf' size='1.5em'%}
+        </a>
         <a href="../vista-estudiante/{{ p.rowid_matricula }}/" class="btn btn-warning">
           {% bs_icon 'pencil-square' size='1.5em'%}
         </a>

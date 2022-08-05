@@ -2030,18 +2030,13 @@ class FormsAspirantes(forms.ModelForm):
     class Meta:
         model= SeTabAspirante
         fields= '__all__'
-        exclude = ('estatus_asp','rowid_asp','rowid_tipo_esc')
+        exclude = ('estatus_asp','rowid_asp','rowid_tipo_esc', 'fecha_alt_asp')
         widgets = {
             'folio_utn_asp' : forms.TextInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
                                                     'placeholder': 'Ingrese el folio del aspirante',
                                                     'style' : 'border-color:#21B64A;'
                                                     }),
-            'fecha_alt_asp' : forms.DateInput(attrs={'class': 'form-control',
-                                                    'required' : 'True',
-                                                    'placeholder': 'DD/MM/AAAA',
-                                                    'style' : 'border-color:#21B64A;'
-                                                    }), 
             'calle_asp' : forms.TextInput(attrs={'class': 'form-control',
                                                 'required' : 'True',
                                                 'placeholder': 'Ingrese la calle',
@@ -2087,12 +2082,12 @@ class FormsAspirantes(forms.ModelForm):
                                                     'placeholder': 'Ingrese el promedio',
                                                     'style' : 'border-color:#21B64A;'
                                                     }), 
-            'fecini_bach_asp' : forms.DateInput(attrs={'class': 'form-control',
+            'fecini_bach_asp' : forms.NumberInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
                                                         'placeholder': 'Ingrese la fecha de inicio del Bachillerato',
                                                         'style' : 'border-color:#21B64A;'
                                                         }), 
-            'fecfin_bach_asp' : forms.DateInput(attrs={'class': 'form-control',
+            'fecfin_bach_asp' : forms.NumberInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
                                                         'placeholder': 'DD/MM/AAAA',
                                                         'style' : 'border-color:#21B64A;'
@@ -2255,7 +2250,6 @@ class FormsAspirantes(forms.ModelForm):
         }
         labels = {
             'folio_utn_asp' : 'Folio del Aspirante *',
-            'fecha_alt_asp' : 'Fecha de Alta *' ,
             'calle_asp' : 'Calle del Aspirante *' ,
             'num_int_asp' : 'Numero Interior ' ,
             'num_ext_asp' : 'Numero Exterior *',
