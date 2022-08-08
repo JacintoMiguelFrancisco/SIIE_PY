@@ -4864,7 +4864,7 @@ def registroAspirante(request):
             regasp = form.save(commit=False)
             ultimo_id = SeTabAspirante.objects.all().order_by('rowid_asp').last() 
             regasp.rowid_asp =  ultimo_id.rowid_asp + 1 
-            regasp.fecha_alt_asp = fecha_now.strftime('%d/%m/%Y')
+            regasp.fecha_alt_asp = fecha_now
             regasp.save() 
             messages.success(request, "Aspirante Tegistrado con exito!")       
             return redirect('registro_aspirante') 
@@ -4887,3 +4887,48 @@ def registroAspirante(request):
         'fecha_now' : fecha_now.strftime('%d/%m/%Y')
     }
     return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/capturaAspirantes.html",data)
+# Modifica un registro de aspirante
+@login_required
+def modificarRegistroAspirante(request, rowid_asp):
+    regasp = SeTabAspirante.objects.get(rowid_asp = rowid_asp)
+    fecha_now = datetime.datetime.now() # se asigna en el forms a fecha_alt_asp
+    form = FormsAspirantes(instance=regasp)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormsAspirantes(request.POST, instance = regasp)
+        if form.is_valid():
+            form.save() #Guarda los cambios
+            messages.info(request, "¡El aspirante se actualizo con exito!")
+            return redirect('registro_aspirante') #retorna despues de actualizar
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
+            return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/actualizarAspirante.html", {"form" : form, 'fecha_now' : fecha_now.strftime('%d/%m/%Y')})#envia al detalle con los campos no validos
+    return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/actualizarAspirante.html", {"form" : form, 'fecha_now' : fecha_now.strftime('%d/%m/%Y')})#envia al detalle para actualizar
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarAspirante(request, rowid_asp):
+    try:
+        regasp = SeTabAspirante.objects.get(rowid_asp = rowid_asp)
+        regasp.estatus_asp = "B"
+    except SeTabAspirante.DoesNotExist:
+        raise Http404("El aspirante no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        messages.warning(request, "¡Aspirante eliminada con exito!")
+        regasp.save()
+        return redirect('registro_aspirante')
+    return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/BorrarAspirante.html", {"form": regasp})
+# primera de pdf 
+@login_required
+def export_print_aspirante(request, rowid_asp):
+    regasp = SeTabAspirante.objects.filter(rowid_asp = rowid_asp)
+    pdf = render_to_pdf('controlEscolar/operaciones/aspirantes/capturaAspirantes/ListaAspirante.html', {'regasp': regasp})
+    return HttpResponse(pdf, content_type='application/pdf')
+#Clase para crear Pdf / Funciona con la misma funcion en utils
+@login_required
+def export_pdf_aspirante(response, rowid_asp):
+    regasp = SeTabAspirante.objects.filter(rowid_asp = rowid_asp)
+    pdf = render_to_pdf('controlEscolar/operaciones/aspirantes/capturaAspirantes/ListaAspirante.html', {'regasp': regasp })
+    response = HttpResponse(pdf, content_type='application/pdf')
+    filename = 'Aspirante.pdf'
+    content = "attachment; filename= %s" %(filename)
+    response['Content-Disposition'] = content
+    return response

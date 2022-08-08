@@ -1,0 +1,325 @@
+{% extends '../../../../base.html' %}
+{% block title %}Aspirante{% endblock title %}
+{% block body %}
+    <h2>Lista Aspirante</h2>
+    <table>
+        <thead>
+            <thead class="cabecera">
+                <th class="cabecera" colspan="5">Estudiante</th>
+              </thead>
+            <tr>
+                <th class="cabecera">Carrera.</th>
+                <th class="cabecera">Apellido materno </th>
+                <th class="cabecera">Apellido paterno </th>
+                <th class="cabecera"> Nombre</th>
+                <th class="cabecera">Folio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {% for p in regasp %}
+                <td>{{ p.rowid_car }}</td>
+                <td>{{ p.materno_asp }}</td>
+                <td>{{ p.paterno_asp }}</td>
+                <td>{{ p.nombre_asp }}</td>
+                <td>{{ p.folio_cen_asp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Tipo de escuela</th>
+                <th class="cabecera">Folio UTN</th>
+                <th class="cabecera">Fecha de alta</th>
+                <th class="cabecera">Periodo</th>
+                <th class="cabecera">Año</th>
+                <th class="cabecera">Generación</th>
+                <th class="cabecera">Turno</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in regasp %}
+                <td>{{ p.rowid_tipo_esc }}</td>
+                <td>{{ p.folio_utn_asp }}</td>
+                <td>{{ p.fecha_alt_asp }}</td>
+                <td>{{ p.periodo_asp }}</td>
+                <td>{{ p.anio_asp }}</td>
+                <td>{{ p.generacion_asp }}</td>
+                <td>{{ p.turno_asp }}</td>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <thead class="cabecera">
+                <th class="cabecera" colspan="6">Domicilio</th>
+              </thead>
+            <tr>
+                <th class="cabecera">Calle</th>
+                <th class="cabecera">Número interior</th>
+                <th class="cabecera">Número exterior</th>
+                <th class="cabecera">Código postal</th>
+                <th class="cabecera">Colonia</th>
+                <th class="cabecera">Telefono de casa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {% for p in regasp %}
+                 <td>{{ p.calle_asp }}</td>
+                <td>{{ p.num_int_asp }}</td>
+                <td>{{ p.num_ext_asp }}</td>
+                <td>{{ p.codigo_postal_asp }}</td>
+                <td>{{ p.rowid_col }}</td>
+                <td>{{ p.tel_cas_asp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <thead class="cabecera">
+                <th class="cabecera" colspan="6">Datos generales</th>
+              </thead>
+            <tr>
+                <th class="cabecera">Sexo </th>
+                <th class="cabecera">Edad</th>
+                <th class="cabecera">Estado civil</th>
+                <th class="cabecera">Trabajo asp</th>
+                <th class="cabecera">Telefono oficina</th>
+                <th class="cabecera">Tipo de sangre </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {% for p in regasp %}
+                <td>{{ p.sexo_asp }}</td>
+                <td>{{ p.edad_asp }}</td>
+                <td>{{ p.estado_civil_asp }}</td>
+                <td>{{ p.trabaja_asp }}</td>
+                <td>{{ p.telefono_oficina_asp }}</td>
+                <td>{{ p.tipo_de_sangre_asp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Promedio aspirante</th>
+                <th class="cabecera">Fecha inicio </th>
+                <th class="cabecera">Fecha fin </th>
+                <th class="cabecera">RFC</th>
+                <th class="cabecera">Curp</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {% for p in regasp %}
+                <td>{{ p.promedio_asp }}</td>
+                <td>{{ p.fecini_bach_asp }}</td>
+                <td>{{ p.rfc_asp }}</td>
+                <td>{{ p.fecfin_bach_asp }}</td>
+                <td>{{ p.curp_asp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Fecha de nacimiento</th>
+                <th class="cabecera">Municipio o delegacion.</th>
+                <th class="cabecera">Área bachillarato.</th>
+                <th class="cabecera">Medio de difusion.</th>
+                <th class="cabecera">Escuela de procedencia.</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {% for p in regasp %}
+                <td>{{ p.fecha_nac_asp }}</td>
+                <td>{{ p.rowid_mundel }}</td>
+                <td>{{ p.rowid_area_bac }}</td>
+                <td>{{ p.rowid_medio_dif }}</td>
+                <td>{{ p.rowid_esc_proc }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Usuario que dio de alta</th>
+                <th class="cabecera">Usuario que modifico</th>
+                <th class="cabecera">Correo del aspirante</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {% for p in regasp %}
+                <td>{{ p.user_alta }}</td>
+                <td>{{ p.user_cambio }}</td>
+                <td>{{ p.email_asp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Opcion educativa</th>
+                <th class="cabecera">Continuidad</th>
+                <th class="cabecera">Otro medio de difucion</th>
+                <th class="cabecera">Otro medio de informacion</th>
+                <th class="cabecera">Otra oferta educativa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {% for p in regasp %}
+                <td>{{ p.opcioneducativa }}</td>
+                <td>{{ p.continuidadestudio }}</td>
+                <td>{{ p.otromediodif }}</td>
+                <td>{{ p.otromedioinf }}</td>
+                <td>{{ p.otroopcioneduca }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Facebook</th>
+                <th class="cabecera">Twitter</th>
+                <th class="cabecera">Discapacidad</th>
+                <th class="cabecera">Tipo de Discapacidad</th>
+                <th class="cabecera">Servicio medico</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {% for p in regasp %}
+                <td>{{ p.facebook }}</td>
+                <td>{{ p.twitter }}</td>
+                <td>{{ p.discapacidad }}</td>
+                <td>{{ p.tipodiscapacidad }}</td>
+                <td>{{ p.serviciomedico }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Institucion del seguro</th>
+                <th class="cabecera">Otra institucion del seguro</th>
+                <th class="cabecera">Número de afiliacion</th>
+                <th class="cabecera">Fecha de expedicion</th>
+                <th class="cabecera">Folio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {% for p in regasp %}
+                <td>{{ p.institucionseguro }}</td>
+                <td>{{ p.otrainstitucionseguro }}</td>
+                <td>{{ p.numafiliacion }}</td>
+                <td>{{ p.fechaexpedicioncer }}</td>
+                <td>{{ p.folio }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th class="cabecera">Fecha de certificado</th>
+                <th class="cabecera">Indigena</th>
+                <th class="cabecera">Poblacion Indigena</th>
+                <th class="cabecera">Lengua indigena</th>
+                <th class="cabecera">Estatus</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {% for p in regasp %}
+                <td>{{ p.fechacompromisocerti }}</td>
+                <td>{{ p.indigena }}</td>
+                <td>{{ p.poblacionindigena }}</td>
+                <td>{{ p.lenguaindigena }}</td>
+                <td>{{ p.estatus_asp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <thead class="cabecera">
+                <th class="cabecera" colspan="6">Tutor</th>
+              </thead>
+            <tr>
+                <th class="cabecera">Apellido materno tutor  </th>
+                <th class="cabecera">Apellido paterno tutor </th>
+                <th class="cabecera">Nombre tutor </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            {% for p in regasp %}
+                <td>{{ p.mat_tutor_asp }}</td>
+                <td>{{ p.pat_tutor_asp }}</td>
+                <td>{{ p.nombre_tutor_asp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing:border-box ;
+        }
+        h2,h3{
+            font-family: arial;
+        }
+        h2{
+            font-size: 30px;
+            text-align: center;
+        }
+        h3{
+            font-size: 18px;
+            text-align: right;
+        }
+        h6{
+            font-size: 10px;
+            text-align: lef;
+        }
+        table {
+            width: 100%;
+         }
+         th, td {
+            text-align: center;
+            width: 25%;
+            vertical-align: top;
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 0.3em;
+            caption-side: bottom;
+         }
+         th {
+            background: #eee;
+         }
+         .cabecera{
+             background: rgb(209, 231, 221);
+             color: rgb(0, 0, 0);
+         }
+         /* @page {
+            size: letter landscape;
+            margin: 0.5cm;
+            type: A4;
+        } */
+    </style>
+{% endblock body %}

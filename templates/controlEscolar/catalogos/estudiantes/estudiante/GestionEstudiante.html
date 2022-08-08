@@ -33,6 +33,21 @@
 {% block form %}
 <div class="row">
 
+  {% if form.errors %}
+  <ul class = "user-msg error">
+      {% for field in form %}
+          {% for error in field.errors %}
+              <li>
+                  {% if field != '__all__' %}
+                      <strong>{{ field.label }}:</strong>
+                  {% endif %}
+                  {{ error }}
+              </li>
+          {% endfor %}
+      {% endfor %}
+  </ul>
+{% endif %}
+
   <form action="" method="POST"> {% csrf_token %}
     <div class="table-responsive-sm mt-2">
       <table class="table mt-3">

@@ -1947,6 +1947,7 @@ class FormsAspirantes(forms.ModelForm):
     DIS = ( ('S', 'Si'), ('N','No') )
     SERMED = ( ('S', 'Si'), ('N','No') )
     IND = ( ('S', 'Si'), ('N','No') )
+    TIPSAN = (('No sé', 'No sé'),('AB+', 'AB+'),('O-', 'O-'),('O+', 'O+'),('A-', 'A-'),('A+', 'A+'),('B-', 'B-'),('B+', 'B+'),('AB-', 'AB-')) 
     sexo_asp = forms.ChoiceField(label='Sexo', choices=SEXO, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     estado_civil_asp = forms.ChoiceField(label='Estado Civil', choices=EDOCIVIL, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     trabaja_asp = forms.ChoiceField(label='Trabaja', choices=TRAB, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
@@ -1955,6 +1956,7 @@ class FormsAspirantes(forms.ModelForm):
     discapacidad = forms.ChoiceField(label='Discapacidad', choices=DIS, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     serviciomedico = forms.ChoiceField(label='Servicio Medico', choices=SERMED, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     indigena = forms.ChoiceField(label='Indigena', choices=IND, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    tipo_de_sangre_asp = forms.ChoiceField(label='Tipo de Sangre', choices=TIPSAN, widget=forms.Select(attrs={'class': 'form-control','required' : 'True','placeholder': 'Ingrese el tipo de sangre','style' : 'border-color:#21B64A;'}))
     rowid_mundel = forms.ModelChoiceField(queryset = SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A"),
                                   required=True,
                                   label="Municipio/Delegacion: *",
@@ -2072,11 +2074,6 @@ class FormsAspirantes(forms.ModelForm):
                                                 'placeholder': 'Ingrese la edad del aspirante',
                                                 'style' : 'border-color:#21B64A;'
                                                 }), 
-            'tipo_de_sangre_asp' : forms.TextInput(attrs={'class': 'form-control',
-                                                            'required' : 'True',
-                                                            'placeholder': 'Ingrese el tipo de sangre',
-                                                            'style' : 'border-color:#21B64A;'
-                                                            }), 
             'promedio_asp' : forms.NumberInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
                                                     'placeholder': 'Ingrese el promedio',
@@ -2084,7 +2081,7 @@ class FormsAspirantes(forms.ModelForm):
                                                     }), 
             'fecini_bach_asp' : forms.NumberInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
-                                                        'placeholder': 'Ingrese la fecha de inicio del Bachillerato',
+                                                        'placeholder': 'DD/MM/AAAA',
                                                         'style' : 'border-color:#21B64A;'
                                                         }), 
             'fecfin_bach_asp' : forms.NumberInput(attrs={'class': 'form-control',
@@ -2102,7 +2099,7 @@ class FormsAspirantes(forms.ModelForm):
                                                 'placeholder': 'Ingrese el CURP',
                                                 'style' : 'border-color:#21B64A;'
                                                 }), 
-            'fecha_nac_asp' : forms.TextInput(attrs={'class': 'form-control',
+            'fecha_nac_asp' : forms.DateInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
                                                     'placeholder': 'Ingrese la fecha de nacimiento',
                                                     'style' : 'border-color:#21B64A;'
@@ -2222,7 +2219,7 @@ class FormsAspirantes(forms.ModelForm):
                                                     'placeholder': 'Ingrese el numero de afiliacion',
                                                     'style' : 'border-color:#21B64A;'
                                                     }), 
-            'fechaexpedicioncer' : forms.TextInput(attrs={'class': 'form-control',
+            'fechaexpedicioncer' : forms.DateInput(attrs={'class': 'form-control',
                                                             'required' : 'True',
                                                             'placeholder': 'Ingrese la fecha de expedicioin de certificado',
                                                             'style' : 'border-color:#21B64A;'
@@ -2232,7 +2229,7 @@ class FormsAspirantes(forms.ModelForm):
                                             'placeholder': 'Ingrese el folio',
                                             'style' : 'border-color:#21B64A;'
                                             }), 
-            'fechacompromisocerti' : forms.TextInput(attrs={'class': 'form-control',
+            'fechacompromisocerti' : forms.DateInput(attrs={'class': 'form-control',
                                                             'required' : 'True',
                                                             'placeholder': 'Ingrese la fecha de compromiso del certificado',
                                                             'style' : 'border-color:#21B64A;'
@@ -2257,7 +2254,6 @@ class FormsAspirantes(forms.ModelForm):
             'tel_cas_asp' : 'Telefono de Casa del Aspirante *', 
             'telefono_oficina_asp' : 'Telefono de Oficina del Aspirante *', 
             'edad_asp' : 'Edad del Aspirante *'  ,
-            'tipo_de_sangre_asp' : 'Tipo de Sangre del Aspirante *',
             'promedio_asp' : 'Promedio del Aspirante *' ,
             'fecini_bach_asp' : 'Fecha de Inicio de Bachillerato del Aspirante *', 
             'fecfin_bach_asp' : 'Fecha de Termino de Bachillerato del Aspirante *',

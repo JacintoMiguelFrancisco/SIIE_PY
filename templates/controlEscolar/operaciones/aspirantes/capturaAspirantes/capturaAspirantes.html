@@ -6,19 +6,19 @@
 {% comment %} Espera los botones imprimir {% endcomment %}
 <div class="container mb-4 mt-4">
   <div class="row justify-content-md-center">
-    <div class="col col-12 col-sm-3 col-lg-3">
-      {% load bootstrap_icons %}
+    {% load bootstrap_icons %}
+    <div class="col col-12 col-sm-3 col-lg-4">
       <a href="{% url 'vista_municipios' %}" type="button" class="btn btn-success" id="button">Municipios {% bs_icon 'plus' size='2em'%}</a>
     </div>
-    <div class="col col-12 col-sm-3 col-lg-3">
+    <div class="col col-12 col-sm-3 col-lg-4">
       <a href="{% url 'vista_asen' %}" type="button" class="btn btn-success" id="button">Asentamientos {% bs_icon 'plus' size='2em'%}</a>
     </div>
-    <div class="col col-12 col-sm-3 col-lg-3">
+    <div class="col col-12 col-sm-3 col-lg-4">
       <a href="{% url 'vistaColonias' %}" type="button" class="btn btn-success" id="button">Colonias {% bs_icon 'plus' size='2em'%}</a>
     </div>
-    <div class="col col-12 col-sm-3 col-lg-3">
+    {% comment %} <div class="col col-12 col-sm-3 col-lg-3">
       <a href="#" type="button" class="btn btn-success" id="button">Pagos{% bs_icon 'plus' size='2em'%}</a>
-    </div>
+    </div> {% endcomment %}
   </div>
 </div>
 {% endblock buttons %}
@@ -665,14 +665,17 @@
       <td>{{ p.materno_asp }}</td>
       <td>{{ p.edad_asp }}</td>
       <td class="d-flex justify-content-evenly">
-        <a href="../vista-estudiante/{{ p.rowid_matricula }}/" class="btn btn-danger">
+        <a href="../export-pdf-aspirante/{{ p.rowid_asp }}/" class="btn btn-danger">
           {% bs_icon 'file-earmark-pdf' size='1.5em'%}
         </a>
-        <a href="../vista-estudiante/{{ p.rowid_matricula }}/" class="btn btn-warning">
+        <a href="../actualizar-aspirante/{{ p.rowid_asp }}/" class="btn btn-warning">
           {% bs_icon 'pencil-square' size='1.5em'%}
         </a>
-        <a href="../eliminar-estudiante/{{ p.rowid_matricula }}/" class="btn btn-danger">
+        <a href="../eliminar-aspirante/{{ p.rowid_asp }}/" class="btn btn-danger">
           {% bs_icon 'trash' size='1.5em'%}
+        </a>
+        <a href="../export-print-aspirante/{{ p.rowid_asp }}/" class="btn btn-secondary">
+          {% bs_icon 'printer' size='1.5em'%}
         </a>
       </td>
     </tr>

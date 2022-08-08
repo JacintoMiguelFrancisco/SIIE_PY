@@ -335,5 +335,9 @@ urlpatterns = [
 
 # Registro Aspirantes
     path('registro-aspirante/', views.registroAspirante, name="registro_aspirante"),
+    path('actualizar-aspirante/<int:rowid_asp>/', views.modificarRegistroAspirante, name="actualizar_aspirante"),
+    path('eliminar-aspirante/<int:rowid_asp>/', views.eliminarAspirante, name="eliminar_aspirante"),
+    path('export-print-aspirante/<int:rowid_asp>/', views.export_print_aspirante, name="export_pdf_aspirante"),
+    path('export-pdf-aspirante/<int:rowid_asp>/', views.export_pdf_aspirante, name="export_pdf_aspirante"),
 
 ]

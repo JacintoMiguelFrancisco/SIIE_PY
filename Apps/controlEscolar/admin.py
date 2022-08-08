@@ -13,6 +13,7 @@ from .models import (
     SeTabEstudiante, SeCatDocumentacion,SeCatGrupo,SeCatEstatusEstudiante, SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
     SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
+    SeTabAspirante, # Aspirante
 )
 # -------------------------------------------- Direcciones --------------------------------------------- #
 
@@ -288,3 +289,17 @@ class EmpCarnAdmin(admin.ModelAdmin):
     search_fields = ['descri_corto_car_emp']
     list_filter = ['estatus_inst'] 
 
+# -------------------------------------------- Operaciones  --------------------------------------------- #
+
+#####################  Captura aspirante  ################# 
+
+@admin.register(SeTabAspirante)
+class AspiranteAdmin(admin.ModelAdmin):
+    list_display = ('rowid_asp', 'rowid_mundel',  'rowid_area_bac', 'rowid_medio_dif', 'rowid_esc_proc', 'rowid_car' , 'rowid_tipo_esc','rowid_col', 
+    'folio_utn_asp', 'fecha_alt_asp', 'calle_asp', 'num_int_asp' , 'num_ext_asp', 'codigo_postal_asp', 'tel_cas_asp', 'telefono_oficina_asp', 'sexo_asp', 'edad_asp',
+    'estado_civil_asp', 'trabaja_asp', 'tipo_de_sangre_asp', 'promedio_asp' , 'fecini_bach_asp', 'fecfin_bach_asp', 'rfc_asp', 'curp_asp', 'fecha_nac_asp', 'materno_asp', 
+    'paterno_asp', 'folio_cen_asp', 'nombre_asp', 'periodo_asp', 'anio_asp', 'mat_tutor_asp', 'pat_tutor_asp', 'nombre_tutor_asp', 'generacion_asp', 'turno_asp', 'user_alta', 'user_cambio',
+    'email_asp' , 'opcioneducativa', 'continuidadestudio', 'otromediodif', 'otromedioinf', 'otroopcioneduca', 'facebook', 'twitter', 'discapacidad', 'tipodiscapacidad',
+    'serviciomedico' ,'institucionseguro', 'otrainstitucionseguro' ,'numafiliacion', 'fechaexpedicioncer', 'folio', 'fechacompromisocerti', 'indigena', 'poblacionindigena', 'lenguaindigena','estatus_asp')
+    search_fields = ['folio_utn_asp', 'paterno_asp']
+    list_filter = ['estatus_asp']
