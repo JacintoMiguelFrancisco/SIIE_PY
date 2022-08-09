@@ -712,7 +712,6 @@ class SeTabEmpCar(models.Model):
 # -------------------------------------------- Operaciones --------------------------------------------- #
 
 ############################################## TABLA ASPIRANTES ##########################################################
-
 class SeTabAspirante(models.Model):
     rowid_asp = models.IntegerField(primary_key=True)
     rowid_mundel = models.ForeignKey(SeCatMunicipioDelegacion, models.DO_NOTHING, db_column='rowid_mundel', blank=True, null=True)
@@ -779,3 +778,27 @@ class SeTabAspirante(models.Model):
     class Meta:
         managed = False
         db_table = 'se_tab_aspirante'
+
+    def __str__(self):
+        texto="{0} {1} {2}"
+        return texto.format(self.nombre_asp, self.materno_asp, self.paterno_asp)
+############################################## TABLA DOCUMENTOS ASPIRANTE ############################################
+class SeProAspDocu(models.Model):
+    rowid_asp_docu = models.IntegerField(primary_key=True)
+    rowid_asp = models.ForeignKey('SeTabAspirante', models.DO_NOTHING, db_column='rowid_asp', blank=True, null=True)
+    rowid_doc = models.ForeignKey(SeCatDocumentacion, models.DO_NOTHING, db_column='rowid_doc', blank=True, null=True)
+    import_doc = models.CharField(max_length=1, blank=True, null=True)
+    entrego_doc = models.CharField(max_length=1, blank=True, null=True)
+    comentario_doc = models.CharField(max_length=100, blank=True, null=True)
+    fecha_alta_doc = models.DateField(blank=True, null=True)
+    user_alta_doc = models.CharField(max_length=10, blank=True, null=True)
+    fecha_baja_doc = models.DateField(blank=True, null=True)
+    user_baja_doc = models.CharField(max_length=10, blank=True, null=True)
+    fecha_cambio_doc = models.DateField(blank=True, null=True)
+    user_cambio_doc = models.CharField(max_length=10, blank=True, null=True)
+    estatus_doc_aspi = models.CharField(max_length=1, blank=True, null=True, default="A")
+
+    class Meta:
+        managed = False
+        db_table = 'se_pro_asp_docu'
+

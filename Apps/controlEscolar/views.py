@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from django.contrib import messages
 #Insert SQL
 from django.db import connections
+# Usuarios y conexxiones
+from django.contrib.auth.models import User
 #Para imprimir en formatos
 import csv
 import xlwt
@@ -27,7 +29,7 @@ from .models import (
     SeTabEstudiante, SeCatDocumentacion, SeCatGrupo, SeCatEstatusEstudiante, SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
     SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
-    SeTabAspirante, #Aspirante
+    SeTabAspirante, SeProAspDocu, #Aspirante
 )
 #Views
 from django.views.generic import View
@@ -39,7 +41,7 @@ from .forms import (
     FormsEstudiante, FormDocumentacion, FormGrupo, FormEstatusEstudiante,FormGrados, FormSalones, FormTipoBajas, FormBecas, FormTipoCambio, # Estudintes
     FormEmpleado, FormsTipoPue, FormSueldo, FormNivAca, FormPlaza, FormAdscripcion, FormActividades, FormInstitucion, FormEmpCar, # Empleados
     FormsPlaE, FormsAsignatura, FormsIndicador, FormsPeA, FormsPeaI, # Plan de Estudio
-    FormsAspirantes, #Aspirante
+    FormsAspirantes, FormDocAsp, #Aspirante
 )
 
 # -------------------------------------------- Direcciones --------------------------------------------- #
@@ -4844,7 +4846,7 @@ def export_xlwt_EmpCar (request):
     wb.save(response)
     return response
 
-##################################################   Operaciones ####################################################
+#------------------------------------------------   Operaciones ------------------------------------------------------------#
 
 ##############################################   Captura aspirante   #########################################################
 @login_required
@@ -4932,3 +4934,163 @@ def export_pdf_aspirante(response, rowid_asp):
     content = "attachment; filename= %s" %(filename)
     response['Content-Disposition'] = content
     return response
+
+##############################################   Captura Documentos Aspirante   #########################################################
+
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaDocAsp(request):
+    listaDocAsp = SeProAspDocu.objects.filter(estatus_doc_aspi="A").order_by('rowid_asp_docu')
+    fecha_alta = datetime.datetime.now() # se asigna en el forms a fecha_alt_asp
+    contador_id = listaDocAsp.count() 
+    page = request.GET.get('page', 1)  
+    try:  
+        paginator = Paginator(listaDocAsp, 5)
+        listaDocAsp = paginator.page(page)
+    except: 
+        raise Http404
+    if request.method == 'POST': 
+        form = FormDocAsp(request.POST) 
+        if form.is_valid():
+            try:
+                _userid = request.user.id
+                id_usuario = User.objects.get(id=_userid)
+            except:
+                id_usuario = User.objects.get(id=-1)  
+            docaspi = form.save(commit=False)
+            ultimo_id = SeProAspDocu.objects.all().order_by('rowid_asp_docu').last() 
+            docaspi.rowid_asp_docu = ultimo_id.rowid_asp_docu + 1 
+            name_user = str(id_usuario)
+            docaspi.user_alta_doc = name_user
+            docaspi.fecha_alta_doc = fecha_alta
+            docaspi.save() 
+            messages.success(request, "¡Documento agregado con exito!")       
+            return redirect('vista_doc_asp') 
+        else: 
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
+            return render(request, "controlEscolar/operaciones/aspirantes/capturaDocumentosAspirante/GestionDocAsp.html",{'entity' : listaDocAsp,'paginator' : paginator,'form' : form,'contador': contador_id})       
+    elif request.method == 'GET': 
+        busqueda = request.GET.get("search_docaspi", None) 
+        if busqueda: 
+            listaDocAsp = SeProAspDocu.objects.filter( 
+                Q(rowid_asp_docu__icontains = busqueda), 
+                Q(estatus_doc_aspi__icontains = "A") 
+            ).distinct()
+    form = FormDocAsp()  
+    data = { 
+        'entity' : listaDocAsp,
+        'paginator' : paginator,
+        'form' : form,
+        'contador': contador_id,
+    }
+    return render(request, "controlEscolar/operaciones/aspirantes/capturaDocumentosAspirante/GestionDocAsp.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarDocAsp(request, rowid_asp_docu):
+    fecha_baja = datetime.datetime.now() # se asigna en el forms a fecha_alt_asp
+    try:
+        _userid = request.user.id
+        id_usuario = User.objects.get(id=_userid)
+    except:
+        id_usuario = User.objects.get(id=-1) 
+    try:
+        docaspi = SeProAspDocu.objects.get(rowid_asp_docu = rowid_asp_docu)
+        docaspi.estatus_doc_aspi = "B"
+        docaspi.fecha_baja_doc = fecha_baja
+        name_user = str(id_usuario)
+        docaspi.user_baja_doc = name_user
+    except SeProAspDocu.DoesNotExist:
+        raise Http404("El registro no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        messages.warning(request, "¡Documento eliminado con exito!")
+        docaspi.save()
+        return redirect('vista_doc_asp')
+    return render(request, "controlEscolar/operaciones/aspirantes/capturaDocumentosAspirante/BorrarDocAsp.html", {"form": docaspi})
+# Modifica un registro
+@login_required
+def vista_DocAsp_detail(request, rowid_asp_docu):
+    docaspi = SeProAspDocu.objects.get(rowid_asp_docu = rowid_asp_docu)
+    fecha_cambio = datetime.datetime.now()
+    form = FormDocAsp(instance=docaspi)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormDocAsp(request.POST, instance = docaspi)
+        if form.is_valid():
+            try:
+                _userid = request.user.id
+                id_usuario = User.objects.get(id=_userid)
+            except:
+                id_usuario = User.objects.get(id=-1)  
+
+            docaspi = form.save(commit=False)
+            name_user = str(id_usuario)
+            docaspi.user_cambio_doc = name_user
+            docaspi.fecha_cambio_doc = fecha_cambio
+            docaspi.save() #Guarda los cambios
+
+            messages.info(request, "¡Documento actualizado con exito!")
+            return redirect('vista_doc_asp') #retorna despues de actualizar
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
+            return render(request, "controlEscolar/operaciones/aspirantes/capturaDocumentosAspirante/ActualizarDocAsp.html", {"form" : form})#envia al detalle con los campos no validos
+    return render(request, "controlEscolar/operaciones/aspirantes/capturaDocumentosAspirante/ActualizarDocAsp.html", {"form" : form})#envia al detalle para actualizar
+# primera de pdf posible imprimir / Funciona con la misma funcion en utils
+class Export_print_DocAsp(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaDocAspi = SeProAspDocu.objects.filter(estatus_doc_aspi="A")
+        data = {
+            'count': listaDocAspi.count(),
+            'form': listaDocAspi
+        }
+        pdf = render_to_pdf('controlEscolar/operaciones/aspirantes/capturaDocumentosAspirante/ListaDocAsp.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Clase para crear Pdf / Funciona con la misma funcion en utils
+class Export_pdf_DocAsp(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaDocAspi = SeProAspDocu.objects.filter(estatus_doc_aspi="A")
+        data = {
+            'count': listaDocAspi.count(),
+            'form': listaDocAspi
+        }
+        pdf = render_to_pdf('controlEscolar/operaciones/aspirantes/capturaDocumentosAspirante/ListaDocAsp.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaDocumentos.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises a CSV sin libreria 
+@login_required
+def export_csv_DocAsp (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaDocumentos.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Clave', 'Aspirante', 'Documento','¿Importante?', '¿Entrego?', 'Comentario', 'Fecha Alta', 'Usuario Alta', 'Fecha Baja', 'Usuario Baja', 'Fecha Cambio', 'Usuario Cambio' ,'Estatus'])
+    listaDocAspi = SeProAspDocu.objects.filter(estatus_doc_aspi="A")
+    for e in listaDocAspi:
+        writer.writerow([e.rowid_asp_docu, e.rowid_asp, e.rowid_doc, e.import_doc, e.entrego_doc, 
+        e.comentario_doc, e.fecha_alta_doc, e.user_alta_doc, e.fecha_baja_doc, e.user_baja_doc, 
+        e.fecha_cambio_doc, e.user_cambio_doc, e.estatus_doc_aspi])
+    return response
+# Exportar paises a xlwt sin con la libreria XLWT 
+@login_required
+def export_xlwt_DocAsp (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaDoc.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('EmpCar')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Clave', 'Aspirante', 'Documento','¿Importante?', '¿Entrego?', 'Comentario', 'Fecha Alta', 'Usuario Alta', 'Fecha Baja', 'Usuario Baja', 'Fecha Cambio', 'Usuario Cambio' ,'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows = SeProAspDocu.objects.filter(estatus_doc_aspi="A").values_list('rowid_asp_docu', 'rowid_asp', 'rowid_doc', 'import_doc', 'entrego_doc', 'comentario_doc', 'fecha_alta_doc', 'user_alta_doc', 'fecha_baja_doc', 'user_baja_doc', 'fecha_cambio_doc', 'user_cambio_doc', 'estatus_doc_aspi')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response
+
+
+##############################################   Captura Calificaciones aspirante   #########################################################

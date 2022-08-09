@@ -9,7 +9,7 @@ from .models import (
     SeCatEscuelaProcedencia, SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
     SeTabEstudiante, SeCatDocumentacion,SeCatGrupo,SeCatEstatusEstudiante, SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
-    SeTabAspirante # Operaciones / Aspirante
+    SeTabAspirante, SeProAspDocu # Operaciones / Aspirante
 )
 
 ##########################  Catalogo #################################
@@ -2288,4 +2288,48 @@ class FormsAspirantes(forms.ModelForm):
             'fechacompromisocerti' : 'Fecha de Compromiso de Certificado ', 
             'poblacionindigena' : 'Poblacion Indigena ',
             'lenguaindigena' : 'Lengua Indigena ',
+        }
+# FORM documentos aspirante
+class FormDocAsp(forms.ModelForm):
+    RESPSN = (('','Seleccione una opción'), ('S', 'Si'), ('N','No')) # uno solo para los dos
+    entrego_doc = forms.ChoiceField(label='¿Entrego?*', choices=RESPSN, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    import_doc = forms.ChoiceField(label='¿Es Importante?*', choices=RESPSN, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+
+    rowid_asp = forms.ModelChoiceField(queryset = SeTabAspirante.objects.filter(estatus_asp="A"),
+                                  required=True,
+                                  label="Aspirante:*",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_doc = forms.ModelChoiceField(queryset = SeCatDocumentacion.objects.filter(estatus_doc="A"),
+                                  required=True,
+                                  label="Documento:*",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    class Meta:
+        model = SeProAspDocu
+        fields = '__all__'
+        exclude = ('rowid_asp_docu', 'estatus_doc_aspi','fecha_alta_doc', 'fecha_cambio_doc', 'fecha_baja_doc', 'user_alta_doc', 'user_cambio_doc', 'user_baja_doc',)          
+        widgets = {
+            'comentario_doc': forms.Textarea(attrs={'class': 'form-control',
+                                                    'required' : 'True',
+                                                    'placeholder': 'Ingrese un comentario.',
+                                                    'style' : 'border-color:#21B64A;'                                                        
+                                                    }),
+        }
+        labels = {
+            'comentario_doc': 'Comentario:*',
         }

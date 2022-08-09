@@ -339,5 +339,13 @@ urlpatterns = [
     path('eliminar-aspirante/<int:rowid_asp>/', views.eliminarAspirante, name="eliminar_aspirante"),
     path('export-print-aspirante/<int:rowid_asp>/', views.export_print_aspirante, name="export_pdf_aspirante"),
     path('export-pdf-aspirante/<int:rowid_asp>/', views.export_pdf_aspirante, name="export_pdf_aspirante"),
+# CRUD Documentos aspirante
+    path('vista-doc-asp/', views.vistaDocAsp, name="vista_doc_asp"), 
+    path('eliminar-doc-asp/<int:rowid_asp_docu>/', views.eliminarDocAsp, name="eliminar_doc_asp"),
+    path('actualizar-doc-asp/<int:rowid_asp_docu>/', views.vista_DocAsp_detail, name="actualizar_doc_asp"),
+    path('export-pdf-doc-asp/', views.Export_pdf_DocAsp.as_view(), name="export_pdf_doc_asp"),
+    path('export-csv-doc-asp/', views.export_csv_DocAsp, name="export_csv_doc_asp"),
+    path('export-xlwt-doc-asp/', views.export_xlwt_DocAsp, name="export_xlwt_doc_asp"),
+    path('export-print-doc-asp/', views.Export_print_DocAsp.as_view(), name="export_print_doc_asp"),
 
 ]

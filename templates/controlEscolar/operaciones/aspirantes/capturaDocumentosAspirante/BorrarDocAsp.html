@@ -1,0 +1,31 @@
+{% extends '../../../../base.html' %}
+{% block title %} Eliminar Doc {% endblock %}
+
+{% block navbar %}
+  {% include 'NavBar.html' %}
+{% endblock navbar %}
+
+{% block body %}
+  <div class="Post">
+    <div class="content">
+      <div class="row mt-5 pl-4 justify-content-center h-75">
+        <div class="col-lg-6 col-sm-12">
+          <div class="alert alert-dark mt-5 d-flex flex-column justify-content-center align-items-center p-2" role="alert">
+            <p class="mb-2">¿Estas seguro de que quieres borrar "{{ form.rowid_doc }}" ?</p>
+          
+            <div class="d-flex w-75 justify-content-evenly align-items-stretch">
+              <div class="col-8 col-sm-6">
+                <a href="{% url 'vista_doc_asp' %}" class="btn btn-secondary btn-lg active mt-3">Cancelar</a>
+              </div>
+              <div class="">
+                <form method="POST" action="">{% csrf_token %}
+                  <button class="btn btn-warning btn-lg active mt-3" type="submit">Eliminar</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>      
+      </div>
+    </div>
+  </div>
+{% endblock %}

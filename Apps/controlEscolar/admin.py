@@ -13,7 +13,7 @@ from .models import (
     SeTabEstudiante, SeCatDocumentacion,SeCatGrupo,SeCatEstatusEstudiante, SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
     SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
-    SeTabAspirante, # Aspirante
+    SeTabAspirante, SeProAspDocu,# Aspirante
 )
 # -------------------------------------------- Direcciones --------------------------------------------- #
 
@@ -292,7 +292,6 @@ class EmpCarnAdmin(admin.ModelAdmin):
 # -------------------------------------------- Operaciones  --------------------------------------------- #
 
 #####################  Captura aspirante  ################# 
-
 @admin.register(SeTabAspirante)
 class AspiranteAdmin(admin.ModelAdmin):
     list_display = ('rowid_asp', 'rowid_mundel',  'rowid_area_bac', 'rowid_medio_dif', 'rowid_esc_proc', 'rowid_car' , 'rowid_tipo_esc','rowid_col', 
@@ -303,3 +302,9 @@ class AspiranteAdmin(admin.ModelAdmin):
     'serviciomedico' ,'institucionseguro', 'otrainstitucionseguro' ,'numafiliacion', 'fechaexpedicioncer', 'folio', 'fechacompromisocerti', 'indigena', 'poblacionindigena', 'lenguaindigena','estatus_asp')
     search_fields = ['folio_utn_asp', 'paterno_asp']
     list_filter = ['estatus_asp']
+@admin.register(SeProAspDocu)
+class DocuAdmin(admin.ModelAdmin):
+    list_display = ('rowid_asp_docu','rowid_asp', 'rowid_doc','import_doc','entrego_doc',
+    'comentario_doc', 'fecha_alta_doc', 'user_alta_doc', 'fecha_baja_doc', 'user_baja_doc', 'fecha_cambio_doc', 'user_cambio_doc', 'estatus_doc_aspi')
+    search_fields = ['rowid_asp_docu']
+    list_filter = ['estatus_doc_aspi']
