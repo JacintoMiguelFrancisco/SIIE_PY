@@ -21,6 +21,8 @@ from django.db.models import Q
 #Login control de inicios de sesion
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+# Permisos
+from django.http import Http404
 #Models
 from .models import (
     SeCatPais, SeCatEstado, SeCatMunicipioDelegacion, SeCatAsentamiento, SeCatColonia,  # Direcciones
@@ -43,12 +45,25 @@ from .forms import (
     FormsPlaE, FormsAsignatura, FormsIndicador, FormsPeA, FormsPeaI, # Plan de Estudio
     FormsAspirantes, FormDocAsp, FormCalAsp,  #Aspirante
 )
+# Control de accseso por grupo
+def check_user(*groups):
+
+    def decorator(function):
+        def wrapper(request, *args, **kwargs):
+            if request.user.groups.filter(name__in=groups).exists():
+                return function(request, *args, **kwargs)
+            raise Http404
+
+        return wrapper
+
+    return decorator
 
 # -------------------------------------------- Direcciones --------------------------------------------- #
 
 ##############################################   Paises   #########################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaPaises(request):
     #Lista de todos los paises que tengan el status = A ordenados por id
     listaPaises = SeCatPais.objects.filter(estatus_pais="A").order_by('id_pais')

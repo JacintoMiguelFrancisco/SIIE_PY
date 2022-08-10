@@ -1122,9 +1122,18 @@ class FormDocumentacion(forms.ModelForm):
         ('A', 'Alta '), 
         ('M','Media'), 
         ('B','Baja') 
-    )    
+    )
+    CTLD = (
+        ('0','Seleccione una opción'),
+        ('A','Aspirante'),
+        ('E','Estudiante'),
+        ('I','Ingenieria'),
+        ('T','Titulado'),
+    ) # 
     importante_doc = forms.ChoiceField(label='Importancia del Documento *', choices=DIFC, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
     estatus_grado = forms.ChoiceField(label='Categoria del Documento', choices=CTGDOC, widget=forms.Select(attrs={'class':'form-control', 'style':'border-color:#21B64A;'}))
+    cve_control_doc = forms.ChoiceField(label='Clave de Control del Documento:*', choices=CTLD, widget=forms.Select(attrs={'class':'form-control', 'style':'border-color:#21B64A;'}))
+    
     class Meta:
         model = SeCatDocumentacion
         fields = '__all__'
@@ -1141,10 +1150,6 @@ class FormDocumentacion(forms.ModelForm):
             'descri_corto_doc' : forms.TextInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
                                                         'placeholder': 'Ingrese abreviatura del Documento.',
-                                                        'style' : 'border-color:#21B64A;'}),
-            'cve_control_doc' : forms.TextInput(attrs={'class': 'form-control',
-                                                        'required' : 'True',
-                                                        'placeholder': 'Ingrese Clave de Control del Documento',
                                                         'style' : 'border-color:#21B64A;'}),
         }
         labels ={
@@ -2335,10 +2340,6 @@ class FormDocAsp(forms.ModelForm):
         }
 # FORM documentos aspirante
 class FormCalAsp(forms.ModelForm):
-    # RESPSN = (('','Seleccione una opción'), ('S', 'Si'), ('N','No')) # uno solo para los dos
-    # entrego_doc = forms.ChoiceField(label='¿Entrego?*', choices=RESPSN, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
-    # import_doc = forms.ChoiceField(label='¿Es Importante?*', choices=RESPSN, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
-
     rowid_asp = forms.ModelChoiceField(queryset = SeTabAspirante.objects.filter(estatus_asp="A"),
                                   required=True,
                                   label="Aspirante:*",
@@ -2351,7 +2352,7 @@ class FormCalAsp(forms.ModelForm):
                                       }
                                   )
                                   )
-    rowid_indicador = forms.ModelChoiceField(queryset = SeCatIndicador.objects.filter(estatus_ind="A"),
+    rowid_indicador = forms.ModelChoiceField(queryset = SeCatIndicador.objects.filter(estatus_ind="A", cve_control_ind="A"),
                                   required=True,
                                   label="Indicador:*",
                                   widget=forms.Select(

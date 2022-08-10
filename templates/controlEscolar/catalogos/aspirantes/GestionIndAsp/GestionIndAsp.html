@@ -63,9 +63,9 @@
     <p style="text-align: right; font-size: 25px;">Número de Indicadores Aspirantes: {{ contador }} </p>
     <thead>
         <tr>
+            <th>Clave</th>
             <th>Carrera</th>
             <th>Indicador</th>
-            <th>Clave Indicador-Aspirante</th>
             <th>Valor Porcentual</th>
             <th>Estatus</th>
             <th id="operaciones">Operaciones</th>
@@ -75,9 +75,9 @@
         {% for i in entity %}
         <tr>
             {% load bootstrap_icons %}
+            <td>{{ i.rowid_pro_ind_asp }}</td>
             <td>{{ i.rowid_car.descri_largo_car }}</td>
             <td>{{ i.rowid_indicador.descri_largo_ind }}</td>
-            <td>{{ i.rowid_pro_ind_asp }}</td>
             <td>{{ i.valor_porcentual }}</td>
             <td>{{ i.estatus_indicadores }}</td>
             <td class="d-flex justify-content-evenly">
