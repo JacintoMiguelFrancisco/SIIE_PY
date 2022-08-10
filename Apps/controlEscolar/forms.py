@@ -9,7 +9,7 @@ from .models import (
     SeCatEscuelaProcedencia, SeCatMedioDifusion, SeCatTipoEscuela, SeCatAreaBachillerato, SeProIndAsp, # Aspirantes
     SeTabEstudiante, SeCatDocumentacion,SeCatGrupo,SeCatEstatusEstudiante, SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
-    SeTabAspirante, SeProAspDocu # Operaciones / Aspirante
+    SeTabAspirante, SeProAspDocu, SeTabAceptados,  # Operaciones / Aspirante
 )
 
 ##########################  Catalogo #################################
@@ -2307,7 +2307,7 @@ class FormDocAsp(forms.ModelForm):
                                       }
                                   )
                                   )
-    rowid_doc = forms.ModelChoiceField(queryset = SeCatDocumentacion.objects.filter(estatus_doc="A"),
+    rowid_doc = forms.ModelChoiceField(queryset = SeCatDocumentacion.objects.filter(estatus_doc="A", cve_control_doc="A"),
                                   required=True,
                                   label="Documento:*",
                                   widget=forms.Select(
@@ -2332,4 +2332,54 @@ class FormDocAsp(forms.ModelForm):
         }
         labels = {
             'comentario_doc': 'Comentario:*',
+        }
+# FORM documentos aspirante
+class FormCalAsp(forms.ModelForm):
+    # RESPSN = (('','Seleccione una opción'), ('S', 'Si'), ('N','No')) # uno solo para los dos
+    # entrego_doc = forms.ChoiceField(label='¿Entrego?*', choices=RESPSN, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+    # import_doc = forms.ChoiceField(label='¿Es Importante?*', choices=RESPSN, widget=forms.Select(attrs={'class': 'form-control', 'style' : 'border-color:#21B64A;'}))
+
+    rowid_asp = forms.ModelChoiceField(queryset = SeTabAspirante.objects.filter(estatus_asp="A"),
+                                  required=True,
+                                  label="Aspirante:*",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    rowid_indicador = forms.ModelChoiceField(queryset = SeCatIndicador.objects.filter(estatus_ind="A"),
+                                  required=True,
+                                  label="Indicador:*",
+                                  widget=forms.Select(
+                                      attrs={
+                                        'onchange': 'load_sub_codes();',
+                                        'class': 'form-control',
+                                        'required' : 'True',
+                                        'style' : 'border-color:#21B64A;'
+                                      }
+                                  )
+                                  )
+    class Meta:
+        model = SeTabAceptados
+        fields = '__all__'
+        exclude = ('rowid_ace','estatus_ace')          
+        widgets = {
+            'calificacion_ace': forms.NumberInput(attrs={'class': 'form-control',
+                                'required' : 'True',
+                                'placeholder': 'Ingrese la calificacion.',
+                                'style' : 'border-color:#21B64A;'                                                        
+                                }),
+            'folio_cen_ace': forms.TextInput(attrs={'class': 'form-control',
+                                'required' : 'True',
+                                'placeholder': 'Ingrese la calificacion.',
+                                'style' : 'border-color:#21B64A;'                                                        
+                                }),
+        }
+        labels = {
+            'calificacion_ace': 'Calificaciones:*',
+            'folio_cen_ace': 'Folio:*',
         }

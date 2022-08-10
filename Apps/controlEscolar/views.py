@@ -29,7 +29,7 @@ from .models import (
     SeTabEstudiante, SeCatDocumentacion, SeCatGrupo, SeCatEstatusEstudiante, SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
     SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
-    SeTabAspirante, SeProAspDocu, #Aspirante
+    SeTabAspirante, SeProAspDocu, SeTabAceptados,  #Aspirante
 )
 #Views
 from django.views.generic import View
@@ -41,7 +41,7 @@ from .forms import (
     FormsEstudiante, FormDocumentacion, FormGrupo, FormEstatusEstudiante,FormGrados, FormSalones, FormTipoBajas, FormBecas, FormTipoCambio, # Estudintes
     FormEmpleado, FormsTipoPue, FormSueldo, FormNivAca, FormPlaza, FormAdscripcion, FormActividades, FormInstitucion, FormEmpCar, # Empleados
     FormsPlaE, FormsAsignatura, FormsIndicador, FormsPeA, FormsPeaI, # Plan de Estudio
-    FormsAspirantes, FormDocAsp, #Aspirante
+    FormsAspirantes, FormDocAsp, FormCalAsp,  #Aspirante
 )
 
 # -------------------------------------------- Direcciones --------------------------------------------- #
@@ -5092,5 +5092,130 @@ def export_xlwt_DocAsp (request):
     wb.save(response)
     return response
 
-
 ##############################################   Captura Calificaciones aspirante   #########################################################
+
+#Agregar si es post y lista de todos / Aqui va la paguinacion
+@login_required
+def vistaCalAsp(request):
+    listaCalAsp = SeTabAceptados.objects.filter(estatus_ace="A").order_by('rowid_ace')
+    contador_id = listaCalAsp.count() 
+    page = request.GET.get('page', 1)  
+    try:  
+        paginator = Paginator(listaCalAsp, 5)
+        listaCalAsp = paginator.page(page)
+    except: 
+        raise Http404
+    if request.method == 'POST':
+        form = FormCalAsp(request.POST) 
+        if form.is_valid():
+            calaspi = form.save(commit=False)
+            ultimo_id = SeTabAceptados.objects.all().order_by('rowid_ace').last() 
+            calaspi.rowid_ace = ultimo_id.rowid_ace + 1 
+            calaspi.save() 
+            messages.success(request, "¡Calificación agregado con exito!")       
+            return redirect('vista_cal_asp') 
+        else: 
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
+            return render(request, "controlEscolar/operaciones/aspirantes/capturaCalificacionesAspirante/GestionCalAsp.html",{'entity' : listaCalAsp,'paginator' : paginator,'form' : form,'contador': contador_id})       
+    elif request.method == 'GET': 
+        busqueda = request.GET.get("search_calaspi", None) 
+        if busqueda: 
+            listaCalAsp = SeTabAceptados.objects.filter( 
+                Q(rowid_ace__icontains = busqueda), 
+                Q(estatus_ace__icontains = "A") 
+            ).distinct()
+    form = FormCalAsp()  
+    data = { 
+        'entity' : listaCalAsp,
+        'paginator' : paginator,
+        'form' : form,
+        'contador': contador_id,
+    }
+    return render(request, "controlEscolar/operaciones/aspirantes/capturaCalificacionesAspirante/GestionCalAsp.html",data)
+# Elimina un registro que no elimina solo actualiza Status de A a B
+@login_required
+def eliminarCalAsp(request, rowid_ace):
+    try:
+        calaspi = SeTabAceptados.objects.get(rowid_ace = rowid_ace)
+        calaspi.estatus_ace = "B"
+    except SeTabAceptados.DoesNotExist:
+        raise Http404("El registro no existe")
+    if request.method == 'POST': #Sobre escrive los valores
+        calaspi.save()
+        messages.warning(request, "¡Calificación eliminado con exito!")
+        return redirect('vista_cal_asp')
+    return render(request, "controlEscolar/operaciones/aspirantes/capturaCalificacionesAspirante/BorrarCalAsp.html", {"form": calaspi})
+# Modifica un registro
+@login_required
+def vista_CalAsp_detail(request, rowid_ace):
+    calaspi = SeTabAceptados.objects.get(rowid_ace = rowid_ace)
+    form = FormCalAsp(instance=calaspi)
+    if request.method == 'POST': #Sobre escrive los valores
+        form = FormCalAsp(request.POST, instance = calaspi)
+        if form.is_valid():
+            calaspi = form.save(commit=False)
+            calaspi.save() #Guarda los cambios
+            messages.info(request, "¡Documento actualizado con exito!")
+            return redirect('vista_cal_asp') #retorna despues de actualizar
+        else:
+            messages.warning(request, "¡Alguno de los campos no es valido!") 
+            return render(request, "controlEscolar/operaciones/aspirantes/capturaCalificacionesAspirante/ActualizarCalAsp.html", {"form" : form})#envia al detalle con los campos no validos
+    return render(request, "controlEscolar/operaciones/aspirantes/capturaCalificacionesAspirante/ActualizarCalAsp.html", {"form" : form})#envia al detalle para actualizar
+# primera de pdf posible imprimir / Funciona con la misma funcion en utils
+class Export_print_CalAsp(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        listaDocAspi = SeProAspDocu.objects.filter(estatus_doc_aspi="A")
+        data = {
+            'count': listaDocAspi.count(),
+            'form': listaDocAspi
+        }
+        pdf = render_to_pdf('controlEscolar/operaciones/aspirantes/capturaDocumentosAspirante/ListaDocAsp.html', data)
+        return HttpResponse(pdf, content_type='application/pdf')
+#Clase para crear Pdf / Funciona con la misma funcion en utils
+class Export_pdf_CalAsp(LoginRequiredMixin, View):
+    def get(self, request,*args, **kwargs):
+        listaDocAspi = SeProAspDocu.objects.filter(estatus_doc_aspi="A")
+        data = {
+            'count': listaDocAspi.count(),
+            'form': listaDocAspi
+        }
+        pdf = render_to_pdf('controlEscolar/operaciones/aspirantes/capturaDocumentosAspirante/ListaDocAsp.html', data)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = 'ListaDocumentos.pdf'
+        content = "attachment; filename= %s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+# Exportar paises a CSV sin libreria 
+@login_required
+def export_csv_CalAsp (request):
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename=ListaDocumentos.csv;'
+    writer = csv.writer(response)
+    writer.writerow(['Clave', 'Aspirante', 'Documento','¿Importante?', '¿Entrego?', 'Comentario', 'Fecha Alta', 'Usuario Alta', 'Fecha Baja', 'Usuario Baja', 'Fecha Cambio', 'Usuario Cambio' ,'Estatus'])
+    listaDocAspi = SeProAspDocu.objects.filter(estatus_doc_aspi="A")
+    for e in listaDocAspi:
+        writer.writerow([e.rowid_asp_docu, e.rowid_asp, e.rowid_doc, e.import_doc, e.entrego_doc, 
+        e.comentario_doc, e.fecha_alta_doc, e.user_alta_doc, e.fecha_baja_doc, e.user_baja_doc, 
+        e.fecha_cambio_doc, e.user_cambio_doc, e.estatus_doc_aspi])
+    return response
+# Exportar paises a xlwt sin con la libreria XLWT 
+@login_required
+def export_xlwt_CalAsp (request):
+    response = HttpResponse(content_type="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=ListaDoc.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('EmpCar')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.blod = True
+    columns = ['Clave', 'Aspirante', 'Documento','¿Importante?', '¿Entrego?', 'Comentario', 'Fecha Alta', 'Usuario Alta', 'Fecha Baja', 'Usuario Baja', 'Fecha Cambio', 'Usuario Cambio' ,'Estatus']
+    for col in range(len(columns)):
+        ws.write(row_num,col,columns[col], font_style)
+    font_style = xlwt.XFStyle()
+    rows = SeProAspDocu.objects.filter(estatus_doc_aspi="A").values_list('rowid_asp_docu', 'rowid_asp', 'rowid_doc', 'import_doc', 'entrego_doc', 'comentario_doc', 'fecha_alta_doc', 'user_alta_doc', 'fecha_baja_doc', 'user_baja_doc', 'fecha_cambio_doc', 'user_cambio_doc', 'estatus_doc_aspi')
+    for row in rows:
+        row_num+=1
+        for col in range(len(row)):
+            ws.write(row_num,col,str(row[col]), font_style)
+    wb.save(response)
+    return response

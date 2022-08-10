@@ -347,5 +347,13 @@ urlpatterns = [
     path('export-csv-doc-asp/', views.export_csv_DocAsp, name="export_csv_doc_asp"),
     path('export-xlwt-doc-asp/', views.export_xlwt_DocAsp, name="export_xlwt_doc_asp"),
     path('export-print-doc-asp/', views.Export_print_DocAsp.as_view(), name="export_print_doc_asp"),
+# CRUD Calificaciones aspirante
+    path('vista-cal-asp/', views.vistaCalAsp, name="vista_cal_asp"), 
+    path('eliminar-cal-asp/<int:rowid_ace>/', views.eliminarCalAsp, name="eliminar_cal_asp"),
+    path('actualizar-cal-asp/<int:rowid_ace>/', views.vista_CalAsp_detail, name="actualizar_cal_asp"),
+    path('export-pdf-cal-asp/', views.Export_pdf_CalAsp.as_view(), name="export_pdf_cal_asp"),
+    path('export-csv-cal-asp/', views.export_csv_CalAsp, name="export_csv_cal_asp"),
+    path('export-xlwt-cal-asp/', views.export_xlwt_CalAsp, name="export_xlwt_cal_asp"),
+    path('export-print-cal-asp/', views.Export_print_CalAsp.as_view(), name="export_print_cal_asp"),
 
 ]

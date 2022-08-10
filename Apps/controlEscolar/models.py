@@ -801,4 +801,15 @@ class SeProAspDocu(models.Model):
     class Meta:
         managed = False
         db_table = 'se_pro_asp_docu'
+############################################## TABLA CALIFICACIONES ASPIRANTE ############################################
+class SeTabAceptados(models.Model):
+    rowid_ace = models.IntegerField(primary_key=True)
+    rowid_asp = models.ForeignKey('SeTabAspirante', models.DO_NOTHING, db_column='rowid_asp', blank=True, null=True)
+    rowid_indicador = models.ForeignKey(SeCatIndicador, models.DO_NOTHING, db_column='rowid_indicador', blank=True, null=True)
+    calificacion_ace = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    folio_cen_ace = models.CharField(max_length=15, blank=True, null=True)
+    estatus_ace = models.CharField(max_length=1, blank=True, null=True, default="A")
 
+    class Meta:
+        managed = False
+        db_table = 'se_tab_aceptados'
