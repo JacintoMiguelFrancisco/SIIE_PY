@@ -781,7 +781,7 @@ class SeTabAspirante(models.Model):
 
     def __str__(self):
         texto="{0} {1} {2}"
-        return texto.format(self.nombre_asp, self.materno_asp, self.paterno_asp)
+        return texto.format(self.nombre_asp, self.paterno_asp, self.materno_asp)
 ############################################## TABLA DOCUMENTOS ASPIRANTE ############################################
 class SeProAspDocu(models.Model):
     rowid_asp_docu = models.IntegerField(primary_key=True)

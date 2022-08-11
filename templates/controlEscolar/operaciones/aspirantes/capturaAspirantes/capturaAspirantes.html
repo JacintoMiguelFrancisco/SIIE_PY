@@ -16,9 +16,6 @@
     <div class="col col-12 col-sm-3 col-lg-4">
       <a href="{% url 'vistaColonias' %}" type="button" class="btn btn-success" id="button">Colonias {% bs_icon 'plus' size='2em'%}</a>
     </div>
-    {% comment %} <div class="col col-12 col-sm-3 col-lg-3">
-      <a href="#" type="button" class="btn btn-success" id="button">Pagos{% bs_icon 'plus' size='2em'%}</a>
-    </div> {% endcomment %}
   </div>
 </div>
 {% endblock buttons %}
@@ -57,8 +54,11 @@
           <th class="text-center" colspan="2">
             {{ form.folio_utn_asp.label}}
           </th>
-          <th class="text-center" colspan="2">
+          <th class="text-center" colspan="1">
             {{ form.folio_cen_asp.label}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.turno_asp.label}}
           </th>
         </tr>
 
@@ -69,30 +69,8 @@
           <th class="text-center" colspan="2">
             {{ form.folio_utn_asp}}
           </th>
-          <th class="text-center" colspan="2">
-            {{ form.folio_cen_asp}}
-          </th>
-        </tr>
-
-
-        <tr>
-          <th class="text-center" colspan="2">
-            {{ form.user_alta.label}}
-          </th>
-          <th class="text-center" colspan="2">
-            {{ form.user_cambio.label}}
-          </th>
           <th class="text-center" colspan="1">
-            {{ form.turno_asp.label}}
-          </th>
-        </tr>
-
-        <tr>
-          <th class="text-center" colspan="2">
-            {{ form.user_alta}}
-          </th>
-          <th class="text-center" colspan="2">
-            {{ form.user_cambio}}
+            {{ form.folio_cen_asp}}
           </th>
           <th class="text-center" colspan="1">
             {{ form.turno_asp}}
@@ -109,10 +87,10 @@
         </thead>
 
         <tr>
-          <th class="text-center" colspan="2">
+          <th class="text-center" colspan="1">
             {{ form.nombre_asp.label}}
           </th>
-          <th class="text-center" colspan="1">
+          <th class="text-center" colspan="2">
             {{ form.paterno_asp.label}}
           </th>
           <th class="text-center" colspan="2">
@@ -122,10 +100,10 @@
         </tr>
 
         <tr>
-          <th class="text-center" colspan="2">
+          <th class="text-center" colspan="1">
             {{ form.nombre_asp}}
           </th>
-          <th class="text-center" colspan="1">
+          <th class="text-center" colspan="2">
             {{ form.paterno_asp}}
           </th>
           <th class="text-center" colspan="2">
@@ -211,24 +189,24 @@
           <th class="text-center" colspan="3">
             {{ form.calle_asp.label}}
           </th>
-          <th class="text-center" colspan="1">
-            {{ form.num_int_asp.label}}
-          </th>
           <th class="text-center">
             {{ form.num_ext_asp.label}}
           </th>
-
+          <th class="text-center" colspan="1">
+            {{ form.num_int_asp.label}}
+          </th>
+          
         </tr>
 
         <tr>
           <th class="text-center" colspan="3">
             {{ form.calle_asp}}
           </th>
-          <th class="text-center" colspan="1">
-            {{ form.num_int_asp}}
-          </th>
           <th class="text-center">
             {{ form.num_ext_asp}}
+          </th>
+          <th class="text-center" colspan="1">
+            {{ form.num_int_asp}}
           </th>
 
         </tr>
@@ -296,25 +274,25 @@
 
         <tr>
           <th class="text-center" colspan="2">
+            {{ form.nombre_tutor_asp.label}}
+          </th>
+          <th class="text-center" colspan="2">
             {{ form.pat_tutor_asp.label}}
           </th>
           <th class="text-center">
             {{ form.mat_tutor_asp.label}}
           </th>
-          <th class="text-center" colspan="2">
-            {{ form.nombre_tutor_asp.label}}
-          </th>
         </tr>
 
         <tr>
+          <th class="text-center" colspan="2">
+            {{ form.nombre_tutor_asp}}
+          </th>
           <th class="text-center" colspan="2">
             {{ form.pat_tutor_asp}}
           </th>
           <th class="text-center">
             {{ form.mat_tutor_asp}}
-          </th>
-          <th class="text-center" colspan="2">
-            {{ form.nombre_tutor_asp}}
           </th>
         </tr>
 
@@ -327,7 +305,7 @@
         <!--Antecedentes academicos -->
         <tr>
           <thead class="table-success ">
-            <th colspan="5">Antecedentes academicos</th>
+            <th colspan="5">Antecedentes académicos</th>
           </thead>
         </tr>
 
@@ -440,7 +418,7 @@
         <!--Medios difusion-->
         <tr>
           <thead class="table-success ">
-            <th colspan="5">Medios de difusion</th>
+            <th colspan="5">Medios de difusión</th>
           </thead>
         </tr>
 
@@ -529,7 +507,7 @@
 
         <tr>
           <thead class="table-success ">
-            <th colspan="5">Servicio Medico</th>
+            <th colspan="5">Servicio médico</th>
           </thead>
           <th class="text-center" colspan="1">
             {{ form.serviciomedico.label}}
@@ -651,8 +629,10 @@
     <tr>
       <th>Nombre</th>
       <th>Apellido Paterno</th>
-      <th>Apellido materno</th>
+      <th>Apellido Materno</th>
       <th>Edad</th>
+      <th>Usuario Alta</th>
+      <th>Usuario Cambio</th>
       <th id="operaciones">Operaciones</th>
     </tr>
   </thead>
@@ -664,6 +644,8 @@
       <td>{{ p.paterno_asp }}</td>
       <td>{{ p.materno_asp }}</td>
       <td>{{ p.edad_asp }}</td>
+      <td>{{ p.user_alta }}</td>
+      <td>{{ p.user_cambio }}</td>
       <td class="d-flex justify-content-evenly">
         <a href="../export-pdf-aspirante/{{ p.rowid_asp }}/" class="btn btn-danger">
           {% bs_icon 'file-earmark-pdf' size='1.5em'%}

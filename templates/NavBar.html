@@ -26,7 +26,7 @@
 
   {% if request.user.is_authenticated %}
   <span class="navbar-brand mb-0 text-light ">
-    <a href="{% url 'logout' %}" id="logOut">Cerrar Sesion</a>
+    <a href="{% url 'logout' %}" id="logOut">Cerrar Sesión</a>
     <a href="{% url 'logout' %}" id="logOutRes">{% bs_icon 'box-arrow-right' size='1.5em' %} </a>
   </span>
   {% endif %}
@@ -51,14 +51,14 @@
                       <a class="sub-btn">{% bs_icon 'gear' size='1.5em' %} Control escolar</a>
                       <!--SUB MENU CONTROL ESCOLAR-->
                           <div class="sub-menu">
-                            <a class="sub-item-catalogos">Catalogos</a>
+                            <a class="sub-item-catalogos">Catálogos</a>
                                 <!--sub menu de catalogos-->
                               <div class="sub-menu-catalogos">
                                 <a class="sub-item-direcciones">Direcciones</a>
                                   <div class="sub-menu-direcciones">
-                                    <a href="{% url 'vista_paises' %}">Pais</a>
+                                    <a href="{% url 'vista_paises' %}">País</a>
                                     <a href="{% url 'vista_estados' %}">Estados</a>
-                                    <a href="{% url 'vista_municipios' %}">Municipios/Alcaldias</a>
+                                    <a href="{% url 'vista_municipios' %}">Municipios/Alcaldías</a>
                                     <a href="{% url 'vista_asen' %}">Asentamiento</a>
                                     <a href="{% url 'vistaColonias' %}">Colonias</a>
                                   </div>
@@ -83,7 +83,7 @@
                                 <a class="sub-item-aspirantes">Aspirantes</a>
                                   <div class="sub-menu-aspirantes">
                                     <a href="{% url 'vista_escpro' %}">Escuela de procedencia</a>
-                                    <a href="{% url 'vista_Medios' %}">Medios de Difusion</a>
+                                    <a href="{% url 'vista_Medios' %}">Medios de Difusión</a>
                                     <a href="{% url 'vista_Escuelas' %}">Tipos de escuela</a>
                                     <a href="{% url 'vista_AreaBachi' %}">Área Bachillerato</a>
                                     <a href="{% url 'vista_IndAsp' %}">Indicadores Aspirantes</a>
@@ -92,7 +92,7 @@
                                 <a class="sub-item-estudiantes">Estudiantes</a>
                                   <div class="sub-menu-estudiantes">
                                     <a href="{% url 'vista_estudiante' %}">Estudiantes</a>
-                                    <a href="{% url 'vista_Documentacion' %}">Documentacion</a>
+                                    <a href="{% url 'vista_Documentacion' %}">Documentación</a>
                                     <a href="{% url 'vista_Grados' %}">Grado</a>
                                     <a href="{% url 'vista_Grupo' %}">Grupo</a>
                                     <a href="{% url 'vista_Salones' %}">Salones</a>
@@ -224,7 +224,7 @@
                                     <a href="#">Constancia de estudio con logo</a>
                                     <a href="#">Historial academico con logo</a>
                                   </div>
-                                <a class="sub-item-estadisticasR">Estadisticas</a>
+                                <a class="sub-item-estadisticasR">Estadísticas</a>
                                   <div class="sub-menu-estadisticasR">
                                     <a href="#">Matricula definitiva</a>
                                     <a href="#">Estimulos academico</a>

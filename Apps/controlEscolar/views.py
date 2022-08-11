@@ -4878,10 +4878,18 @@ def registroAspirante(request):
     if request.method == 'POST': 
         form = FormsAspirantes(request.POST) 
         if form.is_valid(): 
+            try:
+                _userid = request.user.id
+                id_usuario = User.objects.get(id=_userid)
+            except:
+                id_usuario = User.objects.get(id=-1)  
+            
             regasp = form.save(commit=False)
             ultimo_id = SeTabAspirante.objects.all().order_by('rowid_asp').last() 
             regasp.rowid_asp =  ultimo_id.rowid_asp + 1 
             regasp.fecha_alt_asp = fecha_now
+            name_user = str(id_usuario)
+            regasp.user_alta = name_user
             regasp.save() 
             messages.success(request, "Aspirante Tegistrado con exito!")       
             return redirect('registro_aspirante') 
@@ -4913,7 +4921,15 @@ def modificarRegistroAspirante(request, rowid_asp):
     if request.method == 'POST': #Sobre escrive los valores
         form = FormsAspirantes(request.POST, instance = regasp)
         if form.is_valid():
-            form.save() #Guarda los cambios
+            try:
+                _userid = request.user.id
+                id_usuario = User.objects.get(id=_userid)
+            except:
+                id_usuario = User.objects.get(id=-1)  
+            capaspi = form.save(commit=False)
+            name_user = str(id_usuario)
+            capaspi.user_cambio = name_user
+            capaspi.save() #Guarda los cambios
             messages.info(request, "¡El aspirante se actualizo con exito!")
             return redirect('registro_aspirante') #retorna despues de actualizar
         else:
@@ -5179,24 +5195,24 @@ def vista_CalAsp_detail(request, rowid_ace):
 # primera de pdf posible imprimir / Funciona con la misma funcion en utils
 class Export_print_CalAsp(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        listaDocAspi = SeProAspDocu.objects.filter(estatus_doc_aspi="A")
+        calaspi = SeTabAceptados.objects.filter(estatus_ace="A")
         data = {
-            'count': listaDocAspi.count(),
-            'form': listaDocAspi
+            'count': calaspi.count(),
+            'form': calaspi
         }
-        pdf = render_to_pdf('controlEscolar/operaciones/aspirantes/capturaDocumentosAspirante/ListaDocAsp.html', data)
+        pdf = render_to_pdf('controlEscolar/operaciones/aspirantes/capturaCalificacionesAspirante/ListaCalAsp.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 #Clase para crear Pdf / Funciona con la misma funcion en utils
 class Export_pdf_CalAsp(LoginRequiredMixin, View):
     def get(self, request,*args, **kwargs):
-        listaDocAspi = SeProAspDocu.objects.filter(estatus_doc_aspi="A")
+        calaspi = SeTabAceptados.objects.filter(estatus_ace="A")
         data = {
-            'count': listaDocAspi.count(),
-            'form': listaDocAspi
+            'count': calaspi.count(),
+            'form': calaspi
         }
-        pdf = render_to_pdf('controlEscolar/operaciones/aspirantes/capturaDocumentosAspirante/ListaDocAsp.html', data)
+        pdf = render_to_pdf('controlEscolar/operaciones/aspirantes/capturaCalificacionesAspirante/ListaCalAsp.html', data)
         response = HttpResponse(pdf, content_type='application/pdf')
-        filename = 'ListaDocumentos.pdf'
+        filename = 'ListaCalificaciones.pdf'
         content = "attachment; filename= %s" %(filename)
         response['Content-Disposition'] = content
         return response
@@ -5204,30 +5220,28 @@ class Export_pdf_CalAsp(LoginRequiredMixin, View):
 @login_required
 def export_csv_CalAsp (request):
     response = HttpResponse(content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename=ListaDocumentos.csv;'
+    response['Content-Disposition'] = 'attachment; filename=ListaCalAsp.csv;'
     writer = csv.writer(response)
-    writer.writerow(['Clave', 'Aspirante', 'Documento','¿Importante?', '¿Entrego?', 'Comentario', 'Fecha Alta', 'Usuario Alta', 'Fecha Baja', 'Usuario Baja', 'Fecha Cambio', 'Usuario Cambio' ,'Estatus'])
-    listaDocAspi = SeProAspDocu.objects.filter(estatus_doc_aspi="A")
-    for e in listaDocAspi:
-        writer.writerow([e.rowid_asp_docu, e.rowid_asp, e.rowid_doc, e.import_doc, e.entrego_doc, 
-        e.comentario_doc, e.fecha_alta_doc, e.user_alta_doc, e.fecha_baja_doc, e.user_baja_doc, 
-        e.fecha_cambio_doc, e.user_cambio_doc, e.estatus_doc_aspi])
+    writer.writerow(['Clave', 'Aspirante', 'Indicador','Calificacion', 'Folio', 'Estatus'])
+    calaspi = SeTabAceptados.objects.filter(estatus_ace="A")
+    for e in calaspi:
+        writer.writerow([e.rowid_ace, e.rowid_asp, e.rowid_indicador, e.calificacion_ace, e.folio_cen_ace, e.estatus_ace])
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
 def export_xlwt_CalAsp (request):
     response = HttpResponse(content_type="application/ms-excel")
-    response['Content-Disposition'] = 'attachment; filename=ListaDoc.xls'
+    response['Content-Disposition'] = 'attachment; filename=ListaCal.xls'
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('EmpCar')
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.blod = True
-    columns = ['Clave', 'Aspirante', 'Documento','¿Importante?', '¿Entrego?', 'Comentario', 'Fecha Alta', 'Usuario Alta', 'Fecha Baja', 'Usuario Baja', 'Fecha Cambio', 'Usuario Cambio' ,'Estatus']
+    columns = ['Clave', 'Aspirante', 'Indicador','Calificacion', 'Folio', 'Estatus']
     for col in range(len(columns)):
         ws.write(row_num,col,columns[col], font_style)
     font_style = xlwt.XFStyle()
-    rows = SeProAspDocu.objects.filter(estatus_doc_aspi="A").values_list('rowid_asp_docu', 'rowid_asp', 'rowid_doc', 'import_doc', 'entrego_doc', 'comentario_doc', 'fecha_alta_doc', 'user_alta_doc', 'fecha_baja_doc', 'user_baja_doc', 'fecha_cambio_doc', 'user_cambio_doc', 'estatus_doc_aspi')
+    rows = SeTabAceptados.objects.filter(estatus_ace="A").values_list('rowid_ace','rowid_asp', 'rowid_indicador', 'calificacion_ace', 'folio_cen_ace','estatus_ace')
     for row in rows:
         row_num+=1
         for col in range(len(row)):
