@@ -2159,7 +2159,6 @@ class FormsAspirantes(forms.ModelForm):
                                                         'style' : 'border-color:#21B64A;'
                                                         }), 
             'continuidadestudio' : forms.TextInput(attrs={'class': 'form-control',
-                                                            'required' : 'True',
                                                             'placeholder': 'Ingrese la continuidad de estudios',
                                                             'style' : 'border-color:#21B64A;'
                                                             }), 
@@ -2172,7 +2171,6 @@ class FormsAspirantes(forms.ModelForm):
                                                     'style' : 'border-color:#21B64A;'
                                                     }), 
             'otroopcioneduca' : forms.TextInput(attrs={'class': 'form-control',
-                                                        'required' : 'True',
                                                         'placeholder': 'Ingrese otra opción educativa',
                                                         'style' : 'border-color:#21B64A;'
                                                         }), 
