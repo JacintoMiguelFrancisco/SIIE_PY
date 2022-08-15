@@ -334,6 +334,7 @@ urlpatterns = [
 # -------------------------------------------- Operaciones --------------------------------------------- #
 
 # Registro Aspirantes
+    path('ajax/load-colonias/', views.loadColonias, name='ajax_load_colonias'),
     path('registro-aspirante/', views.registroAspirante, name="registro_aspirante"),
     path('actualizar-aspirante/<int:rowid_asp>/', views.modificarRegistroAspirante, name="actualizar_aspirante"),
     path('eliminar-aspirante/<int:rowid_asp>/', views.eliminarAspirante, name="eliminar_aspirante"),

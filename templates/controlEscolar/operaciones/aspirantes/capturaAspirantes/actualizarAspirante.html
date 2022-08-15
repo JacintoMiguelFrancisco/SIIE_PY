@@ -8,7 +8,7 @@
 {% block body %}
 <div class="row">
     <h2 class="fs-1" style="text-align: center;">Editar Aspirante</h2>
-    <form action="" method="POST">{% csrf_token %}
+    <form action="" method="POST" id="aspForm" data-colonias-url="{% url 'ajax_load_colonias' %}">{% csrf_token %}
         
         {% if messages %}
             {% for message in messages %}
@@ -22,555 +22,572 @@
         <table class="table mt-3">
             <!--Encabezado 1-->
             <thead class="table-success">
-                <th colspan="5">Alta aspirante</th>
+              <th colspan="5">Alta aspirante</th>
             </thead>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 Fecha del sistema
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.folio_utn_asp.label}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.folio_cen_asp.label}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.turno_asp.label}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ fecha_now}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.folio_utn_asp}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.folio_cen_asp}}
-                </th>
-                <th class="text-center" colspan="1">
-                {{ form.turno_asp }}
-                </th>
+              </th>
+              <th class="text-center" colspan="1">
+                {{ form.turno_asp}}
+              </th>
             </tr>
     
             <tr>
-                <th colspan="5"></th>
+              <th colspan="5"></th>
             </tr>
     
             <!--DATOS DEL ASPIRANTE -->
             <thead class="table-success">
-                <th colspan="5">Datos aspirante</th>
+              <th colspan="5">Datos aspirante</th>
             </thead>
     
             <tr>
-                <th class="text-center" colspan="2">
+              <th class="text-center" colspan="1">
                 {{ form.nombre_asp.label}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.paterno_asp.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.materno_asp.label}}
-                </th>
+              </th>
     
             </tr>
     
             <tr>
-                <th class="text-center" colspan="2">
+              <th class="text-center" colspan="1">
                 {{ form.nombre_asp}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.paterno_asp}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.materno_asp}}
-                </th>
+              </th>
     
             </tr>
     
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.fecha_nac_asp.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.curp_asp.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.rfc_asp.label}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.fecha_nac_asp}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.curp_asp}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.rfc_asp}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.sexo_asp.label}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.edad_asp.label}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.email_asp.label}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.tipo_de_sangre_asp.label}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.estado_civil_asp.label}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.sexo_asp}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.edad_asp}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.email_asp}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.tipo_de_sangre_asp}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.estado_civil_asp}}
-                </th>
+              </th>
             </tr>
     
     
     
             <tr>
-                <th colspan="5"></th>
+              <th colspan="5"></th>
             </tr>
     
             <!--DOMICILIO-->
             <tr>
-                <thead class="table-success ">
+              <thead class="table-success ">
                 <th colspan="5">Domicilio</th>
-                </thead>
+              </thead>
     
             <tr>
-                <th class="text-center" colspan="3">
+              <th class="text-center" colspan="3">
                 {{ form.calle_asp.label}}
-                </th>
-                <th class="text-center" colspan="1">
-                {{ form.num_int_asp.label}}
-                </th>
-                <th class="text-center">
+              </th>
+              <th class="text-center">
                 {{ form.num_ext_asp.label}}
-                </th>
-    
+              </th>
+              <th class="text-center" colspan="1">
+                {{ form.num_int_asp.label}}
+              </th>
+              
             </tr>
     
             <tr>
-                <th class="text-center" colspan="3">
+              <th class="text-center" colspan="3">
                 {{ form.calle_asp}}
-                </th>
-                <th class="text-center" colspan="1">
-                {{ form.num_int_asp}}
-                </th>
-                <th class="text-center">
+              </th>
+              <th class="text-center">
                 {{ form.num_ext_asp}}
-                </th>
+              </th>
+              <th class="text-center" colspan="1">
+                {{ form.num_int_asp}}
+              </th>
     
             </tr>
     
             <tr>
-                <th class="text-center" colspan="2">
+              <th class="text-center" colspan="2">
                 {{ form.rowid_mundel.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.rowid_col.label}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.codigo_postal_asp.label}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="2">
+              <th class="text-center" colspan="2">
                 {{ form.rowid_mundel}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.rowid_col}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.codigo_postal_asp}}
-                </th>
+              </th>
             </tr>
     
+            <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+            <script>
+            $('#id_rowid_mundel').change(function () {
+              const url = $("#aspForm").attr("data-colonias-url");
+              const rowid_mundel = $(this).val()
+              $.ajax({
+              url: url,
+              data: {
+                'id_rowid_mundel': rowid_mundel
+              },
+              success: function (data) {
+                $("#id_rowid_col").html(data)
+              }
+              })
+            })
+            </script>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.trabaja_asp.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.tel_cas_asp.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.telefono_oficina_asp.label}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.trabaja_asp}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.tel_cas_asp}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.telefono_oficina_asp}}
-                </th>
+              </th>
             </tr>
     
     
             <tr>
-                <th colspan="5"></th>
+              <th colspan="5"></th>
             </tr>
     
             <!--DATOS TUTOR-->
             <tr>
-                <thead class="table-success ">
+              <thead class="table-success ">
                 <th colspan="5">Datos tutor</th>
-                </thead>
+              </thead>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="2">
-                {{ form.pat_tutor_asp.label}}
-                </th>
-                <th class="text-center">
-                {{ form.mat_tutor_asp.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              <th class="text-center" colspan="2">
                 {{ form.nombre_tutor_asp.label}}
-                </th>
+              </th>
+              <th class="text-center" colspan="2">
+                {{ form.pat_tutor_asp.label}}
+              </th>
+              <th class="text-center">
+                {{ form.mat_tutor_asp.label}}
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="2">
-                {{ form.pat_tutor_asp}}
-                </th>
-                <th class="text-center">
-                {{ form.mat_tutor_asp}}
-                </th>
-                <th class="text-center" colspan="2">
+              <th class="text-center" colspan="2">
                 {{ form.nombre_tutor_asp}}
-                </th>
+              </th>
+              <th class="text-center" colspan="2">
+                {{ form.pat_tutor_asp}}
+              </th>
+              <th class="text-center">
+                {{ form.mat_tutor_asp}}
+              </th>
             </tr>
     
     
     
             <tr>
-                <th colspan="5"></th>
+              <th colspan="5"></th>
             </tr>
     
             <!--Antecedentes academicos -->
             <tr>
-                <thead class="table-success ">
-                <th colspan="5">Antecedentes academicos</th>
-                </thead>
+              <thead class="table-success ">
+                <th colspan="5">Antecedentes académicos</th>
+              </thead>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="2">
+              <th class="text-center" colspan="2">
                 {{ form.rowid_esc_proc.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.rowid_area_bac.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.promedio_asp.label}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="2">
+              <th class="text-center" colspan="2">
                 {{ form.rowid_esc_proc}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.rowid_area_bac}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.promedio_asp}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.fecini_bach_asp.label}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.fecfin_bach_asp.label}}
-                </th>
-                <th class="text-center" colspan="3">
+              </th>
+              <th class="text-center" colspan="3">
                 {{ form.rowid_car.label}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.fecini_bach_asp}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.fecfin_bach_asp}}
-                </th>
-                <th class="text-center" colspan="3">
+              </th>
+              <th class="text-center" colspan="3">
                 {{ form.rowid_car}}
-                </th>
+              </th>
             </tr>
     
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.fechaexpedicioncer.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.folio.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.fechacompromisocerti.label}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.fechaexpedicioncer}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.folio}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.fechacompromisocerti}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="2">
+              <th class="text-center" colspan="2">
                 {{ form.periodo_asp.label}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.anio_asp.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.generacion_asp.label}}
-                </th>
+              </th>
     
             </tr>
     
             <tr>
-                <th class="text-center" colspan="2">
+              <th class="text-center" colspan="2">
                 {{ form.periodo_asp}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.anio_asp}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.generacion_asp}}
-                </th>
+              </th>
             </tr>
     
     
     
             <tr>
-                <th colspan="5"></th>
+              <th colspan="5"></th>
             </tr>
     
     
             <!--Medios difusion-->
             <tr>
-                <thead class="table-success ">
-                <th colspan="5">Medios de difusion</th>
-                </thead>
+              <thead class="table-success ">
+                <th colspan="5">Medios de difusión</th>
+              </thead>
             </tr>
     
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.rowid_medio_dif.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.opcioneducativa.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.continuidadestudio.label}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.rowid_medio_dif}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.opcioneducativa}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.continuidadestudio}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.otromediodif.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.otromedioinf.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.otroopcioneduca.label}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.otromediodif}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.otromedioinf}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.otroopcioneduca}}
-                </th>
+              </th>
             </tr>
     
     
             <tr>
-                <th colspan="5"></th>
+              <th colspan="5"></th>
             </tr>
     
             <!--REDES SOCIALES -->
             <tr>
-                <thead class="table-success ">
+              <thead class="table-success ">
                 <th colspan="5">Redes sociales</th>
-                </thead>
-                <th class="text-center" colspan="3">
+              </thead>
+              <th class="text-center" colspan="3">
                 {{ form.facebook.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.twitter.label}}
-                </th>
+              </th>
     
             </tr>
     
             <tr>
-                <th class="text-center" colspan="3">
+              <th class="text-center" colspan="3">
                 {{ form.facebook}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.twitter}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th colspan="5"></th>
+              <th colspan="5"></th>
             </tr>
     
             <!--SERVICIO MEDICO -->
     
             <tr>
-                <thead class="table-success ">
-                <th colspan="5">Servicio Medico</th>
-                </thead>
-                <th class="text-center" colspan="1">
+              <thead class="table-success ">
+                <th colspan="5">Servicio médico</th>
+              </thead>
+              <th class="text-center" colspan="1">
                 {{ form.serviciomedico.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.institucionseguro.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.otrainstitucionseguro.label}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.serviciomedico}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.institucionseguro}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.otrainstitucionseguro}}
-                </th>
+              </th>
     
             </tr>
     
             <tr>
-                <th class="text-center" colspan="2">
+              <th class="text-center" colspan="2">
                 {{ form.numafiliacion.label}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.discapacidad.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.tipodiscapacidad.label}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="2">
+              <th class="text-center" colspan="2">
                 {{ form.numafiliacion}}
-                </th>
-                <th class="text-center" colspan="1">
+              </th>
+              <th class="text-center" colspan="1">
                 {{ form.discapacidad}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.tipodiscapacidad}}
-                </th>
+              </th>
     
             </tr>
     
             <tr>
-                <th colspan="5"></th>
+              <th colspan="5"></th>
             </tr>
     
     
             <!--DATOS ADICIONALES -->
     
             <tr>
-                <thead class="table-success ">
+              <thead class="table-success ">
                 <th colspan="5">Datos adicionales</th>
-                </thead>
-                <th class="text-center" colspan="1">
+              </thead>
+              <th class="text-center" colspan="1">
                 {{ form.indigena.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.poblacionindigena.label}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.lenguaindigena.label}}
-                </th>
+              </th>
             </tr>
     
             <tr>
-                <th class="text-center" colspan="1">
+              <th class="text-center" colspan="1">
                 {{ form.indigena}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.poblacionindigena}}
-                </th>
-                <th class="text-center" colspan="2">
+              </th>
+              <th class="text-center" colspan="2">
                 {{ form.lenguaindigena}}
-                </th>
+              </th>
             </tr>
     
-        </table> 
+        </table>
+
         <hr>
         <div class="form-group d-flex justify-content-evenly">  
             <button type="submit" class="btn btn-success btn-block text-white">Actualizar</button>  

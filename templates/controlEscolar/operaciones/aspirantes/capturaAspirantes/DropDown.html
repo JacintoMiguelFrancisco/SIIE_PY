@@ -1,0 +1,6 @@
+<select>
+    <option value="0">---------</option>
+    {% for colonia in colonias %}
+    <option value="{{colonia.rowid_col}}"> {{ colonia.descri_largo_col}}</option>
+    {% endfor %}
+</select>   

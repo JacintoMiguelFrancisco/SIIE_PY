@@ -47,8 +47,8 @@ class SeCatMunicipioDelegacion(models.Model):
         db_table = 'se_cat_municipio_delegacion'
     
     def __str__(self):
-        texto="{0} - {1} "
-        return texto.format(self.id_mundel, self.descri_largo_mundel)
+        texto="{0}"
+        return texto.format(self.descri_largo_mundel)
 ############################################## Asentamiento #############################################
 class SeCatAsentamiento(models.Model):
     rowid_asentamiento = models.AutoField(primary_key=True)
@@ -78,8 +78,8 @@ class SeCatColonia(models.Model):
         db_table = 'se_cat_colonia'
 
     def __str__(self):
-        texto="{0}-{1}"
-        return texto.format(self.id_col, self.descri_largo_col)
+        texto="{0}"
+        return texto.format(self.descri_largo_col)
 
 # -------------------------------------------- Universidad --------------------------------------------- #
 

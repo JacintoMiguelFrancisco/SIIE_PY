@@ -39,7 +39,7 @@
     </ul>
   {% endif %}
 
-  <form action="" method="POST"> {% csrf_token %}
+  <form action="" method="POST" id="aspForm" data-colonias-url="{% url 'ajax_load_colonias' %}"> {% csrf_token %}
     <div class="table-responsive-sm mt-2">
       <table class="table mt-3">
         <!--Encabezado 1-->
@@ -141,10 +141,7 @@
           <th class="text-center" colspan="1">
             {{ form.sexo_asp.label}}
           </th>
-          <th class="text-center" colspan="1">
-            {{ form.edad_asp.label}}
-          </th>
-          <th class="text-center" colspan="1">
+          <th class="text-center" colspan="2">
             {{ form.email_asp.label}}
           </th>
           <th class="text-center" colspan="1">
@@ -159,10 +156,7 @@
           <th class="text-center" colspan="1">
             {{ form.sexo_asp}}
           </th>
-          <th class="text-center" colspan="1">
-            {{ form.edad_asp}}
-          </th>
-          <th class="text-center" colspan="1">
+          <th class="text-center" colspan="2">
             {{ form.email_asp}}
           </th>
           <th class="text-center" colspan="1">
@@ -235,6 +229,22 @@
           </th>
         </tr>
 
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script>
+        $('#id_rowid_mundel').change(function () {
+          const url = $("#aspForm").attr("data-colonias-url");
+          const rowid_mundel = $(this).val()
+          $.ajax({
+          url: url,
+          data: {
+            'id_rowid_mundel': rowid_mundel
+          },
+          success: function (data) {
+            $("#id_rowid_col").html(data)
+          }
+          })
+        })
+        </script>
 
         <tr>
           <th class="text-center" colspan="1">

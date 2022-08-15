@@ -16,6 +16,7 @@ from Apps.controlEscolar.utils import render_to_pdf
 from django.core.paginator import Paginator
 # Fecha
 import datetime
+from datetime import date
 #Search Datos y consultas
 from django.db.models import Q
 #Login control de inicios de sesion
@@ -4864,6 +4865,14 @@ def export_xlwt_EmpCar (request):
 #------------------------------------------------   Operaciones ------------------------------------------------------------#
 
 ##############################################   Captura aspirante   #########################################################
+# Select Colonias
+@login_required
+def loadColonias (request):
+ rowid_mundel = request.GET.get('id_rowid_mundel')
+ colonias = SeCatColonia.objects.filter(rowid_mundel=rowid_mundel)
+ return render(request, 'controlEscolar/operaciones/aspirantes/capturaAspirantes/DropDown.html', {'colonias' : colonias})
+@login_required
+# Vista principal 
 @login_required
 def registroAspirante(request):
     listaAsp  = SeTabAspirante.objects.filter(estatus_asp="A").order_by('rowid_asp')
@@ -4882,7 +4891,7 @@ def registroAspirante(request):
                 _userid = request.user.id
                 id_usuario = User.objects.get(id=_userid)
             except:
-                id_usuario = User.objects.get(id=-1)  
+                id_usuario = User.objects.get(id=-1)
             
             regasp = form.save(commit=False)
             ultimo_id = SeTabAspirante.objects.all().order_by('rowid_asp').last() 
@@ -4890,6 +4899,13 @@ def registroAspirante(request):
             regasp.fecha_alt_asp = fecha_now
             name_user = str(id_usuario)
             regasp.user_alta = name_user
+            # Calcular edad
+            echa_nac_asp = request.POST['fecha_nac_asp']
+            fecha_na = echa_nac_asp.split("/")
+            edad = fecha_now.year - int(fecha_na[2])
+            if int(fecha_na[1]) > fecha_now.month or (int(fecha_na[1]) == fecha_now.month and int(fecha_na[0]) > fecha_now.day):
+                edad = edad-1
+            regasp.edad_asp = edad
             regasp.save() 
             messages.success(request, "Aspirante Tegistrado con exito!")       
             return redirect('registro_aspirante') 

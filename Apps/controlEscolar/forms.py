@@ -2104,7 +2104,7 @@ class FormsAspirantes(forms.ModelForm):
                                                 }), 
             'fecha_nac_asp' : forms.DateInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
-                                                    'placeholder': 'Ingrese la fecha de nacimiento',
+                                                    'placeholder': 'DD/MM/AAAA',
                                                     'style' : 'border-color:#21B64A;'
                                                     }), 
             'materno_asp' : forms.TextInput(attrs={'class': 'form-control',
@@ -2261,6 +2261,17 @@ class FormsAspirantes(forms.ModelForm):
             'poblacionindigena' : 'Población Indigena ',
             'lenguaindigena' : 'Lengua Indigena ',
         }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['rowid_col'].queryset = SeCatColonia.objects.none()
+        if 'rowid_mundel' in self.data:
+            try:
+                rowid_mundel_id = int(self.data.get('rowid_mundel'))
+                self.fields['rowid_col'].queryset = SeCatColonia.objects.filter(rowid_mundel_id=rowid_mundel_id).order_by('descri_largo_col')
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+                pass
 # FORM documentos aspirante
 class FormDocAsp(forms.ModelForm):
     RESPSN = (('','Seleccione una opción'), ('S', 'Si'), ('N','No')) # uno solo para los dos
