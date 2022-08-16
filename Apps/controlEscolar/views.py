@@ -32,7 +32,7 @@ from .models import (
     SeTabEstudiante, SeCatDocumentacion, SeCatGrupo, SeCatEstatusEstudiante, SeCatGrado, SeCatSalones, SeCatTipoBajas, SeCatBecas, SeCatTipoCambio, # Estudintes
     SeCatEmpleado, SeCatNivelAcademico, SeCatPlaza, SeCatTipoPuesto, SeCatSueldos, SeCatDeptoEmp, SeCatActividades, SeCatInstitucion, SeTabEmpCar, # Empleados
     SeCatPlaEstudio, SeCatAsignatura, SeCatIndicador, SeProPlanEstudio, SeProAsiIndicador, # Plan de Estudio
-    SeTabAspirante, SeProAspDocu, SeTabAceptados,  #Aspirante
+    SeTabAspirante, SeParTipoConsecutivo, SeProAspDocu, SeTabAceptados,  #Aspirante
 )
 #Views
 from django.views.generic import View
@@ -4866,7 +4866,6 @@ def export_xlwt_EmpCar (request):
 
 ##############################################   Captura aspirante   #########################################################
 # Select Colonias
-@login_required
 def loadColonias (request):
  rowid_mundel = request.GET.get('id_rowid_mundel')
  colonias = SeCatColonia.objects.filter(rowid_mundel=rowid_mundel)
@@ -4884,6 +4883,16 @@ def registroAspirante(request):
         listaAsp  = paginator.page(page)
     except: 
         raise Http404
+    # Creacion de folio
+    if fecha_now.month >= 1 and fecha_now.month <= 4:
+        periodo = "E"
+    elif fecha_now.month >= 5 and fecha_now.month <= 8:
+        periodo = "M"
+    elif fecha_now.month >= 9 and fecha_now.month <= 12:
+        periodo = "S"
+    ultimo_cons = SeParTipoConsecutivo.objects.filter(Q(rowid_div=1) & Q(id_tipo_par=99) & Q(nombre_atributo="FOLIO_UTN_ASP")).order_by('rowid_tipo_par').last()
+    num_cons = ultimo_cons.num_conse_inicial + 1
+    folio_aspirante = str(fecha_now.year) + periodo + "-" + str(int(num_cons))
     if request.method == 'POST': 
         form = FormsAspirantes(request.POST) 
         if form.is_valid(): 
@@ -4906,9 +4915,13 @@ def registroAspirante(request):
             if int(fecha_na[1]) > fecha_now.month or (int(fecha_na[1]) == fecha_now.month and int(fecha_na[0]) > fecha_now.day):
                 edad = edad-1
             regasp.edad_asp = edad
+            # Actualizar ultimo id consecutivo
+            cursor = connections['default'].cursor()
+            cursor.execute("UPDATE se_par_tipo_consecutivo SET num_conse_inicial = %s WHERE rowid_div = 1 AND id_tipo_par = 99 AND nombre_atributo='FOLIO_UTN_ASP'", [num_cons])
+            cursor.close()
             regasp.save() 
-            messages.success(request, "Aspirante Tegistrado con exito!")       
-            return redirect('registro_aspirante') 
+            messages.success(request, "Aspirante registrado con exito!")   
+            return redirect('registro_aspirante')
         else: 
             messages.warning(request, "¡Alguno de los campos no es valido!") 
             return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/capturaAspirantes.html",{'entity' : listaAsp ,'paginator' : paginator,'form' : form,'contador': contador_id, 'fecha_now' : fecha_now.strftime('%d/%m/%Y')})       
@@ -4919,7 +4932,7 @@ def registroAspirante(request):
                 Q(nombre_asp__icontains = busqueda),
                 Q(estatus_asp__icontains = "A")
             ).distinct()
-    form = FormsAspirantes()  
+    form = FormsAspirantes(initial={'folio_utn_asp' : folio_aspirante})  
     data = { 
         'entity' : listaAsp ,
         'paginator' : paginator,

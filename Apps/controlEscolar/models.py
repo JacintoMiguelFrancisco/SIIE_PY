@@ -813,3 +813,18 @@ class SeTabAceptados(models.Model):
     class Meta:
         managed = False
         db_table = 'se_tab_aceptados'
+############################################# Tabla de consecutivos ######################################################
+class SeParTipoConsecutivo(models.Model):
+    rowid_tipo_par = models.IntegerField(primary_key=True)
+    rowid_div = models.ForeignKey(SeCatDivision, models.DO_NOTHING, db_column='rowid_div', blank=True, null=True)
+    id_tipo_par = models.IntegerField()
+    nombre_tabla = models.CharField(max_length=60, blank=True, null=True)
+    nombre_atributo = models.CharField(max_length=60, blank=True, null=True)
+    num_conse_inicial = models.FloatField(blank=True, null=True)
+    num_conse_final = models.FloatField(blank=True, null=True)
+    estatus_par = models.CharField(max_length=1, blank=True, null=True)
+    num_conse_actual = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'se_par_tipo_consecutivo'
