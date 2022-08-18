@@ -2042,6 +2042,7 @@ class FormsAspirantes(forms.ModelForm):
             'folio_utn_asp' : forms.TextInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
                                                     'placeholder': 'Ingrese el folio del aspirante',
+                                                    'readonly':'readonly',
                                                     'style' : 'border-color:#21B64A;'
                                                     }),
             'calle_asp' : forms.TextInput(attrs={'class': 'form-control',
