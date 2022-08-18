@@ -2270,8 +2270,8 @@ class FormsAspirantes(forms.ModelForm):
                 self.fields['rowid_col'].queryset = SeCatColonia.objects.filter(rowid_mundel_id=rowid_mundel_id).order_by('descri_largo_col')
             except (ValueError, TypeError):
                 pass
-        elif self.instance.pk:
-                pass
+        elif self.instance.rowid_asp:
+            self.fields['rowid_col'].queryset = self.instance.rowid_mundel.secatcolonia_set.all()
 # FORM documentos aspirante
 class FormDocAsp(forms.ModelForm):
     RESPSN = (('','Seleccione una opción'), ('S', 'Si'), ('N','No')) # uno solo para los dos

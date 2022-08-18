@@ -4915,9 +4915,14 @@ def registroAspirante(request):
             if int(fecha_na[1]) > fecha_now.month or (int(fecha_na[1]) == fecha_now.month and int(fecha_na[0]) > fecha_now.day):
                 edad = edad-1
             regasp.edad_asp = edad
+            # Asignacion de folio en el ultimo momento para evitar clonacion 
+            ultimo_cononsecutivo = SeParTipoConsecutivo.objects.filter(Q(rowid_div=1) & Q(id_tipo_par=99) & Q(nombre_atributo="FOLIO_UTN_ASP")).order_by('rowid_tipo_par').last()
+            num_consecutivo = ultimo_cononsecutivo.num_conse_inicial + 1
+            folio_final = str(fecha_now.year) + periodo + "-" + str(int(num_consecutivo))
+            regasp.folio_utn_asp = folio_final
             # Actualizar ultimo id consecutivo
             cursor = connections['default'].cursor()
-            cursor.execute("UPDATE se_par_tipo_consecutivo SET num_conse_inicial = %s WHERE rowid_div = 1 AND id_tipo_par = 99 AND nombre_atributo='FOLIO_UTN_ASP'", [num_cons])
+            cursor.execute("UPDATE se_par_tipo_consecutivo SET num_conse_inicial = %s WHERE rowid_div = 1 AND id_tipo_par = 99 AND nombre_atributo='FOLIO_UTN_ASP'", [num_consecutivo])
             cursor.close()
             regasp.save() 
             messages.success(request, "Aspirante registrado con exito!")   
@@ -4929,7 +4934,7 @@ def registroAspirante(request):
         busqueda = request.GET.get("search_aspirante", None) 
         if busqueda: 
             listaAsp  = SeTabAspirante.objects.filter( 
-                Q(nombre_asp__icontains = busqueda),
+                Q(folio_utn_asp__icontains = busqueda),
                 Q(estatus_asp__icontains = "A")
             ).distinct()
     form = FormsAspirantes(initial={'folio_utn_asp' : folio_aspirante})  

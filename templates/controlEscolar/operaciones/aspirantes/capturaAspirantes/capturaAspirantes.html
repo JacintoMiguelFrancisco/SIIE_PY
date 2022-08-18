@@ -618,7 +618,7 @@
 <h6 class="text-center mb-5">Un nuevo aspirante, un nuevo futuro.</h6>
 <form method="GET" action="{% url 'registro_aspirante' %}">
   <div class="input-group mb-3 mt-4">
-    <input type="search" class="form-control" placeholder="Ingrese el nombre del aspirante" name="search_aspirante">
+    <input type="search" class="form-control" placeholder="Por favor, ingrese el folio del aspitrante" name="search_aspirante">
     <div class="input-group-append">
       <span class="input-group-text bg-success">
         {% load bootstrap_icons %}
@@ -637,6 +637,7 @@
   <p style="text-align: right; font-size: 25px;" class="mt-5">Número de registros: {{ contador }} </p>
   <thead>
     <tr>
+      <th>Folio</th>
       <th>Nombre</th>
       <th>Apellido Paterno</th>
       <th>Apellido Materno</th>
@@ -650,6 +651,7 @@
     {% for p in entity %}
     <tr>
       {% load bootstrap_icons %}
+      <td>{{ p.folio_utn_asp }}</td>
       <td>{{ p.nombre_asp }}</td>
       <td>{{ p.paterno_asp }}</td>
       <td>{{ p.materno_asp }}</td>
