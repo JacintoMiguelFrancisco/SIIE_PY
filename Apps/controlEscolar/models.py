@@ -16,8 +16,8 @@ class SeCatPais(models.Model):
         db_table = 'se_cat_pais'
         
     def __str__(self):
-        texto="{0} / {1} / {2} "
-        return texto.format(self.id_pais, self.descri_largo_pais, self.descri_corto_pais)
+        texto="{0}"
+        return texto.format(self.descri_largo_pais)
 ############################################## Tabla Estados ############################################
 class SeCatEstado(models.Model):
     rowid_edo = models.AutoField(primary_key=True)
@@ -31,8 +31,8 @@ class SeCatEstado(models.Model):
         db_table = 'se_cat_estado'
     
     def __str__(self):
-        texto="{0} / {1} / {2}"
-        return texto.format(self.id_edo, self.descri_largo_edo, self.descri_corto_edo)
+        texto="{0}"
+        return texto.format(self.descri_largo_edo)
 ############################################## Tabla Municipio Delegacion ############################################
 class SeCatMunicipioDelegacion(models.Model):
     rowid_mundel = models.AutoField(primary_key=True)

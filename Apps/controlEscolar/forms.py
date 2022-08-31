@@ -106,23 +106,23 @@ class FormMunicipiosDelegaciones(forms.ModelForm):
         widgets = {
             'id_mundel': forms.NumberInput(attrs={'class': 'form-control',
                                                     'required' : 'True',
-                                                    'placeholder': 'Ingrese clave del Municipio/Delegación',
+                                                    'placeholder': 'Ingrese clave del Municipio/Alcaldía',
                                                     'style' : 'border-color:#21B64A;'
                                                     }),
             'descri_largo_mundel': forms.TextInput(attrs={'class': 'form-control',
                                                         'required' : 'True',
-                                                        'placeholder': 'Ingrese nombre del Municipio/Delegación.',
+                                                        'placeholder': 'Ingrese nombre del Municipio/Alcaldías.',
                                                         'style' : 'border-color:#21B64A;'
                                                         }),
             'descri_corto_mundel': forms.TextInput(attrs={'class': 'form-control',
                                                             'required' : 'True',
-                                                            'placeholder': 'Ingrese abreviatura del Municipio/Delegación.',
+                                                            'placeholder': 'Ingrese abreviatura del Municipio/Alcaldías.',
                                                             'style' : 'border-color:#21B64A;'
                                                             }), 
         }
         labels = {
-            'id_mundel' : 'Id Municipio/Delegación *',
-            'descri_largo_mundel' : 'Municipio/Delegación *',
+            'id_mundel' : 'Id Municipio/Alcaldías *',
+            'descri_largo_mundel' : 'Municipio/Alcaldías *',
             'descri_corto_mundel' : 'Abreviatura *',
         }
 # Form Asentamiento 

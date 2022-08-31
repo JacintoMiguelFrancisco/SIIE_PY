@@ -106,6 +106,7 @@ def vistaPaises(request):
     return render(request, "controlEscolar/catalogos/direcciones/GestionPaises/GestionPaises.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarPais(request, rowid_pais):
     try:
         pais = SeCatPais.objects.get(rowid_pais=rowid_pais)
@@ -119,6 +120,7 @@ def eliminarPais(request, rowid_pais):
     return render(request, "controlEscolar/catalogos/direcciones/GestionPaises/BorrarPais.html", {"Pais": pais})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_paises_detail(request, rowid_pais):
     pais = SeCatPais.objects.get(rowid_pais=rowid_pais)
     form = FormPaises(instance=pais)
@@ -158,6 +160,7 @@ class Export_pdf_paises(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_paises (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaPaises.csv;'
@@ -170,6 +173,7 @@ def export_csv_paises (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_paises (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaPaises.xls'
@@ -191,6 +195,7 @@ def export_xlwt_paises (request):
     return response
 # Vista de pre-visualizacion PFD solo es para pruebas
 @login_required
+@check_user("ControlEscolar")
 def listaPaises(request):
     #Lista de todos los paises
     listaPaises=SeCatPais.objects.all()
@@ -201,6 +206,7 @@ def listaPaises(request):
 ##############################################   Estados   ########################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaEstados(request):
     listaEstados=SeCatEstado.objects.filter(estatus_edo="A").order_by('rowid_edo')#Lista de todos los paises que tengan el status = A
     contador_id = listaEstados.count()
@@ -242,6 +248,7 @@ def vistaEstados(request):
     return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/GestionEstados.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarEstado(request, rowid_edo):
     try:
         estado = SeCatEstado.objects.get(rowid_edo=rowid_edo)
@@ -255,6 +262,7 @@ def eliminarEstado(request, rowid_edo):
     return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/BorrarEstado.html", {"Estado": estado})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_estados_detail(request, rowid_edo):
     estado = SeCatEstado.objects.get(rowid_edo=rowid_edo)
     form = FormEstados(instance=estado)
@@ -295,6 +303,7 @@ class Export_pdf_estados(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_estados (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaEstados.csv;'
@@ -307,6 +316,7 @@ def export_csv_estados (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_estados (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaEstados.xls'
@@ -328,6 +338,7 @@ def export_xlwt_estados (request):
     return response
 # Vista de pre-visualizacion PFD solo es para pruebas
 @login_required
+@check_user("ControlEscolar")
 def listaEstados(request):
     #Lista de todos los paises
     listaEstados=SeCatEstado.objects.all()
@@ -335,9 +346,10 @@ def listaEstados(request):
     # listaPaises=SeCatPais.objects.filter(estatus_pais="A") 
     return render(request, "controlEscolar/catalogos/direcciones/GestionEstados/listaEstados.html", {"estados":listaEstados})
 
-##############################################   Municipios/Delegaciones   ###########################################
+##############################################   Municipios/Alcalía   ###########################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaMunicipios(request):
     #Lista de todos los paises que tengan el status = A
     listaMunicipios=SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A").order_by('id_mundel')
@@ -383,6 +395,7 @@ def vistaMunicipios(request):
     return render(request, "controlEscolar/catalogos/direcciones/GestionMunicipios/GestionMunicipios.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarMunicipio(request, rowid_mundel):
     try:
         mundel = SeCatMunicipioDelegacion.objects.get(rowid_mundel = rowid_mundel)
@@ -396,6 +409,7 @@ def eliminarMunicipio(request, rowid_mundel):
     return render(request, "controlEscolar/catalogos/direcciones/GestionMunicipios/BorrarMunicipio.html", {"Municipio": mundel})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_municipios_detail(request, rowid_mundel):
     mundel = SeCatMunicipioDelegacion.objects.get(rowid_mundel = rowid_mundel)
     form = FormMunicipiosDelegaciones(instance=mundel)
@@ -436,11 +450,12 @@ class Export_pdf_municipios(LoginRequiredMixin, View):
         return response
 # Exportar municipio/delegaciones a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_municipios (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaMunicipios.csv;'
     writer = csv.writer(response)
-    writer.writerow(['Estado','Clae','Municipio/Delegación','Abreviatura','Estatus'])
+    writer.writerow(['Estado','Clave','Municipio/Alcaldía','Abreviatura','Estatus'])
     listaMunicipios=SeCatMunicipioDelegacion.objects.filter(estatus_mundel="A") 
     # listaPaises=SeCatPais.objects.filter(owner=request.user)
     for municipio in listaMunicipios:
@@ -448,6 +463,7 @@ def export_csv_municipios (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_municipios (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaMunicipios.xls'
@@ -456,7 +472,7 @@ def export_xlwt_municipios (request):
     row_num = 0
     font_style = xlwt.XFStyle()
     font_style.font.blod = True
-    columns = ['Id Pais','Id Estado','Id Municipio/Delegacion','Municipio/Delegación','Abreviatura','Estatus']
+    columns = ['Id Pais','Id Estado','Clave','Municipio/Alcaldía','Abreviatura','Estatus']
     for col in range(len(columns)):
         ws.write(row_num,col,columns[col], font_style)
     font_style = xlwt.XFStyle()
@@ -469,6 +485,7 @@ def export_xlwt_municipios (request):
     return response
 # Vista de pre-visualizacion PFD solo es para pruebas
 @login_required
+@check_user("ControlEscolar")
 def listaMunicipios(request):
     #Lista de todos los paises
     listaMunicipios=SeCatMunicipioDelegacion.objects.all()
@@ -479,6 +496,7 @@ def listaMunicipios(request):
 ##############################################   Asentamiento   #########################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaAsen(request):
     listaAsen = SeCatAsentamiento.objects.filter(estatus_asentamiento="A").order_by('rowid_asentamiento')
     contador_id = listaAsen.count()
@@ -517,6 +535,7 @@ def vistaAsen(request):
     return render(request, "controlEscolar/catalogos/direcciones/GestionAsentamiento/GestionAsentamiento.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarAsen(request, rowid_asentamiento):
     try:
         asen = SeCatAsentamiento.objects.get(rowid_asentamiento = rowid_asentamiento)
@@ -530,6 +549,7 @@ def eliminarAsen(request, rowid_asentamiento):
     return render(request, "controlEscolar/catalogos/direcciones/GestionAsentamiento/BorrarAsentamiento.html", {"Asen": asen})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_asen_detail(request, rowid_asentamiento):
     asen = SeCatAsentamiento.objects.get(rowid_asentamiento = rowid_asentamiento)
     form = FormAsentamiento(instance=asen)
@@ -569,6 +589,7 @@ class Export_pdf_asen(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria
 @login_required
+@check_user("ControlEscolar")
 def export_csv_asen (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=Lista Asentamientos.csv;'
@@ -580,6 +601,7 @@ def export_csv_asen (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_asen (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=Lista Asentamiento.xls'
@@ -603,6 +625,7 @@ def export_xlwt_asen (request):
 ###################################################   Colonias   #####################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaColonias(request):
     #Lista de todos los paises que tengan el status = A
     listaColonias=SeCatColonia.objects.filter(estatus_col="A").order_by('id_col')
@@ -645,6 +668,7 @@ def vistaColonias(request):
     return render(request, "controlEscolar/catalogos/direcciones/GestionColonias/GestionColonias.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarColonia(request, rowid_col):
     try:
         colonia = SeCatColonia.objects.get(rowid_col = rowid_col)
@@ -658,6 +682,7 @@ def eliminarColonia(request, rowid_col):
     return render(request, "controlEscolar/catalogos/direcciones/GestionColonias/BorrarColonia.html", {"Colonia": colonia})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_colonias_detail(request, rowid_col):
     colonia = SeCatColonia.objects.get(rowid_col = rowid_col)
     form = FormColonias(instance=colonia)
@@ -697,6 +722,7 @@ class Export_pdf_colonias(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_colonias (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaColonias.csv'
@@ -709,6 +735,7 @@ def export_csv_colonias (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_colonias (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaColonias.xls'
@@ -730,6 +757,7 @@ def export_xlwt_colonias (request):
     return response
 # Vista de pre-visualizacion PFD solo es para pruebas
 @login_required
+@check_user("ControlEscolar")
 def listaColonias(request):
     #Lista de todos los paises
     listaColonias=SeCatColonia.objects.all()
@@ -742,6 +770,7 @@ def listaColonias(request):
 ##############################################   Universidades   ##################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaUniversidades(request):
     #Lista de todas las universidades
     listaUniversidades=SeCatUniversidad.objects.filter(estatus_uni="A").order_by('rowid_uni')
@@ -785,6 +814,7 @@ def vistaUniversidades(request):
     return render(request, "controlEscolar/catalogos/universidad/GestionUniversidades/GestionUniversidades.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarUniversidad(request, rowid_uni):
     try:
         uni = SeCatUniversidad.objects.get(rowid_uni=rowid_uni)
@@ -798,6 +828,7 @@ def eliminarUniversidad(request, rowid_uni):
     return render(request, "controlEscolar/catalogos/universidad/GestionUniversidades/BorrarUniversidades.html", {"Universidad": uni})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_universidad_detail(request, rowid_uni):
     uni = SeCatUniversidad.objects.get(rowid_uni=rowid_uni)
     form = FormUniversidad(instance = uni)
@@ -837,6 +868,7 @@ class Export_pdf_universidades(LoginRequiredMixin, View):
         return response
 # Exportar universidades a CSV sin libreria
 @login_required
+@check_user("ControlEscolar")
 def export_csv_universidades (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaUniversidades.csv;'
@@ -851,6 +883,7 @@ def export_csv_universidades (request):
     return response
 # Exportar universidades a xlwt sin con la libreria XLWT
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_universidades (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaUniversidades.xls'
@@ -877,6 +910,7 @@ def export_xlwt_universidades (request):
 ##############################################  DIVISIÓN  ##################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vista_Divisiones(request):
     listaDivisiones = SeCatDivision.objects.filter(estatus_div="A").order_by('rowid_div')
     contador_id = listaDivisiones.count()
@@ -917,6 +951,7 @@ def vista_Divisiones(request):
     return render(request, "controlEscolar/catalogos/universidad/GestionDivisiones/GestionDivisiones.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminar_Divisiones(request, rowid_div):
     try:
         div = SeCatDivision.objects.get(rowid_div=rowid_div)
@@ -930,6 +965,7 @@ def eliminar_Divisiones(request, rowid_div):
     return render(request, "controlEscolar/catalogos/universidad/GestionDivisiones/BorrarDivisiones.html", {"Division": div})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_divisiones_detail(request, rowid_div):
     div = SeCatDivision.objects.get(rowid_div=rowid_div)
     form = FormDivisiones(instance = div)
@@ -970,6 +1006,7 @@ class Export_pdf_divisiones(LoginRequiredMixin, View):
         return response
 # Exportar divisiones a CSV sin libreria
 @login_required
+@check_user("ControlEscolar")
 def export_csv_divisiones (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaDivisiones.csv;'
@@ -983,6 +1020,7 @@ def export_csv_divisiones (request):
     return response
 # Exportar divisiones a xlwt sin con la libreria XLWT
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_divisiones (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaDivisiones.xls'
@@ -1009,6 +1047,7 @@ def export_xlwt_divisiones (request):
 
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaCarreras(request):
     #Lista de todas las divisiones
     listaCarreras = SeCatCarrera.objects.filter(estatus_car="A").order_by('rowid_car')
@@ -1051,6 +1090,7 @@ def vistaCarreras(request):
     return render(request,"controlEscolar/catalogos/universidad/GestionCarreras/GestionCarreras.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarCarreras(request, rowid_car):
     try:
         car = SeCatCarrera.objects.get(rowid_car=rowid_car)
@@ -1063,6 +1103,7 @@ def eliminarCarreras(request, rowid_car):
         return redirect('vista_carreras')
     return render(request, "controlEscolar/catalogos/universidad/GestionCarreras/BorrarCarreras.html", {"Carrera": car})
 @login_required
+@check_user("ControlEscolar")
 def vista_carreras_detail(request, rowid_car ):
     car = SeCatCarrera.objects.get(rowid_car=rowid_car)
     form = FormCarreras(instance=car)
@@ -1102,6 +1143,7 @@ class Export_pdf_carreras(LoginRequiredMixin, View):
         return response
 # Exportar divisiones a CSV sin libreria
 @login_required 
+@check_user("ControlEscolar")
 def export_csv_carreras (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaCarreras.csv;'
@@ -1115,6 +1157,7 @@ def export_csv_carreras (request):
     return response
 # Exportar divisiones a xlwt sin con la libreria XLWT
 @login_required 
+@check_user("ControlEscolar")
 def export_xlwt_carreras (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaCarreras.xls'
@@ -1140,6 +1183,7 @@ def export_xlwt_carreras (request):
 ###################################### Periodos #################################################
 # #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaPeriodos(request):
     #Lista de todas las divisiones
     listaPer = SeCatPeriodos.objects.filter(estatus_per="A").order_by('evento_per')
@@ -1182,6 +1226,7 @@ def vistaPeriodos(request):
     return render(request, "controlEscolar/catalogos/universidad/GestionPeriodos/GestionPeriodos.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarPeriodo(request, rowid_per):
     try:
         per = SeCatPeriodos.objects.get(rowid_per=rowid_per)
@@ -1195,6 +1240,7 @@ def eliminarPeriodo(request, rowid_per):
     return render(request, "controlEscolar/catalogos/universidad/GestionPeriodos/BorrarPeriodos.html", {"Periodos": per})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_periodos_detail(request, rowid_per):
     per = SeCatPeriodos.objects.get(rowid_per=rowid_per)
     form = FormPeriodos(instance = per)
@@ -1234,6 +1280,7 @@ class Export_pdf_periodos(LoginRequiredMixin,View):
         return response
 # Exportar divisiones a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_periodos (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaPeriodos.csv;'
@@ -1245,6 +1292,7 @@ def export_csv_periodos (request):
     return response
 # Exportar divisiones a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_periodos (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaPeriodos.xls'
@@ -1271,6 +1319,7 @@ def export_xlwt_periodos (request):
 ##############################################   PLAN DE ESTUDIOS    ##############################################
 # #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaPlanE(request):
     listaPlanE=SeCatPlaEstudio.objects.filter(estatus_plan_est="A").order_by('rowid_plan_est') #Lista de todos los planes de estudio que tengan el status = A  
     contador_id = listaPlanE.count()
@@ -1312,6 +1361,7 @@ def vistaPlanE(request):
     return render(request, "controlEscolar/catalogos/planEstudio/PlanEstudios/GestionPE.html",data)
 # Update de estatus de 'A' a 'B' "ELIMINACION"
 @login_required
+@check_user("ControlEscolar")
 def eliminarPlan(request, rowid_plan_est):
     try:
         plan = SeCatPlaEstudio.objects.get(rowid_plan_est=rowid_plan_est)
@@ -1325,6 +1375,7 @@ def eliminarPlan(request, rowid_plan_est):
     return render(request, "controlEscolar/catalogos/planEstudio/PlanEstudios/BorrarPE.html", {"Plan": plan})
 # Modificar 
 @login_required
+@check_user("ControlEscolar")
 def vista_planE_detail(request, rowid_plan_est):
     plan = SeCatPlaEstudio.objects.get(rowid_plan_est=rowid_plan_est)
     form = FormsPlaE(instance=plan)
@@ -1365,6 +1416,7 @@ class Export_pdf_planE(LoginRequiredMixin, View):
         return response
 # Exportar paises al formato  CSV 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_planE (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaPlanesEstudio.csv;'
@@ -1378,6 +1430,7 @@ def export_csv_planE (request):
     return response
 # Exportar paises a xlwt 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_plan (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaPlanesEstudio.xls'
@@ -1402,6 +1455,7 @@ def export_xlwt_plan (request):
 ###################################################################  ASIGNATURA     ########################################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaAsi(request):
     listaAsignatura=SeCatAsignatura.objects.filter(estatus_asi="A").order_by('rowid_asignatura')#Lista de todos los paises que tengan el status = A
     contador_id = listaAsignatura.count()
@@ -1443,6 +1497,8 @@ def vistaAsi(request):
     }
     return render(request, "controlEscolar/catalogos/planEstudio/asignatura/GestionAsignatura.html",data)
 ##Eliminar
+@login_required
+@check_user("ControlEscolar")
 def eliminarAsignatura(request, rowid_asignatura):
     try:
         asi = SeCatAsignatura.objects.get(rowid_asignatura=rowid_asignatura)
@@ -1455,6 +1511,8 @@ def eliminarAsignatura(request, rowid_asignatura):
         return redirect('vista_asignatura')
     return render(request, "controlEscolar/catalogos/planEstudio/asignatura/BorrarAsignatura.html", {"Asi": asi})
 #Modificar
+@login_required
+@check_user("ControlEscolar")
 def vista_asig_detail(request, rowid_asignatura):
     asi = SeCatAsignatura.objects.get(rowid_asignatura=rowid_asignatura)
     form = FormsAsignatura(instance=asi)
@@ -1469,7 +1527,7 @@ def vista_asig_detail(request, rowid_asignatura):
             return render(request, "controlEscolar/catalogos/planEstudio/asignatura/ActualizarAsignatura.html", {"FormsAsignatura" : form})#envia al detalle para actualizar
     return render(request, "controlEscolar/catalogos/planEstudio/asignatura/ActualizarAsignatura.html", {"FormsAsignatura" : form})#envia al detalle para actualizar
 # vista para "PRINT"
-class Export_print_asi(View):
+class Export_print_asi(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         listaAsi=SeCatAsignatura.objects.filter(estatus_asi="A") 
         data = {
@@ -1479,7 +1537,7 @@ class Export_print_asi(View):
         pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/asignatura/ListarAsignatura.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 #PDF
-class Export_pdf_asi(View):
+class Export_pdf_asi(LoginRequiredMixin, View):
     def get(self, request,*args, **kwargs):
         listaAsi=SeCatAsignatura.objects.filter(estatus_asi="A") 
         data = {
@@ -1493,6 +1551,8 @@ class Export_pdf_asi(View):
         response['Content-Disposition'] = content
         return response
 # Exportar paises al formato  CSV 
+@login_required
+@check_user("ControlEscolar")
 def export_csv_asi (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaAsignaturas.csv;'
@@ -1504,6 +1564,8 @@ def export_csv_asi (request):
         writer.writerow([asi.rowid_plan_est, asi.rowid_car, asi.id_asignatura, asi.descri_larga_asi, asi.descri_corto_asi, asi.estatus_asi])
     return response
 # Exportar paises a xlwt 
+@login_required
+@check_user("ControlEscolar")
 def export_xlwt_asi (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaAsignatura.xls'
@@ -1527,6 +1589,7 @@ def export_xlwt_asi (request):
 ########################################################### Indicadores ###########################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaIndicador(request):
     #Lista de todos los paises que tengan el status = A
     listaIndicador=SeCatIndicador.objects.filter(estatus_ind="A").order_by('rowid_indicador')
@@ -1569,6 +1632,7 @@ def vistaIndicador(request):
     return render(request, "controlEscolar/catalogos/planEstudio/Indicadores/GestionIndicadores.html",data)
 #Update de estatus de 'A' a 'B' "ELIMINACION"
 @login_required
+@check_user("ControlEscolar")
 def eliminarIndicador(request, rowid_indicador):
     try:
         indi = SeCatIndicador.objects.get(rowid_indicador=rowid_indicador)
@@ -1582,6 +1646,7 @@ def eliminarIndicador(request, rowid_indicador):
     return render(request, "controlEscolar/catalogos/planEstudio/Indicadores/BorrarIndicadores.html", {"Indi": indi})
 ###modificar
 @login_required
+@check_user("ControlEscolar")
 def vista_indicador_detail(request, rowid_indicador):
     indi = SeCatIndicador.objects.get(rowid_indicador=rowid_indicador)
     form = FormsIndicador(instance=indi)
@@ -1621,6 +1686,7 @@ class Export_pdf_indi(LoginRequiredMixin, View):
         return response
 # Exportar paises al formato  CSV 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_indi (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaIndicadores.csv;'
@@ -1633,6 +1699,7 @@ def export_csv_indi (request):
     return response
 # Exportar paises a xlwt 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_indicador (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaIndicador.xls'
@@ -1657,6 +1724,7 @@ def export_xlwt_indicador (request):
 
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaPea(request):
     #Lista de todos los paises que tengan el status = A
     listaPea=SeProPlanEstudio.objects.filter(estatus_pea="A").order_by('rowid_pro_plan_est')
@@ -1699,6 +1767,8 @@ def vistaPea(request):
     }
     return render(request, "controlEscolar/catalogos/planEstudio/Pea/GestionPea.html",data)
 ##Eliminar
+@login_required
+@check_user("ControlEscolar")
 def eliminarPea(request, rowid_pro_plan_est):
     try:
         asi = SeProPlanEstudio.objects.get(rowid_pro_plan_est=rowid_pro_plan_est)
@@ -1711,6 +1781,8 @@ def eliminarPea(request, rowid_pro_plan_est):
         return redirect('vista_pea')
     return render(request, "controlEscolar/catalogos/planEstudio/Pea/BorrarPea.html", {"Asi": asi})
 ##Mod
+@login_required
+@check_user("ControlEscolar")
 def vista_pea_detail(request, rowid_pro_plan_est):
     asi = SeProPlanEstudio.objects.get(rowid_pro_plan_est=rowid_pro_plan_est)
     form = FormsPeA(instance=asi)
@@ -1725,7 +1797,7 @@ def vista_pea_detail(request, rowid_pro_plan_est):
             return render(request, "controlEscolar/catalogos/planEstudio/Pea/ActualizarPea.html", {"FormsPeA" : form})#envia al detalle para actualizar
     return render(request, "controlEscolar/catalogos/planEstudio/Pea/ActualizarPea.html", {"FormsPeA" : form})#envia al detalle para actualizar
 # vista para "PRINT"
-class Export_print_pea(View):
+class Export_print_pea(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         listaPea=SeProPlanEstudio.objects.filter(estatus_pea="A") 
         data = {
@@ -1735,7 +1807,7 @@ class Export_print_pea(View):
         pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/Pea/ListarPea.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 #PDF
-class Export_pdf_pea(View):
+class Export_pdf_pea(LoginRequiredMixin, View):
     def get(self, request,*args, **kwargs):
         listaPea=SeProPlanEstudio.objects.filter(estatus_pea="A") 
         data = {
@@ -1749,6 +1821,8 @@ class Export_pdf_pea(View):
         response['Content-Disposition'] = content
         return response
 # Exportar paises al formato  CSV 
+@login_required
+@check_user("ControlEscolar")
 def export_csv_pea (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaAsignaturas.csv;'
@@ -1760,6 +1834,8 @@ def export_csv_pea (request):
         writer.writerow([asi.rowid_asignatura, asi.rowid_plan_est, asi.rowid_grado, asi.rowid_car, asi.horas_plan_est, asi.creditos_plan_est ,asi.nota_minima_apro_est, asi.valor_pon_final, asi.estatus_pea])
     return response
 # Exportar paises a xlwt 
+@login_required
+@check_user("ControlEscolar")
 def export_xlwt_pea (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaAsignatura.xls'
@@ -1783,6 +1859,7 @@ def export_xlwt_pea (request):
 ########################################################### Plan de estudios asignatura indicador   ###########################################
 
 @login_required
+@check_user("ControlEscolar")
 def vistaPlanEAI(request):
     #Lista de todos los paises que tengan el status = A
     listaPea=SeProAsiIndicador.objects.filter(estatus_peai="A").order_by('rowid_pro_asi_ind')
@@ -1826,6 +1903,7 @@ def vistaPlanEAI(request):
     return render(request, "controlEscolar/catalogos/planEstudio/Peai/GestionPeai.html",data)
 ##Eliminar
 @login_required
+@check_user("ControlEscolar")
 def eliminarPeai(request, rowid_pro_asi_ind):
     try:
         peai = SeProAsiIndicador.objects.get(rowid_pro_asi_ind=rowid_pro_asi_ind)
@@ -1839,6 +1917,7 @@ def eliminarPeai(request, rowid_pro_asi_ind):
     return render(request, "controlEscolar/catalogos/planEstudio/Peai/BorrarPeai.html", {"Plan": peai})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_peai_detail(request, rowid_pro_asi_ind):
     peai = SeProAsiIndicador.objects.get(rowid_pro_asi_ind=rowid_pro_asi_ind)
     form = FormsPeaI(instance = peai)
@@ -1853,7 +1932,7 @@ def vista_peai_detail(request, rowid_pro_asi_ind):
             return render(request, "controlEscolar/catalogos/planEstudio/Peai/ActualizarPeai.html", {"FormsPeaI" : form})#envia al detalle para actualizar
     return render(request, "controlEscolar/catalogos/planEstudio/Peai/ActualizarPeai.html", {"FormsPeaI" : form})#envia al detalle para actualizar
 # vista para "PRINT"
-class Export_print_peai(View):
+class Export_print_peai(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         listaPeai=SeProAsiIndicador.objects.filter(estatus_peai="A") 
         data = {
@@ -1863,7 +1942,7 @@ class Export_print_peai(View):
         pdf = render_to_pdf('controlEscolar/catalogos/planEstudio/Peai/ListarPeai.html', data)
         return HttpResponse(pdf, content_type='application/pdf')
 #PDF
-class Export_pdf_peai(View):
+class Export_pdf_peai(LoginRequiredMixin, View):
     def get(self, request,*args, **kwargs):
         listaPeai=SeProAsiIndicador.objects.filter(estatus_peai="A") 
         data = {
@@ -1877,6 +1956,8 @@ class Export_pdf_peai(View):
         response['Content-Disposition'] = content
         return response
 # Exportar paises al formato  CSV 
+@login_required
+@check_user("ControlEscolar")
 def export_csv_peai (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaPlanEstudioAsignaturaIndicador.csv;'
@@ -1888,6 +1969,8 @@ def export_csv_peai (request):
         writer.writerow([asi.rowid_pro_plan_est, asi.rowid_indicador, asi.porcentaje_pro_asi_idi, asi.comen_pro_asi_ind, asi.estatus_peai ])
     return response
 # Exportar paises a xlwt 
+@login_required
+@check_user("ControlEscolar")
 def export_xlwt_peai (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaPlanEstudioAsignaturaIndicador.xls'
@@ -1913,6 +1996,7 @@ def export_xlwt_peai (request):
 ##############################################   Escuela de Procedencia   #########################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaEscProc(request):
     listaEscProc = SeCatEscuelaProcedencia.objects.filter(estatus_esc_proc="A").order_by('rowid_esc_proc')
     contador_id = listaEscProc.count()
@@ -1951,6 +2035,7 @@ def vistaEscProc(request):
     return render(request, "controlEscolar/catalogos/aspirantes/GestionEscuelaProc/GestionEscuelaProc.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarEscProc(request, rowid_esc_proc):
     try:
         escpro = SeCatEscuelaProcedencia.objects.get(rowid_esc_proc = rowid_esc_proc)
@@ -1964,6 +2049,7 @@ def eliminarEscProc(request, rowid_esc_proc):
     return render(request, "controlEscolar/catalogos/aspirantes/GestionEscuelaProc/BorrarEscuelaProc.html", {"EscPro": escpro})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_escpro_detail(request, rowid_esc_proc):
     escpro = SeCatEscuelaProcedencia.objects.get(rowid_esc_proc = rowid_esc_proc)
     form = FormEscProc(instance=escpro)
@@ -2003,6 +2089,7 @@ class Export_pdf_escpro(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria
 @login_required
+@check_user("ControlEscolar")
 def export_csv_escpro (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=Lista Escuelas.csv;'
@@ -2014,6 +2101,7 @@ def export_csv_escpro (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_escpro (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=Lista Escuelas.xls'
@@ -2037,6 +2125,7 @@ def export_xlwt_escpro (request):
 ##############################################   MEDIOS DE DIFUSION  #######################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vista_Medios(request):
     listaMedios=SeCatMedioDifusion.objects.filter(estatus_dif="A").order_by('rowid_medio_dif')
     contador_id = listaMedios.count()
@@ -2077,6 +2166,7 @@ def vista_Medios(request):
     return render(request, "controlEscolar/catalogos/aspirantes/GestionMediosDifusion/GestionMD.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminar_Medio(request, rowid_medio_dif):
     try:
         medio = SeCatMedioDifusion.objects.get(rowid_medio_dif=rowid_medio_dif)
@@ -2090,6 +2180,7 @@ def eliminar_Medio(request, rowid_medio_dif):
     return render(request, "controlEscolar/catalogos/aspirantes/GestionMediosDifusion/BorrarMD.html", {"Medio": medio})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_medios_detail(request, rowid_medio_dif):
     medio = SeCatMedioDifusion.objects.get(rowid_medio_dif=rowid_medio_dif)
     form = FormMediosDifusion(instance=medio)
@@ -2130,6 +2221,7 @@ class Export_pdf_medios(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_medios (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaMediosdeDifusión.csv;'
@@ -2142,6 +2234,7 @@ def export_csv_medios (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_medios (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaMediosdeDifusión.xls'
@@ -2165,6 +2258,7 @@ def export_xlwt_medios (request):
 ###################################################   Tipo de Escuelas  ###########################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vista_Escuelas(request):
     listaEscuelas=SeCatTipoEscuela.objects.filter(estatus_esc="A").order_by('rowid_tipo_esc')
     contador_id = listaEscuelas.count()
@@ -2205,6 +2299,7 @@ def vista_Escuelas(request):
     return render(request, "controlEscolar/catalogos/aspirantes/GestionTiposEscuelas/GestionEscuelas.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminar_Escuela(request, rowid_tipo_esc):
     try:
         escuela = SeCatTipoEscuela.objects.get(rowid_tipo_esc=rowid_tipo_esc)
@@ -2218,6 +2313,7 @@ def eliminar_Escuela(request, rowid_tipo_esc):
     return render(request, "controlEscolar/catalogos/aspirantes/GestionTiposEscuelas/BorrarEscuela.html", {"Escuela": escuela})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_escuelas_detail(request, rowid_tipo_esc):
     escuela = SeCatTipoEscuela.objects.get(rowid_tipo_esc=rowid_tipo_esc)
     form = FormTiposEscuelas(instance=escuela)
@@ -2258,6 +2354,7 @@ class Export_pdf_escuelas(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_escuelas (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaTiposdeEscuelas.csv;'
@@ -2270,6 +2367,7 @@ def export_csv_escuelas (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_escuelas (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaTiposdeEscuelas.xls'
@@ -2293,6 +2391,7 @@ def export_xlwt_escuelas (request):
 ##############################################  Areas Bachillerato  ###############################################
 #Agregar si es post y lista de todos / Aqui va la paginación
 @login_required
+@check_user("ControlEscolar")
 def vista_AreaBachi(request):
     listaAreaBachi=SeCatAreaBachillerato.objects.filter(estatus_bac="A").order_by('rowid_area_bac')
     contador_id = listaAreaBachi.count()
@@ -2332,6 +2431,7 @@ def vista_AreaBachi(request):
     return render(request, "controlEscolar/catalogos/aspirantes/GestionAreaBachi/GestionAreaBachi.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminar_AreaBachi(request, rowid_area_bac):
     try:
         areabachi = SeCatAreaBachillerato.objects.get(rowid_area_bac=rowid_area_bac)
@@ -2345,6 +2445,7 @@ def eliminar_AreaBachi(request, rowid_area_bac):
     return render(request, "controlEscolar/catalogos/aspirantes/GestionAreaBachi/BorrarAreaBachi.html", {"AreaBachi":areabachi})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_AreaBachi_detail(request, rowid_area_bac):
     areabachi = SeCatAreaBachillerato.objects.get(rowid_area_bac = rowid_area_bac)
     form = FormAreaBachi(instance = areabachi)
@@ -2385,6 +2486,7 @@ class Export_pdf_areabachi(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_areabachi (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaÁreaBachillerato.csv;'
@@ -2397,6 +2499,7 @@ def export_csv_areabachi (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_areabachi (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaÁreaBachillerato.xls'
@@ -2420,6 +2523,7 @@ def export_xlwt_areabachi (request):
 ##############################################  INDICADORES ASPIRANTES  ####################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vista_IndAsp(request):
     listaIndAsp = SeProIndAsp.objects.filter(estatus_indicadores="A").order_by('rowid_pro_ind_asp')
     contador_id = listaIndAsp.count()
@@ -2460,6 +2564,7 @@ def vista_IndAsp(request):
     return render(request, "controlEscolar/catalogos/aspirantes/GestionIndAsp/GestionIndAsp.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminar_IndAsp(request, rowid_pro_ind_asp):
     try:
         IndAsp = SeProIndAsp.objects.get(rowid_pro_ind_asp=rowid_pro_ind_asp)
@@ -2473,6 +2578,7 @@ def eliminar_IndAsp(request, rowid_pro_ind_asp):
     return render(request, "controlEscolar/catalogos/aspirantes/GestionIndAsp/BorrarIndAsp.html", {"IndAsp": IndAsp})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_IndAsp_detail(request, rowid_pro_ind_asp):
     IndAsp = SeProIndAsp.objects.get(rowid_pro_ind_asp=rowid_pro_ind_asp)
     form = FormIndAsp(instance = IndAsp)
@@ -2513,6 +2619,7 @@ class Export_pdf_IndAsp(LoginRequiredMixin, View):
         return response
 # Exportar divisiones a CSV sin libreria
 @login_required
+@check_user("ControlEscolar")
 def export_csv_IndAsp (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaIndicadoresAspirantes.csv;'
@@ -2524,6 +2631,7 @@ def export_csv_IndAsp (request):
     return response
 # Exportar divisiones a xlwt sin con la libreria XLWT
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_IndAsp (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaIndicadoresAspirantes.xls'
@@ -2548,6 +2656,7 @@ def export_xlwt_IndAsp (request):
 
 ######################################### Estudiante ##############################################
 @login_required
+@check_user("ControlEscolar")
 def vistaEstudiante(request):
     #Lista de todos los planes de estudio que tengan el status = A
     listaEstudiante=SeTabEstudiante.objects.filter(estatus_est="A").order_by('rowid_matricula')
@@ -2590,6 +2699,7 @@ def vistaEstudiante(request):
     return render(request, "controlEscolar/catalogos/estudiantes/estudiante/GestionEstudiante.html",data)
 #ELIMINAR
 @login_required
+@check_user("ControlEscolar")
 def eliminarEstudiante(request, rowid_matricula):
     try:
         est = SeTabEstudiante.objects.get(rowid_matricula=rowid_matricula)
@@ -2603,6 +2713,7 @@ def eliminarEstudiante(request, rowid_matricula):
     return render(request, "controlEscolar/catalogos/estudiantes/estudiante/BorrarEstudiante.html", {"Est": est})
 # Modificar
 @login_required
+@check_user("ControlEscolar")
 def vista_estudiante_detail(request, rowid_matricula):
     est = SeTabEstudiante.objects.get(rowid_matricula=rowid_matricula)
     form = FormsEstudiante(instance=est)
@@ -2642,6 +2753,7 @@ class Export_pdf_estudiante(LoginRequiredMixin, View):
         return response
 # Exportar paises a  csv
 @login_required
+@check_user("ControlEscolar")
 def export_csv_estudiante (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaEstudiante.csv;'
@@ -2656,6 +2768,7 @@ def export_csv_estudiante (request):
     return response
 # Exportar paises a xlwt
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_estudiante (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListarEstudiante.xls'
@@ -2688,6 +2801,7 @@ def export_xlwt_estudiante (request):
 ###################################################### DOCUMENTACION ##############################################
 # VISUALIZACION
 @login_required
+@check_user("ControlEscolar")
 def vista_Documentacion(request):
     listaDoc=SeCatDocumentacion.objects.filter(estatus_doc="A").order_by('rowid_doc') 
     contador_id = listaDoc.count()
@@ -2728,6 +2842,7 @@ def vista_Documentacion(request):
     return render(request, "controlEscolar/catalogos/estudiantes/Documentacion/GestionDoc.html",data)
 # ELIMINA
 @login_required
+@check_user("ControlEscolar")
 def eliminar_Documentacion(request, rowid_doc):
     try:
         doc = SeCatDocumentacion.objects.get(rowid_doc=rowid_doc)
@@ -2741,6 +2856,7 @@ def eliminar_Documentacion(request, rowid_doc):
     return render(request, "controlEscolar/catalogos/estudiantes/Documentacion/BorrarDoc.html", {"Doc": doc})
 # MODIFICA 
 @login_required
+@check_user("ControlEscolar")
 def vista_Documentacion_detail(request, rowid_doc):
     doc = SeCatDocumentacion.objects.get(rowid_doc = rowid_doc)
     form = FormDocumentacion(instance = doc)
@@ -2781,6 +2897,7 @@ class Export_pdf_Documentacion(View):
         return response
 # CSV 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_Documentacion (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaDocumentos.csv;'
@@ -2793,6 +2910,7 @@ def export_csv_Documentacion (request):
     return response
 # XLWT
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_Documentacion (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaDocumentos.xls'
@@ -2816,6 +2934,7 @@ def export_xlwt_Documentacion (request):
 ###################################################### GRUPO ######################################################
 # VISUALIZACION
 @login_required
+@check_user("ControlEscolar")
 def vista_Grupo(request):
     listaGrupos=SeCatGrupo.objects.filter(estatus_gpo="A").order_by('rowid_grupo') 
     contador_id = listaGrupos.count()
@@ -2856,6 +2975,7 @@ def vista_Grupo(request):
     return render(request, "controlEscolar/catalogos/estudiantes/Grupos/GestionGrupo.html",data)
 # ELIMINA
 @login_required
+@check_user("ControlEscolar")
 def eliminar_Grupo(request, rowid_grupo):
     try:
         grupo = SeCatGrupo.objects.get(rowid_grupo = rowid_grupo)
@@ -2869,6 +2989,7 @@ def eliminar_Grupo(request, rowid_grupo):
     return render(request, "controlEscolar/catalogos/estudiantes/Grupos/BorraGrupo.html", {"Grupo": grupo})
 # MODIFICA
 @login_required
+@check_user("ControlEscolar")
 def vista_grupo_detail(request, rowid_grupo):
     grupo = SeCatGrupo.objects.get(rowid_grupo = rowid_grupo)
     form = FormGrupo(instance = grupo)
@@ -2909,6 +3030,7 @@ class Export_pdf_grupo(LoginRequiredMixin, View):
         return response
 # CSV 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_grupos (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaGrupos.csv;'
@@ -2921,6 +3043,7 @@ def export_csv_grupos (request):
     return response
 # XLWT
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_grupos (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaGrupos.xls'
@@ -2944,6 +3067,7 @@ def export_xlwt_grupos (request):
 ###################################################### ESTATUS ESTUDIANTE #########################################
 # VISUALIZACION
 @login_required
+@check_user("ControlEscolar")
 def vista_Estatus(request): 
     listaEst=SeCatEstatusEstudiante.objects.filter(estatus_tipo_est="A").order_by('rowid_evento_est') 
     contador_id = listaEst.count()
@@ -2984,6 +3108,7 @@ def vista_Estatus(request):
     return render(request, "controlEscolar/catalogos/estudiantes/Estatus/GestionEstatus.html",data)
 # ELIMINA
 @login_required
+@check_user("ControlEscolar")
 def eliminar_Estatus(request, rowid_evento_est):
     try:
         est = SeCatEstatusEstudiante.objects.get(rowid_evento_est = rowid_evento_est)
@@ -2997,6 +3122,7 @@ def eliminar_Estatus(request, rowid_evento_est):
     return render(request, "controlEscolar/catalogos/estudiantes/Estatus/BorrarEstatus.html", {"Est": est})
 # MODIFICA
 @login_required
+@check_user("ControlEscolar")
 def vista_Estatus_detail(request, rowid_evento_est):
     est = SeCatEstatusEstudiante.objects.get(rowid_evento_est = rowid_evento_est)
     form = FormEstatusEstudiante(instance = est)
@@ -3037,6 +3163,7 @@ class Export_pdf_estatus(View):
         return response
 # CSV
 @login_required
+@check_user("ControlEscolar")
 def export_csv_estatus (request): 
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaEstatusEstudiantes.csv;'
@@ -3048,6 +3175,7 @@ def export_csv_estatus (request):
     return response
 # XLWT
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_estatus (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListarEstatusEstudiantes.xls'
@@ -3071,6 +3199,7 @@ def export_xlwt_estatus (request):
 ###################################################### GRADOS ##############################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vista_Grados(request):
     listaGrados=SeCatGrado.objects.filter(estatus_gra="A").order_by('rowid_grado')
     contador_id = listaGrados.count()
@@ -3111,6 +3240,7 @@ def vista_Grados(request):
     return render(request, "controlEscolar/catalogos/estudiantes/Grados/GestionGrados.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminar_Grado(request, rowid_grado):
     try:
         grado = SeCatGrado.objects.get(rowid_grado=rowid_grado)
@@ -3124,6 +3254,7 @@ def eliminar_Grado(request, rowid_grado):
     return render(request, "controlEscolar/catalogos/estudiantes/Grados/BorrarGrado.html", {"Grado": grado})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_grados_detail(request, rowid_grado):
     grado = SeCatGrado.objects.get(rowid_grado=rowid_grado)
     form = FormGrados(instance=grado)
@@ -3164,6 +3295,7 @@ class Export_pdf_grado(LoginRequiredMixin, View):
         return response
 # Exportar divisiones a CSV sin libreria
 @login_required
+@check_user("ControlEscolar")
 def export_csv_grados (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaGrados.csv;'
@@ -3176,6 +3308,7 @@ def export_csv_grados (request):
     return response
 # Exportar divisiones a xlwt sin con la libreria XLWT
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_grados (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaGrados.xls'
@@ -3199,6 +3332,7 @@ def export_xlwt_grados (request):
 ####################################################  SALONES  ######################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vista_Salones(request):
     listaSalones = SeCatSalones.objects.filter(estatus_salon="A").order_by('rowid_salon')
     contador_id = listaSalones.count()
@@ -3239,6 +3373,7 @@ def vista_Salones(request):
     return render(request, "controlEscolar/catalogos/estudiantes/Salones/GestionSalones.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminar_Salones(request, rowid_salon):
     try:
         sal = SeCatSalones.objects.get(rowid_salon=rowid_salon)
@@ -3252,6 +3387,7 @@ def eliminar_Salones(request, rowid_salon):
     return render(request, "controlEscolar/catalogos/estudiantes/Salones/BorrarSalones.html", {"Salon": sal})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_salones_detail(request, rowid_salon):
     sa = SeCatSalones.objects.get(rowid_salon=rowid_salon)
     form = FormSalones(instance = sa)
@@ -3292,6 +3428,7 @@ class Export_pdf_salones(LoginRequiredMixin, View):
         return response
 # Exportar divisiones a CSV sin libreria
 @login_required
+@check_user("ControlEscolar")
 def export_csv_salones (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaSalones.csv;'
@@ -3304,6 +3441,7 @@ def export_csv_salones (request):
     return response
 # Exportar divisiones a xlwt sin con la libreria XLWT
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_salones (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaSalones.xls'
@@ -3328,6 +3466,7 @@ def export_xlwt_salones (request):
 # ###################################################   Becas  ######################################################
 # Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vista_Becas(request):
     listaBecas=SeCatBecas.objects.filter(estatus_bec="A").order_by('rowid_becas')
     contador_id = listaBecas.count()
@@ -3368,6 +3507,7 @@ def vista_Becas(request):
     return render(request, "controlEscolar/catalogos/estudiantes/Becas/GestionBecas.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminar_Beca(request, rowid_becas):
     try:
         beca = SeCatBecas.objects.get(rowid_becas=rowid_becas)
@@ -3381,6 +3521,7 @@ def eliminar_Beca(request, rowid_becas):
     return render(request, "controlEscolar/catalogos/estudiantes/Becas/BorrarBeca.html", {"Beca": beca})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_becas_detail(request, rowid_becas):
     beca = SeCatBecas.objects.get(rowid_becas=rowid_becas)
     form = FormBecas(instance=beca)
@@ -3421,6 +3562,7 @@ class Export_pdf_becas(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_becas (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaBecas.csv;'
@@ -3433,6 +3575,7 @@ def export_csv_becas (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_becas (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaBecas.xls'
@@ -3456,6 +3599,7 @@ def export_xlwt_becas (request):
 ###################################################   Tipo Cambio  ################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vista_Cambios(request):
     listaCambios = SeCatTipoCambio.objects.filter(status="A").order_by('rowid_tipo_cambio')
     contador_id = listaCambios.count() 
@@ -3496,6 +3640,7 @@ def vista_Cambios(request):
     return render(request, "controlEscolar/catalogos/estudiantes/TipoCambio/GestionTipoCambios.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminar_Cambio(request, rowid_tipo_cambio):
     try:
         cambio = SeCatTipoCambio.objects.get(rowid_tipo_cambio=rowid_tipo_cambio)
@@ -3509,6 +3654,7 @@ def eliminar_Cambio(request, rowid_tipo_cambio):
     return render(request, "controlEscolar/catalogos/estudiantes/TipoCambio/BorrarTipoCambio.html", {"Cambio": cambio})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_cambios_detail(request, rowid_tipo_cambio):
     cambio = SeCatTipoCambio.objects.get(rowid_tipo_cambio=rowid_tipo_cambio)
     form = FormTipoCambio(instance=cambio)
@@ -3548,6 +3694,7 @@ class Export_pdf_cambios(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_cambios (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaTiposCambios.csv;'
@@ -3560,6 +3707,7 @@ def export_csv_cambios (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_cambios (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaTiposCambios.xls'
@@ -3583,6 +3731,7 @@ def export_xlwt_cambios (request):
 ##############################################  Tipos de Baja #####################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vista_TipoBajas(request):
     listaBajas=SeCatTipoBajas.objects.filter(estatus_tipo_baj="A").order_by('rowid_tipo_baj')
     contador_id = listaBajas.count()
@@ -3623,6 +3772,7 @@ def vista_TipoBajas(request):
     return render(request, "controlEscolar/catalogos/estudiantes/TipoBajas/GestionTipoBajas.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminar_TipoBajas(request, rowid_tipo_baj):
     try:
         baja = SeCatTipoBajas.objects.get(rowid_tipo_baj=rowid_tipo_baj)
@@ -3636,6 +3786,7 @@ def eliminar_TipoBajas(request, rowid_tipo_baj):
     return render(request, "controlEscolar/catalogos/estudiantes/TipoBajas/BorrarTipoBajas.html", {"Baja": baja})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_tipobajas_detail(request, rowid_tipo_baj):
     baja = SeCatTipoBajas.objects.get(rowid_tipo_baj=rowid_tipo_baj)
     form = FormTipoBajas(instance=baja)
@@ -3676,6 +3827,7 @@ class Export_pdf_tipobajas(LoginRequiredMixin, View):
         return response
 # Exportar divisiones a CSV sin libreria
 @login_required
+@check_user("ControlEscolar")
 def export_csv_tipobajas (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaTiposdeBaja.csv;'
@@ -3688,6 +3840,7 @@ def export_csv_tipobajas (request):
     return response
 # Exportar divisiones a xlwt sin con la libreria XLWT
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_tipobajas (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaTiposdeBaja.xls'
@@ -3713,6 +3866,7 @@ def export_xlwt_tipobajas (request):
 ###################################### Empleados #################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaEmpleados(request):
     listaEmp = SeCatEmpleado.objects.filter(estatus_emp="A"). order_by('rowid_empleado')#Lista de todas las divisiones
     contador_id = listaEmp.count()
@@ -3753,6 +3907,7 @@ def vistaEmpleados(request):
     return render(request, "controlEscolar/catalogos/empleados/GestionEmpleados/GestionEmpleados.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarEmpleado(request, rowid_empleado):
     try:
         emp = SeCatEmpleado.objects.get(rowid_empleado=rowid_empleado)
@@ -3766,6 +3921,7 @@ def eliminarEmpleado(request, rowid_empleado):
     return render(request, "controlEscolar/catalogos/empleados/GestionEmpleados/BorrarEmpleados.html", {"emp": emp})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_emp_detail(request, rowid_empleado):
     emp = SeCatEmpleado.objects.get(rowid_empleado=rowid_empleado)
     form = FormEmpleado(instance = emp)
@@ -3805,6 +3961,7 @@ class Export_pdf_emp(LoginRequiredMixin,View):
         return response
 # Exportar divisiones a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_emp (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaEmpleados.csv;'
@@ -3823,6 +3980,7 @@ def export_csv_emp (request):
     return response
 # Exportar divisiones a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_emp (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaEmpleados.xls'
@@ -3854,6 +4012,7 @@ def export_xlwt_emp (request):
 ##############################################  Nivel Academico  ##################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaNivelAca(request):
     #Lista de todas las divisiones
     listaNivelAca = SeCatNivelAcademico.objects.filter(estatus_acade="A").order_by('rowid_academico')
@@ -3896,6 +4055,7 @@ def vistaNivelAca(request):
     return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/GestionNivelAcademico.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarNivelAca(request, rowid_academico):
     try:
         aca = SeCatNivelAcademico.objects.get(rowid_academico=rowid_academico)
@@ -3909,6 +4069,7 @@ def eliminarNivelAca(request, rowid_academico):
     return render(request, "controlEscolar/catalogos/empleados/GestionNivelAcademico/BorrarNivelAcademico.html", {"Academico": aca})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_nivel_aca_detail(request, rowid_academico):
     aca = SeCatNivelAcademico.objects.get(rowid_academico=rowid_academico)
     form = FormNivAca(instance = aca)
@@ -3948,6 +4109,7 @@ class Export_pdf_nivel_academico(LoginRequiredMixin, View):
         return response
 # Exportar divisiones a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_nivel_academico (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaNivelAcademico.csv;'
@@ -3959,6 +4121,7 @@ def export_csv_nivel_academico (request):
     return response
 # Exportar divisiones a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_nivel_academico (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaNivelAcademico.xls'
@@ -3983,6 +4146,7 @@ def export_xlwt_nivel_academico (request):
 ##############################################  Plaza  ##########################################################
 #Agregar si es post y lista de todos / Aqui va la paginación
 @login_required
+@check_user("ControlEscolar")
 def vistaPlaza(request):
     #Lista de todas las divisiones
     listaPlaza = SeCatPlaza.objects.filter(estatus_plaza="A").order_by('rowid_plaza')
@@ -4024,6 +4188,7 @@ def vistaPlaza(request):
     return render(request, "controlEscolar/catalogos/empleados/GestionPlazas/GestionPlazas.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarPlaza(request, rowid_plaza):
     try:
         pla = SeCatPlaza.objects.get(rowid_plaza=rowid_plaza)
@@ -4037,6 +4202,7 @@ def eliminarPlaza(request, rowid_plaza):
     return render(request, "controlEscolar/catalogos/empleados/GestionPlazas/BorrarPlazas.html", {"Plazas": pla})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_plaza_detail(request, rowid_plaza):
     pla = SeCatPlaza.objects.get(rowid_plaza=rowid_plaza)
     form = FormPlaza(instance = pla)
@@ -4076,6 +4242,7 @@ class Export_pdf_plaza(LoginRequiredMixin, View):
         return response
 # Exportar divisiones a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_plaza (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaPlazas.csv;'
@@ -4087,6 +4254,7 @@ def export_csv_plaza (request):
     return response
 # Exportar divisiones a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_plaza (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaPlazas.xls'
@@ -4111,6 +4279,7 @@ def export_xlwt_plaza (request):
 #################### TIPO PUESTOS ######################
 #Agregar si es post y lista de todos / Aqui va la paginación
 @login_required
+@check_user("ControlEscolar")
 def vistaTipoPue(request):
     #Lista de todas las divisiones
     listaPue = SeCatTipoPuesto.objects.filter(estatus_pue="A").order_by('rowid_puesto')
@@ -4152,6 +4321,7 @@ def vistaTipoPue(request):
     return render(request, "controlEscolar/catalogos/empleados/GestionTipoPuesto/GestionTipoPuesto.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarTipoPue(request, rowid_puesto):
     try:
         pue = SeCatTipoPuesto.objects.get(rowid_puesto=rowid_puesto)
@@ -4165,6 +4335,7 @@ def eliminarTipoPue(request, rowid_puesto):
     return render(request, "controlEscolar/catalogos/empleados/GestionTipoPuesto/BorrarPuesto.html", {"pue": pue})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_tipopue_detail(request, rowid_puesto):
     pue = SeCatTipoPuesto.objects.get(rowid_puesto=rowid_puesto)
     form = FormsTipoPue(instance = pue)
@@ -4204,6 +4375,7 @@ class Export_pdf_tipopue(LoginRequiredMixin, View):
         return response
 # Exportar divisiones a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_tipopue (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaPuestos.csv;'
@@ -4215,6 +4387,7 @@ def export_csv_tipopue (request):
     return response
 # Exportar divisiones a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_tipopue (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaPuestos.xls'
@@ -4239,6 +4412,7 @@ def export_xlwt_tipopue (request):
 ###################################### Sueldos #################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaSueldos(request):
     #Lista de todas las divisiones
     listaSu = SeCatSueldos.objects.filter(estatus_sueldo="A").order_by('rowid_sueldo')
@@ -4281,6 +4455,7 @@ def vistaSueldos(request):
     return render(request, "controlEscolar/catalogos/empleados/GestionSueldos/GestionSueldos.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarSueldos(request, rowid_sueldo):
     try:
         su = SeCatSueldos.objects.get(rowid_sueldo=rowid_sueldo)
@@ -4294,6 +4469,7 @@ def eliminarSueldos(request, rowid_sueldo):
     return render(request, "controlEscolar/catalogos/empleados/GestionSueldos/BorrarSueldos.html", {"su": su})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_su_detail(request, rowid_sueldo):
     su = SeCatSueldos.objects.get(rowid_sueldo=rowid_sueldo)
     form = FormSueldo(instance = su)
@@ -4333,6 +4509,7 @@ class Export_pdf_su(LoginRequiredMixin,View):
         return response
 # Exportar divisiones a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_su (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaSueldos.csv;'
@@ -4344,6 +4521,7 @@ def export_csv_su (request):
     return response
 # Exportar divisiones a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_su (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaSueldos.xls'
@@ -4368,6 +4546,7 @@ def export_xlwt_su (request):
 ##############################################   Adscripcion   #########################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaAdscripciones(request):
     listaAdscripcion = SeCatDeptoEmp.objects.filter(estatus_depto="A").order_by('rowid_depto')
     contador_id = listaAdscripcion.count() 
@@ -4406,6 +4585,7 @@ def vistaAdscripciones(request):
     return render(request, "controlEscolar/catalogos/empleados/GestionAdscripciones/GestionAdscripciones.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarAdscripciones(request, rowid_depto):
     try:
         ads = SeCatDeptoEmp.objects.get(rowid_depto=rowid_depto)
@@ -4419,6 +4599,7 @@ def eliminarAdscripciones(request, rowid_depto):
     return render(request, "controlEscolar/catalogos/empleados/GestionAdscripciones/BorrarAdscripciones.html", {"Adscripcion": ads})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_adscripciones_detail(request, rowid_depto):
     ads = SeCatDeptoEmp.objects.get(rowid_depto=rowid_depto)
     form = FormAdscripcion(instance=ads)
@@ -4458,6 +4639,7 @@ class Export_pdf_adscripcion(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_adscripcion (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaAdscripcion.csv;'
@@ -4469,6 +4651,7 @@ def export_csv_adscripcion (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_adscripcion (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaAdscripcion.xls'
@@ -4492,6 +4675,7 @@ def export_xlwt_adscripcion (request):
 ##############################################   Actididades   #########################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaActididades(request):
     listaActividades = SeCatActividades.objects.filter(estatus_act="A").order_by('rowid_actividad')
     contador_id = listaActividades.count() 
@@ -4530,6 +4714,7 @@ def vistaActididades(request):
     return render(request, "controlEscolar/catalogos/empleados/GestionActividades/GestionActividades.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarActididades(request, rowid_actividad):
     try:
         act = SeCatActividades.objects.get(rowid_actividad = rowid_actividad)
@@ -4543,6 +4728,7 @@ def eliminarActididades(request, rowid_actividad):
     return render(request, "controlEscolar/catalogos/empleados/GestionActividades/BorrarActividades.html", {"Actividad": act})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_actididades_detail(request, rowid_actividad):
     act = SeCatActividades.objects.get(rowid_actividad=rowid_actividad)
     form = FormActividades(instance=act)
@@ -4582,6 +4768,7 @@ class Export_pdf_actididades(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_actididades (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaActividades.csv;'
@@ -4593,6 +4780,7 @@ def export_csv_actididades (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_actididades (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaActividades.xls'
@@ -4617,6 +4805,7 @@ def export_xlwt_actididades (request):
 ##############################################   Instituciones   #########################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaInstituciones(request):
     listaInstituciones = SeCatInstitucion.objects.filter(estatus_ins="A").order_by('rowid_institucion')
     contador_id = listaInstituciones.count() 
@@ -4655,6 +4844,7 @@ def vistaInstituciones(request):
     return render(request, "controlEscolar/catalogos/empleados/GestionInstituciones/GestionInstituciones.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarInstituciones(request, rowid_institucion):
     try:
         inst = SeCatInstitucion.objects.get(rowid_institucion = rowid_institucion)
@@ -4668,6 +4858,7 @@ def eliminarInstituciones(request, rowid_institucion):
     return render(request, "controlEscolar/catalogos/empleados/GestionInstituciones/BorrarInstituciones.html", {"Institucion": inst})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_instituciones_detail(request, rowid_institucion):
     inst = SeCatInstitucion.objects.get(rowid_institucion = rowid_institucion)
     form = FormInstitucion(instance=inst)
@@ -4707,6 +4898,7 @@ class Export_pdf_instituciones(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_instituciones (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaInstituciones.csv;'
@@ -4718,6 +4910,7 @@ def export_csv_instituciones (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_instituciones (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaInstituciones.xls'
@@ -4741,6 +4934,7 @@ def export_xlwt_instituciones (request):
 ##############################################   EmpCar   #########################################################
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaEmpCar(request):
     listaEmpCar = SeTabEmpCar.objects.filter(estatus_inst="A").order_by('rowid_emp_car')
     contador_id = listaEmpCar.count() 
@@ -4779,6 +4973,7 @@ def vistaEmpCar(request):
     return render(request, "controlEscolar/catalogos/empleados/GestionEmpCar/GestionEmpCar.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarEmpCar(request, rowid_emp_car):
     try:
         empcar = SeTabEmpCar.objects.get(rowid_emp_car = rowid_emp_car)
@@ -4792,6 +4987,7 @@ def eliminarEmpCar(request, rowid_emp_car):
     return render(request, "controlEscolar/catalogos/empleados/GestionEmpCar/BorrarEmpCar.html", {"form": empcar})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_EmpCar_detail(request, rowid_emp_car):
     empcar = SeTabEmpCar.objects.get(rowid_emp_car = rowid_emp_car)
     form = FormEmpCar(instance=empcar)
@@ -4831,6 +5027,7 @@ class Export_pdf_EmpCar(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_EmpCar (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaEmpCar.csv;'
@@ -4842,6 +5039,7 @@ def export_csv_EmpCar (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_EmpCar (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaEmpCar.xls'
@@ -4871,8 +5069,10 @@ def loadColonias (request):
  colonias = SeCatColonia.objects.filter(rowid_mundel=rowid_mundel)
  return render(request, 'controlEscolar/operaciones/aspirantes/capturaAspirantes/DropDown.html', {'colonias' : colonias})
 @login_required
+@check_user("ControlEscolar")
 # Vista principal 
 @login_required
+@check_user("ControlEscolar")
 def registroAspirante(request):
     listaAsp  = SeTabAspirante.objects.filter(estatus_asp="A").order_by('rowid_asp')
     contador_id = listaAsp.count() 
@@ -4948,6 +5148,7 @@ def registroAspirante(request):
     return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/capturaAspirantes.html",data)
 # Modifica un registro de aspirante
 @login_required
+@check_user("ControlEscolar")
 def modificarRegistroAspirante(request, rowid_asp):
     regasp = SeTabAspirante.objects.get(rowid_asp = rowid_asp)
     fecha_now = datetime.datetime.now() # se asigna en el forms a fecha_alt_asp
@@ -4972,6 +5173,7 @@ def modificarRegistroAspirante(request, rowid_asp):
     return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/actualizarAspirante.html", {"form" : form, 'fecha_now' : fecha_now.strftime('%d/%m/%Y')})#envia al detalle para actualizar
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarAspirante(request, rowid_asp):
     try:
         regasp = SeTabAspirante.objects.get(rowid_asp = rowid_asp)
@@ -4985,12 +5187,14 @@ def eliminarAspirante(request, rowid_asp):
     return render(request, "controlEscolar/operaciones/aspirantes/capturaAspirantes/BorrarAspirante.html", {"form": regasp})
 # primera de pdf 
 @login_required
+@check_user("ControlEscolar")
 def export_print_aspirante(request, rowid_asp):
     regasp = SeTabAspirante.objects.filter(rowid_asp = rowid_asp)
     pdf = render_to_pdf('controlEscolar/operaciones/aspirantes/capturaAspirantes/ListaAspirante.html', {'regasp': regasp})
     return HttpResponse(pdf, content_type='application/pdf')
 #Clase para crear Pdf / Funciona con la misma funcion en utils
 @login_required
+@check_user("ControlEscolar")
 def export_pdf_aspirante(response, rowid_asp):
     regasp = SeTabAspirante.objects.filter(rowid_asp = rowid_asp)
     pdf = render_to_pdf('controlEscolar/operaciones/aspirantes/capturaAspirantes/ListaAspirante.html', {'regasp': regasp })
@@ -5004,6 +5208,7 @@ def export_pdf_aspirante(response, rowid_asp):
 
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaDocAsp(request):
     listaDocAsp = SeProAspDocu.objects.filter(estatus_doc_aspi="A").order_by('rowid_asp_docu')
     fecha_alta = datetime.datetime.now() # se asigna en el forms a fecha_alt_asp
@@ -5051,6 +5256,7 @@ def vistaDocAsp(request):
     return render(request, "controlEscolar/operaciones/aspirantes/capturaDocumentosAspirante/GestionDocAsp.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarDocAsp(request, rowid_asp_docu):
     fecha_baja = datetime.datetime.now() # se asigna en el forms a fecha_alt_asp
     try:
@@ -5073,6 +5279,7 @@ def eliminarDocAsp(request, rowid_asp_docu):
     return render(request, "controlEscolar/operaciones/aspirantes/capturaDocumentosAspirante/BorrarDocAsp.html", {"form": docaspi})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_DocAsp_detail(request, rowid_asp_docu):
     docaspi = SeProAspDocu.objects.get(rowid_asp_docu = rowid_asp_docu)
     fecha_cambio = datetime.datetime.now()
@@ -5124,6 +5331,7 @@ class Export_pdf_DocAsp(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_DocAsp (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaDocumentos.csv;'
@@ -5137,6 +5345,7 @@ def export_csv_DocAsp (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_DocAsp (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaDoc.xls'
@@ -5161,6 +5370,7 @@ def export_xlwt_DocAsp (request):
 
 #Agregar si es post y lista de todos / Aqui va la paguinacion
 @login_required
+@check_user("ControlEscolar")
 def vistaCalAsp(request):
     listaCalAsp = SeTabAceptados.objects.filter(estatus_ace="A").order_by('rowid_ace')
     contador_id = listaCalAsp.count() 
@@ -5199,6 +5409,7 @@ def vistaCalAsp(request):
     return render(request, "controlEscolar/operaciones/aspirantes/capturaCalificacionesAspirante/GestionCalAsp.html",data)
 # Elimina un registro que no elimina solo actualiza Status de A a B
 @login_required
+@check_user("ControlEscolar")
 def eliminarCalAsp(request, rowid_ace):
     try:
         calaspi = SeTabAceptados.objects.get(rowid_ace = rowid_ace)
@@ -5212,6 +5423,7 @@ def eliminarCalAsp(request, rowid_ace):
     return render(request, "controlEscolar/operaciones/aspirantes/capturaCalificacionesAspirante/BorrarCalAsp.html", {"form": calaspi})
 # Modifica un registro
 @login_required
+@check_user("ControlEscolar")
 def vista_CalAsp_detail(request, rowid_ace):
     calaspi = SeTabAceptados.objects.get(rowid_ace = rowid_ace)
     form = FormCalAsp(instance=calaspi)
@@ -5252,6 +5464,7 @@ class Export_pdf_CalAsp(LoginRequiredMixin, View):
         return response
 # Exportar paises a CSV sin libreria 
 @login_required
+@check_user("ControlEscolar")
 def export_csv_CalAsp (request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=ListaCalAsp.csv;'
@@ -5263,6 +5476,7 @@ def export_csv_CalAsp (request):
     return response
 # Exportar paises a xlwt sin con la libreria XLWT 
 @login_required
+@check_user("ControlEscolar")
 def export_xlwt_CalAsp (request):
     response = HttpResponse(content_type="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=ListaCal.xls'

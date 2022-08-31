@@ -61,8 +61,8 @@
     <p style="text-align: right; font-size: 25px;">Número de Estados: {{ contador }} </p>
     <thead>
         <tr>
-            <th>Pais</th>
             <th>Clave</th>
+            <th>Pais</th>
             <th>Estado</th>
             <th>Abreviación</th>
             <th>Estatus</th>
@@ -73,8 +73,8 @@
         {% for e in entity %}
         <tr>
             {% load bootstrap_icons %}
-            <td>{{ e.rowid_pais.descri_largo_pais }}</td>
             <td>{{ e.id_edo }}</td>
+            <td>{{ e.rowid_pais.descri_largo_pais }}</td>
             <td>{{ e.descri_largo_edo }}</td>
             <td>{{ e.descri_corto_edo }}</td>
             <td>{{ e.estatus_edo }}</td>
