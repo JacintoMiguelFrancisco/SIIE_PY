@@ -5164,6 +5164,13 @@ def modificarRegistroAspirante(request, rowid_asp):
             capaspi = form.save(commit=False)
             name_user = str(id_usuario)
             capaspi.user_cambio = name_user
+            # Calcular edad
+            echa_nac_asp = request.POST['fecha_nac_asp']
+            fecha_na = echa_nac_asp.split("/")
+            edad = fecha_now.year - int(fecha_na[2])
+            if int(fecha_na[1]) > fecha_now.month or (int(fecha_na[1]) == fecha_now.month and int(fecha_na[0]) > fecha_now.day):
+                edad = edad-1
+            capaspi.edad_asp = edad
             capaspi.save() #Guarda los cambios
             messages.info(request, "¡El aspirante se actualizo con exito!")
             return redirect('registro_aspirante') #retorna despues de actualizar
