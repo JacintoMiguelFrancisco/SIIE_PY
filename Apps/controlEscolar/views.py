@@ -369,7 +369,7 @@ def vistaMunicipios(request):
             ultimo_id = SeCatMunicipioDelegacion.objects.all().order_by('rowid_mundel').last()
             mun.rowid_mundel = ultimo_id.rowid_mundel + 1
             mun.save()
-            messages.success(request, "¡Municipio/Delegación agregado con exito!")
+            messages.success(request, "¡Municipio/Alcalía agregado con exito!")
             return redirect('vista_municipios')
         else:
             messages.warning(request, "¡Alguno de los campos no es valido!")
@@ -404,7 +404,7 @@ def eliminarMunicipio(request, rowid_mundel):
         raise Http404("El Municipio no existe")
     if request.method == 'POST': #Sobre escrive los valores
         mundel.save()
-        messages.warning(request, "¡Municipio/Delegación eliminado con exito!")
+        messages.warning(request, "¡Municipio/Alcalía eliminado con exito!")
         return redirect('vista_municipios')
     return render(request, "controlEscolar/catalogos/direcciones/GestionMunicipios/BorrarMunicipio.html", {"Municipio": mundel})
 # Modifica un registro
@@ -418,7 +418,7 @@ def vista_municipios_detail(request, rowid_mundel):
         if form.is_valid():
             mun = form.save(commit=False)   
             mun.save()
-            messages.info(request, "¡Municipio/Delegación actualizado con exito!")
+            messages.info(request, "¡Municipio/Alcalía actualizado con exito!")
             return redirect('vista_municipios')  #retorna despues de actualizar              
         else: 
             messages.warning(request, "¡Alguno de los campos no es valido!") # Emvia un mensaje para notificar que algun campo no es valido
